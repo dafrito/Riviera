@@ -1,0 +1,54 @@
+package com.bluespot.table;
+
+import java.awt.Point;
+
+/**
+ * Skeletal implementation of the {@link TableIterator} interface.
+ * 
+ * @author Aaron Faanes
+ * @param <T> Type of element contained in this iterator's parent table
+ */
+public abstract class AbstractTableIterator<T> implements TableIterator<T> {
+
+    protected Point currentPoint;
+    protected final Table<T> table;
+
+    public AbstractTableIterator(Table<T> table) {
+        this.table = table;
+    }
+
+    @Override
+    public void remove() {
+        if(this.currentPoint == null) {
+            this.next();
+        }
+        this.table.remove(this.currentPoint);
+    }
+
+    public Point getLocation() {
+        Point targetPoint = new Point();
+        this.getLocation(targetPoint);
+        return targetPoint;
+    }
+
+    public void getLocation(Point targetPoint) {
+        if(this.currentPoint == null) {
+            this.next();
+        }
+        targetPoint.setLocation(this.currentPoint);
+    }
+
+    public T get() {
+        if(this.currentPoint == null) {
+            this.next();
+        }
+        return this.table.get(this.currentPoint);
+    }
+
+    public T put(T value) {
+        if(this.currentPoint == null) {
+            this.next();
+        }
+        return this.table.put(this.currentPoint, value);
+    }
+}
