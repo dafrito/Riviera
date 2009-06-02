@@ -12,6 +12,7 @@ import com.bluespot.swing.state.StateModel;
 public class PerspectiveManager {
 
 	protected final ProxiedListModel<Perspective> perspectives = new ProxiedListModel<Perspective>();
+
 	protected final StateModel<Perspective> stateModel = new StateModel<Perspective>(this.perspectives);
 
 	/**
@@ -24,16 +25,24 @@ public class PerspectiveManager {
 		}
 	}
 
-	private static PerspectiveManager currentManager;
-
-	public static PerspectiveManager getCurrentManager() {
-		return currentManager;
+	public void addPerspective(final Perspective perspective) {
+		this.perspectives.add(perspective);
 	}
 
-	public static void setCurrentManager(PerspectiveManager manager) {
-		if (manager == null)
-			throw new NullPointerException();
-		PerspectiveManager.currentManager = manager;
+	public boolean closeAll() {
+		for (final Perspective perspective : this.perspectives) {
+			if (!perspective.isReadyForClose()) {
+				return false;
+			}
+		}
+		for (final Perspective perspective : this.perspectives) {
+			perspective.close();
+		}
+		return true;
+	}
+
+	public Perspective getCurrentPerspective() {
+		return this.stateModel.getState();
 	}
 
 	public ProxiedListModel<Perspective> getPerspectives() {
@@ -44,31 +53,25 @@ public class PerspectiveManager {
 		return this.stateModel;
 	}
 
-	public void addPerspective(Perspective perspective) {
-		this.perspectives.add(perspective);
-	}
-
-	public void removePerspective(Perspective perspective) {
+	public void removePerspective(final Perspective perspective) {
 		this.perspectives.remove(perspective);
 	}
 
-	public void showPerspective(Perspective perspective) {
+	public void showPerspective(final Perspective perspective) {
 		this.stateModel.setState(perspective);
 	}
 
-	public Perspective getCurrentPerspective() {
-		return this.stateModel.getState();
+	public static PerspectiveManager getCurrentManager() {
+		return PerspectiveManager.currentManager;
 	}
 
-	public boolean closeAll() {
-		for (Perspective perspective : this.perspectives) {
-			if (!perspective.isReadyForClose())
-				return false;
+	public static void setCurrentManager(final PerspectiveManager manager) {
+		if (manager == null) {
+			throw new NullPointerException();
 		}
-		for (Perspective perspective : this.perspectives) {
-			perspective.close();
-		}
-		return true;
+		PerspectiveManager.currentManager = manager;
 	}
+
+	private static PerspectiveManager currentManager;
 
 }

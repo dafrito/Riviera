@@ -22,19 +22,10 @@ import com.bluespot.swing.list.ProxiedListModel;
 
 public class CellRendererDemonstration extends AbstractDemonstration {
 
-	public static void main(String[] args) {
-		Runner.run(new CellRendererDemonstration(), true);
-	}
-
-	protected JList list;
-
-	protected List<String> stringList;
-	protected static int counter;
-
 	public class MyCellRenderer extends JLabel implements ListCellRenderer {
 
-		public Component getListCellRendererComponent(JList sourceList, Object value, int index, boolean isSelected,
-				boolean cellHasFocus) {
+		public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
+				final boolean isSelected, final boolean cellHasFocus) {
 			this.setOpaque(true);
 			this.setText(String.valueOf(value.toString().length()));
 			if (isSelected) {
@@ -50,8 +41,47 @@ public class CellRendererDemonstration extends AbstractDemonstration {
 
 	}
 
+	protected JList list;
+
+	protected List<String> stringList;
+
+	@Override
+	public void initializeFrame(final JFrame frame) {
+		frame.setLayout(new BorderLayout());
+		frame.setSize(400, 400);
+		frame.getContentPane().add(new JScrollPane(this.constructList()), BorderLayout.CENTER);
+
+		final JPanel panel = new JPanel();
+
+		final JButton addButton = new JButton("Add");
+		final JButton removeButton = new JButton("Remove");
+		removeButton.setEnabled(false);
+
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				final List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
+				listModelAdapter.add("Hello, world! This is element " + listModelAdapter.size());
+				removeButton.setEnabled(true);
+			}
+		});
+		panel.add(addButton);
+
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				final List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
+				listModelAdapter.remove(0);
+				if (listModelAdapter.isEmpty()) {
+					removeButton.setEnabled(false);
+				}
+			}
+		});
+		panel.add(removeButton);
+
+		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+	}
+
 	private JList constructList() {
-		ProxiedListModel<String> listModelAdapter = new ProxiedListModel<String>();
+		final ProxiedListModel<String> listModelAdapter = new ProxiedListModel<String>();
 		this.list = new JList(listModelAdapter);
 		this.stringList = listModelAdapter;
 
@@ -62,48 +92,21 @@ public class CellRendererDemonstration extends AbstractDemonstration {
 		return this.list;
 	}
 
-	private void populateList(List<String> targetList) {
-		String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		char[] charArray = alphabet.toCharArray();
-		String[] stringArray = new String[26];
+	private void populateList(final List<String> targetList) {
+		final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		final char[] charArray = alphabet.toCharArray();
+		final String[] stringArray = new String[26];
 		int index = 0;
-		for (char c : charArray)
+		for (final char c : charArray) {
 			stringArray[index++] = String.valueOf(c);
+		}
 		Collections.addAll(targetList, stringArray);
 	}
 
-	@Override
-	public void initializeFrame(JFrame frame) {
-		frame.setLayout(new BorderLayout());
-		frame.setSize(400, 400);
-		frame.getContentPane().add(new JScrollPane(this.constructList()), BorderLayout.CENTER);
-
-		JPanel panel = new JPanel();
-
-		final JButton addButton = new JButton("Add");
-		final JButton removeButton = new JButton("Remove");
-		removeButton.setEnabled(false);
-
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
-				listModelAdapter.add("Hello, world! This is element " + listModelAdapter.size());
-				removeButton.setEnabled(true);
-			}
-		});
-		panel.add(addButton);
-
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
-				listModelAdapter.remove(0);
-				if (listModelAdapter.isEmpty())
-					removeButton.setEnabled(false);
-			}
-		});
-		panel.add(removeButton);
-
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+	public static void main(final String[] args) {
+		Runner.run(new CellRendererDemonstration(), true);
 	}
+
+	protected static int counter;
 
 }

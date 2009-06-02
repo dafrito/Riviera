@@ -1,26 +1,25 @@
 package com.bluespot.script;
 
-
 public abstract class ImmutableScriptContext implements ScriptContext {
 
-    public void putContext(String name, ScriptContext context) {
-        throw new UnsupportedOperationException("This ScriptContext does not support adding contexts");
-    }
+	public void pushValue(final Object value) {
+		throw new UnsupportedOperationException("This ScriptContext does not support adding positional values");
+	}
 
-    public void putFunction(String name, ScriptFunction<?> function) {
-        throw new UnsupportedOperationException("This ScriptContext does not support adding functions");
-    }
+	public void putContext(final String name, final ScriptContext context) {
+		throw new UnsupportedOperationException("This ScriptContext does not support adding contexts");
+	}
 
-    public void putValue(String name, Object value) {
-        throw new UnsupportedOperationException("This ScriptContext does not support adding values");
-    }
+	public void putFunction(final String name, final ScriptFunction<?> function) {
+		throw new UnsupportedOperationException("This ScriptContext does not support adding functions");
+	}
 
-    public void setParentContext(ScriptContext parentContext) {
-        throw new UnsupportedOperationException("This ScriptContext cannot have any parents");
-    }
+	public void putValue(final String name, final Object value) {
+		throw new UnsupportedOperationException("This ScriptContext does not support adding values");
+	}
 
-    public void pushValue(Object value) {
-        throw new UnsupportedOperationException("This ScriptContext does not support adding positional values");
-    }
+	public void setParentContext(final ScriptContext parentContext) {
+		throw new UnsupportedOperationException("This ScriptContext cannot have any parents");
+	}
 
 }

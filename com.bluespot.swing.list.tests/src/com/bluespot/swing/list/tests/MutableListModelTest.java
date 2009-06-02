@@ -1,9 +1,5 @@
 package com.bluespot.swing.list.tests;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +8,8 @@ import java.util.Queue;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import org.hamcrest.CoreMatchers;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -20,251 +18,251 @@ import com.bluespot.swing.list.MutableListModel;
 
 public abstract class MutableListModelTest extends ListTest {
 
-    public MutableListModel<String> listModel;
-    
-    @Override
-    protected List<String> newList() {
-        return this.newListModel();
-    }
+	public MutableListModel<String> listModel;
 
-    protected abstract MutableListModel<String> newListModel();
+	protected final Queue<ListDataEvent> eventList = new ArrayDeque<ListDataEvent>();
 
-    protected final Queue<ListDataEvent> eventList = new ArrayDeque<ListDataEvent>();
+	@Before
+	public void initListModel() {
+		this.listModel = this.newListModel();
+		this.listModel.addListDataListener(new ListDataAdapter() {
 
-    @Before
-    public void initListModel() {
-        this.listModel = this.newListModel();
-        this.listModel.addListDataListener(new ListDataAdapter() {
+			@Override
+			public void contentsChanged(final ListDataEvent e) {
+				MutableListModelTest.this.eventList.add(e);
+			}
 
-            @Override
-            public void contentsChanged(ListDataEvent e) {
-                MutableListModelTest.this.eventList.add(e);
-            }
+			@Override
+			public void intervalAdded(final ListDataEvent e) {
+				MutableListModelTest.this.eventList.add(e);
+			}
 
-            @Override
-            public void intervalAdded(ListDataEvent e) {
-                MutableListModelTest.this.eventList.add(e);
-            }
+			@Override
+			public void intervalRemoved(final ListDataEvent e) {
+				MutableListModelTest.this.eventList.add(e);
+			}
 
-            @Override
-            public void intervalRemoved(ListDataEvent e) {
-                MutableListModelTest.this.eventList.add(e);
-            }
+		});
 
-        });
+	}
 
-    }
+	/**
+	 * AddAll(collection) testing
+	 */
+	@Test
+	public void testAddAll() {
+		this.listModel.addAll(this.prepopulatedList);
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_ADDED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(this.prepopulatedList.size() - 1));
+	}
 
-    private void prepopulate() {
-        this.listModel.addAll(this.prepopulatedList);
-        this.eventList.clear();
-    }
+	/**
+	 * AddAllAt(index, collection) testing
+	 */
+	@Test
+	public void testAddAllAt() {
+		this.prepopulate();
+		this.listModel.addAll(1, this.prepopulatedList);
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_ADDED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(1));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(1 + (this.prepopulatedList.size() - 1)));
+	}
 
-    @Test
-    public void testSimpleListModel() {
-        this.listModel.add("A");
-        assertEquals(this.listModel.getElementAt(0), "A");
-        assertEquals(this.listModel.getSize(), 1);
-        this.listModel.clear();
-        assertEquals(this.listModel.getSize(), 0);
-    }
+	/**
+	 * Add(index, element) testing
+	 */
+	@Test
+	public void testAddAt() {
+		this.prepopulate();
+		this.listModel.add(0, "The craziest value.");
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_ADDED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(0));
+	}
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testThrowsOnBadGetElement() {
-        this.listModel.getElementAt(1);
-    }
+	/**
+	 * Clear() testing
+	 */
+	@Test
+	public void testClear() {
+		this.prepopulate();
+		this.listModel.clear();
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_REMOVED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(this.prepopulatedList.size() - 1));
+	}
 
-    @Test
-    public void testListenerSanity() {
-        ListDataListener listener = new ListDataAdapter();
-        this.listModel.addListDataListener(listener);
-        this.listModel.removeListDataListener(listener);
-    }
+	/**
+	 * Set(index, element) testing
+	 */
+	@Test
+	public void testContentsChanged() {
+		this.prepopulate();
+		this.listModel.set(0, "The craziest value.");
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.CONTENTS_CHANGED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(0));
+	}
 
-    /**
-     * Add(index, element) testing
-     */
-    @Test
-    public void testAddAt() {
-        this.prepopulate();
-        this.listModel.add(0, "The craziest value.");
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_ADDED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(0));
-    }
+	/**
+	 * Add(element) testing
+	 */
+	@Test
+	public void testIntervalAdded() {
+		this.listModel.add("A");
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_ADDED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(0));
+	}
 
-    /**
-     * AddAll(collection) testing
-     */
-    @Test
-    public void testAddAll() {
-        this.listModel.addAll(this.prepopulatedList);
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_ADDED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(this.prepopulatedList.size() - 1));
-    }
+	@Test
+	public void testListenerSanity() {
+		final ListDataListener listener = new ListDataAdapter();
+		this.listModel.addListDataListener(listener);
+		this.listModel.removeListDataListener(listener);
+	}
 
-    /**
-     * AddAllAt(index, collection) testing
-     */
-    @Test
-    public void testAddAllAt() {
-        this.prepopulate();
-        this.listModel.addAll(1, this.prepopulatedList);
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_ADDED));
-        assertThat(event.getIndex0(), is(1));
-        assertThat(event.getIndex1(), is(1 + (this.prepopulatedList.size() - 1)));
-    }
+	/**
+	 * Remove(object) testing
+	 */
+	@Test
+	public void testRemove() {
+		this.prepopulate();
+		this.listModel.remove("B");
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_REMOVED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(1));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(1));
+	}
 
-    /**
-     * Add(element) testing
-     */
-    @Test
-    public void testIntervalAdded() {
-        this.listModel.add("A");
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_ADDED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(0));
-    }
+	/**
+	 * RemoveAll(collection) testing
+	 */
+	@Test
+	public void testRemoveAllInCollection() {
+		this.prepopulate();
+		// SubList is B, C, and E
+		this.listModel.removeAll(this.subsetList);
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.CONTENTS_CHANGED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(1));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(4));
+	}
 
-    /**
-     * Clear() testing
-     */
-    @Test
-    public void testClear() {
-        this.prepopulate();
-        this.listModel.clear();
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_REMOVED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(this.prepopulatedList.size() - 1));
-    }
+	/**
+	 * Remove(index) testing
+	 */
+	@Test
+	public void testRemoveIndex() {
+		this.prepopulate();
+		this.listModel.remove(0);
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_REMOVED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(0));
+	}
 
-    /**
-     * Remove(object) testing
-     */
-    @Test
-    public void testRemove() {
-        this.prepopulate();
-        this.listModel.remove("B");
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_REMOVED));
-        assertThat(event.getIndex0(), is(1));
-        assertThat(event.getIndex1(), is(1));
-    }
+	/**
+	 * RetainAll(collection) testing
+	 */
+	@Test
+	public void testRetainAllInCollection() {
+		this.prepopulate();
+		// SubList is B, C, and E .
+		// Retaining will yield only these elements.
+		this.listModel.retainAll(this.subsetList);
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.CONTENTS_CHANGED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(3));
+	}
 
-    /**
-     * RemoveAll(collection) testing
-     */
-    @Test
-    public void testRemoveAllInCollection() {
-        this.prepopulate();
-        // SubList is B, C, and E
-        this.listModel.removeAll(this.subsetList);
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.CONTENTS_CHANGED));
-        assertThat(event.getIndex0(), is(1));
-        assertThat(event.getIndex1(), is(4));
-    }
+	@Test
+	public void testSimpleListModel() {
+		this.listModel.add("A");
+		Assert.assertEquals(this.listModel.getElementAt(0), "A");
+		Assert.assertEquals(this.listModel.getSize(), 1);
+		this.listModel.clear();
+		Assert.assertEquals(this.listModel.getSize(), 0);
+	}
 
-    /**
-     * RetainAll(collection) testing
-     */
-    @Test
-    public void testRetainAllInCollection() {
-        this.prepopulate();
-        // SubList is B, C, and E .
-        // Retaining will yield only these elements.
-        this.listModel.retainAll(this.subsetList);
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.CONTENTS_CHANGED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(3));
-    }
+	/**
+	 * Sublist(first, last) - AddAll testing
+	 */
+	@Test
+	public void testSublistAddAll() {
+		this.prepopulate();
+		final List<String> sublist = this.listModel.subList(0, 2);
+		sublist.addAll(Arrays.asList("G", "H", "I"));
+		Assert.assertThat(this.listModel.getSize(), CoreMatchers.is(8));
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_ADDED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(2));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(4));
+	}
 
-    /**
-     * Set(index, element) testing
-     */
-    @Test
-    public void testContentsChanged() {
-        this.prepopulate();
-        this.listModel.set(0, "The craziest value.");
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.CONTENTS_CHANGED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(0));
-    }
+	/**
+	 * Sublist(first, last) - Clear testing
+	 */
+	@Test
+	public void testSublistClear() {
+		this.prepopulate();
+		this.listModel.subList(0, 2).clear();
+		Assert.assertThat(this.listModel.getSize(), CoreMatchers.is(3));
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_REMOVED));
+		Assert.assertThat(event.getIndex0(), CoreMatchers.is(0));
+		Assert.assertThat(event.getIndex1(), CoreMatchers.is(1));
+	}
 
-    /**
-     * Sublist(first, last) - Clear testing
-     */
-    @Test
-    public void testSublistClear() {
-        this.prepopulate();
-        this.listModel.subList(0, 2).clear();
-        assertThat(this.listModel.getSize(), is(3));
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_REMOVED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(1));
-    }
+	/**
+	 * Sublist(first, last) - AddAll testing
+	 */
+	@Test
+	public void testSublistSet() {
+		this.prepopulate();
+		final List<String> sublist = this.listModel.subList(2, 4);
+		sublist.set(1, "No time");
+		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
+		final ListDataEvent event = this.eventList.remove();
+		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.CONTENTS_CHANGED));
+		Assert.assertThat(this.listModel.get(event.getIndex0()), CoreMatchers.is("No time"));
+	}
 
-    /**
-     * Sublist(first, last) - AddAll testing
-     */
-    @Test
-    public void testSublistAddAll() {
-        this.prepopulate();
-        List<String> sublist = this.listModel.subList(0, 2);
-        sublist.addAll(Arrays.asList("G", "H", "I"));
-        assertThat(this.listModel.getSize(), is(8));
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_ADDED));
-        assertThat(event.getIndex0(), is(2));
-        assertThat(event.getIndex1(), is(4));
-    }
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testThrowsOnBadGetElement() {
+		this.listModel.getElementAt(1);
+	}
 
-    /**
-     * Sublist(first, last) - AddAll testing
-     */
-    @Test
-    public void testSublistSet() {
-        this.prepopulate();
-        List<String> sublist = this.listModel.subList(2, 4);
-        sublist.set(1, "No time");
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.CONTENTS_CHANGED));
-        assertThat(this.listModel.get(event.getIndex0()), is("No time"));
-    }
+	private void prepopulate() {
+		this.listModel.addAll(this.prepopulatedList);
+		this.eventList.clear();
+	}
 
-    /**
-     * Remove(index) testing
-     */
-    @Test
-    public void testRemoveIndex() {
-        this.prepopulate();
-        this.listModel.remove(0);
-        assertThat("Event-list has a mismatched size.", this.eventList.size(), is(1));
-        ListDataEvent event = this.eventList.remove();
-        assertThat(event.getType(), is(ListDataEvent.INTERVAL_REMOVED));
-        assertThat(event.getIndex0(), is(0));
-        assertThat(event.getIndex1(), is(0));
-    }
+	@Override
+	protected List<String> newList() {
+		return this.newListModel();
+	}
+
+	protected abstract MutableListModel<String> newListModel();
 
 }

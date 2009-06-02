@@ -16,56 +16,57 @@ import com.bluespot.swing.list.ProxiedListModel;
 
 public class ListModelAdapterDemonstration extends AbstractDemonstration {
 
-    public static void main(String[] args) {
-        // We really should throw this in a invokeLater, but doing so kills
-        // our callstack. For a more realistic run, use SwingUtilities.
-        new ListModelAdapterDemonstration().run();
-    }
+	protected JList list;
 
-    protected JList list;
+	protected List<String> stringList;
 
-    protected List<String> stringList;
+	@Override
+	public void initializeFrame(final JFrame frame) {
+		frame.setLayout(new BorderLayout());
+		frame.setSize(400, 400);
 
-    private JList constructList() {
-        ProxiedListModel<String> listModel = new ProxiedListModel<String>();
-        this.list = new JList(listModel);
-        this.stringList = listModel;
-        return this.list;
-    }
+		frame.getContentPane().add(new JScrollPane(this.constructList()), BorderLayout.CENTER);
 
-    @Override
-    public void initializeFrame(JFrame frame) {
-        frame.setLayout(new BorderLayout());
-        frame.setSize(400, 400);
-        
-        frame.getContentPane().add(new JScrollPane(this.constructList()), BorderLayout.CENTER);
+		final JPanel panel = new JPanel();
 
-        JPanel panel = new JPanel();
+		final JButton addButton = new JButton("Add");
+		final JButton removeButton = new JButton("Remove");
+		removeButton.setEnabled(false);
 
-        final JButton addButton = new JButton("Add");
-        final JButton removeButton = new JButton("Remove");
-        removeButton.setEnabled(false);
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				final List<String> listModelAdapter = ListModelAdapterDemonstration.this.stringList;
+				listModelAdapter.add("Hello, world! This is element " + listModelAdapter.size());
+				removeButton.setEnabled(true);
+			}
+		});
+		panel.add(addButton);
 
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                List<String> listModelAdapter = ListModelAdapterDemonstration.this.stringList;
-                listModelAdapter.add("Hello, world! This is element " + listModelAdapter.size());
-                removeButton.setEnabled(true);
-            }
-        });
-        panel.add(addButton);
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				final List<String> listModelAdapter = ListModelAdapterDemonstration.this.stringList;
+				listModelAdapter.remove(0);
+				if (listModelAdapter.isEmpty()) {
+					removeButton.setEnabled(false);
+				}
+			}
+		});
+		panel.add(removeButton);
 
-        removeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                List<String> listModelAdapter = ListModelAdapterDemonstration.this.stringList;
-                listModelAdapter.remove(0);
-                if (listModelAdapter.isEmpty())
-                    removeButton.setEnabled(false);
-            }
-        });
-        panel.add(removeButton);
+		frame.getContentPane().add(panel, BorderLayout.SOUTH);
+	}
 
-        frame.getContentPane().add(panel, BorderLayout.SOUTH);
-    }
+	private JList constructList() {
+		final ProxiedListModel<String> listModel = new ProxiedListModel<String>();
+		this.list = new JList(listModel);
+		this.stringList = listModel;
+		return this.list;
+	}
+
+	public static void main(final String[] args) {
+		// We really should throw this in a invokeLater, but doing so kills
+		// our callstack. For a more realistic run, use SwingUtilities.
+		new ListModelAdapterDemonstration().run();
+	}
 
 }

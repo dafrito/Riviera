@@ -1,13 +1,7 @@
 package com.bluespot.ide.script;
 
-import com.bluespot.ide.PerspectiveAction;
-import com.bluespot.ide.editor.EditorPerspective;
-import com.bluespot.swing.Dialogs;
-import com.bluespot.swing.Dialogs.CancelledException;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import java.io.IOException;
 
 import javax.swing.Action;
@@ -15,73 +9,76 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.KeyStroke;
 
+import com.bluespot.ide.PerspectiveAction;
+import com.bluespot.ide.editor.EditorPerspective;
+import com.bluespot.swing.Dialogs;
+import com.bluespot.swing.Dialogs.CancelledException;
 
 public class ScriptEditorPerspective extends EditorPerspective {
 
-    protected ScriptEngineAdapter<?> scriptEngineAdapter;
+	public static class RunAction extends ScriptEditorPerspectiveAction {
 
-    public ScriptEditorPerspective(ScriptEngineAdapter<?> scriptEngineAdapter) {
-        this.scriptEngineAdapter = scriptEngineAdapter;
-    }
+		public RunAction() {
+			super("Run");
+			this.putValue(Action.SHORT_DESCRIPTION, "Runs the current file.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "run");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+		}
 
-    public ScriptEditorPerspective() {
-        // Do nothing.
-    }
+		public void actionPerformed(final ActionEvent e) {
+			try {
+				this.getPerspective().evalSelectedEditor();
+			} catch (final CancelledException ex) {
+				// Do nothing.
+			} catch (final IOException ex) {
+				Dialogs.error("IOException while evaluating content", "Editor could not be read");
+				ex.printStackTrace();
+			}
+		}
+	}
 
-    public ScriptEngineAdapter<?> getScriptEngineAdapter() {
-        return this.scriptEngineAdapter;
-    }
+	public static abstract class ScriptEditorPerspectiveAction extends PerspectiveAction {
 
+		public ScriptEditorPerspectiveAction(final String name) {
+			super(name);
+		}
 
-    public void setScriptEngineAdapter(ScriptEngineAdapter<?> scriptEngineAdapter) {
-        this.scriptEngineAdapter = scriptEngineAdapter;
-    }
+		@Override
+		public ScriptEditorPerspective getPerspective() {
+			return (ScriptEditorPerspective) super.getPerspective();
+		}
+	}
 
-    public void evalSelectedEditor() throws CancelledException, IOException {
-        this.getScriptEngineAdapter().getScriptEngine().reset();
-        this.getScriptEngineAdapter().run(this.getSelectedEditor());
-    }
+	protected ScriptEngineAdapter<?> scriptEngineAdapter;
 
-    @Override
-    public void populateMenuBar(JMenuBar menuBar) {
-        super.populateMenuBar(menuBar);
-        JMenu scriptMenu = new JMenu("Script");
-        scriptMenu.add(new RunAction());
-        menuBar.add(scriptMenu);
-    }
+	public ScriptEditorPerspective() {
+		// Do nothing.
+	}
 
-    public static abstract class ScriptEditorPerspectiveAction extends PerspectiveAction {
+	public ScriptEditorPerspective(final ScriptEngineAdapter<?> scriptEngineAdapter) {
+		this.scriptEngineAdapter = scriptEngineAdapter;
+	}
 
-        public ScriptEditorPerspectiveAction(String name) {
-            super(name);
-        }
+	public void evalSelectedEditor() throws CancelledException, IOException {
+		this.getScriptEngineAdapter().getScriptEngine().reset();
+		this.getScriptEngineAdapter().run(this.getSelectedEditor());
+	}
 
-        @Override
-        public ScriptEditorPerspective getPerspective() {
-            return (ScriptEditorPerspective)super.getPerspective();
-        }
-    }
+	public ScriptEngineAdapter<?> getScriptEngineAdapter() {
+		return this.scriptEngineAdapter;
+	}
 
-    public static class RunAction extends ScriptEditorPerspectiveAction {
+	@Override
+	public void populateMenuBar(final JMenuBar menuBar) {
+		super.populateMenuBar(menuBar);
+		final JMenu scriptMenu = new JMenu("Script");
+		scriptMenu.add(new RunAction());
+		menuBar.add(scriptMenu);
+	}
 
-        public RunAction() {
-            super("Run");
-            this.putValue(Action.SHORT_DESCRIPTION, "Runs the current file.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "run");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_R);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-        }
-
-        public void actionPerformed(ActionEvent e) {
-            try {
-                this.getPerspective().evalSelectedEditor();
-            } catch (CancelledException ex) {
-                // Do nothing.
-            } catch (IOException ex) {
-                Dialogs.error("IOException while evaluating content", "Editor could not be read");
-                ex.printStackTrace();
-            }
-        }
-    }
+	public void setScriptEngineAdapter(final ScriptEngineAdapter<?> scriptEngineAdapter) {
+		this.scriptEngineAdapter = scriptEngineAdapter;
+	}
 
 }

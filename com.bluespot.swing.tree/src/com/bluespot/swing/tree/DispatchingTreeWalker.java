@@ -17,45 +17,44 @@ import com.bluespot.tree.WalkerFactory;
  * <p>
  * This class is designed to be used with ProxiedTreeModel, since that class
  * creates a TreeModelDispatcher that we can use here.
- *
+ * 
  * @author Aaron Faanes
- * @param <T> Type of the tree we're walking.
+ * @param <T>
+ *            Type of the tree we're walking.
  */
 public class DispatchingTreeWalker<T> extends TreeWalker<T> {
 
-    private final TreeModelDispatcher dispatcher;
+	private final TreeModelDispatcher dispatcher;
 
-    public DispatchingTreeWalker(ProxiedTreeModel<T> model) {
-        this(model.getDispatcher(), model.getRoot());
-    }
+	public DispatchingTreeWalker(final ProxiedTreeModel<T> model) {
+		this(model.getDispatcher(), model.getRoot());
+	}
 
-    public DispatchingTreeWalker(TreeModelDispatcher dispatcher,
-                                 Tree<T> root) {
-        super(root);
-        this.dispatcher = dispatcher;
-    }
+	public DispatchingTreeWalker(final TreeModelDispatcher dispatcher, final Tree<T> root) {
+		super(root);
+		this.dispatcher = dispatcher;
+	}
 
-    public TreeModelDispatcher getDispatcher() {
-        return this.dispatcher;
-    }
+	@Override
+	public Tree<T> append(final T value) {
+		final TreePath pathToAppendedParent = Trees.asTreePath(this.getCurrentNode());
+		final Tree<T> addedNode = super.append(value);
+		this.dispatcher.fireTreeNodeInserted(pathToAppendedParent, addedNode);
+		return addedNode;
+	}
 
-    @Override
-    public Tree<T> append(T value) {
-        TreePath pathToAppendedParent =
-            Trees.asTreePath(this.getCurrentNode());
-        Tree<T> addedNode = super.append(value);
-        this.dispatcher.fireTreeNodeInserted(pathToAppendedParent, addedNode);
-        return addedNode;
-    }
+	public TreeModelDispatcher getDispatcher() {
+		return this.dispatcher;
+	}
 
-    public static <U> WalkerFactory<U> createFactory(final TreeModelDispatcher dispatcher) {
-        return new WalkerFactory<U>() {
+	public static <U> WalkerFactory<U> createFactory(final TreeModelDispatcher dispatcher) {
+		return new WalkerFactory<U>() {
 
-            public TreeWalker<U> newInstance(Tree<U> tree) {
-                return new DispatchingTreeWalker<U>(dispatcher, tree);
-            }
+			public TreeWalker<U> newInstance(final Tree<U> tree) {
+				return new DispatchingTreeWalker<U>(dispatcher, tree);
+			}
 
-        };
-    }
+		};
+	}
 
 }

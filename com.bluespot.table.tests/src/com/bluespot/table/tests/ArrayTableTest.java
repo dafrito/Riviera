@@ -10,7 +10,7 @@ public class ArrayTableTest extends TableTest<Integer> {
 	}
 
 	@Override
-	public Table<Integer> newTable(int width, int height) {
+	public Table<Integer> newTable(final int width, final int height) {
 		return new ArrayTable<Integer>(width, height, this.getDefaultValue());
 	}
 

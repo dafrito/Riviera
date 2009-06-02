@@ -22,38 +22,38 @@ public class LoggerGUI extends AbstractDemonstration {
 
 	protected Logger logger = Logger.getLogger("com.dafrito");
 
-	public static void main(String[] args) {
-		Runner.run(new LoggerGUI(), true);
-	}
-
-	private ListModel createLoggingListModel(Logger associatedLogger) {
-		ProxiedListModel<LogRecord> listModel = new ProxiedListModel<LogRecord>();
-		Handler handler = new ListHandler(listModel);
-		associatedLogger.addHandler(handler);
-		return listModel;
-	}
-
 	@Override
-	public void initializeFrame(JFrame frame) {
+	public void initializeFrame(final JFrame frame) {
 		frame.setSize(400, 400);
 
-		JSplitPane splitPane = new JSplitPane();
+		final JSplitPane splitPane = new JSplitPane();
 		frame.setContentPane(splitPane);
 
-		JList list = new JList(this.createLoggingListModel(this.logger));
+		final JList list = new JList(this.createLoggingListModel(this.logger));
 
 		splitPane.setLeftComponent(new JScrollPane(list));
 
-		JPanel panel = new JPanel();
+		final JPanel panel = new JPanel();
 		panel.addMouseListener(new MouseInputAdapter() {
 
 			@Override
-			public void mouseClicked(MouseEvent event) {
+			public void mouseClicked(final MouseEvent event) {
 				LoggerGUI.this.logger.info(event.toString());
 			}
 
 		});
 		splitPane.setRightComponent(panel);
+	}
+
+	private ListModel createLoggingListModel(final Logger associatedLogger) {
+		final ProxiedListModel<LogRecord> listModel = new ProxiedListModel<LogRecord>();
+		final Handler handler = new ListHandler(listModel);
+		associatedLogger.addHandler(handler);
+		return listModel;
+	}
+
+	public static void main(final String[] args) {
+		Runner.run(new LoggerGUI(), true);
 	}
 
 }

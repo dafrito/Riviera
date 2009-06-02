@@ -9,7 +9,7 @@ public class TreeTest {
 
 	@Test
 	public void testSimpleTree() {
-		Tree<String> group = new Tree<String>(null, "Root");
+		final Tree<String> group = new Tree<String>(null, "Root");
 		group.append("First child");
 		group.append("Second child");
 		group.append("Child group").append("Inside the nested group");

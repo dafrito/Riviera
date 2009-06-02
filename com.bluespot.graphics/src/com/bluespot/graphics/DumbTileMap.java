@@ -8,14 +8,15 @@ import com.bluespot.table.Table;
 
 public class DumbTileMap extends TileMap<Color> {
 
-    public DumbTileMap(Table<Color> table, int tileWidth, int tileHeight) {
-        super(table, tileWidth, tileHeight);
-    }
+	public DumbTileMap(final Table<Color> table, final int tileWidth, final int tileHeight) {
+		super(table, tileWidth, tileHeight);
+	}
 
-    @Override
-    protected void paintTile(Graphics2D g, Color value, Point location, int width, int height) {
-        g.setColor(value);
-        g.fillRect(0, 0, width, height);
-    }
+	@Override
+	protected void paintTile(final Graphics2D g, final Color value, final Point location, final int width,
+			final int height) {
+		g.setColor(value);
+		g.fillRect(0, 0, width, height);
+	}
 
 }

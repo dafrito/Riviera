@@ -7,16 +7,10 @@ import com.bluespot.swing.SimpleSwingForm;
 
 public class FormDemonstration extends AbstractDemonstration {
 
-	public static void main(String[] args) {
-		// We really should throw this in a invokeLater, but doing so kills
-		// our callstack. For a more realistic run, use SwingUtilities.
-		new FormDemonstration().run();
-	}
-
 	private SimpleSwingForm form;
 
 	@Override
-	public void initializeFrame(JFrame frame) {
+	public void initializeFrame(final JFrame frame) {
 		frame.setSize(400, 400);
 
 		this.form = new SimpleSwingForm();
@@ -30,6 +24,12 @@ public class FormDemonstration extends AbstractDemonstration {
 
 		frame.getContentPane().add(this.form.build());
 
+	}
+
+	public static void main(final String[] args) {
+		// We really should throw this in a invokeLater, but doing so kills
+		// our callstack. For a more realistic run, use SwingUtilities.
+		new FormDemonstration().run();
 	}
 
 }

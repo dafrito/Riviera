@@ -8,8 +8,8 @@ import com.bluespot.swing.list.MutableListModel;
 @Ignore
 public class DefaultMutableListModelTest extends MutableListModelTest {
 
-    @Override
-    protected MutableListModel<String> newListModel() {
-        return new DefaultMutableListModel<String>();
-    }
+	@Override
+	protected MutableListModel<String> newListModel() {
+		return new DefaultMutableListModel<String>();
+	}
 }

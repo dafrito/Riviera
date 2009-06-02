@@ -12,39 +12,40 @@ import java.util.logging.LogRecord;
  */
 public class ListHandler extends Handler {
 
-    private List<LogRecord> records;
+	private List<LogRecord> records;
 
-    public ListHandler() {
-        this(new ArrayList<LogRecord>());
-    }
+	public ListHandler() {
+		this(new ArrayList<LogRecord>());
+	}
 
-    public ListHandler(List<LogRecord> recordList) {
-        this.records = recordList;
-    }
+	public ListHandler(final List<LogRecord> recordList) {
+		this.records = recordList;
+	}
 
-    @Override
-    public void close() throws SecurityException {
-        // Do nothing; this handler never has any assets that must be
-        // explicitly closed.
-    }
+	@Override
+	public void close() throws SecurityException {
+		// Do nothing; this handler never has any assets that must be
+		// explicitly closed.
+	}
 
-    @Override
-    public void flush() {
-        // Do nothing; our collection is always synchronized.
-    }
+	@Override
+	public void flush() {
+		// Do nothing; our collection is always synchronized.
+	}
 
-    public List<LogRecord> getRecords() {
-        return this.records;
-    }
+	public List<LogRecord> getRecords() {
+		return this.records;
+	}
 
-    @Override
-    public void publish(LogRecord record) {
-        if(this.isLoggable(record))
-            this.records.add(record);
-    }
+	@Override
+	public void publish(final LogRecord record) {
+		if (this.isLoggable(record)) {
+			this.records.add(record);
+		}
+	}
 
-    public void setRecords(List<LogRecord> records) {
-        this.records = records;
-    }
+	public void setRecords(final List<LogRecord> records) {
+		this.records = records;
+	}
 
 }

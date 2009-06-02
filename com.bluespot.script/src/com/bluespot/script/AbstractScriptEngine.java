@@ -9,21 +9,21 @@ public abstract class AbstractScriptEngine<S> implements ScriptEngine<S> {
 
 	private final SimpleDispatcher<Diagnostic<S>, DiagnosticListener<S>> dispatcher = new SimpleDispatcher<Diagnostic<S>, DiagnosticListener<S>>() {
 
-		public void dispatch(Diagnostic<S> value, DiagnosticListener<S> listener) {
+		public void dispatch(final Diagnostic<S> value, final DiagnosticListener<S> listener) {
 			listener.report(value);
 		}
 
 	};
 
-	public void addDiagnosticListener(DiagnosticListener<S> listener) {
+	public void addDiagnosticListener(final DiagnosticListener<S> listener) {
 		this.dispatcher.addListener(listener);
 	}
 
-	public void removeDiagnosticListener(DiagnosticListener<S> listener) {
+	public void removeDiagnosticListener(final DiagnosticListener<S> listener) {
 		this.dispatcher.removeListener(listener);
 	}
 
-	protected void report(Diagnostic<S> diagnostic) {
+	protected void report(final Diagnostic<S> diagnostic) {
 		this.dispatcher.dispatch(diagnostic);
 	}
 

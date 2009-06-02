@@ -13,17 +13,17 @@ public class PerspectiveComponent {
 		this.manager = manager;
 		this.manager.getStateModel().addStateChangeListener(new StateChangeListener<Perspective>() {
 
-			public void stateChanging(StateChangeEvent<Perspective> e) {
-				Perspective perspective = manager.getCurrentPerspective();
+			public void stateChanged(final ChangeEvent e) {
+				final Perspective perspective = manager.getCurrentPerspective();
 				if (perspective != null) {
-					PerspectiveComponent.this.exitPerspective(perspective);
+					PerspectiveComponent.this.enterPerspective(perspective);
 				}
 			}
 
-			public void stateChanged(ChangeEvent e) {
-				Perspective perspective = manager.getCurrentPerspective();
+			public void stateChanging(final StateChangeEvent<Perspective> e) {
+				final Perspective perspective = manager.getCurrentPerspective();
 				if (perspective != null) {
-					PerspectiveComponent.this.enterPerspective(perspective);
+					PerspectiveComponent.this.exitPerspective(perspective);
 				}
 			}
 
@@ -36,17 +36,17 @@ public class PerspectiveComponent {
 
 	/**
 	 * @param perspective
-	 *            The old perspective
+	 *            The new perspective
 	 */
-	protected void exitPerspective(Perspective perspective) {
+	protected void enterPerspective(final Perspective perspective) {
 		// No-op implementation
 	}
 
 	/**
 	 * @param perspective
-	 *            The new perspective
+	 *            The old perspective
 	 */
-	protected void enterPerspective(Perspective perspective) {
+	protected void exitPerspective(final Perspective perspective) {
 		// No-op implementation
 	}
 }

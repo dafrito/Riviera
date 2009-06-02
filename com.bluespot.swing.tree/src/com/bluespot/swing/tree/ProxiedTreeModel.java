@@ -31,63 +31,68 @@ public class ProxiedTreeModel<T> implements TreeModel {
 		this((T) (null));
 	}
 
-	public ProxiedTreeModel(T value) {
+	public ProxiedTreeModel(final T value) {
 		this.root = new Tree<T>(value);
 		this.root.setWalkerFactory(DispatchingTreeWalker.<T> createFactory(this.getDispatcher()));
 	}
 
-	public ProxiedTreeModel(Tree<T> root) {
+	public ProxiedTreeModel(final Tree<T> root) {
 		this.root = root;
+	}
+
+	public void addTreeModelListener(final TreeModelListener l) {
+		this.dispatcher.addListener(l);
+	}
+
+	public Tree<?> getChild(final Object parent, final int index) {
+		if (!(parent instanceof Tree<?>)) {
+			throw new ClassCastException();
+		}
+		if (index < 0) {
+			throw new IllegalArgumentException("Index cannot be less than 0");
+		}
+		final Tree<?> node = (Tree<?>) parent;
+		return node.get(index);
+	}
+
+	public int getChildCount(final Object parent) {
+		if (!(parent instanceof Tree<?>)) {
+			return 0;
+		}
+		final Tree<?> node = (Tree<?>) parent;
+		return node.size();
 	}
 
 	public TreeModelDispatcher getDispatcher() {
 		return this.dispatcher;
 	}
 
+	public int getIndexOfChild(final Object parent, final Object child) {
+		if (!(child instanceof Tree<?>)) {
+			throw new ClassCastException();
+		}
+		if (!(parent instanceof Tree<?>)) {
+			return -1;
+		}
+		final Tree<?> node = (Tree<?>) parent;
+		return node.indexOf(child);
+	}
+
 	public Tree<T> getRoot() {
 		return this.root;
 	}
 
-	public Tree<?> getChild(Object parent, int index) {
-		if (!(parent instanceof Tree<?>))
-			throw new ClassCastException();
-		if (index < 0)
-			throw new IllegalArgumentException("Index cannot be less than 0");
-		Tree<?> node = (Tree<?>) parent;
-		return node.get(index);
-	}
-
-	public int getChildCount(Object parent) {
-		if (!(parent instanceof Tree<?>))
-			return 0;
-		Tree<?> node = (Tree<?>) parent;
-		return node.size();
-	}
-
-	public int getIndexOfChild(Object parent, Object child) {
-		if (!(child instanceof Tree<?>))
-			throw new ClassCastException();
-		if (!(parent instanceof Tree<?>))
-			return -1;
-		Tree<?> node = (Tree<?>) parent;
-		return node.indexOf(child);
-	}
-
-	public boolean isLeaf(Object nodeObject) {
-		Tree<?> node = (Tree<?>) nodeObject;
+	public boolean isLeaf(final Object nodeObject) {
+		final Tree<?> node = (Tree<?>) nodeObject;
 		return !node.isRoot() && node.isEmpty();
 	}
 
-	public void valueForPathChanged(TreePath path, Object newValue) {
-		throw new UnsupportedOperationException();
-	}
-
-	public void addTreeModelListener(TreeModelListener l) {
-		this.dispatcher.addListener(l);
-	}
-
-	public void removeTreeModelListener(TreeModelListener l) {
+	public void removeTreeModelListener(final TreeModelListener l) {
 		this.dispatcher.removeListener(l);
+	}
+
+	public void valueForPathChanged(final TreePath path, final Object newValue) {
+		throw new UnsupportedOperationException();
 	}
 
 }

@@ -10,55 +10,56 @@ import javax.swing.event.ChangeListener;
 
 public abstract class ViewStack {
 
-    private SingleSelectionModel model;
-    private final Container container;
-    private final CardLayout layout;
+	private final Container container;
+	private final CardLayout layout;
+	private final ChangeListener listener = new ChangeListener() {
 
-    private final ChangeListener listener = new ChangeListener() {
+		public void stateChanged(final ChangeEvent e) {
+			ViewStack.this.refresh();
+		}
 
-        public void stateChanged(ChangeEvent e) {
-            ViewStack.this.refresh();
-        }
+	};
 
-    };
+	private SingleSelectionModel model;
 
-    public ViewStack(JComponent container) {
-        this(container, null);
-    }
-    
-    public ViewStack(JComponent container, SingleSelectionModel model) {
-        this.container = container;
-        this.layout = new CardLayout();
-        this.container.setLayout(this.layout);
-        this.setModel(model);
-    }
+	public ViewStack(final JComponent container) {
+		this(container, null);
+	}
 
-    public Container getParent() {
-        return this.container;
-    }
+	public ViewStack(final JComponent container, final SingleSelectionModel model) {
+		this.container = container;
+		this.layout = new CardLayout();
+		this.container.setLayout(this.layout);
+		this.setModel(model);
+	}
 
-    public void setModel(SingleSelectionModel model) {
-        if(this.model != null) {
-            this.model.removeChangeListener(this.listener);
-        }
-        this.model = model;
-        if(this.model != null) {
-            this.model.addChangeListener(this.listener);
-        }
-        this.refresh();
-    }
+	public SingleSelectionModel getModel() {
+		return this.model;
+	}
 
-    public SingleSelectionModel getModel() {
-        return this.model;
-    }
+	public Container getParent() {
+		return this.container;
+	}
 
-    protected void refresh() {
-        int index = this.getModel().getSelectedIndex();
-        if(index < 0)
-            return;
-        this.layout.show(this.container, this.getName(index));
-    }
+	public void setModel(final SingleSelectionModel model) {
+		if (this.model != null) {
+			this.model.removeChangeListener(this.listener);
+		}
+		this.model = model;
+		if (this.model != null) {
+			this.model.addChangeListener(this.listener);
+		}
+		this.refresh();
+	}
 
-    protected abstract String getName(int index);
+	protected abstract String getName(int index);
+
+	protected void refresh() {
+		final int index = this.getModel().getSelectedIndex();
+		if (index < 0) {
+			return;
+		}
+		this.layout.show(this.container, this.getName(index));
+	}
 
 }

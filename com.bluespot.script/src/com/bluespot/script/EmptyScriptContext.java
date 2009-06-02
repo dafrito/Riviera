@@ -5,34 +5,34 @@ import java.util.Queue;
 
 public class EmptyScriptContext extends ImmutableScriptContext {
 
-    private static final Queue<Object> emptyQueue = new ArrayDeque<Object>();
+	public ScriptContext getContext(final String name) {
+		return null;
+	}
 
-    public ScriptContext getContext(String name) {
-        return null;
-    }
+	public ScriptFunction<?> getFunction(final String name) {
+		return null;
+	}
 
-    public ScriptFunction<?> getFunction(String name) {
-        return null;
-    }
+	public ScriptContext getParentContext() {
+		return null;
+	}
 
-    public ScriptContext getParentContext() {
-        return null;
-    }
-    
-    public Queue<Object> getPositionalValues() {
-        return emptyQueue;
-    }
+	public Queue<Object> getPositionalValues() {
+		return EmptyScriptContext.emptyQueue;
+	}
 
-    public Object getValue(String name) {
-        return null;
-    }
+	public Object getValue(final String name) {
+		return null;
+	}
 
-    public void integrateInto(ScriptContext parentContext) {
-        // Do nothing, since this is empty.
-    }
-    
-    public Object shiftValue() {
-        throw new UnsupportedOperationException("This ScriptContext does not have any positional values");
-    }
+	public void integrateInto(final ScriptContext parentContext) {
+		// Do nothing, since this is empty.
+	}
+
+	public Object shiftValue() {
+		throw new UnsupportedOperationException("This ScriptContext does not have any positional values");
+	}
+
+	private static final Queue<Object> emptyQueue = new ArrayDeque<Object>();
 
 }

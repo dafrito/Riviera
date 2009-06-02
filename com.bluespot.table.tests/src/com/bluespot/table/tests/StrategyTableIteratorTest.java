@@ -5,12 +5,11 @@ import com.bluespot.table.Table;
 import com.bluespot.table.TableIterator;
 import com.bluespot.table.iteration.NaturalTableIteration;
 
-
 public class StrategyTableIteratorTest extends TableIteratorTest {
 
-    @Override
-    public TableIterator<Integer> newIterator(Table<Integer> targetTable) {
-        return new StrategyTableIterator<Integer>(targetTable, new NaturalTableIteration());
-    }
+	@Override
+	public TableIterator<Integer> newIterator(final Table<Integer> targetTable) {
+		return new StrategyTableIterator<Integer>(targetTable, new NaturalTableIteration());
+	}
 
 }

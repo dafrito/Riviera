@@ -1,16 +1,8 @@
 package com.bluespot.ide.editor;
 
-import com.bluespot.ide.AbstractPerspective;
-import com.bluespot.ide.PerspectiveAction;
-import com.bluespot.swing.Dialogs;
-import com.bluespot.swing.TabView;
-import com.bluespot.swing.Dialogs.CancelledException;
-import com.bluespot.swing.list.ProxiedListModel;
-
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -23,253 +15,264 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import com.bluespot.ide.AbstractPerspective;
+import com.bluespot.ide.PerspectiveAction;
+import com.bluespot.swing.Dialogs;
+import com.bluespot.swing.TabView;
+import com.bluespot.swing.Dialogs.CancelledException;
+import com.bluespot.swing.list.ProxiedListModel;
 
 public class EditorPerspective extends AbstractPerspective {
 
-    // TODO getEditorForFile(File file)
+	// TODO getEditorForFile(File file)
 
-    protected final JTabbedPane editorsPane = new JTabbedPane();
-    protected final ProxiedListModel<Editor> editors = new ProxiedListModel<Editor>();
+	public static class CloseEditorAction extends EditorPerspectiveAction {
 
-    public EditorPerspective() {
-        super("Edit");
-        new TabView<JScrollPane, Editor>(this.editorsPane, this.editors) {
+		public CloseEditorAction() {
+			super("Close");
+			this.putValue(Action.SHORT_DESCRIPTION, "Closes this file.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "closeEditor");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
+		}
 
-            @Override
-            public JScrollPane createComponent(Editor data) {
-                return new JScrollPane(data);
-            }
+		public void actionPerformed(final ActionEvent e) {
+			try {
+				final Editor editor = this.getPerspective().getSelectedEditor();
+				if (editor.isDirty()) {
+					final int choice = JOptionPane.showConfirmDialog(null, "The file has unsaved changes. Save?",
+							"Unsaved Changes", JOptionPane.YES_NO_CANCEL_OPTION);
+					switch (choice) {
+					case JOptionPane.YES_OPTION:
+						editor.save();
+						break;
+					case JOptionPane.NO_OPTION:
+						break;
+					default:
+						return;
+					}
+				}
+				this.getPerspective().remove(editor);
+			} catch (final CancelledException ex) {
+				// Do nothing.
+			} catch (final IOException ex) {
+				Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
+						"File I/O Exception");
+			} catch (final Throwable exx) {
+				exx.printStackTrace();
+			}
+		}
 
-            @Override
-            protected Component getNameSource(JScrollPane childComponent) {
-                return childComponent.getViewport().getView();
-            }
-        };
-    }
+	}
 
-    public JComponent getComponent() {
-        return this.editorsPane;
-    }
+	public static abstract class EditorPerspectiveAction extends PerspectiveAction {
 
-    @Override
-    public void populateMenuBar(JMenuBar menuBar) {
-        JMenu fileMenu = new JMenu("File");
-        fileMenu.setMnemonic(KeyEvent.VK_F);
+		public EditorPerspectiveAction(final String name) {
+			super(name);
+		}
 
-        fileMenu.add(new NewEditorAction());
-        fileMenu.add(new OpenEditorAction());
-        fileMenu.addSeparator();
-        fileMenu.add(new CloseEditorAction());
-        fileMenu.addSeparator();
-        fileMenu.add(new SaveEditorAction());
-        fileMenu.add(new SaveAsEditorAction());
-        fileMenu.addSeparator();
-        fileMenu.add(new ExitAction());
+		@Override
+		public EditorPerspective getPerspective() {
+			return (EditorPerspective) super.getPerspective();
+		}
 
-        menuBar.add(fileMenu);
-    }
+	}
 
-    public Editor getSelectedEditor() {
-        return this.editors.get(this.editorsPane.getSelectedIndex());
-    }
+	public static class NewEditorAction extends EditorPerspectiveAction {
 
-    public void setSelectedEditor(Editor editor) {
-        int index = this.editors.indexOf(editor);
-        if (index < 0) {
-            throw new IllegalArgumentException("Editor is not in this perspective");
-        }
-        this.editorsPane.setSelectedIndex(index);
-    }
+		public NewEditorAction() {
+			super("New");
+			this.putValue(Action.SHORT_DESCRIPTION, "Creates a new, blank editor.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "newEditor");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+		}
 
-    protected Editor searchForExistingEditor(Editor editor) {
-        File file = editor.getFile();
-        if (file == null)
-            return null;
-        for (Editor candidate : this.editors) {
-            File candidateFile = candidate.getFile();
-            if (candidateFile == null)
-                continue;
-            if (candidateFile.equals(file))
-                return candidate;
-        }
-        return null;
-    }
+		public void actionPerformed(final ActionEvent e) {
+			this.getPerspective().add(new Editor());
+		}
 
-    public void add(Editor editor) {
-        Editor existingEditor = this.searchForExistingEditor(editor);
-        if (existingEditor != null) {
-            this.setSelectedEditor(existingEditor);
-            return;
-        }
-        this.editors.add(editor);
-        this.setSelectedEditor(editor);
-    }
+	}
 
-    public void remove(Editor editor) {
-        this.editors.remove(editor);
-    }
+	public static class OpenEditorAction extends EditorPerspectiveAction {
 
-    @Override
-    public boolean isReadyForClose() {
-        for (Editor editor : this.editors) {
-            try {
-                if (!editor.isDirty())
-                    continue;
-                int choice = JOptionPane.showConfirmDialog(null, editor.getName() + " has unsaved changes. Save?");
-                switch (choice) {
-                    case JOptionPane.YES_OPTION:
-                        editor.save();
-                        break;
-                    case JOptionPane.NO_OPTION:
-                        break;
-                    default:
-                        return false;
-                }
-            } catch (IOException e) {
-                // TODO Spew on this.
-                return false;
-            } catch (CancelledException e) {
-                return false;
-            }
-        }
-        return true;
-    }
+		public OpenEditorAction() {
+			super("Open...");
+			this.putValue(Action.SHORT_DESCRIPTION, "Opens a file for editing.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "openEditor");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
+		}
 
-    public static abstract class EditorPerspectiveAction extends PerspectiveAction {
+		public void actionPerformed(final ActionEvent e) {
+			try {
+				this.getPerspective().add(Editor.openFile(Dialogs.openFile()));
+			} catch (final CancelledException ex) {
+				// Do nothing.
+			} catch (final IOException ex) {
+				Dialogs.error("The file could not be read. (Error: " + ex.getLocalizedMessage() + ")",
+						"File I/O Exception");
+			}
+		}
 
-        public EditorPerspectiveAction(String name) {
-            super(name);
-        }
+	}
 
-        @Override
-        public EditorPerspective getPerspective() {
-            return (EditorPerspective)super.getPerspective();
-        }
+	public static class SaveAsEditorAction extends EditorPerspectiveAction {
 
-    }
+		public SaveAsEditorAction() {
+			super("Save As...");
+			this.putValue(Action.SHORT_DESCRIPTION, "Saves this file at the given location.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "saveAsEditor");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+		}
 
-    public static class CloseEditorAction extends EditorPerspectiveAction {
+		public void actionPerformed(final ActionEvent e) {
+			try {
+				this.getPerspective().getSelectedEditor().save(Dialogs.saveFile());
+			} catch (final CancelledException ex) {
+				// Do nothing.
+			} catch (final IOException ex) {
+				Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
+						"File I/O Exception");
+			}
+		}
 
-        public CloseEditorAction() {
-            super("Close");
-            this.putValue(Action.SHORT_DESCRIPTION, "Closes this file.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "closeEditor");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_C);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_W, ActionEvent.CTRL_MASK));
-        }
+	}
 
-        public void actionPerformed(ActionEvent e) {
-            try {
-                Editor editor = this.getPerspective().getSelectedEditor();
-                if (editor.isDirty()) {
-                    int choice = JOptionPane.showConfirmDialog(null, "The file has unsaved changes. Save?",
-                                                               "Unsaved Changes", JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch (choice) {
-                        case JOptionPane.YES_OPTION:
-                            editor.save();
-                            break;
-                        case JOptionPane.NO_OPTION:
-                            break;
-                        default:
-                            return;
-                    }
-                }
-                this.getPerspective().remove(editor);
-            } catch (CancelledException ex) {
-                // Do nothing.
-            } catch (IOException ex) {
-                Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
-                              "File I/O Exception");
-            } catch (Throwable exx) {
-                exx.printStackTrace();
-            }
-        }
+	public static class SaveEditorAction extends EditorPerspectiveAction {
 
-    }
+		public SaveEditorAction() {
+			super("Save");
+			this.putValue(Action.SHORT_DESCRIPTION, "Saves this file.");
+			this.putValue(Action.ACTION_COMMAND_KEY, "saveEditor");
+			this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
+			this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
+		}
 
-    public static class NewEditorAction extends EditorPerspectiveAction {
+		public void actionPerformed(final ActionEvent e) {
+			try {
+				this.getPerspective().getSelectedEditor().save();
+			} catch (final CancelledException ex) {
+				// Do nothing.
+			} catch (final IOException ex) {
+				Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
+						"File I/O Exception");
+			}
+		}
 
-        public NewEditorAction() {
-            super("New");
-            this.putValue(Action.SHORT_DESCRIPTION, "Creates a new, blank editor.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "newEditor");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_N);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        }
+	}
 
-        public void actionPerformed(ActionEvent e) {
-            this.getPerspective().add(new Editor());
-        }
+	protected final ProxiedListModel<Editor> editors = new ProxiedListModel<Editor>();
 
-    }
+	protected final JTabbedPane editorsPane = new JTabbedPane();
 
-    public static class OpenEditorAction extends EditorPerspectiveAction {
+	public EditorPerspective() {
+		super("Edit");
+		new TabView<JScrollPane, Editor>(this.editorsPane, this.editors) {
 
-        public OpenEditorAction() {
-            super("Open...");
-            this.putValue(Action.SHORT_DESCRIPTION, "Opens a file for editing.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "openEditor");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_O);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
-        }
+			@Override
+			public JScrollPane createComponent(final Editor data) {
+				return new JScrollPane(data);
+			}
 
-        public void actionPerformed(ActionEvent e) {
-            try {
-                this.getPerspective().add(Editor.openFile(Dialogs.openFile()));
-            } catch (CancelledException ex) {
-                // Do nothing.
-            } catch (IOException ex) {
-                Dialogs.error("The file could not be read. (Error: " + ex.getLocalizedMessage() + ")",
-                              "File I/O Exception");
-            }
-        }
+			@Override
+			protected Component getNameSource(final JScrollPane childComponent) {
+				return childComponent.getViewport().getView();
+			}
+		};
+	}
 
-    }
+	public void add(final Editor editor) {
+		final Editor existingEditor = this.searchForExistingEditor(editor);
+		if (existingEditor != null) {
+			this.setSelectedEditor(existingEditor);
+			return;
+		}
+		this.editors.add(editor);
+		this.setSelectedEditor(editor);
+	}
 
-    public static class SaveAsEditorAction extends EditorPerspectiveAction {
+	public JComponent getComponent() {
+		return this.editorsPane;
+	}
 
-        public SaveAsEditorAction() {
-            super("Save As...");
-            this.putValue(Action.SHORT_DESCRIPTION, "Saves this file at the given location.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "saveAsEditor");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_A);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
-        }
+	public Editor getSelectedEditor() {
+		return this.editors.get(this.editorsPane.getSelectedIndex());
+	}
 
-        public void actionPerformed(ActionEvent e) {
-            try {
-                this.getPerspective().getSelectedEditor().save(Dialogs.saveFile());
-            } catch (CancelledException ex) {
-                // Do nothing.
-            } catch (IOException ex) {
-                Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
-                              "File I/O Exception");
-            }
-        }
+	@Override
+	public boolean isReadyForClose() {
+		for (final Editor editor : this.editors) {
+			try {
+				if (!editor.isDirty()) {
+					continue;
+				}
+				final int choice = JOptionPane.showConfirmDialog(null, editor.getName() + " has unsaved changes. Save?");
+				switch (choice) {
+				case JOptionPane.YES_OPTION:
+					editor.save();
+					break;
+				case JOptionPane.NO_OPTION:
+					break;
+				default:
+					return false;
+				}
+			} catch (final IOException e) {
+				// TODO Spew on this.
+				return false;
+			} catch (final CancelledException e) {
+				return false;
+			}
+		}
+		return true;
+	}
 
-    }
+	@Override
+	public void populateMenuBar(final JMenuBar menuBar) {
+		final JMenu fileMenu = new JMenu("File");
+		fileMenu.setMnemonic(KeyEvent.VK_F);
 
-    public static class SaveEditorAction extends EditorPerspectiveAction {
+		fileMenu.add(new NewEditorAction());
+		fileMenu.add(new OpenEditorAction());
+		fileMenu.addSeparator();
+		fileMenu.add(new CloseEditorAction());
+		fileMenu.addSeparator();
+		fileMenu.add(new SaveEditorAction());
+		fileMenu.add(new SaveAsEditorAction());
+		fileMenu.addSeparator();
+		fileMenu.add(new ExitAction());
 
-        public SaveEditorAction() {
-            super("Save");
-            this.putValue(Action.SHORT_DESCRIPTION, "Saves this file.");
-            this.putValue(Action.ACTION_COMMAND_KEY, "saveEditor");
-            this.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_S);
-            this.putValue(Action.ACCELERATOR_KEY, KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.CTRL_MASK));
-        }
+		menuBar.add(fileMenu);
+	}
 
-        public void actionPerformed(ActionEvent e) {
-            try {
-                this.getPerspective().getSelectedEditor().save();
-            } catch (CancelledException ex) {
-                // Do nothing.
-            } catch (IOException ex) {
-                Dialogs.error("The file could not be saved. (Error: " + ex.getLocalizedMessage() + ")",
-                              "File I/O Exception");
-            }
-        }
+	public void remove(final Editor editor) {
+		this.editors.remove(editor);
+	}
 
-    }
+	public void setSelectedEditor(final Editor editor) {
+		final int index = this.editors.indexOf(editor);
+		if (index < 0) {
+			throw new IllegalArgumentException("Editor is not in this perspective");
+		}
+		this.editorsPane.setSelectedIndex(index);
+	}
+
+	protected Editor searchForExistingEditor(final Editor editor) {
+		final File file = editor.getFile();
+		if (file == null) {
+			return null;
+		}
+		for (final Editor candidate : this.editors) {
+			final File candidateFile = candidate.getFile();
+			if (candidateFile == null) {
+				continue;
+			}
+			if (candidateFile.equals(file)) {
+				return candidate;
+			}
+		}
+		return null;
+	}
 
 }

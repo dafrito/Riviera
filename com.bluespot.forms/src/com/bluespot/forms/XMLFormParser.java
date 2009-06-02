@@ -17,188 +17,192 @@ import com.bluespot.forms.model.field.Form;
 
 public class XMLFormParser extends DefaultHandler {
 
-    private List<Form> forms = null;
-    private Deque<ParseState> stateStack = new ArrayDeque<ParseState>();
+	private static class UnexpectedAttributeTypeException extends SAXException {
+		public UnexpectedAttributeTypeException(final AttributeType attributeType) {
+			this(attributeType.toString());
+		}
 
-    private static class UnexpectedElementTypeException extends SAXException {
-        public UnexpectedElementTypeException(ElementType elementType) {
-            this(elementType.toString());
-        }
+		public UnexpectedAttributeTypeException(final String attributeType) {
+			super("Unexpected attribute type: " + attributeType);
+		}
+	}
 
-        public UnexpectedElementTypeException(String elementType) {
-            super("Unexpected element type: " + elementType);
-        }
-    }
+	private static class UnexpectedElementTypeException extends SAXException {
+		public UnexpectedElementTypeException(final ElementType elementType) {
+			this(elementType.toString());
+		}
 
-    private static class UnexpectedAttributeTypeException extends SAXException {
-        public UnexpectedAttributeTypeException(AttributeType attributeType) {
-            this(attributeType.toString());
-        }
+		public UnexpectedElementTypeException(final String elementType) {
+			super("Unexpected element type: " + elementType);
+		}
+	}
 
-        public UnexpectedAttributeTypeException(String attributeType) {
-            super("Unexpected attribute type: " + attributeType);
-        }
-    }
+	protected static abstract class ParseState {
+		public abstract void endElement(XMLFormParser parser, String elementTypeName) throws SAXException;
 
-    protected Form getCurrentForm() {
-        if(this.forms.isEmpty())
-            return null;
-        return this.forms.get(this.forms.size() - 1);
-    }
+		public String getId(final Attributes attributes) {
+			return attributes.getValue(AttributeType.ID.toString());
+		}
 
-    protected static abstract class ParseState {
-        public abstract void startElement(XMLFormParser parser, String elementTypeName, Attributes attributes)
-                throws SAXException;
+		public void populateFormItem(final Field<?> field, final Attributes attributes) throws SAXException {
+			for (int index = 0; index < attributes.getLength(); index++) {
+				final String attributeTypeName = attributes.getLocalName(index);
+				final AttributeType attributeType = AttributeType.getAttributeType(attributeTypeName.toUpperCase());
 
-        public abstract void endElement(XMLFormParser parser, String elementTypeName) throws SAXException;
+				final String attributeValue = attributes.getValue(index);
 
-        public void populateFormItem(Field<?> field, Attributes attributes) throws SAXException {
-            for(int index = 0; index < attributes.getLength(); index++) {
-                String attributeTypeName = attributes.getLocalName(index);
-                AttributeType attributeType = AttributeType.getAttributeType(attributeTypeName.toUpperCase());
+				switch (attributeType) {
+				case ID:
+					// Ignore; this would have already been parsed.
+					break;
+				case DESCRIPTION:
+					field.setInformationBlurb(attributeValue);
+					break;
+				case LABEL:
+					field.setLabel(attributeValue);
+					break;
+				case SELECTED:
+				case VALUE:
+				case UNKNOWN:
+					throw new UnexpectedAttributeTypeException(attributeTypeName);
+				default:
+					throw new UnexpectedAttributeTypeException(attributeType);
+				}
+			}
+		}
 
-                String attributeValue = attributes.getValue(index);
+		public abstract void startElement(XMLFormParser parser, String elementTypeName, Attributes attributes)
+				throws SAXException;
+	}
 
-                switch(attributeType) {
-                    case ID:
-                        // Ignore; this would have already been parsed.
-                        break;
-                    case DESCRIPTION:
-                        field.setInformationBlurb(attributeValue);
-                        break;
-                    case LABEL:
-                        field.setLabel(attributeValue);
-                        break;
-                    case SELECTED:
-                    case VALUE:
-                    case UNKNOWN:
-                        throw new UnexpectedAttributeTypeException(attributeTypeName);
-                    default:
-                        throw new UnexpectedAttributeTypeException(attributeType);
-                }
-            }
-        }
+	private List<Form> forms = null;
 
-        public String getId(Attributes attributes) {
-            return attributes.getValue(AttributeType.ID.toString());
-        }
-    }
+	private final Deque<ParseState> stateStack = new ArrayDeque<ParseState>();
 
-    protected static final ParseState LOOKING_FOR_FORM = new ParseState() {
+	@Override
+	public void characters(final char[] ch, final int start, final int length) throws SAXException {
+		// TODO Auto-generated method stub
+		super.characters(ch, start, length);
+	}
 
-        @Override
-        public void startElement(XMLFormParser parser, String elementTypeName, Attributes attributes)
-                throws SAXException {
-            ElementType elementType = ElementType.getElementType(elementTypeName);
-            switch(elementType) {
-                case FORM:
-                    parser.pushForm(new Form(this.getId(attributes)));
-                    parser.pushParseState(XMLFormParser.BUILDING_FORM);
-                    return;
-                case UNKNOWN:
-                    return;
-                default:
-                    throw new UnexpectedElementTypeException(elementType);
-            }
-        }
+	@Override
+	public void endDocument() throws SAXException {
+		System.out.println("Finished!");
+	}
 
-        @Override
-        public void endElement(XMLFormParser parser, String elementTypeName) throws SAXException {
-            // TODO Auto-generated method stub
+	@Override
+	public void endElement(final String uri, final String localName, final String name) throws SAXException {
+		// TODO Auto-generated method stub
+		super.endElement(uri, localName, name);
+	}
 
-        }
-    };
+	public List<Form> getForms() {
+		return Collections.unmodifiableList(this.forms);
+	}
 
-    protected static final ParseState BUILDING_FORM = new ParseState() {
+	public ParseState getParseState() {
+		ParseState state = this.stateStack.peekLast();
+		if (state == null) {
+			state = XMLFormParser.LOOKING_FOR_FORM;
+		}
+		return state;
+	}
 
-        @Override
-        public void endElement(XMLFormParser parser, String elementTypeName) throws SAXException {
-            // TODO Auto-generated method stub
+	public void popParseState() {
+		this.stateStack.pop();
+	}
 
-        }
+	public void pushParseState(final ParseState state) {
+		this.stateStack.push(state);
+	}
 
-        @Override
-        public void startElement(XMLFormParser parser, String elementTypeName, Attributes attributes)
-                throws SAXException {
-            ElementType elementType = ElementType.getElementType(elementTypeName);
-            switch(elementType) {
-                case OPTION:
+	@Override
+	public void startDocument() throws SAXException {
+		this.forms = new ArrayList<Form>();
+	}
 
-                case UNKNOWN:
-                    throw new UnexpectedElementTypeException(elementTypeName);
-                case CHECKBOXES:
-                    break;
-                case COMBOBOX:
-                    break;
-                case FILE:
-                    break;
-                case FLOW:
-                    break;
-                case FORM:
-                    break;
-                case NUMBER:
-                    break;
-                case STRING:
-                    break;
-                default:
-                    throw new UnexpectedElementTypeException(elementType);
-            }
-        }
+	@Override
+	public void startElement(final String uri, final String localName, final String name, final Attributes attributes)
+			throws SAXException {
+		this.getParseState().startElement(this, name, attributes);
+	}
 
-    };
+	protected Form getCurrentForm() {
+		if (this.forms.isEmpty()) {
+			return null;
+		}
+		return this.forms.get(this.forms.size() - 1);
+	}
 
-    public List<Form> getForms() {
-        return Collections.unmodifiableList(this.forms);
-    }
+	protected void pushForm(final Form form) {
+		this.forms.add(form);
+	}
 
-    public ParseState getParseState() {
-        ParseState state = this.stateStack.peekLast();
-        if(state == null)
-            state = LOOKING_FOR_FORM;
-        return state;
-    }
+	public static void main(final String[] args) throws FormFactoryException {
+		Forms.fromXML(new File("forms.xml"));
+	}
 
-    public void pushParseState(ParseState state) {
-        this.stateStack.push(state);
-    }
+	protected static final ParseState BUILDING_FORM = new ParseState() {
 
-    public void popParseState() {
-        this.stateStack.pop();
-    }
+		@Override
+		public void endElement(final XMLFormParser parser, final String elementTypeName) throws SAXException {
+			// TODO Auto-generated method stub
 
-    @Override
-    public void startDocument() throws SAXException {
-        this.forms = new ArrayList<Form>();
-    }
+		}
 
-    @Override
-    public void endDocument() throws SAXException {
-        System.out.println("Finished!");
-    }
+		@Override
+		public void startElement(final XMLFormParser parser, final String elementTypeName, final Attributes attributes)
+				throws SAXException {
+			final ElementType elementType = ElementType.getElementType(elementTypeName);
+			switch (elementType) {
+			case OPTION:
 
-    protected void pushForm(Form form) {
-        this.forms.add(form);
-    }
+			case UNKNOWN:
+				throw new UnexpectedElementTypeException(elementTypeName);
+			case CHECKBOXES:
+				break;
+			case COMBOBOX:
+				break;
+			case FILE:
+				break;
+			case FLOW:
+				break;
+			case FORM:
+				break;
+			case NUMBER:
+				break;
+			case STRING:
+				break;
+			default:
+				throw new UnexpectedElementTypeException(elementType);
+			}
+		}
 
-    @Override
-    public void characters(char[] ch, int start, int length) throws SAXException {
-        // TODO Auto-generated method stub
-        super.characters(ch, start, length);
-    }
+	};
 
-    @Override
-    public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
-        this.getParseState().startElement(this, name, attributes);
-    }
+	protected static final ParseState LOOKING_FOR_FORM = new ParseState() {
 
-    @Override
-    public void endElement(String uri, String localName, String name) throws SAXException {
-        // TODO Auto-generated method stub
-        super.endElement(uri, localName, name);
-    }
+		@Override
+		public void endElement(final XMLFormParser parser, final String elementTypeName) throws SAXException {
+			// TODO Auto-generated method stub
 
-    public static void main(String[] args) throws FormFactoryException {
-        Forms.fromXML(new File("forms.xml"));
-    }
+		}
+
+		@Override
+		public void startElement(final XMLFormParser parser, final String elementTypeName, final Attributes attributes)
+				throws SAXException {
+			final ElementType elementType = ElementType.getElementType(elementTypeName);
+			switch (elementType) {
+			case FORM:
+				parser.pushForm(new Form(this.getId(attributes)));
+				parser.pushParseState(XMLFormParser.BUILDING_FORM);
+				return;
+			case UNKNOWN:
+				return;
+			default:
+				throw new UnexpectedElementTypeException(elementType);
+			}
+		}
+	};
 
 }

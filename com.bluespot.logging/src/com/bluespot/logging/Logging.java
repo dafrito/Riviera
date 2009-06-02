@@ -24,148 +24,148 @@ import com.bluespot.reflection.CallStack.Frame;
  */
 public final class Logging {
 
-    static {
-        CallStack.ignorePackage(Logging.class.getPackage());
-    }
+	private Logging() {
+		throw new UnsupportedOperationException("Instantiation not allowed");
+	}
 
-    private Logging() {
-        throw new UnsupportedOperationException("Instantiation not allowed");
-    }
+	static {
+		CallStack.ignorePackage(Logging.class.getPackage());
+	}
 
-    public static void logRecord(LogRecord record) {
-        Frame frame = Reflection.getCurrentFrame();
-        record.setSourceClassName(frame.getClassName());
-        record.setSourceMethodName(frame.getMethodName());
-        Logger.getLogger(frame.getPackageName()).log(record);
-    }
+	public static void log(final String message) {
+		Logging.logInfo(message);
+	}
 
-    public static void logRecord(LogRecord record, Object[] params) {
-        record.setParameters(params);
-        logRecord(record);
-    }
+	public static void log(final String message, final Object... args) {
+		Logging.logInfo(message, args);
+	}
 
-    public static void logRecord(LogRecord record, Object param) {
-        record.setParameters(new Object[] { param });
-        logRecord(record);
-    }
+	public static void logConfig(final String message) {
+		Logging.logRecord(new LogRecord(Level.CONFIG, message));
+	}
 
-    public static void logRecord(LogRecord record, Throwable thrown) {
-        record.setThrown(thrown);
-        logRecord(record);
-    }
+	public static void logConfig(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.CONFIG, message), args);
+	}
 
-    // -------------------------------------------------------------------------
-    //
-    // Call-Stack Related Messages
-    //
-    // -------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+	//
+	// Call-Stack Related Messages
+	//
+	// -------------------------------------------------------------------------
 
-    public static void logEntry() {
-        logRecord(new LogRecord(Level.FINER, "ENTRY"));
-    }
+	public static void logEntry() {
+		Logging.logRecord(new LogRecord(Level.FINER, "ENTRY"));
+	}
 
-    public static void logEntry(Object param) {
-        logRecord(new LogRecord(Level.FINER, "ENTRY"), param);
-    }
+	public static void logEntry(final Object param) {
+		Logging.logRecord(new LogRecord(Level.FINER, "ENTRY"), param);
+	}
 
-    public static void logEntry(Object... params) {
-        logRecord(new LogRecord(Level.FINER, "ENTRY"), params);
-    }
+	public static void logEntry(final Object... params) {
+		Logging.logRecord(new LogRecord(Level.FINER, "ENTRY"), params);
+	}
 
-    public static void logExit() {
-        logRecord(new LogRecord(Level.FINER, "RETURN"));
-    }
+	public static void logException(final Throwable thrown) {
+		final LogRecord record = new LogRecord(Level.SEVERE, thrown.getMessage());
+		record.setThrown(thrown);
+		Logging.logRecord(record);
+	}
 
-    public static void logExit(Object returnValue) {
-        logRecord(new LogRecord(Level.FINER, "RETURN"), returnValue);
-    }
+	public static void logExit() {
+		Logging.logRecord(new LogRecord(Level.FINER, "RETURN"));
+	}
 
-    public static void logReturn() {
-        logExit();
-    }
+	public static void logExit(final Object returnValue) {
+		Logging.logRecord(new LogRecord(Level.FINER, "RETURN"), returnValue);
+	}
 
-    public static void logReturn(Object returnValue) {
-        logExit(returnValue);
-    }
+	public static void logFine(final String message) {
+		Logging.logRecord(new LogRecord(Level.FINE, message));
+	}
 
-    public static void logThrown(Throwable thrown) {
-        logRecord(new LogRecord(Level.FINER, "THROW"), thrown);
-    }
-    
-    public static void logException(Throwable thrown) {
-        LogRecord record = new LogRecord(Level.SEVERE, thrown.getMessage());
-        record.setThrown(thrown);
-        logRecord(record);
-    }
+	public static void logFine(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.FINE, message), args);
+	}
 
-    // -------------------------------------------------------------------------
-    //
-    // Standard Log-level messages
-    //
-    // -------------------------------------------------------------------------
+	public static void logFiner(final String message) {
+		Logging.logRecord(new LogRecord(Level.FINER, message));
+	}
 
-    public static void log(String message) {
-        logInfo(message);
-    }
+	// -------------------------------------------------------------------------
+	//
+	// Standard Log-level messages
+	//
+	// -------------------------------------------------------------------------
 
-    public static void log(String message, Object... args) {
-        logInfo(message, args);
-    }
+	public static void logFiner(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.FINER, message), args);
+	}
 
-    public static void logSevere(String message) {
-        logRecord(new LogRecord(Level.SEVERE, message));
-    }
+	public static void logFinest(final String message) {
+		Logging.logRecord(new LogRecord(Level.FINEST, message));
+	}
 
-    public static void logSevere(String message, Object... args) {
-        logRecord(new LogRecord(Level.SEVERE, message), args);
-    }
+	public static void logFinest(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.FINEST, message), args);
+	}
 
-    public static void logWarning(String message) {
-        logRecord(new LogRecord(Level.WARNING, message));
-    }
+	public static void logInfo(final String message) {
+		Logging.logRecord(new LogRecord(Level.INFO, message));
+	}
 
-    public static void logWarning(String message, Object... args) {
-        logRecord(new LogRecord(Level.WARNING, message), args);
-    }
+	public static void logInfo(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.INFO, message), args);
+	}
 
-    public static void logInfo(String message) {
-        logRecord(new LogRecord(Level.INFO, message));
-    }
+	public static void logRecord(final LogRecord record) {
+		final Frame frame = Reflection.getCurrentFrame();
+		record.setSourceClassName(frame.getClassName());
+		record.setSourceMethodName(frame.getMethodName());
+		Logger.getLogger(frame.getPackageName()).log(record);
+	}
 
-    public static void logInfo(String message, Object... args) {
-        logRecord(new LogRecord(Level.INFO, message), args);
-    }
+	public static void logRecord(final LogRecord record, final Object param) {
+		record.setParameters(new Object[] { param });
+		Logging.logRecord(record);
+	}
 
-    public static void logConfig(String message) {
-        logRecord(new LogRecord(Level.CONFIG, message));
-    }
+	public static void logRecord(final LogRecord record, final Object[] params) {
+		record.setParameters(params);
+		Logging.logRecord(record);
+	}
 
-    public static void logConfig(String message, Object... args) {
-        logRecord(new LogRecord(Level.CONFIG, message), args);
-    }
+	public static void logRecord(final LogRecord record, final Throwable thrown) {
+		record.setThrown(thrown);
+		Logging.logRecord(record);
+	}
 
-    public static void logFine(String message) {
-        logRecord(new LogRecord(Level.FINE, message));
-    }
+	public static void logReturn() {
+		Logging.logExit();
+	}
 
-    public static void logFine(String message, Object... args) {
-        logRecord(new LogRecord(Level.FINE, message), args);
-    }
+	public static void logReturn(final Object returnValue) {
+		Logging.logExit(returnValue);
+	}
 
-    public static void logFiner(String message) {
-        logRecord(new LogRecord(Level.FINER, message));
-    }
+	public static void logSevere(final String message) {
+		Logging.logRecord(new LogRecord(Level.SEVERE, message));
+	}
 
-    public static void logFiner(String message, Object... args) {
-        logRecord(new LogRecord(Level.FINER, message), args);
-    }
+	public static void logSevere(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.SEVERE, message), args);
+	}
 
-    public static void logFinest(String message) {
-        logRecord(new LogRecord(Level.FINEST, message));
-    }
+	public static void logThrown(final Throwable thrown) {
+		Logging.logRecord(new LogRecord(Level.FINER, "THROW"), thrown);
+	}
 
-    public static void logFinest(String message, Object... args) {
-        logRecord(new LogRecord(Level.FINEST, message), args);
-    }
+	public static void logWarning(final String message) {
+		Logging.logRecord(new LogRecord(Level.WARNING, message));
+	}
+
+	public static void logWarning(final String message, final Object... args) {
+		Logging.logRecord(new LogRecord(Level.WARNING, message), args);
+	}
 
 }

@@ -17,33 +17,35 @@ public final class LogViews {
 		throw new UnsupportedOperationException("Instantiation not allowed");
 	}
 
-	public static String asString(LogRecord record) {
-		if (record == null)
+	public static String asString(final LogRecord record) {
+		if (record == null) {
 			return "<null>";
+		}
 
 		if (record.getParameters() != null) {
 			try {
 				return String.format(record.getMessage(), record.getParameters());
-			} catch (IllegalFormatException e) {
+			} catch (final IllegalFormatException e) {
 				// Fall-through
 			}
 		}
 		return record.getMessage();
 	}
 
-	public static JTree viewLogAsTree(Logger logger) {
-		ProxiedTreeModel<LogRecord> treeModel = new ProxiedTreeModel<LogRecord>();
+	public static JTree viewLogAsTree(final Logger logger) {
+		final ProxiedTreeModel<LogRecord> treeModel = new ProxiedTreeModel<LogRecord>();
 		logger.addHandler(new CallStackHandler(treeModel.getRoot()));
-		JTree tree = new JTree(treeModel);
+		final JTree tree = new JTree(treeModel);
 
 		tree.setCellRenderer(new DefaultTreeCellRenderer() {
 
 			@Override
-			public Component getTreeCellRendererComponent(JTree parentTree, Object value, boolean sel,
-					boolean expanded, boolean leaf, int row, boolean cellHasFocus) {
+			public Component getTreeCellRendererComponent(final JTree parentTree, final Object value,
+					final boolean sel, final boolean expanded, final boolean leaf, final int row,
+					final boolean cellHasFocus) {
 				super.getTreeCellRendererComponent(parentTree, value, sel, expanded, leaf, row, cellHasFocus);
-				LogRecord record = (LogRecord) ((Tree<?>) value).getValue();
-				this.setText(asString(record));
+				final LogRecord record = (LogRecord) ((Tree<?>) value).getValue();
+				this.setText(LogViews.asString(record));
 				return this;
 			}
 

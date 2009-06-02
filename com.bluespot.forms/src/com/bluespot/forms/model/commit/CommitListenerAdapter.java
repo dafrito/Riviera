@@ -4,12 +4,12 @@ import com.bluespot.forms.model.validation.ValidationSummary;
 
 public class CommitListenerAdapter<E> implements CommitListener<E> {
 
-    public void commitFailed(ValidationSummary<Commit<E>> result) {
-        // Do nothing.
-    }
+	public void commitFailed(final ValidationSummary<Commit<E>> result) {
+		// Do nothing.
+	}
 
-    public void commitSuccessful(Commit<E> commit) {
-        // Do nothing.
-    }
+	public void commitSuccessful(final Commit<E> commit) {
+		// Do nothing.
+	}
 
 }

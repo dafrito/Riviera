@@ -19,22 +19,22 @@ public abstract class AbstractDispatcher<E, L> {
 
 	LockableList<L> listeners = new LockableList<L>();
 
-	public void addListener(L listener) {
+	public void addListener(final L listener) {
 		this.listeners.add(listener);
-	}
-
-	public void removeListener(L listener) {
-		this.listeners.remove(listener);
 	}
 
 	public boolean hasListeners() {
 		return !this.listeners.isEmpty();
 	}
 
-	protected void dispatch(Dispatchable<E, L> dispatchable, E value) {
+	public void removeListener(final L listener) {
+		this.listeners.remove(listener);
+	}
+
+	protected void dispatch(final Dispatchable<E, L> dispatchable, final E value) {
 		this.listeners.lock();
 		try {
-			for (L listener : this.listeners) {
+			for (final L listener : this.listeners) {
 				dispatchable.dispatch(value, listener);
 			}
 		} finally {

@@ -15,53 +15,54 @@ import java.net.URI;
 import javax.tools.FileObject;
 
 public class SimpleFileObject implements FileObject {
-    
-    private final File file; 
-    
-    public SimpleFileObject(File file) {
-        this.file = file;
-        if(this.file == null)
-            throw new NullPointerException("File cannot be null");
-    }
-    
-    public File getFile() {
-        return this.file;
-    }
 
-    public boolean delete() {
-        return this.getFile().delete();
-    }
+	private final File file;
 
-    public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
-        throw new UnsupportedOperationException();
-    }
+	public SimpleFileObject(final File file) {
+		this.file = file;
+		if (this.file == null) {
+			throw new NullPointerException("File cannot be null");
+		}
+	}
 
-    public long getLastModified() {
-        return this.getFile().lastModified();
-    }
+	public boolean delete() {
+		return this.getFile().delete();
+	}
 
-    public String getName() {
-        return this.getFile().getName();
-    }
+	public CharSequence getCharContent(final boolean ignoreEncodingErrors) throws IOException {
+		throw new UnsupportedOperationException();
+	}
 
-    public InputStream openInputStream() throws IOException {
-        return new FileInputStream(this.getFile());
-    }
+	public File getFile() {
+		return this.file;
+	}
 
-    public OutputStream openOutputStream() throws IOException {
-        return new FileOutputStream(this.getFile());
-    }
+	public long getLastModified() {
+		return this.getFile().lastModified();
+	}
 
-    public Reader openReader(boolean ignoreEncodingErrors) throws IOException {
-        return new FileReader(this.getFile());
-    }
+	public String getName() {
+		return this.getFile().getName();
+	}
 
-    public Writer openWriter() throws IOException {
-        return new FileWriter(this.getFile());
-    }
+	public InputStream openInputStream() throws IOException {
+		return new FileInputStream(this.getFile());
+	}
 
-    public URI toUri() {
-        return this.getFile().toURI();
-    }
+	public OutputStream openOutputStream() throws IOException {
+		return new FileOutputStream(this.getFile());
+	}
+
+	public Reader openReader(final boolean ignoreEncodingErrors) throws IOException {
+		return new FileReader(this.getFile());
+	}
+
+	public Writer openWriter() throws IOException {
+		return new FileWriter(this.getFile());
+	}
+
+	public URI toUri() {
+		return this.getFile().toURI();
+	}
 
 }

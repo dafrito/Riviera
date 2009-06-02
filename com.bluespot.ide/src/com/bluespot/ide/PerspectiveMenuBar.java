@@ -14,67 +14,67 @@ import javax.swing.event.ListDataListener;
 
 public class PerspectiveMenuBar extends PerspectiveComponent {
 
-    private final JMenuBar menuBar = new JMenuBar();
+	private final JMenuBar menuBar = new JMenuBar();
 
-    public PerspectiveMenuBar(PerspectiveManager manager) {
-        super(manager);
-        this.getManager().getPerspectives().addListDataListener(new ListDataListener() {
-                public void contentsChanged(ListDataEvent e) {
-                    PerspectiveMenuBar.this.refresh();
-                }
+	public PerspectiveMenuBar(final PerspectiveManager manager) {
+		super(manager);
+		this.getManager().getPerspectives().addListDataListener(new ListDataListener() {
+			public void contentsChanged(final ListDataEvent e) {
+				PerspectiveMenuBar.this.refresh();
+			}
 
-                public void intervalAdded(ListDataEvent e) {
-                    PerspectiveMenuBar.this.refresh();
-                }
+			public void intervalAdded(final ListDataEvent e) {
+				PerspectiveMenuBar.this.refresh();
+			}
 
-                public void intervalRemoved(ListDataEvent e) {
-                    PerspectiveMenuBar.this.refresh();
-                }
-            });
-        this.refresh();
-    }
+			public void intervalRemoved(final ListDataEvent e) {
+				PerspectiveMenuBar.this.refresh();
+			}
+		});
+		this.refresh();
+	}
 
-    public JMenuBar getMenuBar() {
-        return this.menuBar;
-    }
+	public JMenuBar getMenuBar() {
+		return this.menuBar;
+	}
 
-    public void refresh() {
-        this.getMenuBar().removeAll();
-        if (this.getManager().getCurrentPerspective() != null) {
-            this.getManager().getCurrentPerspective().populateMenuBar(this.getMenuBar());
-        }
-        this.populateMenuBar();
-        this.getMenuBar().repaint();
-    }
+	public void populateMenuBar() {
+		this.menuBar.add(Box.createHorizontalGlue());
+		final ButtonGroup group = new ButtonGroup();
+		for (final Perspective perspective : this.getManager().getPerspectives()) {
+			final AbstractButton button = this.createMenuItem(perspective);
+			group.add(button);
+			this.menuBar.add(button);
+			this.menuBar.add(Box.createRigidArea(new Dimension(5, 0)));
+		}
+	}
 
-    @Override
-    protected void enterPerspective(Perspective perspective) {
-        this.refresh();
-    }
+	public void refresh() {
+		this.getMenuBar().removeAll();
+		if (this.getManager().getCurrentPerspective() != null) {
+			this.getManager().getCurrentPerspective().populateMenuBar(this.getMenuBar());
+		}
+		this.populateMenuBar();
+		this.getMenuBar().repaint();
+	}
 
-    public void populateMenuBar() {
-        this.menuBar.add(Box.createHorizontalGlue());
-        ButtonGroup group = new ButtonGroup();
-        for (Perspective perspective : this.getManager().getPerspectives()) {
-            AbstractButton button = this.createMenuItem(perspective);
-            group.add(button);
-            this.menuBar.add(button);
-            this.menuBar.add(Box.createRigidArea(new Dimension(5, 0)));
-        }
-    }
+	protected AbstractButton createMenuItem(final Perspective perspective) {
+		final JRadioButton menuItem = new JRadioButton(perspective.getName());
+		if (perspective.equals(this.getManager().getCurrentPerspective())) {
+			menuItem.setSelected(true);
+		}
+		menuItem.addActionListener(new ActionListener() {
 
-    protected AbstractButton createMenuItem(final Perspective perspective) {
-        JRadioButton menuItem = new JRadioButton(perspective.getName());
-        if (perspective.equals(this.getManager().getCurrentPerspective())) {
-            menuItem.setSelected(true);
-        }
-        menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent e) {
+				PerspectiveMenuBar.this.getManager().showPerspective(perspective);
+			}
+		});
+		return menuItem;
+	}
 
-                public void actionPerformed(ActionEvent e) {
-                    PerspectiveMenuBar.this.getManager().showPerspective(perspective);
-                }
-            });
-        return menuItem;
-    }
+	@Override
+	protected void enterPerspective(final Perspective perspective) {
+		this.refresh();
+	}
 
 }

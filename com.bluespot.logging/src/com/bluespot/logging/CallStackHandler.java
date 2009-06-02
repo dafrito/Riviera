@@ -31,106 +31,112 @@ import com.bluespot.tree.TreeWalker;
  */
 public class CallStackHandler extends Handler {
 
-    static {
-        CallStack.ignorePackage(CallStackHandler.class.getPackage());
-    }
-    
-    private CallStack callStack = new CallStack();
+	private final CallStack callStack = new CallStack();
 
-    private TreeWalker<? super LogRecord> treeWalker;
+	private final TreeWalker<? super LogRecord> treeWalker;
 
-    public CallStackHandler(Tree<? super LogRecord> tree) {
-        this(tree.walker());
-    }
-        
-    public CallStackHandler(TreeWalker<? super LogRecord> tree) {
-        this.treeWalker = tree;
-    }
+	public CallStackHandler(final Tree<? super LogRecord> tree) {
+		this(tree.walker());
+	}
 
-    private CallStack.Frame pop() {
-        CallStack.Frame poppedFrame = this.callStack.pop();
-        this.treeWalker.leave();
-        return poppedFrame;
-    }
+	public CallStackHandler(final TreeWalker<? super LogRecord> tree) {
+		this.treeWalker = tree;
+	}
 
-    private void push(LogRecord record) {
-        this.callStack.push(this.getFrameFromRecord(record));
-        this.treeWalker.appendAndEnter(record);
-    }
+	@Override
+	public void close() throws SecurityException {
+		// Do nothing: This may be interpreted as clearing the tree
+	}
 
-    private CallStack.Frame getFrameFromRecord(LogRecord record) {
-        return new CallStack.Frame(record.getSourceClassName(), record.getSourceMethodName());
-    }
+	@Override
+	public void flush() {
+		// Do nothing: This may be interpreted as clearing the call stack
+	}
 
-    public static final Pattern enteringPattern = Pattern.compile("^ENTRY(\\{\\d+\\})?$");
-    public static final Pattern returningPattern = Pattern.compile("^RETURN(\\{\\d+\\})?$");
-    public static final Pattern throwingPattern = Pattern.compile("^THROW$");
+	@Override
+	public void publish(final LogRecord record) {
+		if (!this.isLoggable(record)) {
+			return;
+		}
+		if (this.handleExplicitCallStackOperation(record)) {
+			return;
+		}
+		final CallStack.Frame frame = this.getFrameFromRecord(record);
+		if (frame.equals(this.callStack.getCurrentFrame())) {
+			this.treeWalker.append(record);
+			return;
+		}
+		final CallStack recordCallStack = Reflection.getCurrentCallStack();
+		while (!this.callStack.isEmpty()) {
+			if (recordCallStack.contains(this.callStack.getCurrentFrame())) {
+				break;
+			}
+			this.pop();
+		}
+		if (frame.equals(this.callStack.getCurrentFrame())) {
+			this.treeWalker.append(record);
+		} else {
+			this.push(record);
+		}
+	}
 
-    /**
-     * @param record The record to handle
-     * @return True if the record was handled; if so, no further work is needed
-     *         to be done.
-     */
-    private boolean handleExplicitCallStackOperation(LogRecord record) {
-        String msg = record.getMessage();
-        Matcher enteringMatcher = enteringPattern.matcher(msg);
-        if(enteringMatcher.matches()) {
-            CallStack recordCallStack = Reflection.getCurrentCallStack();
-            recordCallStack.pop();
-            while (!this.callStack.isEmpty() && !recordCallStack.contains(this.callStack.getCurrentFrame())) {
-                this.pop();
-            }
-            this.push(record);
-            return true;
-        }
-        Matcher returningMatcher = returningPattern.matcher(msg);
-        if(returningMatcher.matches() || throwingPattern.matcher(msg).matches()) {
-            CallStack.Frame frame = this.getFrameFromRecord(record);
-            if(!this.callStack.contains(frame)) {
-                return false;
-            }
-            while (!this.callStack.getCurrentFrame().equals(frame)) {
-                this.pop();
-            }
-            this.treeWalker.append(record);
-            this.pop();
-            return true;
-        }
-        return false;
-    }
+	private CallStack.Frame getFrameFromRecord(final LogRecord record) {
+		return new CallStack.Frame(record.getSourceClassName(), record.getSourceMethodName());
+	}
 
-    @Override
-    public void publish(LogRecord record) {
-        if(!this.isLoggable(record))
-            return;
-        if(this.handleExplicitCallStackOperation(record))
-            return;
-        CallStack.Frame frame = this.getFrameFromRecord(record);
-        if(frame.equals(this.callStack.getCurrentFrame())) {
-            this.treeWalker.append(record);
-            return;
-        }
-        CallStack recordCallStack = Reflection.getCurrentCallStack();
-        while (!this.callStack.isEmpty()) {
-            if(recordCallStack.contains(this.callStack.getCurrentFrame()))
-                break;
-            this.pop();
-        }
-        if(frame.equals(this.callStack.getCurrentFrame())) {
-            this.treeWalker.append(record);
-        } else {
-            this.push(record);
-        }
-    }
+	/**
+	 * @param record
+	 *            The record to handle
+	 * @return True if the record was handled; if so, no further work is needed
+	 *         to be done.
+	 */
+	private boolean handleExplicitCallStackOperation(final LogRecord record) {
+		final String msg = record.getMessage();
+		final Matcher enteringMatcher = CallStackHandler.enteringPattern.matcher(msg);
+		if (enteringMatcher.matches()) {
+			final CallStack recordCallStack = Reflection.getCurrentCallStack();
+			recordCallStack.pop();
+			while (!this.callStack.isEmpty() && !recordCallStack.contains(this.callStack.getCurrentFrame())) {
+				this.pop();
+			}
+			this.push(record);
+			return true;
+		}
+		final Matcher returningMatcher = CallStackHandler.returningPattern.matcher(msg);
+		if (returningMatcher.matches() || CallStackHandler.throwingPattern.matcher(msg).matches()) {
+			final CallStack.Frame frame = this.getFrameFromRecord(record);
+			if (!this.callStack.contains(frame)) {
+				return false;
+			}
+			while (!this.callStack.getCurrentFrame().equals(frame)) {
+				this.pop();
+			}
+			this.treeWalker.append(record);
+			this.pop();
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public void close() throws SecurityException {
-        // Do nothing: This may be interpreted as clearing the tree
-    }
+	private CallStack.Frame pop() {
+		final CallStack.Frame poppedFrame = this.callStack.pop();
+		this.treeWalker.leave();
+		return poppedFrame;
+	}
 
-    @Override
-    public void flush() {
-        // Do nothing: This may be interpreted as clearing the call stack
-    }
+	private void push(final LogRecord record) {
+		this.callStack.push(this.getFrameFromRecord(record));
+		this.treeWalker.appendAndEnter(record);
+	}
+
+	static {
+		CallStack.ignorePackage(CallStackHandler.class.getPackage());
+	}
+
+	public static final Pattern enteringPattern = Pattern.compile("^ENTRY(\\{\\d+\\})?$");
+
+	public static final Pattern returningPattern = Pattern.compile("^RETURN(\\{\\d+\\})?$");
+
+	public static final Pattern throwingPattern = Pattern.compile("^THROW$");
 
 }

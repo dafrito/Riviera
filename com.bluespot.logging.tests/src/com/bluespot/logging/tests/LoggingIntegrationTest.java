@@ -1,109 +1,106 @@
 package com.bluespot.logging.tests;
 
-import static com.bluespot.logging.Logging.log;
-import static com.bluespot.logging.Logging.logEntry;
-import static com.bluespot.logging.Logging.logExit;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.logging.CallStackHandler;
+import com.bluespot.logging.Logging;
 import com.bluespot.tree.PrintVisitor;
 import com.bluespot.tree.Tree;
 
 public class LoggingIntegrationTest {
 
-    public static class Bar {
-        private String name;
-        
-        public Bar(String name) {
-            log("Creating bar!");
-            this.setName(name);
-        }
+	public static class Bar {
+		private String name;
 
-        public void setName(String name) {
-            log("Setting bar name: " + name);
-            this.name = name;
-        }
+		public Bar(final String name) {
+			Logging.log("Creating bar!");
+			this.setName(name);
+		}
 
-        public String getName() {
-            return this.name;
-        }
-    }
-    
-    public static class Foo {
-        List<Bar> bars = new ArrayList<Bar>();
+		public String getName() {
+			return this.name;
+		}
 
-        public Foo() {
-            log("Created Foo");
-        }
-        
-        public void addBar(String name) {
-            logEntry();
-            log("Adding bar with name: %s", name);
-            this.bars.add(new Bar(name));
-            logExit();
-        }
-        
-        public void addBars(String... names) {
-            log("Adding lots of bars: " + names.length);
-            for(String name : names) {
-                log("Adding this name: " + name);
-                this.addBar(name);
-            }
-        }
-    }
+		public void setName(final String name) {
+			Logging.log("Setting bar name: " + name);
+			this.name = name;
+		}
+	}
 
-    private CallStackHandler handler;
-    private Tree<LogRecord> tree;
-    private Logger logger = Logger.getLogger("com.dafrito.tests");
-    
-    @Before
-    public void init() {
-        this.tree = new Tree<LogRecord>(null);
-        this.handler = new CallStackHandler(this.tree.walker());
-        this.logger.addHandler(this.handler);
-    }
-    
-    @After
-    public void cleanUp() {
-        this.logger.removeHandler(this.handler);
-    }
-    
-    public static void runSimplestOperation() {
-        Foo foo = new Foo();
-        foo.addBars("A", "B", "C", "D");
-    }
-    
-    public static void runRandomOperations() {
-        logEntry();
-        log("Running random operations");
-        Foo foo = new Foo();
-        foo.addBar("No time");
-        foo.addBars("A", "B", "C", "D");
-        Foo anotherFoo = new Foo();
-        anotherFoo.addBar("Cheese!");
-        new Bar("Crumpet.");
-        logExit();
-    }
-    
-    @Test
-    public void testLoggingStuff() {
-        LoggingIntegrationTest.runSimplestOperation();
-        assertTrue(this.tree.size() > 0);
-        this.tree.visit(new PrintVisitor<LogRecord>() {
+	public static class Foo {
+		List<Bar> bars = new ArrayList<Bar>();
 
-            @Override
-            public String toString(LogRecord record) {
-                return record != null ? record.getSourceMethodName() + ": " + record.getMessage() : "null";
-            }
-        });
-    }
+		public Foo() {
+			Logging.log("Created Foo");
+		}
+
+		public void addBar(final String name) {
+			Logging.logEntry();
+			Logging.log("Adding bar with name: %s", name);
+			this.bars.add(new Bar(name));
+			Logging.logExit();
+		}
+
+		public void addBars(final String... names) {
+			Logging.log("Adding lots of bars: " + names.length);
+			for (final String name : names) {
+				Logging.log("Adding this name: " + name);
+				this.addBar(name);
+			}
+		}
+	}
+
+	private CallStackHandler handler;
+	private final Logger logger = Logger.getLogger("com.dafrito.tests");
+	private Tree<LogRecord> tree;
+
+	@After
+	public void cleanUp() {
+		this.logger.removeHandler(this.handler);
+	}
+
+	@Before
+	public void init() {
+		this.tree = new Tree<LogRecord>(null);
+		this.handler = new CallStackHandler(this.tree.walker());
+		this.logger.addHandler(this.handler);
+	}
+
+	@Test
+	public void testLoggingStuff() {
+		LoggingIntegrationTest.runSimplestOperation();
+		Assert.assertTrue(this.tree.size() > 0);
+		this.tree.visit(new PrintVisitor<LogRecord>() {
+
+			@Override
+			public String toString(final LogRecord record) {
+				return record != null ? record.getSourceMethodName() + ": " + record.getMessage() : "null";
+			}
+		});
+	}
+
+	public static void runRandomOperations() {
+		Logging.logEntry();
+		Logging.log("Running random operations");
+		final Foo foo = new Foo();
+		foo.addBar("No time");
+		foo.addBars("A", "B", "C", "D");
+		final Foo anotherFoo = new Foo();
+		anotherFoo.addBar("Cheese!");
+		new Bar("Crumpet.");
+		Logging.logExit();
+	}
+
+	public static void runSimplestOperation() {
+		final Foo foo = new Foo();
+		foo.addBars("A", "B", "C", "D");
+	}
 }

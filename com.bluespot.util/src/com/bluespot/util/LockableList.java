@@ -6,62 +6,68 @@ import java.util.Iterator;
 
 public class LockableList<T> implements Iterable<T> {
 
-    private Deque<T> list = new ArrayDeque<T>();
-    private Deque<T> queuedRemovals = new ArrayDeque<T>();
-    private Deque<T> queuedAdditions = new ArrayDeque<T>();
+	private final Deque<T> list = new ArrayDeque<T>();
+	private boolean locked = false;
+	private final Deque<T> queuedAdditions = new ArrayDeque<T>();
 
-    private boolean locked = false;
+	private final Deque<T> queuedRemovals = new ArrayDeque<T>();
 
-    public void add(T value) {
-        if (this.list.contains(value))
-            return;
-        if (this.isLocked())
-            this.queuedAdditions.add(value);
-        else
-            this.list.add(value);
-    }
+	public void add(final T value) {
+		if (this.list.contains(value)) {
+			return;
+		}
+		if (this.isLocked()) {
+			this.queuedAdditions.add(value);
+		} else {
+			this.list.add(value);
+		}
+	}
 
-    public void remove(T value) {
-        if (!this.list.contains(value))
-            return;
-        if (this.isLocked())
-            this.queuedRemovals.remove(value);
-        else
-            this.list.remove(value);
-    }
+	public boolean isEmpty() {
+		return this.size() == 0;
+	}
 
-    public int size() {
-        return this.list.size() + this.queuedAdditions.size() - this.queuedRemovals.size();
-    }
+	public boolean isLocked() {
+		return this.locked;
+	}
 
-    public boolean isEmpty() {
-        return this.size() == 0;
-    }
+	public Iterator<T> iterator() {
+		return this.list.iterator();
+	}
 
-    public boolean isLocked() {
-        return this.locked;
-    }
+	public void lock() {
+		this.locked = true;
+	}
 
-    public void lock() {
-        this.locked = true;
-    }
+	public void remove(final T value) {
+		if (!this.list.contains(value)) {
+			return;
+		}
+		if (this.isLocked()) {
+			this.queuedRemovals.remove(value);
+		} else {
+			this.list.remove(value);
+		}
+	}
 
-    public void unlock() {
-        this.locked = false;
-        this.flush();
-    }
+	public int size() {
+		return this.list.size() + this.queuedAdditions.size() - this.queuedRemovals.size();
+	}
 
-    protected void flush() {
-        for (T listener : this.queuedRemovals)
-            this.remove(listener);
-        this.queuedRemovals.clear();
-        for (T listener : this.queuedAdditions)
-            this.add(listener);
-        this.queuedAdditions.clear();
-    }
+	public void unlock() {
+		this.locked = false;
+		this.flush();
+	}
 
-    public Iterator<T> iterator() {
-        return this.list.iterator();
-    }
+	protected void flush() {
+		for (final T listener : this.queuedRemovals) {
+			this.remove(listener);
+		}
+		this.queuedRemovals.clear();
+		for (final T listener : this.queuedAdditions) {
+			this.add(listener);
+		}
+		this.queuedAdditions.clear();
+	}
 
 }

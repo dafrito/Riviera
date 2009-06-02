@@ -3,52 +3,52 @@ package com.bluespot.forms.model.field;
 import com.bluespot.forms.model.commit.Committable;
 
 public class Field<E> {
-    
-    private Description description = new Description();
-    private Committable<E> committable;
 
-    public Field(Committable<E> committable) {
-        this(committable, null);
-    }
-    
-    public Field(Committable<E> committable, String name) {
-        this.committable = committable;
-        this.setName(name);
-    }
-    
-    public Description getDescription() {
-        return this.description;
-    }
-    
-    protected void setDescription(Description description) {
-        this.description = description;
-    }
-    
-    public String getName() {
-        return this.getDescription().getName();
-    }
-    
-    public String getLabel() {
-        return this.getDescription().getLabel();
-    }
-    
-    public String getInformationBlurb() {
-        return this.getDescription().getInformationBlurb();
-    }
-    
-    public void setName(String name) {
-        this.setDescription(this.getDescription().changeName(name));
-    }   
+	private Committable<E> committable;
+	private Description description = new Description();
 
-    public void setLabel(String label) {
-        this.setDescription(this.getDescription().changeLabel(label));
-    }
-    
-    public void setInformationBlurb(String newInformationBlurb) {
-        this.setDescription(this.getDescription().changeInformationBlurb(newInformationBlurb));
-    }
-    
-    public Committable<E> getCommittable() {
-        return this.committable;
-    }
+	public Field(final Committable<E> committable) {
+		this(committable, null);
+	}
+
+	public Field(final Committable<E> committable, final String name) {
+		this.committable = committable;
+		this.setName(name);
+	}
+
+	public Committable<E> getCommittable() {
+		return this.committable;
+	}
+
+	public Description getDescription() {
+		return this.description;
+	}
+
+	public String getInformationBlurb() {
+		return this.getDescription().getInformationBlurb();
+	}
+
+	public String getLabel() {
+		return this.getDescription().getLabel();
+	}
+
+	public String getName() {
+		return this.getDescription().getName();
+	}
+
+	public void setInformationBlurb(final String newInformationBlurb) {
+		this.setDescription(this.getDescription().changeInformationBlurb(newInformationBlurb));
+	}
+
+	public void setLabel(final String label) {
+		this.setDescription(this.getDescription().changeLabel(label));
+	}
+
+	public void setName(final String name) {
+		this.setDescription(this.getDescription().changeName(name));
+	}
+
+	protected void setDescription(final Description description) {
+		this.description = description;
+	}
 }
