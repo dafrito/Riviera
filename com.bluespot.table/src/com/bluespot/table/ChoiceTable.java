@@ -84,6 +84,12 @@ public class ChoiceTable<T> extends AbstractTable<T> {
 		return this.choiceMap.containsKey(choice);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if the valid is not a valid choice
+	 */
 	@Override
 	public T put(final Point location, final T element) {
 		final T old = this.get(location);
