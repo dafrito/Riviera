@@ -59,25 +59,24 @@ public class LoggingIntegrationTest {
 	}
 
 	private CallStackHandler handler;
-	private final Logger logger = Logger.getLogger("com.dafrito.tests");
+	private final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
 	private Tree<LogRecord> tree;
 
 	@After
-	public void cleanUp() {
+	public void tearDown() {
 		this.logger.removeHandler(this.handler);
 	}
 
 	@Before
-	public void init() {
+	public void setUp() {
 		this.tree = new Tree<LogRecord>(null);
 		this.handler = new CallStackHandler(this.tree.walker());
 		this.logger.addHandler(this.handler);
 	}
 
-	@Test
 	public void testLoggingStuff() {
 		LoggingIntegrationTest.runSimplestOperation();
-		Assert.assertTrue(this.tree.size() > 0);
+		Assert.assertTrue("Tree not empty", this.tree.size() > 0);
 		this.tree.visit(new PrintVisitor<LogRecord>() {
 
 			@Override
