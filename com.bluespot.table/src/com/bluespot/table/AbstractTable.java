@@ -123,13 +123,6 @@ public abstract class AbstractTable<T> implements Table<T> {
 	protected final T defaultValue;
 
 	/**
-	 * Constructs a table using {@code null} as the default value.
-	 */
-	public AbstractTable() {
-		this(null);
-	}
-
-	/**
 	 * Constructs a table using the specified default value.
 	 * 
 	 * @param defaultValue
