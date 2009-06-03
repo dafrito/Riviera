@@ -1,10 +1,15 @@
 package com.bluespot.table.tests;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.awt.Dimension;
 import java.awt.Point;
+import java.util.List;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,14 +21,65 @@ import com.bluespot.table.iteration.NaturalTableIteration;
 
 public abstract class TableTest<T> {
 
-	private final T defaultValue;
+	private final T defaultDefaultValue;
 	private Table<T> table;
 
-	public TableTest(final T defaultValue) {
-		this.defaultValue = defaultValue;
+	/**
+	 * Constructs a new test suite using the specified value as the default
+	 * default-value.
+	 * 
+	 * @param defaultDefaultValue
+	 *            the default default value used in testing. This is used
+	 *            whenever a default value is not explicitly supplied.
+	 * @see #newTable(int, int, Object)
+	 */
+	public TableTest(final T defaultDefaultValue) {
+		this.defaultDefaultValue = defaultDefaultValue;
 	}
 
-	public abstract Table<T> newTable(int width, int height);
+	@Test
+	public void ctorAllowsNullDefaultValue() {
+		if (this.allowNullValues()) {
+			this.newTable(2, 2, null);
+		} else {
+			try {
+				this.newTable(2, 2, null);
+				fail("Table#ctor: Table should throw IAE if it does not allow default values");
+			} catch (final IllegalArgumentException iae) {
+				// We expected this, so continue
+			}
+		}
+	}
+
+	public Table<T> newTable(final int width, final int height) {
+		return this.newTable(width, height, this.getDefaultDefaultValue());
+	}
+
+	/**
+	 * Creates a new table using the specified size and default value.
+	 * 
+	 * @param width
+	 *            the width of the table
+	 * @param height
+	 *            the height of the table
+	 * @param defaultValue
+	 *            the default value used in the table
+	 * @return a new {@code Table} object
+	 */
+	public abstract Table<T> newTable(int width, int height, T defaultValue);
+
+	public void putThrowsIAEOnUnallowedNullValue() {
+		if (this.allowNullValues()) {
+			this.table.put(new Point(0, 0), null);
+		} else {
+			try {
+				this.table.put(new Point(0, 0), null);
+				fail("Table#put: Table should throw IAE if it does not allow default values");
+			} catch (final IllegalArgumentException ex) {
+				// We expected this, so continue
+			}
+		}
+	}
 
 	@Before
 	public void setUp() {
@@ -36,15 +92,15 @@ public abstract class TableTest<T> {
 		this.table.put(point, this.getValue());
 		this.table.put(new Point(1, 0), this.getOtherValue());
 		this.table.clear();
-		Assert.assertThat(this.table.get(point), CoreMatchers.is(this.getDefaultValue()));
-		Assert.assertThat(this.table.get(new Point(1, 0)), CoreMatchers.is(this.getDefaultValue()));
+		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(new Point(1, 0)), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
 	public void testConvenienceSubTable() {
 		this.table = this.newTable(2, 1);
 		final Table<T> subTable = this.table.subTable(new Point(1, 0));
-		Assert.assertThat(subTable.size(), CoreMatchers.is(1));
+		assertThat(subTable.size(), is(1));
 	}
 
 	@Test
@@ -57,8 +113,6 @@ public abstract class TableTest<T> {
 		this.table.subTable(new Point(0, 0), new Dimension(0, 3));
 	}
 
-	// Get
-
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testExcessiveWidthSubTable() {
 		this.table.subTable(new Point(0, 0), new Dimension(3, 0));
@@ -69,25 +123,42 @@ public abstract class TableTest<T> {
 		this.table = this.newTable(2, 2);
 		Tables.fill(this.table, this.getValue());
 		for (final T num : this.table) {
-			Assert.assertThat(num, CoreMatchers.is(this.getValue()));
+			assertThat(num, is(this.getValue()));
 		}
 	}
 
 	@Test
 	public void testGetPutAndRemove() {
 		final Point point = new Point(0, 0);
-		Assert.assertThat(this.table.get(point), CoreMatchers.is(this.getDefaultValue()));
-		Assert.assertThat(this.table.put(point, this.getValue()), CoreMatchers.is(this.getDefaultValue()));
-		Assert.assertThat(this.table.get(point), CoreMatchers.is(this.getValue()));
-		Assert.assertThat(this.table.put(point, this.getOtherValue()), CoreMatchers.is(this.getValue()));
-		Assert.assertThat(this.table.remove(point), CoreMatchers.is(this.getOtherValue()));
-		Assert.assertThat(this.table.get(point), CoreMatchers.is(this.getDefaultValue()));
+		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.put(point, this.getValue()), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(point), is(this.getValue()));
+		assertThat(this.table.put(point, this.getOtherValue()), is(this.getValue()));
+		assertThat(this.table.remove(point), is(this.getOtherValue()));
+		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
 	public void testHeight() {
-		Assert.assertThat(this.newTable(1, 1).getHeight(), CoreMatchers.is(1));
-		Assert.assertThat(this.newTable(2, 4).getHeight(), CoreMatchers.is(4));
+		assertThat(this.newTable(1, 1).getHeight(), is(1));
+		assertThat(this.newTable(2, 4).getHeight(), is(4));
+	}
+
+	@Test
+	public void testListsAreEqualButNotUnique() {
+		assertThat(this.listOfValues(), is(this.listOfValues()));
+		assertTrue(this.listOfValues() != this.listOfValues());
+		assertThat(this.otherListOfValues(), is(this.otherListOfValues()));
+		assertTrue(this.otherListOfValues() != this.otherListOfValues());
+	}
+
+	// Get
+
+	@Test
+	public void testListsOfValuesAreNonIntersecting() {
+		final List<T> values = this.listOfValues();
+		values.retainAll(this.otherListOfValues());
+		assertTrue(values.isEmpty());
 	}
 
 	@Test
@@ -96,21 +167,21 @@ public abstract class TableTest<T> {
 		Tables.fill(this.table, this.listOfValues());
 		final TableIterator<T> iterator = new StrategyTableIterator<T>(this.table, NaturalTableIteration.getInstance());
 
-		Assert.assertThat(iterator.next(), CoreMatchers.is(this.listOfValues()[0]));
-		Assert.assertThat(iterator.getLocation(), CoreMatchers.is(new Point(0, 0)));
-		Assert.assertThat(iterator.hasNext(), CoreMatchers.is(true));
+		assertThat(iterator.next(), is(this.listOfValues().get(0)));
+		assertThat(iterator.getLocation(), is(new Point(0, 0)));
+		assertThat(iterator.hasNext(), is(true));
 
-		Assert.assertThat(iterator.next(), CoreMatchers.is(this.listOfValues()[1]));
-		Assert.assertThat(iterator.getLocation(), CoreMatchers.is(new Point(1, 0)));
-		Assert.assertThat(iterator.hasNext(), CoreMatchers.is(true));
+		assertThat(iterator.next(), is(this.listOfValues().get(1)));
+		assertThat(iterator.getLocation(), is(new Point(1, 0)));
+		assertThat(iterator.hasNext(), is(true));
 
-		Assert.assertThat(iterator.next(), CoreMatchers.is(this.listOfValues()[2]));
-		Assert.assertThat(iterator.getLocation(), CoreMatchers.is(new Point(0, 1)));
-		Assert.assertThat(iterator.hasNext(), CoreMatchers.is(true));
+		assertThat(iterator.next(), is(this.listOfValues().get(2)));
+		assertThat(iterator.getLocation(), is(new Point(0, 1)));
+		assertThat(iterator.hasNext(), is(true));
 
-		Assert.assertThat(iterator.next(), CoreMatchers.is(this.listOfValues()[3]));
-		Assert.assertThat(iterator.getLocation(), CoreMatchers.is(new Point(1, 1)));
-		Assert.assertThat(iterator.hasNext(), CoreMatchers.is(false));
+		assertThat(iterator.next(), is(this.listOfValues().get(3)));
+		assertThat(iterator.getLocation(), is(new Point(1, 1)));
+		assertThat(iterator.hasNext(), is(false));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
@@ -123,20 +194,32 @@ public abstract class TableTest<T> {
 		this.table.subTable(new Point(-1, 0), new Dimension(1, 1));
 	}
 
-	// Put
+	@Test
+	public void testPutReturnsDefaultValue() {
+		this.table = this.newTable(2, 2, this.getValue());
+		assertThat(this.table.put(new Point(0, 0), this.getValue()), is(this.getValue()));
+	}
+
+	@Test
+	public void testRemoveReturnsDefaultValue() {
+		this.table = this.newTable(2, 2, this.getValue());
+		assertThat(this.table.remove(new Point(0, 0)), is(this.getValue()));
+	}
 
 	@Test
 	public void testSize() {
-		Assert.assertThat(this.newTable(1, 1).size(), CoreMatchers.is(1));
-		Assert.assertThat(this.newTable(2, 2).size(), CoreMatchers.is(4));
-		Assert.assertThat(this.newTable(2, 4).size(), CoreMatchers.is(8));
+		assertThat(this.newTable(1, 1).size(), is(1));
+		assertThat(this.newTable(2, 2).size(), is(4));
+		assertThat(this.newTable(2, 4).size(), is(8));
 	}
+
+	// Put
 
 	@Test
 	public void testSubTable() {
 		this.table = this.newTable(2, 1);
 		final Table<T> subTable = this.table.subTable(new Point(1, 0), new Dimension(1, 1));
-		Assert.assertThat(subTable.size(), CoreMatchers.is(1));
+		assertThat(subTable.size(), is(1));
 	}
 
 	@Test
@@ -145,10 +228,10 @@ public abstract class TableTest<T> {
 		Tables.fill(this.table, this.listOfValues());
 		final Table<T> subTable = this.table.subTable(new Point(2, 0));
 		subTable.clear();
-		Assert.assertThat(this.table.get(new Point(0, 0)), CoreMatchers.is(this.listOfValues()[0]));
-		Assert.assertThat(this.table.get(new Point(1, 0)), CoreMatchers.is(this.listOfValues()[1]));
-		Assert.assertThat(this.table.get(new Point(2, 0)), CoreMatchers.is(this.getDefaultValue()));
-		Assert.assertThat(this.table.get(new Point(3, 0)), CoreMatchers.is(this.getDefaultValue()));
+		assertThat(this.table.get(new Point(0, 0)), is(this.listOfValues().get(0)));
+		assertThat(this.table.get(new Point(1, 0)), is(this.listOfValues().get(1)));
+		assertThat(this.table.get(new Point(2, 0)), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(new Point(3, 0)), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
@@ -156,12 +239,10 @@ public abstract class TableTest<T> {
 		this.table = this.newTable(4, 1);
 		Tables.fill(this.table, this.listOfValues());
 		final Table<T> subTable = this.table.subTable(new Point(2, 0));
-		Assert.assertThat(subTable.size(), CoreMatchers.is(2));
-		Assert.assertThat(subTable.get(new Point(0, 0)), CoreMatchers.is(this.listOfValues()[2]));
-		Assert.assertThat(subTable.get(new Point(1, 0)), CoreMatchers.is(this.listOfValues()[3]));
+		assertThat(subTable.size(), is(2));
+		assertThat(subTable.get(new Point(0, 0)), is(this.listOfValues().get(2)));
+		assertThat(subTable.get(new Point(1, 0)), is(this.listOfValues().get(3)));
 	}
-
-	// Remove
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSubTableInsidiousGet() {
@@ -170,16 +251,18 @@ public abstract class TableTest<T> {
 		subTable.remove(new Point(-1, 0));
 	}
 
+	// Remove
+
 	@Test
 	public void testSubTablePut() {
 		this.table = this.newTable(4, 1);
 		Tables.fill(this.table, this.listOfValues());
 		final Table<T> subTable = this.table.subTable(new Point(2, 0));
 		Tables.fill(subTable, this.otherListOfValues());
-		Assert.assertThat(this.table.get(new Point(0, 0)), CoreMatchers.is(this.listOfValues()[0]));
-		Assert.assertThat(this.table.get(new Point(1, 0)), CoreMatchers.is(this.listOfValues()[1]));
-		Assert.assertThat(this.table.get(new Point(2, 0)), CoreMatchers.is(this.otherListOfValues()[0]));
-		Assert.assertThat(this.table.get(new Point(3, 0)), CoreMatchers.is(this.otherListOfValues()[1]));
+		assertThat(this.table.get(new Point(0, 0)), is(this.listOfValues().get(0)));
+		assertThat(this.table.get(new Point(1, 0)), is(this.listOfValues().get(1)));
+		assertThat(this.table.get(new Point(2, 0)), is(this.otherListOfValues().get(0)));
+		assertThat(this.table.get(new Point(3, 0)), is(this.otherListOfValues().get(1)));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
@@ -243,20 +326,93 @@ public abstract class TableTest<T> {
 	}
 
 	@Test
+	public void testValuesNotNull() {
+		assertThat(this.getValue(), is(notNullValue()));
+		assertThat(this.getOtherValue(), is(notNullValue()));
+		assertThat(this.getDefaultDefaultValue(), is(notNullValue()));
+		assertTrue("list of values has no null values", !this.listOfValues().contains(null));
+		assertTrue("otherListOfValues has null values", !this.otherListOfValues().contains(null));
+	}
+
+	@Test
 	public void testWidth() {
-		Assert.assertThat(this.newTable(1, 1).getWidth(), CoreMatchers.is(1));
-		Assert.assertThat(this.newTable(2, 4).getWidth(), CoreMatchers.is(2));
+		assertThat(this.newTable(1, 1).getWidth(), is(1));
+		assertThat(this.newTable(2, 4).getWidth(), is(2));
 	}
 
-	protected T getDefaultValue() {
-		return this.defaultValue;
+	/**
+	 * Returns whether this type of table allows null values.
+	 * 
+	 * @return {@code true} if this type of table allows null values.
+	 */
+	protected abstract boolean allowNullValues();
+
+	/**
+	 * Returns a default non-null default default-value used for the tables
+	 * created in this test. This is the default value that is returned with a
+	 * value is missing or unset in a table.
+	 * <p>
+	 * Tables may be created using a default value other than the one specified
+	 * here; this is merely the value that will be used if no other one is
+	 * explicitly given.
+	 * <p>
+	 * If applicable, a new value should be created every time this method is
+	 * called.
+	 * <p>
+	 * This method's name is fairly ugly, but I figure it's better to make it
+	 * obvious that the default value used here may not necessarily be the
+	 * default value used in any given table.
+	 * 
+	 * @return the default value of tables used in this test
+	 */
+	protected T getDefaultDefaultValue() {
+		return this.defaultDefaultValue;
 	}
 
+	/**
+	 * Returns some value, used in testing. The value of this value is
+	 * irrelevant, as long as it is not {@code null} and not equal to the value
+	 * returned by {@link #getValue()} or {@link #getDefaultDefaultValue()}.
+	 * <p>
+	 * If applicable, a new value should be created every time this method is
+	 * called.
+	 * 
+	 * @return some other value
+	 */
 	protected abstract T getOtherValue();
 
+	/**
+	 * Returns some value, used in testing. The value of this value is
+	 * irrelevant, as long as it is not {@code null} and not equal to the value
+	 * returned by {@link #getOtherValue()} or {@link #getDefaultDefaultValue()}
+	 * .
+	 * <p>
+	 * If applicable, a new value should be created every time this method is
+	 * called.
+	 * 
+	 * @return some value
+	 */
 	protected abstract T getValue();
 
-	protected abstract T[] listOfValues();
+	/**
+	 * Returns an arbitrary list of at least two values, used in testing. This
+	 * must not contain any values that are contained in the list returned by
+	 * {@link #otherListOfValues()}.
+	 * <p>
+	 * A new array should be created every time this method is called.
+	 * 
+	 * @return an arbitrary list of values
+	 */
+	protected abstract List<T> listOfValues();
 
-	protected abstract T[] otherListOfValues();
+	/**
+	 * Returns an arbitrary list of at least two values, used in testing. This
+	 * must not contain any values that are contained in the list returned by
+	 * {@link #listOfValues()}.
+	 * <p>
+	 * A new array should be created every time this method is called.
+	 * 
+	 * @return an arbitrary list of values
+	 */
+	protected abstract List<T> otherListOfValues();
 }
