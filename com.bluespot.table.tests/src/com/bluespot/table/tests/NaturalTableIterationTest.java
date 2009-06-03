@@ -49,7 +49,6 @@ public class NaturalTableIterationTest extends TableIterationTest<Integer> {
 
 	@Override
 	protected TableIteration newTableIteration() {
-		return new NaturalTableIteration();
+		return NaturalTableIteration.getInstance();
 	}
-
 }
