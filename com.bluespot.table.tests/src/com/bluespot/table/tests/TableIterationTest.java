@@ -1,5 +1,8 @@
 package com.bluespot.table.tests;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Point;
 
 import org.hamcrest.CoreMatchers;
@@ -83,6 +86,14 @@ public abstract class TableIterationTest<T> {
 	@Test
 	public void testOrigin() {
 		Assert.assertThat(this.strategy.wrap(this.table, this.getOrigin()), CoreMatchers.is(this.getOrigin()));
+	}
+
+	@Test
+	public void testSimpleIteration() {
+		final Point point = this.getOrigin();
+		this.strategy.previous(point);
+		this.strategy.next(point);
+		assertThat(point, is(this.getOrigin()));
 	}
 
 	@Test

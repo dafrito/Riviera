@@ -1,5 +1,9 @@
 package com.bluespot.table.tests;
 
+import java.awt.Point;
+
+import org.junit.Test;
+
 import com.bluespot.table.ChoiceTable;
 import com.bluespot.table.Table;
 
@@ -12,6 +16,19 @@ public class ChoiceTableTest extends TableTest<TestEnum> {
 	@Override
 	public Table<TestEnum> newTable(final int width, final int height) {
 		return new ChoiceTable<TestEnum>(TestEnum.values(), width, height, TestEnum.EMPTY);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testBadDefaultValue() {
+		final TestEnum[] choices = new TestEnum[] { TestEnum.BAR, TestEnum.BASE };
+		new ChoiceTable<TestEnum>(choices, 10, 10, TestEnum.NOTTINGHAM);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testInvalidChoiceForPut() {
+		final TestEnum[] choices = new TestEnum[] { TestEnum.BAR, TestEnum.BASE };
+		final ChoiceTable<TestEnum> table = new ChoiceTable<TestEnum>(choices, 10, 10, TestEnum.BAR);
+		table.put(new Point(0, 0), TestEnum.NOTTINGHAM);
 	}
 
 	@Override

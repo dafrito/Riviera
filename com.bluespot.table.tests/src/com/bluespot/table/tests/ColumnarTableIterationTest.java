@@ -49,6 +49,6 @@ public class ColumnarTableIterationTest extends TableIterationTest<Integer> {
 
 	@Override
 	protected TableIteration newTableIteration() {
-		return new ColumnarTableIteration();
+		return ColumnarTableIteration.getInstance();
 	}
 }
