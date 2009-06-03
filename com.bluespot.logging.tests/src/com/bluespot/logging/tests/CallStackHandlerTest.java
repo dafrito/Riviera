@@ -18,6 +18,8 @@ import com.bluespot.tree.TreeWalker;
 
 public class CallStackHandlerTest {
 
+	public static final String className = CallStackHandlerTest.class.getName();
+
 	protected class Bar {
 		private final Logger barLogger = CallStackHandlerTest.this.getLogger();
 
@@ -47,13 +49,13 @@ public class CallStackHandlerTest {
 		}
 
 		public void addBar(final String name) {
-			this.fooLogger.entering("com.dafrito.tests.CallStackHandlerTest$Foo", "addBar");
+			this.fooLogger.entering(className + "$Foo", "addBar");
 			this.fooLogger.info("Adding bar with name: " + name);
 			if (name.length() > 0) {
 				this.addBar(name.substring(0, name.length() - 1));
 			}
 			this.bars.add(new Bar(name));
-			this.fooLogger.exiting("com.dafrito.tests.CallStackHandlerTest$Foo", "addBar");
+			this.fooLogger.exiting(className + "$Foo", "addBar");
 		}
 
 		public void addBars(final String... names) {
@@ -74,7 +76,7 @@ public class CallStackHandlerTest {
 	}
 
 	@Before
-	public void init() {
+	public void setUp() {
 		this.builder = new TreeWalker<LogRecord>(new Tree<LogRecord>(null));
 		this.logger = Logger.getAnonymousLogger();
 		this.logger.setLevel(Level.FINEST);
@@ -109,8 +111,7 @@ public class CallStackHandlerTest {
 		});
 	}
 
-	@Test
 	public void testSanity() {
-		Assert.assertThat(this.getClass().getName(), CoreMatchers.is("com.dafrito.tests.CallStackHandlerTest"));
+		Assert.assertThat(this.getClass().getName(), CoreMatchers.is(className));
 	}
 }
