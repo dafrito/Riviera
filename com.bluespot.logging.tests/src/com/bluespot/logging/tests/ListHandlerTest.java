@@ -20,7 +20,7 @@ public class ListHandlerTest {
 	private ListHandler handler;
 
 	@Before
-	public void initialize() {
+	public void setUp() {
 		this.handler = new ListHandler();
 		this.fineRecord = new LogRecord(Level.FINE, "I'm fine.");
 		this.finestRecord = new LogRecord(Level.FINEST, "This is the finest message.");
