@@ -10,15 +10,16 @@ public class CallStack implements Iterable<CallStack.Frame> {
 
 	public static class Frame {
 
-		private final String className;
-		private final String methodName;
-		private final String packageName;
-
 		public Frame(final String className, final String methodName) {
 			this.className = className;
 			this.methodName = methodName;
 			this.packageName = this.className.substring(0, this.className.lastIndexOf("."));
 		}
+
+		private final String className;
+		private final String methodName;
+
+		private final String packageName;
 
 		@Override
 		public boolean equals(final Object other) {
@@ -69,11 +70,15 @@ public class CallStack implements Iterable<CallStack.Frame> {
 		}
 	}
 
-	private final Deque<CallStack.Frame> callStack;
+	protected static final Set<String> ignoredMethodNames = new HashSet<String>();
+
+	protected static final Set<Package> ignoredPackages = new HashSet<Package>();
 
 	public CallStack() {
 		this.callStack = new ArrayDeque<CallStack.Frame>();
 	}
+
+	private final Deque<CallStack.Frame> callStack;
 
 	public boolean contains(final CallStack.Frame frame) {
 		return this.callStack.contains(frame);
@@ -132,8 +137,4 @@ public class CallStack implements Iterable<CallStack.Frame> {
 		return CallStack.ignoredPackages.contains(Package.getPackage(frame.getPackageName()))
 				|| CallStack.ignoredMethodNames.contains(frame.getMethodName());
 	}
-
-	protected static final Set<String> ignoredMethodNames = new HashSet<String>();
-
-	protected static final Set<Package> ignoredPackages = new HashSet<Package>();
 }
