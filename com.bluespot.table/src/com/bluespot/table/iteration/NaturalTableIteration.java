@@ -11,6 +11,10 @@ import com.bluespot.table.Table;
  */
 public class NaturalTableIteration extends AbstractTableIteration {
 
+	private NaturalTableIteration() {
+		// Do nothing
+	}
+
 	/**
 	 * Compare two points. Natural iteration compares Y-axis values first, then
 	 * uses X-axis values. If both of these are equal, these points are
@@ -69,6 +73,11 @@ public class NaturalTableIteration extends AbstractTableIteration {
 		point.x--;
 	}
 
+	/**
+	 * Returns the single instance of this iteration strategy.
+	 * 
+	 * @return the single instance of this strategy
+	 */
 	public static TableIteration getInstance() {
 		if (NaturalTableIteration.instance == null) {
 			NaturalTableIteration.instance = new NaturalTableIteration();
