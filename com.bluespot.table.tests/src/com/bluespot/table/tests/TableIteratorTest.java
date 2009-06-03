@@ -17,6 +17,18 @@ import com.bluespot.table.Tables;
 
 public abstract class TableIteratorTest {
 
+	private void fillCount(final Table<Integer> filledTable, final int start) {
+		int number = start;
+		final Point point = new Point(0, 0);
+		for (int y = 0; y < filledTable.getHeight(); y++) {
+			point.y = y;
+			for (int x = 0; x < filledTable.getWidth(); x++) {
+				point.x = x;
+				filledTable.put(point, number++);
+			}
+		}
+	}
+
 	protected TableIterator<Integer> iter;
 	protected Table<Integer> table;
 
@@ -83,7 +95,7 @@ public abstract class TableIteratorTest {
 	@Test
 	public void testPrevious() {
 		this.iter = this.newIterator(this.table = this.newTable(2, 1));
-		Tables.fillCount(this.table, 1);
+		this.fillCount(this.table, 1);
 		this.iter.next();
 		this.iter.next();
 		assertThat(this.iter.hasNext(), is(false));
