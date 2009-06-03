@@ -77,7 +77,9 @@ public interface Table<T> extends Iterable<T> {
 	 *            element to be stored at the specified location
 	 * @throws IndexOutOfBoundsException
 	 *             if the location is out of range
-	 * @return the old element that was at this location
+	 * @return the old element that was at this location. If no element was at
+	 *         the specified point, the default value will be returned.
+	 * 
 	 * @see Table#tableIterator
 	 */
 	public T put(Point location, T element);
@@ -89,7 +91,8 @@ public interface Table<T> extends Iterable<T> {
 	 * 
 	 * @param location
 	 *            the location to reset
-	 * @return the element that was removed, if any
+	 * @return the element that was removed, if any. If no element was removed,
+	 *         the default value will be returned.
 	 */
 	public T remove(Point location);
 
