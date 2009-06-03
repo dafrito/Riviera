@@ -5,6 +5,12 @@ import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+/**
+ * Collection of useful methods relating to geometry.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public final class Geometry {
 
 	private Geometry() {
@@ -75,13 +81,10 @@ public final class Geometry {
 	 *         {@code a} and {@code b}.
 	 * @see com.bluespot.geom.Geometry#containsInclusive
 	 */
-	public static boolean containsExclusive(double a, double b, final double candidate) {
-		if (a > b) {
-			final double temp = a;
-			a = b;
-			b = temp;
-		}
-		return a < candidate && candidate < b;
+	public static boolean containsExclusive(final double a, final double b, final double candidate) {
+		final double lowerBound = Math.min(a, b);
+		final double upperBound = Math.max(a, b);
+		return lowerBound < candidate && candidate < upperBound;
 	}
 
 	/**
@@ -98,14 +101,10 @@ public final class Geometry {
 	 *         and {@code b}.
 	 * @see com.bluespot.geom.Geometry#containsExclusive
 	 */
-	public static boolean containsInclusive(double a, double b, final double candidate) {
-		if (a > b) {
-			// Swap the bounds so that our conditional works as expected
-			final double temp = a;
-			a = b;
-			b = temp;
-		}
-		return a <= candidate && candidate <= b;
+	public static boolean containsInclusive(final double a, final double b, final double candidate) {
+		final double lowerBound = Math.min(a, b);
+		final double upperBound = Math.max(a, b);
+		return lowerBound <= candidate && candidate <= upperBound;
 	}
 
 	/**
