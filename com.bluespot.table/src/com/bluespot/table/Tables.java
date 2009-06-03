@@ -4,7 +4,7 @@ public final class Tables {
 
 	private Tables() {
 		// Suppresses default constructor, ensuring non-instantiability.
-		throw new Error("This class cannot be instantiated");
+		throw new AssertionError("This class cannot be instantiated");
 	}
 
 	public static <T> void fill(final Table<T> table, final T value) {
