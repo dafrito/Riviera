@@ -1,9 +1,12 @@
 package com.bluespot.table.tests;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertThat;
+
 import java.awt.Point;
 
 import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -31,32 +34,32 @@ public abstract class TableIteratorTest {
 
 	@Test
 	public void testEmptyTable() {
-		Assert.assertThat(this.newIterator(this.newTable(0, 0)).hasNext(), CoreMatchers.is(false));
-		Assert.assertThat(this.newIterator(this.newTable(0, 0)).hasPrevious(), CoreMatchers.is(false));
+		assertThat(this.newIterator(this.newTable(0, 0)).hasNext(), is(false));
+		assertThat(this.newIterator(this.newTable(0, 0)).hasPrevious(), is(false));
 	}
 
 	@Test
 	public void testHasNext() {
-		Assert.assertThat(this.newIterator(this.newTable(0, 0)).hasNext(), CoreMatchers.is(false));
+		assertThat(this.newIterator(this.newTable(0, 0)).hasNext(), CoreMatchers.is(false));
 		this.iter = this.newIterator(this.newTable(1, 1));
-		Assert.assertThat(this.iter.hasNext(), CoreMatchers.is(true));
-		Assert.assertThat(this.iter.next(), CoreMatchers.is((Integer) null));
-		Assert.assertThat(this.iter.hasNext(), CoreMatchers.is(false));
+		assertThat(this.iter.hasNext(), is(true));
+		assertThat(this.iter.next(), is((Integer) null));
+		assertThat(this.iter.hasNext(), is(false));
 	}
 
 	@Test
 	public void testHasPrevious() {
 		this.iter = this.newIterator(this.table = this.newTable(1, 1));
 		Tables.fill(this.table, 1);
-		Assert.assertThat(this.iter.hasPrevious(), CoreMatchers.is(false));
-		Assert.assertThat(this.iter.next(), CoreMatchers.is(1));
-		Assert.assertThat(this.iter.hasNext(), CoreMatchers.is(false));
-		Assert.assertThat(this.iter.hasPrevious(), CoreMatchers.is(false));
+		assertThat(this.iter.hasPrevious(), is(false));
+		assertThat(this.iter.next(), is(1));
+		assertThat(this.iter.hasNext(), is(false));
+		assertThat(this.iter.hasPrevious(), is(false));
 	}
 
 	@Test
 	public void testImplicitGetLocation() {
-		Assert.assertNotNull(this.iter.getLocation());
+		assertNotNull(this.iter.getLocation());
 	}
 
 	@Test
@@ -67,14 +70,14 @@ public abstract class TableIteratorTest {
 	@Test
 	public void testImplicitPut() {
 		Tables.fill(this.table, 1);
-		Assert.assertThat(this.iter.put(2), CoreMatchers.is(1));
-		Assert.assertThat(this.iter.get(), CoreMatchers.is(2));
+		assertThat(this.iter.put(2), is(1));
+		assertThat(this.iter.get(), is(2));
 	}
 
 	@Test
 	public void testImplicitRemove() {
 		this.iter.remove();
-		Assert.assertThat(this.iter.get(), CoreMatchers.is((Integer) null));
+		assertThat(this.iter.get(), is((Integer) null));
 	}
 
 	@Test
@@ -83,16 +86,16 @@ public abstract class TableIteratorTest {
 		Tables.fillCount(this.table, 1);
 		this.iter.next();
 		this.iter.next();
-		Assert.assertThat(this.iter.hasNext(), CoreMatchers.is(false));
-		Assert.assertThat(this.iter.hasPrevious(), CoreMatchers.is(true));
-		Assert.assertThat(this.iter.previous(), CoreMatchers.is(1));
-		Assert.assertThat(this.iter.hasPrevious(), CoreMatchers.is(false));
-		Assert.assertThat(this.iter.hasNext(), CoreMatchers.is(true));
+		assertThat(this.iter.hasNext(), is(false));
+		assertThat(this.iter.hasPrevious(), is(true));
+		assertThat(this.iter.previous(), is(1));
+		assertThat(this.iter.hasPrevious(), is(false));
+		assertThat(this.iter.hasNext(), is(true));
 	}
 
 	@Test
 	public void testThrowOnGet() {
 		Tables.fill(this.table, 1);
-		Assert.assertThat(this.iter.get(), CoreMatchers.is(1));
+		assertThat(this.iter.get(), is(1));
 	}
 }
