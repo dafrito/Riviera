@@ -1,17 +1,17 @@
 package com.bluespot.table.tests;
 
-import com.bluespot.table.EnumTable;
+import com.bluespot.table.ChoiceTable;
 import com.bluespot.table.Table;
 
-public class EnumTableTest extends TableTest<TestEnum> {
+public class ChoiceTableTest extends TableTest<TestEnum> {
 
-	public EnumTableTest() {
+	public ChoiceTableTest() {
 		super(TestEnum.EMPTY);
 	}
 
 	@Override
 	public Table<TestEnum> newTable(final int width, final int height) {
-		return new EnumTable<TestEnum>(TestEnum.class, TestEnum.values(), width, height, TestEnum.EMPTY);
+		return new ChoiceTable<TestEnum>(TestEnum.values(), width, height, TestEnum.EMPTY);
 	}
 
 	@Override
