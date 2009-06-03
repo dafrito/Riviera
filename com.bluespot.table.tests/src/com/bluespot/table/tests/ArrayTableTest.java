@@ -1,5 +1,9 @@
 package com.bluespot.table.tests;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.bluespot.table.ArrayTable;
 import com.bluespot.table.Table;
 
@@ -10,8 +14,13 @@ public class ArrayTableTest extends TableTest<Integer> {
 	}
 
 	@Override
-	public Table<Integer> newTable(final int width, final int height) {
-		return new ArrayTable<Integer>(width, height, this.getDefaultValue());
+	public Table<Integer> newTable(final int width, final int height, final Integer defaultValue) {
+		return new ArrayTable<Integer>(width, height, defaultValue);
+	}
+
+	@Override
+	protected boolean allowNullValues() {
+		return true;
 	}
 
 	@Override
@@ -25,13 +34,13 @@ public class ArrayTableTest extends TableTest<Integer> {
 	}
 
 	@Override
-	protected Integer[] listOfValues() {
-		return new Integer[] { 1, 2, 3, 4 };
+	protected List<Integer> listOfValues() {
+		return new ArrayList<Integer>(Arrays.asList(1, 2, 3, 4));
 	}
 
 	@Override
-	protected Integer[] otherListOfValues() {
-		return new Integer[] { 10, 11, 12, 13 };
+	protected List<Integer> otherListOfValues() {
+		return new ArrayList<Integer>(Arrays.asList(10, 11, 12, 13));
 	}
 
 }

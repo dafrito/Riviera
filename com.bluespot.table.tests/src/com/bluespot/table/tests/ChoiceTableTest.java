@@ -1,6 +1,9 @@
 package com.bluespot.table.tests;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -14,8 +17,8 @@ public class ChoiceTableTest extends TableTest<TestEnum> {
 	}
 
 	@Override
-	public Table<TestEnum> newTable(final int width, final int height) {
-		return new ChoiceTable<TestEnum>(TestEnum.values(), width, height, TestEnum.EMPTY);
+	public Table<TestEnum> newTable(final int width, final int height, final TestEnum defaultValue) {
+		return new ChoiceTable<TestEnum>(TestEnum.values(), width, height, defaultValue);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -32,6 +35,11 @@ public class ChoiceTableTest extends TableTest<TestEnum> {
 	}
 
 	@Override
+	protected boolean allowNullValues() {
+		return false;
+	}
+
+	@Override
 	protected TestEnum getOtherValue() {
 		return TestEnum.BAR;
 	}
@@ -42,13 +50,13 @@ public class ChoiceTableTest extends TableTest<TestEnum> {
 	}
 
 	@Override
-	protected TestEnum[] listOfValues() {
-		return new TestEnum[] { TestEnum.FOO, TestEnum.BAZ, TestEnum.NO_TIME, TestEnum.WHEEL };
+	protected List<TestEnum> listOfValues() {
+		return new ArrayList<TestEnum>(Arrays.asList(TestEnum.FOO, TestEnum.BAZ, TestEnum.NO_TIME, TestEnum.WHEEL));
 	}
 
 	@Override
-	protected TestEnum[] otherListOfValues() {
-		return new TestEnum[] { TestEnum.BAR, TestEnum.BASE, TestEnum.CHEESE, TestEnum.NOTTINGHAM };
+	protected List<TestEnum> otherListOfValues() {
+		return new ArrayList<TestEnum>(Arrays.asList(TestEnum.BAR, TestEnum.BASE, TestEnum.CHEESE, TestEnum.NOTTINGHAM));
 	}
 
 }
