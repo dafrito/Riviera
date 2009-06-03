@@ -139,7 +139,7 @@ public abstract class TileMap<T> implements Paintable {
 	}
 
 	protected Dimension newRow(final Point location) {
-		return Geometry.EMPTY_SIZE;
+		return new Dimension(0, 0);
 	}
 
 	protected abstract void paintTile(Graphics2D g, T value, Point location, int width, int height);

@@ -463,6 +463,4 @@ public final class Geometry {
 		rectangle.setSize(dimension);
 	}
 
-	public static final Dimension EMPTY_SIZE = new Dimension(0, 0);
-
 }
