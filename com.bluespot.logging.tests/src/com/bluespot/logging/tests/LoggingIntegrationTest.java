@@ -74,6 +74,7 @@ public class LoggingIntegrationTest {
 		this.logger.addHandler(this.handler);
 	}
 
+	@Test
 	public void testLoggingStuff() {
 		LoggingIntegrationTest.runSimplestOperation();
 		Assert.assertTrue("Tree not empty", this.tree.size() > 0);
