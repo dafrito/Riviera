@@ -11,6 +11,10 @@ import com.bluespot.table.Table;
  */
 public class ColumnarTableIteration extends AbstractTableIteration {
 
+	private ColumnarTableIteration() {
+		// Do nothing
+	}
+
 	/**
 	 * Compare two points. Columnar iteration compares X-axis values first, then
 	 * uses Y-axis values. If both of these are equal, these points are
@@ -72,6 +76,11 @@ public class ColumnarTableIteration extends AbstractTableIteration {
 		targetPoint.y--;
 	}
 
+	/**
+	 * Returns the single instance of this iteration strategy.
+	 * 
+	 * @return the single instance of this strategy
+	 */
 	public static TableIteration getInstance() {
 		if (ColumnarTableIteration.instance == null) {
 			ColumnarTableIteration.instance = new ColumnarTableIteration();
