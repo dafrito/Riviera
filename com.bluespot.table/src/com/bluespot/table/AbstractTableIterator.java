@@ -8,12 +8,26 @@ import java.awt.Point;
  * @author Aaron Faanes
  * @param <T>
  *            Type of element contained in this iterator's parent table
+ * @See {@link StrategyTableIterator}
  */
 public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 
+	/**
+	 * The current position of this iterator
+	 */
 	protected Point currentPoint;
+
+	/**
+	 * The table used in iteration
+	 */
 	protected final Table<T> table;
 
+	/**
+	 * Constructs an iterator over the specified table.
+	 * 
+	 * @param table
+	 *            the table used for iteration
+	 */
 	public AbstractTableIterator(final Table<T> table) {
 		this.table = table;
 	}

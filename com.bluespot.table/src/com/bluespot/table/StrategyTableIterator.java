@@ -14,8 +14,20 @@ import com.bluespot.table.iteration.TableIteration;
  */
 public class StrategyTableIterator<T> extends AbstractTableIterator<T> {
 
+	/**
+	 * The strategy used for iteration
+	 */
 	protected final TableIteration strategy;
 
+	/**
+	 * Constructs an iterator over the specified table using the specified
+	 * strategy
+	 * 
+	 * @param table
+	 *            the table used for iteration
+	 * @param strategy
+	 *            the strategy used for iteration
+	 */
 	public StrategyTableIterator(final Table<T> table, final TableIteration strategy) {
 		super(table);
 		this.strategy = strategy;
