@@ -9,7 +9,7 @@ import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import com.bluespot.dispatcher.StatefulDispatcher;
-import com.bluespot.util.ListProxy;
+import com.bluespot.list.ListProxy;
 
 public class ProxiedListModel<E> extends ListProxy<E> implements MutableListModel<E> {
 

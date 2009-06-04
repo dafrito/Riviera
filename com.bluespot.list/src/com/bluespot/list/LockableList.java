@@ -1,4 +1,4 @@
-package com.bluespot.util;
+package com.bluespot.list;
 
 import java.util.ArrayDeque;
 import java.util.Deque;

@@ -1,6 +1,6 @@
 package com.bluespot.dispatcher;
 
-import com.bluespot.util.LockableList;
+import com.bluespot.list.LockableList;
 
 /**
  * Dispatches some value E to all interested parties of type L. The

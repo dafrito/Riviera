@@ -1,10 +1,18 @@
-package com.bluespot.util;
+package com.bluespot.list;
 
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
+/**
+ * Proxies all requests to a specified list.
+ * 
+ * @author Aaron Faanes
+ * 
+ * @param <E>
+ *            the type of element contained in this list
+ */
 public class ListProxy<E> implements List<E> {
 	private List<E> list;
 
@@ -115,6 +123,11 @@ public class ListProxy<E> implements List<E> {
 
 	public <T> T[] toArray(final T[] a) {
 		return this.list.toArray(a);
+	}
+
+	@Override
+	public int hashCode() {
+		return this.list.hashCode();
 	}
 
 }
