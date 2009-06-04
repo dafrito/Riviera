@@ -15,12 +15,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import com.bluespot.collections.observable.list.ProxiedListModel;
 import com.bluespot.ide.AbstractPerspective;
 import com.bluespot.ide.PerspectiveAction;
 import com.bluespot.swing.Dialogs;
 import com.bluespot.swing.TabView;
 import com.bluespot.swing.Dialogs.CancelledException;
-import com.bluespot.swing.list.ProxiedListModel;
 
 public class EditorPerspective extends AbstractPerspective {
 

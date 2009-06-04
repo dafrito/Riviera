@@ -1,7 +1,7 @@
 package com.bluespot.ide;
 
-import com.bluespot.swing.list.ProxiedListModel;
-import com.bluespot.swing.state.StateModel;
+import com.bluespot.collections.observable.list.ProxiedListModel;
+import com.bluespot.collections.observable.state.StateModel;
 
 /**
  * A container for {@link Perspective}'s, notifying listeners of changes through

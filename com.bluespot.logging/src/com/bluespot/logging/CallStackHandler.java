@@ -2,13 +2,10 @@ package com.bluespot.logging;
 
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.bluespot.reflection.CallStack;
+import com.bluespot.reflection.MutableCallStack;
 import com.bluespot.reflection.Reflection;
-import com.bluespot.tree.Tree;
-import com.bluespot.tree.TreeWalker;
 
 /**
  * Publishes LogRecords to a tree based on each record's source method.
@@ -31,17 +28,7 @@ import com.bluespot.tree.TreeWalker;
  */
 public class CallStackHandler extends Handler {
 
-	private final CallStack callStack = new CallStack();
-
-	private final TreeWalker<? super LogRecord> treeWalker;
-
-	public CallStackHandler(final Tree<? super LogRecord> tree) {
-		this(tree.walker());
-	}
-
-	public CallStackHandler(final TreeWalker<? super LogRecord> tree) {
-		this.treeWalker = tree;
-	}
+	private final MutableCallStack callStack = new MutableCallStack();
 
 	@Override
 	public void close() throws SecurityException {
@@ -61,27 +48,72 @@ public class CallStackHandler extends Handler {
 		if (this.handleExplicitCallStackOperation(record)) {
 			return;
 		}
-		final CallStack.Frame frame = this.getFrameFromRecord(record);
-		if (frame.equals(this.callStack.getCurrentFrame())) {
+		final MutableCallStack.Frame frame = this.getFrameFromRecord(record);
+		if (frame.equals(this.callStack.getMostRecentFrame())) {
 			this.treeWalker.append(record);
 			return;
 		}
-		final CallStack recordCallStack = Reflection.getCurrentCallStack();
-		while (!this.callStack.isEmpty()) {
-			if (recordCallStack.contains(this.callStack.getCurrentFrame())) {
+		final MutableCallStack recordCallStack = Reflection.getCurrentCallStack();
+		while (this.callStack.hasFrames()) {
+			if (recordCallStack.hasFrame(this.callStack.getMostRecentFrame())) {
 				break;
 			}
-			this.pop();
+			this.removeMostRecentFrame();
 		}
-		if (frame.equals(this.callStack.getCurrentFrame())) {
+		if (frame.equals(this.callStack.getMostRecentFrame())) {
 			this.treeWalker.append(record);
 		} else {
-			this.push(record);
+			this.addFrame(record);
 		}
 	}
 
-	private CallStack.Frame getFrameFromRecord(final LogRecord record) {
-		return new CallStack.Frame(record.getSourceClassName(), record.getSourceMethodName());
+	private MutableCallStack.Frame getFrameFromRecord(final LogRecord record) {
+		return new MutableCallStack.Frame(record.getSourceClassName(), record.getSourceMethodName());
+	}
+
+	private boolean isExplicitExit(final LogRecord record) {
+		final String msg = record.getMessage();
+		if (CallStackHandler.returningPattern.matcher(msg).matches()) {
+			return true;
+		}
+		if (CallStackHandler.throwingPattern.matcher(msg).matches()) {
+			return true;
+		}
+		return false;
+	}
+
+	private boolean isExplicitEntry(final LogRecord record) {
+		final String msg = record.getMessage();
+		return CallStackHandler.enteringPattern.matcher(msg).matches();
+	}
+
+	/**
+	 * Handles a log record that specifies that a method has been explicitly
+	 * entered. In this case, the handler's call stack will unroll until its
+	 * most recent frame is contained in the record's call stack.
+	 * 
+	 * 
+	 * @param record
+	 */
+	private void handleExplicitEntry(final LogRecord record) {
+		final MutableCallStack recordCallStack = Reflection.getCurrentCallStack();
+		recordCallStack.removeMostRecentFrame();
+		while (this.callStack.hasFrames() && !recordCallStack.hasFrame(this.callStack.getMostRecentFrame())) {
+			this.removeMostRecentFrame();
+		}
+		this.addFrame(record);
+	}
+
+	private void handleExplicitExit(final LogRecord record) {
+		final MutableCallStack.Frame frame = this.getFrameFromRecord(record);
+		if (!this.callStack.hasFrame(frame)) {
+			return false;
+		}
+		while (!this.callStack.getMostRecentFrame().equals(frame)) {
+			this.removeMostRecentFrame();
+		}
+		this.treeWalker.append(record);
+		this.removeMostRecentFrame();
 	}
 
 	/**
@@ -91,46 +123,38 @@ public class CallStackHandler extends Handler {
 	 *         to be done.
 	 */
 	private boolean handleExplicitCallStackOperation(final LogRecord record) {
-		final String msg = record.getMessage();
-		final Matcher enteringMatcher = CallStackHandler.enteringPattern.matcher(msg);
-		if (enteringMatcher.matches()) {
-			final CallStack recordCallStack = Reflection.getCurrentCallStack();
-			recordCallStack.pop();
-			while (!this.callStack.isEmpty() && !recordCallStack.contains(this.callStack.getCurrentFrame())) {
-				this.pop();
-			}
-			this.push(record);
+		if (this.isExplicitEntry(record)) {
+			this.handleExplicitEntry(record);
 			return true;
 		}
-		final Matcher returningMatcher = CallStackHandler.returningPattern.matcher(msg);
-		if (returningMatcher.matches() || CallStackHandler.throwingPattern.matcher(msg).matches()) {
-			final CallStack.Frame frame = this.getFrameFromRecord(record);
-			if (!this.callStack.contains(frame)) {
+		if (this.isExplicitExit(record)) {
+			final MutableCallStack.Frame frame = this.getFrameFromRecord(record);
+			if (!this.callStack.hasFrame(frame)) {
 				return false;
 			}
-			while (!this.callStack.getCurrentFrame().equals(frame)) {
-				this.pop();
+			while (!this.callStack.getMostRecentFrame().equals(frame)) {
+				this.removeMostRecentFrame();
 			}
 			this.treeWalker.append(record);
-			this.pop();
+			this.removeMostRecentFrame();
 			return true;
 		}
 		return false;
 	}
 
-	private CallStack.Frame pop() {
-		final CallStack.Frame poppedFrame = this.callStack.pop();
+	private MutableCallStack.Frame removeMostRecentFrame() {
+		final MutableCallStack.Frame poppedFrame = this.callStack.removeMostRecentFrame();
 		this.treeWalker.leave();
 		return poppedFrame;
 	}
 
-	private void push(final LogRecord record) {
-		this.callStack.push(this.getFrameFromRecord(record));
+	private void addFrame(final LogRecord record) {
+		this.callStack.addFrame(this.getFrameFromRecord(record));
 		this.treeWalker.appendAndEnter(record);
 	}
 
 	static {
-		CallStack.ignorePackage(CallStackHandler.class.getPackage());
+		MutableCallStack.ignorePackage(CallStackHandler.class.getPackage());
 	}
 
 	public static final Pattern enteringPattern = Pattern.compile("^ENTRY(\\{\\d+\\})?$");

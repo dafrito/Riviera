@@ -2,8 +2,8 @@ package com.bluespot.ide;
 
 import javax.swing.event.ChangeEvent;
 
-import com.bluespot.swing.state.StateChangeEvent;
-import com.bluespot.swing.state.StateChangeListener;
+import com.bluespot.collections.observable.state.StateChangeEvent;
+import com.bluespot.collections.observable.state.StateChangeListener;
 
 public class PerspectiveComponent {
 

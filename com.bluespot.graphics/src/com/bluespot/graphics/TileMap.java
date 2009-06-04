@@ -6,8 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 
+import com.bluespot.collections.table.Table;
 import com.bluespot.geom.Geometry;
-import com.bluespot.table.Table;
 
 public abstract class TileMap<T> implements Paintable {
 

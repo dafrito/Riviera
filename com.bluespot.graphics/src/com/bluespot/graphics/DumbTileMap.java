@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 
-import com.bluespot.table.Table;
+import com.bluespot.collections.table.Table;
 
 public class DumbTileMap extends TileMap<Color> {
 

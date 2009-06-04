@@ -1,12 +1,12 @@
 package com.bluespot.logging;
 
+import java.awt.Frame;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.bluespot.reflection.CallStack;
+import com.bluespot.reflection.MutableCallStack;
 import com.bluespot.reflection.Reflection;
-import com.bluespot.reflection.CallStack.Frame;
 
 /**
  * Utility methods for convenient logging with java.util.logging
@@ -29,7 +29,7 @@ public final class Logging {
 	}
 
 	static {
-		CallStack.ignorePackage(Logging.class.getPackage());
+		MutableCallStack.ignorePackage(Logging.class.getPackage());
 	}
 
 	public static void log(final String message) {
