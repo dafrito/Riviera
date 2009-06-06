@@ -71,6 +71,8 @@ public class CollectionUtil {
 	 * collection, only from the end. This is useful if you wish to synchronize
 	 * two {@code ObservableDeque} objects.
 	 * 
+	 * @param <E>
+	 *            the common supertype of the two deques
 	 * @param targetCollection
 	 *            the deque to modify
 	 * @param referenceCollection
@@ -104,7 +106,22 @@ public class CollectionUtil {
 		return removedElements;
 	}
 
+	/**
+	 * Removes the specified number of elements from the specified deque,
+	 * calling {@link Deque#removeLast()} for each element.
+	 * 
+	 * @param deque
+	 *            the deque that is modified
+	 * @param numRemoved
+	 *            the number of elements to remove
+	 * @throws IllegalArgumentException
+	 *             if {@code numRemoved} is greater than the deque's current
+	 *             size.
+	 */
 	public static void removeFromTail(final Deque<?> deque, final int numRemoved) {
+		if (numRemoved > deque.size()) {
+			throw new IllegalArgumentException("numRemoved is greater than the deque's current size");
+		}
 		for (int i = 0; i < numRemoved; i++) {
 			deque.removeLast();
 		}
@@ -117,9 +134,14 @@ public class CollectionUtil {
 	 *            the collection that is modified in this method
 	 * @param numRemoved
 	 *            the number of elements to remove
+	 * @throws IllegalArgumentException
+	 *             if {@code numRemoved} is greater than the collection's size
 	 */
 	public static void removeFromStart(final Collection<?> collection, final int numRemoved) {
 		int i = 0;
+		if (numRemoved > collection.size()) {
+			throw new IllegalArgumentException("numRemoved is greater than the collection's current size");
+		}
 		for (final Iterator<?> iterator = collection.iterator(); iterator.hasNext(); i++) {
 			if (i >= numRemoved) {
 				// We've removed enough, return
