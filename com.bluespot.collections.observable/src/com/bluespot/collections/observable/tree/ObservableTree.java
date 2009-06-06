@@ -1,5 +1,8 @@
 package com.bluespot.collections.observable.tree;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
@@ -7,41 +10,27 @@ import javax.swing.tree.TreePath;
 import com.bluespot.collections.tree.Tree;
 
 /**
- * A TreeModel based on Node and TreeModelDispatcher.
- * <p>
- * This TreeModel relies on a <code>Node</code> for representation and a
- * <code>TreeModelDispatcher</code> for handling changes made to the tree.
- * <p>
- * If you want to use this, I'd recommend looking at
- * <code>DispatchingTreeWalker</code>. It expects a TreeModelDispatcher and
- * emits to it whenever it modifies a tree.
+ * A {@link TreeModel} based on a {@link Tree} and {@link TreeModelDispatcher}.
+ * This TreeModel relies on a {@code Tree} for representation and a {@code
+ * TreeModelDispatcher} for handling changes made to the tree.
  * 
  * @author Aaron Faanes
  * 
  * @param <T>
  *            The type of the underlying tree.
  */
-public class ProxiedTreeModel<T> implements TreeModel {
+public final class ObservableTree<T> implements TreeModel {
 
-	private final TreeModelDispatcher dispatcher = new TreeModelDispatcher(this);
+	private final List<TreeModelListener> listeners = new CopyOnWriteArrayList<TreeModelListener>();
 
-	private Tree<T> root;
+	private final Tree<T> root;
 
-	public ProxiedTreeModel() {
-		this((T) (null));
-	}
-
-	public ProxiedTreeModel(final T value) {
+	public ObservableTree(final T value) {
 		this.root = new Tree<T>(value);
-		this.root.setWalkerFactory(DispatchingTreeWalker.<T> createFactory(this.getDispatcher()));
 	}
 
-	public ProxiedTreeModel(final Tree<T> root) {
+	public ObservableTree(final Tree<T> root) {
 		this.root = root;
-	}
-
-	public void addTreeModelListener(final TreeModelListener l) {
-		this.dispatcher.addListener(l);
 	}
 
 	public Tree<?> getChild(final Object parent, final int index) {
@@ -63,10 +52,6 @@ public class ProxiedTreeModel<T> implements TreeModel {
 		return node.size();
 	}
 
-	public TreeModelDispatcher getDispatcher() {
-		return this.dispatcher;
-	}
-
 	public int getIndexOfChild(final Object parent, final Object child) {
 		if (!(child instanceof Tree<?>)) {
 			throw new ClassCastException();
@@ -82,17 +67,21 @@ public class ProxiedTreeModel<T> implements TreeModel {
 		return this.root;
 	}
 
+	public void valueForPathChanged(final TreePath path, final Object newValue) {
+		throw new UnsupportedOperationException();
+	}
+
 	public boolean isLeaf(final Object nodeObject) {
 		final Tree<?> node = (Tree<?>) nodeObject;
 		return !node.isRoot() && node.isEmpty();
 	}
 
-	public void removeTreeModelListener(final TreeModelListener l) {
-		this.dispatcher.removeListener(l);
+	public void addTreeModelListener(final TreeModelListener listener) {
+		this.listeners.add(listener);
 	}
 
-	public void valueForPathChanged(final TreePath path, final Object newValue) {
-		throw new UnsupportedOperationException();
+	public void removeTreeModelListener(final TreeModelListener listener) {
+		this.listeners.remove(listener);
 	}
 
 }
