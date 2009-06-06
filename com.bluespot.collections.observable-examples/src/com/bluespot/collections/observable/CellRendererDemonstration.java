@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -20,9 +19,22 @@ import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
 import com.bluespot.demonstration.Runner;
 
-public class CellRendererDemonstration extends AbstractDemonstration {
+/**
+ * Demonstrates cell rendering using an {@link ObservableList}.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public final class CellRendererDemonstration extends AbstractDemonstration {
 
-	public class MyCellRenderer extends JLabel implements ListCellRenderer {
+	private static class MyCellRenderer extends JLabel implements ListCellRenderer {
+
+		public MyCellRenderer() {
+			// Default constructor, defined explicitly to remove
+			// synthetic-access problems
+		}
+
+		private static final long serialVersionUID = 5217981785927203654L;
 
 		public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
 				final boolean isSelected, final boolean cellHasFocus) {
@@ -41,72 +53,61 @@ public class CellRendererDemonstration extends AbstractDemonstration {
 
 	}
 
-	protected JList list;
-
-	protected List<String> stringList;
+	private final JList list = new JList();
 
 	@Override
 	public void initializeFrame(final JFrame frame) {
+
+		this.list.setCellRenderer(new MyCellRenderer());
+
+		final ObservableList<String> strings = new ObservableList<String>();
+		this.list.setModel(strings);
+
+		this.populateList(strings);
+
 		frame.setLayout(new BorderLayout());
 		frame.setSize(400, 400);
-		frame.getContentPane().add(new JScrollPane(this.constructList()), BorderLayout.CENTER);
+		frame.getContentPane().add(new JScrollPane(this.list), BorderLayout.CENTER);
 
 		final JPanel panel = new JPanel();
 
-		final JButton addButton = new JButton("Add");
 		final JButton removeButton = new JButton("Remove");
+		removeButton.addActionListener(new ActionListener() {
+			public void actionPerformed(final ActionEvent arg0) {
+				strings.remove(0);
+				removeButton.setEnabled(!strings.isEmpty());
+			}
+		});
 		removeButton.setEnabled(false);
+		panel.add(removeButton);
 
+		final JButton addButton = new JButton("Add");
 		addButton.addActionListener(new ActionListener() {
 			public void actionPerformed(final ActionEvent arg0) {
-				final List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
-				listModelAdapter.add("Hello, world! This is element " + listModelAdapter.size());
+				strings.add("Hello, world! This is element " + strings.size());
 				removeButton.setEnabled(true);
 			}
 		});
 		panel.add(addButton);
 
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				final List<String> listModelAdapter = CellRendererDemonstration.this.stringList;
-				listModelAdapter.remove(0);
-				if (listModelAdapter.isEmpty()) {
-					removeButton.setEnabled(false);
-				}
-			}
-		});
-		panel.add(removeButton);
-
 		frame.getContentPane().add(panel, BorderLayout.SOUTH);
-	}
-
-	private JList constructList() {
-		final ObservableList<String> listModelAdapter = new ObservableList<String>();
-		this.list = new JList(listModelAdapter);
-		this.stringList = listModelAdapter;
-
-		this.list.setCellRenderer(new MyCellRenderer());
-
-		this.populateList(this.stringList);
-
-		return this.list;
 	}
 
 	private void populateList(final List<String> targetList) {
 		final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		final char[] charArray = alphabet.toCharArray();
-		final String[] stringArray = new String[26];
-		int index = 0;
-		for (final char c : charArray) {
-			stringArray[index++] = String.valueOf(c);
+		for (int i = 0; i < alphabet.length(); i++) {
+			targetList.add(String.valueOf(alphabet.charAt(i)));
 		}
-		Collections.addAll(targetList, stringArray);
 	}
 
+	/**
+	 * Creates a new {@link CellRendererDemonstration}.
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(final String[] args) {
 		Runner.run(new CellRendererDemonstration(), true);
 	}
-
-	protected static int counter;
 
 }
