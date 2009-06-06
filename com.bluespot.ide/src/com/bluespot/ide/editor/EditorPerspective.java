@@ -15,7 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
-import com.bluespot.collections.observable.list.ProxiedListModel;
+import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.ide.AbstractPerspective;
 import com.bluespot.ide.PerspectiveAction;
 import com.bluespot.swing.Dialogs;
@@ -163,7 +163,7 @@ public class EditorPerspective extends AbstractPerspective {
 
 	}
 
-	protected final ProxiedListModel<Editor> editors = new ProxiedListModel<Editor>();
+	protected final ObservableList<Editor> editors = new ObservableList<Editor>();
 
 	protected final JTabbedPane editorsPane = new JTabbedPane();
 

@@ -1,6 +1,7 @@
 package com.bluespot.ide;
 
-import com.bluespot.collections.observable.list.ProxiedListModel;
+import com.bluespot.collections.observable.list.ObservableList;
+import com.bluespot.collections.observable.state.ObservableListStateModel;
 import com.bluespot.collections.observable.state.StateModel;
 
 /**
@@ -11,9 +12,9 @@ import com.bluespot.collections.observable.state.StateModel;
  */
 public class PerspectiveManager {
 
-	protected final ProxiedListModel<Perspective> perspectives = new ProxiedListModel<Perspective>();
+	protected final ObservableList<Perspective> perspectives = new ObservableList<Perspective>();
 
-	protected final StateModel<Perspective> stateModel = new StateModel<Perspective>(this.perspectives);
+	protected final StateModel<Perspective> stateModel = new ObservableListStateModel<Perspective>(this.perspectives);
 
 	/**
 	 * A newly created manager will assume the 'currentManager' position by
@@ -45,7 +46,7 @@ public class PerspectiveManager {
 		return this.stateModel.getState();
 	}
 
-	public ProxiedListModel<Perspective> getPerspectives() {
+	public ObservableList<Perspective> getPerspectives() {
 		return this.perspectives;
 	}
 
@@ -58,7 +59,7 @@ public class PerspectiveManager {
 	}
 
 	public void showPerspective(final Perspective perspective) {
-		this.stateModel.setState(perspective);
+		this.stateModel.changeState(perspective);
 	}
 
 	public static PerspectiveManager getCurrentManager() {
