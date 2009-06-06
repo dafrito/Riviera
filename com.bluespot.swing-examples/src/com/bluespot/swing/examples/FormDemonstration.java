@@ -3,9 +3,16 @@ package com.bluespot.swing.examples;
 import javax.swing.JFrame;
 
 import com.bluespot.demonstration.AbstractDemonstration;
+import com.bluespot.demonstration.Runner;
 import com.bluespot.swing.SimpleSwingForm;
 
-public class FormDemonstration extends AbstractDemonstration {
+/**
+ * Demonstrates {@link SimpleSwingForm}.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public final class FormDemonstration extends AbstractDemonstration {
 
 	private SimpleSwingForm form;
 
@@ -26,10 +33,14 @@ public class FormDemonstration extends AbstractDemonstration {
 
 	}
 
+	/**
+	 * Creates a form demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(final String[] args) {
-		// We really should throw this in a invokeLater, but doing so kills
-		// our callstack. For a more realistic run, use SwingUtilities.
-		new FormDemonstration().run();
+		Runner.run(new FormDemonstration(), true);
 	}
 
 }
