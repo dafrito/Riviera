@@ -5,7 +5,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.geom-tests"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.logging-tests"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.util-tests"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.collections.observable-tests"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.collections-tests"/>
 	<classpathentry kind="output" path="bin"/>
