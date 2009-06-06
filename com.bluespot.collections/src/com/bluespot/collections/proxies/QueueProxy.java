@@ -3,7 +3,6 @@ package com.bluespot.collections.proxies;
 import java.util.Collection;
 import java.util.Queue;
 
-
 /**
  * Proxies all requests to a specified queue.
  * 
