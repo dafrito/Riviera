@@ -14,12 +14,10 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.collections.list.ListTest;
-import com.bluespot.collections.observable.list.ListDataAdapter;
-import com.bluespot.collections.observable.list.MutableListModel;
 
-public abstract class MutableListModelTest extends ListTest {
+public abstract class ObservableListTest extends ListTest {
 
-	public MutableListModel<String> listModel;
+	public ObservableList<String> listModel;
 
 	protected final Queue<ListDataEvent> eventList = new ArrayDeque<ListDataEvent>();
 
@@ -30,17 +28,17 @@ public abstract class MutableListModelTest extends ListTest {
 
 			@Override
 			public void contentsChanged(final ListDataEvent e) {
-				MutableListModelTest.this.eventList.add(e);
+				ObservableListTest.this.eventList.add(e);
 			}
 
 			@Override
 			public void intervalAdded(final ListDataEvent e) {
-				MutableListModelTest.this.eventList.add(e);
+				ObservableListTest.this.eventList.add(e);
 			}
 
 			@Override
 			public void intervalRemoved(final ListDataEvent e) {
-				MutableListModelTest.this.eventList.add(e);
+				ObservableListTest.this.eventList.add(e);
 			}
 
 		});
@@ -264,6 +262,8 @@ public abstract class MutableListModelTest extends ListTest {
 		return this.newListModel();
 	}
 
-	protected abstract MutableListModel<String> newListModel();
+	protected ObservableList<String> newListModel() {
+		return new ObservableList<String>();
+	}
 
 }
