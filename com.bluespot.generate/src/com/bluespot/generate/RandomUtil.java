@@ -1,9 +1,16 @@
 package com.bluespot.generate;
 
+/**
+ * Collection of methods dealing with producing random choices
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public final class RandomUtil {
 
 	private RandomUtil() {
-		throw new AssertionError("This class can't be instantiated.");
+		// Suppress default constructor to ensure non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
 	}
 
 	/**
@@ -25,7 +32,7 @@ public final class RandomUtil {
 	/**
 	 * Creates a random name, typically used for game nations.
 	 * 
-	 * @return a randomly generated nameq
+	 * @return a randomly generated name
 	 */
 	public static String generateName() {
 		final StringBuilder builder = new StringBuilder();
