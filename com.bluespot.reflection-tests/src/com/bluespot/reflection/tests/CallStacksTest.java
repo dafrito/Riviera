@@ -10,7 +10,7 @@ import org.junit.Test;
 import com.bluespot.reflection.CallStackFrame;
 import com.bluespot.reflection.CallStacks;
 
-public class ReflectionTest {
+public class CallStacksTest {
 
 	@Test
 	public void testFramesAreEqual() {
