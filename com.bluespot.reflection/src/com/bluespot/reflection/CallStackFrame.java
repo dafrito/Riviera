@@ -10,6 +10,12 @@ package com.bluespot.reflection;
  */
 public class CallStackFrame {
 
+	private final String className;
+
+	private final String methodName;
+
+	private final String packageName;
+
 	/**
 	 * Constructs a frame from the specified class and method name. This method
 	 * will make a best-effort to create a valid frame from the inputs and will
@@ -31,29 +37,6 @@ public class CallStackFrame {
 		} else {
 			this.packageName = "";
 		}
-	}
-
-	private final String className;
-	private final String methodName;
-
-	private final String packageName;
-
-	@Override
-	public boolean equals(final Object other) {
-		if (this == other) {
-			return true;
-		}
-		if (!(other instanceof Frame)) {
-			return false;
-		}
-		final Frame otherEntry = (Frame) other;
-		if (!this.getClassName().equals(otherEntry.getClassName())) {
-			return false;
-		}
-		if (!this.getMethodName().equals(otherEntry.getMethodName())) {
-			return false;
-		}
-		return true;
 	}
 
 	/**
@@ -88,6 +71,24 @@ public class CallStackFrame {
 	 */
 	public String getPackageName() {
 		return this.packageName;
+	}
+
+	@Override
+	public boolean equals(final Object other) {
+		if (this == other) {
+			return true;
+		}
+		if (!(other instanceof CallStackFrame)) {
+			return false;
+		}
+		final CallStackFrame otherEntry = (CallStackFrame) other;
+		if (!this.getClassName().equals(otherEntry.getClassName())) {
+			return false;
+		}
+		if (!this.getMethodName().equals(otherEntry.getMethodName())) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
