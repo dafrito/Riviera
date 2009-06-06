@@ -13,14 +13,19 @@ import javax.swing.JSplitPane;
 import javax.swing.ListModel;
 import javax.swing.event.MouseInputAdapter;
 
+import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
 import com.bluespot.demonstration.Runner;
-import com.bluespot.logging.ListHandler;
-import com.bluespot.swing.list.ProxiedListModel;
+import com.bluespot.logging.handlers.ListHandler;
 
-public class LoggerGUI extends AbstractDemonstration {
-
-	protected Logger logger = Logger.getLogger("com.dafrito");
+/**
+ * Demonstrates {@link ListHandler} used in conjunction with an
+ * {@link ObservableList}.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public final class ListHandlerDemonstration extends AbstractDemonstration {
 
 	@Override
 	public void initializeFrame(final JFrame frame) {
@@ -29,7 +34,9 @@ public class LoggerGUI extends AbstractDemonstration {
 		final JSplitPane splitPane = new JSplitPane();
 		frame.setContentPane(splitPane);
 
-		final JList list = new JList(this.createLoggingListModel(this.logger));
+		final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
+
+		final JList list = new JList(this.createLoggingListModel(logger));
 
 		splitPane.setLeftComponent(new JScrollPane(list));
 
@@ -38,7 +45,7 @@ public class LoggerGUI extends AbstractDemonstration {
 
 			@Override
 			public void mouseClicked(final MouseEvent event) {
-				LoggerGUI.this.logger.info(event.toString());
+				logger.info(event.toString());
 			}
 
 		});
@@ -46,14 +53,20 @@ public class LoggerGUI extends AbstractDemonstration {
 	}
 
 	private ListModel createLoggingListModel(final Logger associatedLogger) {
-		final ProxiedListModel<LogRecord> listModel = new ProxiedListModel<LogRecord>();
+		final ObservableList<LogRecord> listModel = new ObservableList<LogRecord>();
 		final Handler handler = new ListHandler(listModel);
 		associatedLogger.addHandler(handler);
 		return listModel;
 	}
 
+	/**
+	 * Creates a new list handler demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
 	public static void main(final String[] args) {
-		Runner.run(new LoggerGUI(), true);
+		Runner.run(new ListHandlerDemonstration(), true);
 	}
 
 }
