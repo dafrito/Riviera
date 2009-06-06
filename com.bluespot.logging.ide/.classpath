@@ -5,10 +5,9 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.ide"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.logging"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.util"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing.list"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/com.bluespot.tree"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing.tree"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.demonstration"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.collections"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.collections.observable"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

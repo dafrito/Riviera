@@ -1,12 +1,11 @@
 package com.bluespot.logging;
 
-import java.awt.Frame;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import com.bluespot.reflection.MutableCallStack;
-import com.bluespot.reflection.Reflection;
+import com.bluespot.reflection.CallStackFrame;
+import com.bluespot.reflection.CallStacks;
 
 /**
  * Utility methods for convenient logging with java.util.logging
@@ -25,11 +24,12 @@ import com.bluespot.reflection.Reflection;
 public final class Logging {
 
 	private Logging() {
-		throw new UnsupportedOperationException("Instantiation not allowed");
+		// Suppresses default constructor, ensuring non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
 	}
 
 	static {
-		MutableCallStack.ignorePackage(Logging.class.getPackage());
+		CallStacks.ignorePackage(Logging.class.getPackage());
 	}
 
 	public static void log(final String message) {
@@ -119,7 +119,7 @@ public final class Logging {
 	}
 
 	public static void logRecord(final LogRecord record) {
-		final Frame frame = Reflection.getCurrentFrame();
+		final CallStackFrame frame = CallStacks.getCurrentFrame();
 		record.setSourceClassName(frame.getClassName());
 		record.setSourceMethodName(frame.getMethodName());
 		Logger.getLogger(frame.getPackageName()).log(record);

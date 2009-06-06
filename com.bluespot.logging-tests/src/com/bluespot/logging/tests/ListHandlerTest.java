@@ -11,7 +11,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bluespot.logging.ListHandler;
+import com.bluespot.logging.handlers.ListHandler;
 
 public class ListHandlerTest {
 
