@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
-import com.bluespot.collections.observable.list.ProxiedListModel;
+import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
 import com.bluespot.demonstration.Runner;
 
@@ -81,7 +81,7 @@ public class CellRendererDemonstration extends AbstractDemonstration {
 	}
 
 	private JList constructList() {
-		final ProxiedListModel<String> listModelAdapter = new ProxiedListModel<String>();
+		final ObservableList<String> listModelAdapter = new ObservableList<String>();
 		this.list = new JList(listModelAdapter);
 		this.stringList = listModelAdapter;
 
