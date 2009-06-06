@@ -48,7 +48,7 @@ public class TreeWalker<T> {
 		return this.currentNode;
 	}
 
-	public Tree<T> getCurrentNode() {
+	public Tree<T> value() {
 		return this.currentNode;
 	}
 
