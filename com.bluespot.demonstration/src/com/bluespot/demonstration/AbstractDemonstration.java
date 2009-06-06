@@ -4,11 +4,18 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class AbstractDemonstration implements Runnable {
+/**
+ * A scaffold for construction simple {@link JFrame} components to demonstrate
+ * functionality.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public abstract class AbstractDemonstration implements Runnable {
 
 	public void run() {
 
-		final JFrame frame = new JFrame(this.getFrameName());
+		final JFrame frame = new JFrame(this.getTitle());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		final JPanel panel = new JPanel();
@@ -21,16 +28,21 @@ public class AbstractDemonstration implements Runnable {
 
 	}
 
-	protected String getFrameName() {
+	/**
+	 * Returns the title used for this demonstration
+	 * 
+	 * @return the title used for this demonstration
+	 */
+	protected String getTitle() {
 		return this.getClass().getSimpleName();
 	}
 
 	/**
+	 * Create and populate the specified frame with your demonstration.
+	 * 
 	 * @param frame
 	 *            Root frame to populate with whatever you're demonstrating.
 	 */
-	protected void initializeFrame(final JFrame frame) {
-		// Do nothing; override this behavior in subclasses.
-	}
+	protected abstract void initializeFrame(final JFrame frame);
 
 }
