@@ -1,30 +1,27 @@
 package com.bluespot.script;
 
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 import javax.tools.Diagnostic;
 import javax.tools.DiagnosticListener;
 
-import com.bluespot.dispatcher.SimpleDispatcher;
-
 public abstract class AbstractScriptEngine<S> implements ScriptEngine<S> {
 
-	private final SimpleDispatcher<Diagnostic<S>, DiagnosticListener<S>> dispatcher = new SimpleDispatcher<Diagnostic<S>, DiagnosticListener<S>>() {
-
-		public void dispatch(final Diagnostic<S> value, final DiagnosticListener<S> listener) {
-			listener.report(value);
-		}
-
-	};
+	private final List<DiagnosticListener<S>> listeners = new CopyOnWriteArrayList<DiagnosticListener<S>>();
 
 	public void addDiagnosticListener(final DiagnosticListener<S> listener) {
-		this.dispatcher.addListener(listener);
+		this.listeners.add(listener);
 	}
 
 	public void removeDiagnosticListener(final DiagnosticListener<S> listener) {
-		this.dispatcher.removeListener(listener);
+		this.listeners.remove(listener);
 	}
 
 	protected void report(final Diagnostic<S> diagnostic) {
-		this.dispatcher.dispatch(diagnostic);
+		for (final DiagnosticListener<S> listener : this.listeners) {
+			listener.report(diagnostic);
+		}
 	}
 
 }

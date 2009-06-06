@@ -2,48 +2,36 @@ package com.bluespot.forms.model.validation;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.bluespot.dispatcher.SimpleDispatcher;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class AggregateValidator<E> implements Validator<E> {
 
-	private final SimpleDispatcher<E, Validator<E>> validationDispatcher = new SimpleDispatcher<E, Validator<E>>() {
+	private final List<Validator<E>> validators = new CopyOnWriteArrayList<Validator<E>>();
 
-		public final List<ValidationResult<E>> results = new ArrayList<ValidationResult<E>>();
-
-		@Override
-		public void dispatch(final E value) {
-			this.results.clear();
-			super.dispatch(value);
-			AggregateValidator.this.setValidationResults(value, this.results);
+	protected void fireValidation(final E value) {
+		final List<ValidationResult<E>> results = new ArrayList<ValidationResult<E>>();
+		for (final Validator<E> validator : this.validators) {
+			results.add(validator.validate(value));
 		}
-
-		public void dispatch(final E value, final Validator<E> listener) {
-			this.results.add(listener.validate(value));
-		}
-
-	};
+		this.setValidationResults(value, results);
+	}
 
 	private ValidationSummary<E> validationSummary;
 
 	public void addValidator(final Validator<E> validator) {
-		this.validationDispatcher.addListener(validator);
+		this.validators.add(validator);
 	}
 
 	public ValidationSummary<E> getValidationSummary() {
 		return this.validationSummary;
 	}
 
-	public boolean hasValidators() {
-		return this.validationDispatcher.hasListeners();
-	}
-
 	public void removeValidator(final Validator<E> validator) {
-		this.validationDispatcher.removeListener(validator);
+		this.validators.remove(validator);
 	}
 
 	public ValidationSummary<E> validate(final E value) {
-		this.validationDispatcher.dispatch(value);
+		this.fireValidation(value);
 		return this.getValidationSummary();
 	}
 
