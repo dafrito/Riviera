@@ -3,13 +3,13 @@ package com.bluespot.collections.observable.list;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.swing.ListModel;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
 import com.bluespot.collections.proxies.ListProxy;
-import com.bluespot.dispatcher.StatefulDispatcher;
 
 /**
  * Adapts a {@link List} for use with a {@link ListModel}.
@@ -19,16 +19,16 @@ import com.bluespot.dispatcher.StatefulDispatcher;
  * @param <E>
  *            the type of elements in this list model
  */
-public class ProxiedListModel<E> extends ListProxy<E> implements MutableListModel<E> {
+public class ObservableList<E> extends ListProxy<E> implements ListModel {
 
-	StatefulDispatcher<ListDataEvent, ListDataListener> dispatcher = new StatefulDispatcher<ListDataEvent, ListDataListener>();
+	private final List<ListDataListener> listeners = new CopyOnWriteArrayList<ListDataListener>();
 
 	private final List<E> targetList;
 
 	/**
 	 * Constructs a proxied list model that proxies an empty list.
 	 */
-	public ProxiedListModel() {
+	public ObservableList() {
 		this.targetList = new ArrayList<E>();
 	}
 
@@ -39,7 +39,7 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	 * @param collection
 	 *            the collection that will populate this list model's list
 	 */
-	public ProxiedListModel(final Collection<E> collection) {
+	public ObservableList(final Collection<E> collection) {
 		if (collection == null) {
 			throw new NullPointerException("collection cannot be null");
 		}
@@ -80,7 +80,7 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	}
 
 	public void addListDataListener(final ListDataListener listener) {
-		this.dispatcher.addListener(listener);
+		this.listeners.add(listener);
 	}
 
 	@Override
@@ -143,7 +143,7 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	}
 
 	public void removeListDataListener(final ListDataListener listener) {
-		this.dispatcher.addListener(listener);
+		this.listeners.remove(listener);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 
 	@Override
 	public List<E> subList(final int offset, final int toIndex) {
-		final ProxiedListModel<E> sublist = new ProxiedListModel<E>(super.subList(offset, toIndex));
+		final ObservableList<E> sublist = new ObservableList<E>(super.subList(offset, toIndex));
 
 		final List<E> sourceList = this.getSourceList();
 
@@ -196,21 +196,21 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 				for (int index = e.getIndex0(); index <= e.getIndex1(); index++) {
 					sourceList.set(offset + index, sublist.get(index));
 				}
-				ProxiedListModel.this.fireContentsChanged(lowerBound, upperBound);
+				ObservableList.this.fireContentsChanged(lowerBound, upperBound);
 			}
 
 			public void intervalAdded(final ListDataEvent e) {
 				final int lowerBound = offset + e.getIndex0();
 				final int upperBound = offset + e.getIndex1();
 				sourceList.addAll(lowerBound, sublist.subList(e.getIndex0(), e.getIndex1() + 1));
-				ProxiedListModel.this.fireIntervalAdded(lowerBound, upperBound);
+				ObservableList.this.fireIntervalAdded(lowerBound, upperBound);
 			}
 
 			public void intervalRemoved(final ListDataEvent e) {
 				final int lowerBound = offset + e.getIndex0();
 				final int upperBound = offset + e.getIndex1();
 				sourceList.subList(lowerBound, upperBound + 1).clear();
-				ProxiedListModel.this.fireIntervalRemoved(lowerBound, upperBound);
+				ObservableList.this.fireIntervalRemoved(lowerBound, upperBound);
 			}
 
 		});
@@ -222,7 +222,7 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 					if (!this.withinRange(index)) {
 						continue;
 					}
-					sublist.set(index - offset, ProxiedListModel.this.get(index));
+					sublist.set(index - offset, ObservableList.this.get(index));
 				}
 			}
 
@@ -247,11 +247,6 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 		return sublist;
 	}
 
-	private void fire(final ListDataEventType eventType, final int startIndex, final int endIndex) {
-		final ListDataEvent event = eventType.newEvent(this, startIndex, endIndex);
-		this.dispatcher.dispatch(eventType, event);
-	}
-
 	/**
 	 * Subclasses must invoke this method after a section of elements has
 	 * changed.
@@ -262,7 +257,10 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	 *            the index of the last changed element
 	 */
 	protected void fireContentsChanged(final int startIndex, final int endIndex) {
-		this.fire(ListDataEventType.CONTENTS_CHANGED, startIndex, endIndex);
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, startIndex, endIndex);
+		for (final ListDataListener listener : this.listeners) {
+			listener.contentsChanged(event);
+		}
 	}
 
 	/**
@@ -275,7 +273,10 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	 *            the index of the last added element
 	 */
 	protected void fireIntervalAdded(final int startIndex, final int endIndex) {
-		this.fire(ListDataEventType.INTERVAL_ADDED, startIndex, endIndex);
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, startIndex, endIndex);
+		for (final ListDataListener listener : this.listeners) {
+			listener.contentsChanged(event);
+		}
 	}
 
 	/**
@@ -289,7 +290,10 @@ public class ProxiedListModel<E> extends ListProxy<E> implements MutableListMode
 	 * @see ListDataListener#intervalRemoved(ListDataEvent)
 	 */
 	protected void fireIntervalRemoved(final int startIndex, final int endIndex) {
-		this.fire(ListDataEventType.INTERVAL_REMOVED, startIndex, endIndex);
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, startIndex, endIndex);
+		for (final ListDataListener listener : this.listeners) {
+			listener.contentsChanged(event);
+		}
 	}
 
 	@Override
