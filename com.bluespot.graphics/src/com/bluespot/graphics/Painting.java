@@ -8,10 +8,17 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
+/**
+ * A suite of utility methods dealing with painting and images.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public final class Painting {
 
 	private Painting() {
-		throw new AssertionError("This class cannot be instantiated");
+		// Suppress default construct to ensure non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
 	}
 
 	/**
@@ -33,12 +40,21 @@ public final class Painting {
 		return g.getDeviceConfiguration().createCompatibleImage(width, height);
 	}
 
+	/**
+	 * Creates a device-compatible buffered image of the specified dimensions.
+	 * 
+	 * @param width
+	 *            the width of the created image
+	 * @param height
+	 *            the height of the create image
+	 * @return a device-compatible buffered image
+	 * @see GraphicsConfiguration#createCompatibleImage(int, int)
+	 */
 	public static BufferedImage createImage(final int width, final int height) {
 		final GraphicsEnvironment environment = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		final GraphicsDevice device = environment.getDefaultScreenDevice();
 		final GraphicsConfiguration configuration = device.getDefaultConfiguration();
 		return configuration.createCompatibleImage(width, height);
-
 	}
 
 	/**
