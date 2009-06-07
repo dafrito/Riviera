@@ -13,11 +13,42 @@ import javax.swing.JFrame;
 
 import com.bluespot.geom.Geometry;
 
+/**
+ * A collection of utility methods dealing with Swing components.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public final class Components {
 
+	/**
+	 * Levels of texture interpolation
+	 * 
+	 * @author Aaron Faanes
+	 * 
+	 */
 	public static enum Interpolation {
-		BICUBIC(RenderingHints.VALUE_INTERPOLATION_BICUBIC), BILINEAR(RenderingHints.VALUE_INTERPOLATION_BILINEAR), NEAREST_NEIGHBOR(
-				RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+		/**
+		 * Represents bicubic texture filtering.
+		 * 
+		 * @see RenderingHints#VALUE_INTERPOLATION_BICUBIC
+		 */
+		BICUBIC(RenderingHints.VALUE_INTERPOLATION_BICUBIC),
+
+		/**
+		 * Represents bilinear texture filtering.
+		 * 
+		 * @see RenderingHints#VALUE_INTERPOLATION_BILINEAR
+		 */
+		BILINEAR(RenderingHints.VALUE_INTERPOLATION_BILINEAR),
+
+		/**
+		 * Represents nearest-neighbor filtering.
+		 * 
+		 * @see RenderingHints#VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+		 * 
+		 */
+		NEAREST_NEIGHBOR(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
 
 		private final Object interpolationValue;
 
@@ -25,10 +56,24 @@ public final class Components {
 			this.interpolationValue = interpolationValue;
 		}
 
+		/**
+		 * Returns the value of this filtering strategy, as it is known to
+		 * Swing.
+		 * 
+		 * @return the value of this filtering strategy
+		 * 
+		 * @see Graphics2D#setRenderingHint(java.awt.RenderingHints.Key, Object)
+		 */
 		public Object getValue() {
 			return this.interpolationValue;
 		}
 
+		/**
+		 * Sets the graphics context to use this filtering strategy.
+		 * 
+		 * @param g
+		 *            the context to modify
+		 */
 		public void set(final Graphics2D g) {
 			g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, this.getValue());
 		}
@@ -38,6 +83,13 @@ public final class Components {
 		throw new AssertionError("This class cannot be instantiated.");
 	}
 
+	/**
+	 * Centers the specified frame on the screen.
+	 * 
+	 * @param component
+	 *            the frame to center
+	 * @see JFrame#setLocationRelativeTo(Component)
+	 */
 	public static void center(final JFrame component) {
 		component.setLocationRelativeTo(null);
 	}
@@ -87,6 +139,16 @@ public final class Components {
 		return dimension;
 	}
 
+	/**
+	 * Returns the index of the specified component in the specified parent.
+	 * 
+	 * @param parent
+	 *            the parent of the specified component
+	 * @param component
+	 *            the component that is the target of this search
+	 * @return the index of the specified component, otherwise {@code -1} is
+	 *         returned
+	 */
 	public static int getIndexOf(final Container parent, final Component component) {
 		for (int i = 0; i < parent.getComponentCount(); i++) {
 			if (parent.getComponent(i) == component) {
@@ -96,12 +158,32 @@ public final class Components {
 		return -1;
 	}
 
+	/**
+	 * Sets whether the specified graphics context should use antialiasing.
+	 * 
+	 * @param g
+	 *            the graphics context to modify
+	 * @param isAntialiased
+	 *            {@code true} if antialiasing should be enabled, otherwise
+	 *            {@code false}
+	 * @see RenderingHints#KEY_ANTIALIASING
+	 */
 	public static void setAntialias(final Graphics2D g, final boolean isAntialiased) {
 		final Object antialiased = isAntialiased ? RenderingHints.VALUE_ANTIALIAS_ON
 				: RenderingHints.VALUE_ANTIALIAS_OFF;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiased);
 	}
 
+	/**
+	 * Sets the graphics context to use the specified level of texture
+	 * interpolation.
+	 * 
+	 * @param g
+	 *            the graphics context to modify
+	 * @param interpolation
+	 *            the level of texture interpolation
+	 * @see RenderingHints#KEY_INTERPOLATION
+	 */
 	public static void setInterpolation(final Graphics2D g, final Interpolation interpolation) {
 		interpolation.set(g);
 	}
