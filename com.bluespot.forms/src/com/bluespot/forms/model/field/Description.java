@@ -1,16 +1,16 @@
 package com.bluespot.forms.model.field;
 
-public class Description {
+public final class Description {
 	private final String informationBlurb;
 	private final String label;
 	private final String name;
 
 	public Description() {
-		this(null, null, null);
+		this("", "", "");
 	}
 
 	public Description(final String name) {
-		this(name, null, null);
+		this(name, "", "");
 	}
 
 	public Description(final String name, final String label, final String informationBlurb) {
