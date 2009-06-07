@@ -6,7 +6,18 @@ import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
-public class Dialogs {
+/**
+ * Collection of utilty methods dealing with creating dialogs.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
+public final class Dialogs {
+
+	private Dialogs() {
+		// Suppress default constructor to ensure non-instantiability.
+		throw new AssertionError("Instantiation not allowed");
+	}
 
 	public static class CancelledException extends Exception {
 
