@@ -7,7 +7,7 @@ import com.bluespot.forms.model.input.AggregateInputMethod;
 import com.bluespot.forms.model.validation.CommittableValidator;
 import com.bluespot.forms.model.validation.ValidationResult;
 import com.bluespot.forms.model.validation.Validator;
-import com.bluespot.property.DefaultPropertySheet;
+import com.bluespot.forms.property.DefaultPropertySheet;
 
 public class CommittableGroup extends Committable<DefaultPropertySheet> {
 

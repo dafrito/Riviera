@@ -3,7 +3,7 @@ package com.bluespot.forms.model.input;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bluespot.property.DefaultPropertySheet;
+import com.bluespot.forms.property.DefaultPropertySheet;
 
 public class AggregateInputMethod extends InputMethod<DefaultPropertySheet> {
 
