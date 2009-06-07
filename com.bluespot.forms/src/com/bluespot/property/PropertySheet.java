@@ -23,6 +23,8 @@ public interface PropertySheet {
 	 */
 	public static class ImmutablePropertySheetException extends UnsupportedOperationException {
 
+		private static final long serialVersionUID = 4928697227065289551L;
+
 		/**
 		 * Creates a new {@link ImmutablePropertySheetException}.
 		 */
