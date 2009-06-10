@@ -12,6 +12,30 @@ import javax.swing.UIManager;
 public class Runner {
 
 	/**
+	 * Runs the specified runnable on the EDT. The class provided must have a
+	 * zero-argument constructor.
+	 * 
+	 * @param klass
+	 *            the class from which a runnable is created
+	 */
+	public static void run(final Class<? extends Runnable> klass) {
+		Runner.run(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					klass.newInstance().run();
+				} catch (final InstantiationException e) {
+					e.printStackTrace();
+				} catch (final IllegalAccessException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}, true);
+	}
+
+	/**
 	 * Runs the specified runnable, optionally on the EDT.
 	 * <p>
 	 * This will also set the PLAF. Its order of preference will be Nimbus, the
