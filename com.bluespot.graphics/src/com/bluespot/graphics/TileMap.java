@@ -30,8 +30,7 @@ public abstract class TileMap<T> implements Paintable {
 
 	public Dimension getSize() {
 		final Dimension size = this.getTileSize();
-		final Table<T> table = this.table;
-		Geometry.scale(size, table.getWidth() + .5, table.getHeight() + 2);
+		Geometry.scale(size, this.table.getWidth() + .5, this.table.getHeight() + 2);
 		return size;
 	}
 
@@ -56,7 +55,7 @@ public abstract class TileMap<T> implements Paintable {
 
 	}
 
-	private Point adjustForOrigin(final Graphics2D g, final Point origin) {
+	private Point adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
 
 		// Offset the origin so that the tile is drawn in-line with the other
 		// tiles.
@@ -66,32 +65,32 @@ public abstract class TileMap<T> implements Paintable {
 		offset.y %= this.getTileHeight();
 		g.translate(-offset.x, -offset.y);
 
-		g.translate(origin.x, origin.y);
+		g.translate(targetOrigin.x, targetOrigin.y);
 
 		// Get the position of the "major" tile
-		origin.x /= this.getTileWidth();
-		origin.y /= this.getTileHeight();
+		targetOrigin.x /= this.getTileWidth();
+		targetOrigin.y /= this.getTileHeight();
 
 		// Multiply by two since our rows are overlapping
-		origin.y *= 2;
+		targetOrigin.y *= 2;
 
 		// Move up one row and column; it's the easiest way to ensure we're
 		// rendering everything
-		origin.x--;
-		origin.y -= 2;
+		targetOrigin.x--;
+		targetOrigin.y -= 2;
 
 		g.translate(-this.getTileWidth(), -this.getTileHeight());
-		if (origin.x < 0) {
+		if (targetOrigin.x < 0) {
 			g.translate(this.getTileWidth(), 0);
 		}
-		if (origin.y < 0) {
+		if (targetOrigin.y < 0) {
 			g.translate(0, this.getTileHeight());
 		}
 
-		origin.x = Math.min(this.table.getWidth() - 1, Math.max(0, origin.x));
-		origin.y = Math.min(this.table.getHeight() - 1, Math.max(0, origin.y));
+		targetOrigin.x = Math.min(this.table.getWidth() - 1, Math.max(0, targetOrigin.x));
+		targetOrigin.y = Math.min(this.table.getHeight() - 1, Math.max(0, targetOrigin.y));
 
-		return origin;
+		return targetOrigin;
 	}
 
 	private void renderTable(final Graphics2D g, final Table<T> renderedTable, final Dimension initialOffset) {
@@ -121,7 +120,7 @@ public abstract class TileMap<T> implements Paintable {
 		tileSize.height /= this.getTileHeight();
 		tileSize.height *= 2;
 
-		// God knows how many tiles we'll need to render, so just render "alot"
+		// God knows how many tiles we'll need to render, so just render a lot
 		// more than we need.
 		tileSize.width += 3;
 		tileSize.height += 2;
