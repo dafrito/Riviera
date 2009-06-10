@@ -1,17 +1,28 @@
 package com.bluespot.swing;
 
-import java.awt.Component;
+import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.util.ConcurrentModificationException;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.SingleSelectionModel;
+import javax.swing.SwingUtilities;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataListener;
 
+import com.bluespot.collections.observable.list.ListWorker;
+import com.bluespot.collections.observable.list.ObservableList;
+import com.bluespot.collections.observable.list.Observables;
 import com.bluespot.geom.Geometry;
+import com.bluespot.logic.Adapters;
+import com.bluespot.logic.adapters.Adapter;
 
 /**
  * A collection of utility methods dealing with Swing components.
@@ -20,6 +31,132 @@ import com.bluespot.geom.Geometry;
  * 
  */
 public final class Components {
+
+	/**
+	 * Populates the specified container with elements in the
+	 * {@link ObservableList}. The list will be monitored and the container's
+	 * children will be synchronized with the specified list.
+	 * <p>
+	 * This does the necessary work to update the list on Swing's event dispatch
+	 * thread.
+	 * 
+	 * @param container
+	 *            the container to populate. It cannot contain any children and
+	 *            should not be modified once connected.
+	 * @param components
+	 *            the list of components. It may be freely modified and the
+	 *            containers children will be updated accordingly.
+	 * @return the listener added to {@code components}. It is already added to
+	 *         the specified list, and is only returned if you need to remove it
+	 *         later.
+	 * @throws NullPointerException
+	 *             if either argument is null
+	 * @throws IllegalArgumentException
+	 *             if {@code container} is not empty
+	 */
+	public static ListDataListener connect(final JComponent container,
+			final ObservableList<? extends JComponent> components) {
+		return Observables.listenOnEdt(components, new ComponentListWorker(container));
+	}
+
+	/**
+	 * Populates the specified container with elements in the
+	 * {@link ObservableList}. The list will be monitored and the container's
+	 * children will be synchronized with the specified list.
+	 * <p>
+	 * The specified adapter will be used to generate the constraints for the
+	 * specified component.
+	 * <p>
+	 * This does the necessary work to update the list on Swing's event dispatch
+	 * thread.
+	 * 
+	 * @param container
+	 *            the container to populate. It cannot contain any children and
+	 *            should not be modified once connected.
+	 * @param components
+	 *            the list of components. It may be freely modified and the
+	 *            containers children will be updated accordingly.
+	 * @param adapter
+	 *            the adapter that creates the constraints for the specified
+	 *            component
+	 * @return the listener added to {@code components}. It is already added to
+	 *         the specified list, and is only returned if you need to remove it
+	 *         later.
+	 * @throws NullPointerException
+	 *             if either argument is null
+	 * @throws IllegalArgumentException
+	 *             if {@code container} is not empty
+	 */
+	public static ListDataListener connectWithConstraints(final JComponent container,
+			final ObservableList<? extends JComponent> components, final Adapter<? super JComponent, ?> adapter) {
+		return Observables.listenOnEdt(components, new ComponentListWorker(container) {
+
+			@Override
+			protected Object getConstraints(final JComponent newValue) {
+				return adapter.adapt(newValue);
+			}
+
+		});
+	}
+
+	/**
+	 * Connects a list of components with a container. A {@link CardLayout} will
+	 * be used in the specified container, and the selection model will
+	 * determine which element will be shown.
+	 * 
+	 * @param components
+	 *            the components that populate the container
+	 * @param model
+	 *            the selection model that determines the visible component
+	 * @param container
+	 *            the container that is populated by {@code components}
+	 */
+	public static void connectWithCardLayout(final ObservableList<? extends JComponent> components,
+			final SingleSelectionModel model, final JComponent container) {
+		if (components == null) {
+			throw new NullPointerException("components is null");
+		}
+		if (model == null) {
+			throw new NullPointerException("model is null");
+		}
+		if (container == null) {
+			throw new NullPointerException("container is null");
+		}
+		if (container.getComponentCount() > 0) {
+			throw new IllegalArgumentException("comntainer is not empty");
+		}
+		final CardLayout layout = new CardLayout();
+		container.setLayout(layout);
+		final Adapter<JComponent, String> adapter = Adapters.componentName();
+		Components.connectWithConstraints(container, components, adapter);
+		final ChangeListener listener = new ChangeListener() {
+
+			public void stateChanged(final ChangeEvent e) {
+				if (container.getLayout() != layout) {
+					throw new IllegalStateException("Container does not have this card layout");
+				}
+				if (model.getSelectedIndex() >= components.size()) {
+					throw new IndexOutOfBoundsException("selected index >= components.size");
+				}
+				if (model.getSelectedIndex() >= 0) {
+					layout.show(container, adapter.adapt(components.get(model.getSelectedIndex())));
+				}
+				// If selectedIndex is < 0, we don't have anything selected, so
+				// don't do anything.
+			}
+		};
+		model.addChangeListener(listener);
+		final Runnable firstTimeRefresh = new Runnable() {
+			public void run() {
+				listener.stateChanged(null);
+			}
+		};
+		if (SwingUtilities.isEventDispatchThread()) {
+			firstTimeRefresh.run();
+		} else {
+			SwingUtilities.invokeLater(firstTimeRefresh);
+		}
+	}
 
 	/**
 	 * Levels of texture interpolation
@@ -88,7 +225,7 @@ public final class Components {
 	 * 
 	 * @param component
 	 *            the frame to center
-	 * @see JFrame#setLocationRelativeTo(Component)
+	 * @see JFrame#setLocationRelativeTo(java.awt.Component)
 	 */
 	public static void center(final JFrame component) {
 		component.setLocationRelativeTo(null);
@@ -149,7 +286,7 @@ public final class Components {
 	 * @return the index of the specified component, otherwise {@code -1} is
 	 *         returned
 	 */
-	public static int getIndexOf(final Container parent, final Component component) {
+	public static int getIndexOf(final Container parent, final JComponent component) {
 		for (int i = 0; i < parent.getComponentCount(); i++) {
 			if (parent.getComponent(i) == component) {
 				return i;
@@ -186,6 +323,80 @@ public final class Components {
 	 */
 	public static void setInterpolation(final Graphics2D g, final Interpolation interpolation) {
 		interpolation.set(g);
+	}
+
+}
+
+/**
+ * A list worker that synchronizes a container with a list of children.
+ * 
+ * @author Aaron Faanes
+ */
+class ComponentListWorker implements ListWorker<JComponent> {
+
+	private int lastSize;
+	private final JComponent container;
+
+	/**
+	 * Constructs a {@code ComponentListWorker} from the specified arguments.
+	 * 
+	 * @param container
+	 *            the container to populate. It cannot contain any children and
+	 *            should not be modified once connected.
+	 * @throws NullPointerException
+	 *             if either argument is null
+	 * @throws IllegalArgumentException
+	 *             if {@code container} is not empty
+	 */
+	public ComponentListWorker(final JComponent container) {
+		if (container == null) {
+			throw new NullPointerException("container is null");
+		}
+		if (container.getComponentCount() > 0) {
+			throw new IllegalArgumentException("container is not empty");
+		}
+		this.container = container;
+	}
+
+	public void elementAdded(final int index, final JComponent newValue) {
+		this.checkForComodification();
+		this.container.add(newValue, this.getConstraints(newValue), index);
+		this.lastSize++;
+		this.container.revalidate();
+	}
+
+	public void elementRemoved(final int index) {
+		this.checkForComodification();
+		this.container.remove(index);
+		this.lastSize--;
+		this.container.revalidate();
+	}
+
+	public void elementSet(final int index, final JComponent newValue) {
+		this.checkForComodification();
+		this.container.remove(index);
+		this.container.add(newValue, this.getConstraints(newValue), index);
+		this.container.revalidate();
+	}
+
+	/**
+	 * @param newValue
+	 *            the value that will have the returned constraints
+	 * @return the layout constraints for the specified component
+	 */
+	protected Object getConstraints(final JComponent newValue) {
+		return null;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("ComponentListWorker[container: %s]", this.container);
+	}
+
+	private void checkForComodification() {
+		if (this.lastSize != this.container.getComponentCount()) {
+			throw new ConcurrentModificationException("Component was modified");
+		}
 	}
 
 }
