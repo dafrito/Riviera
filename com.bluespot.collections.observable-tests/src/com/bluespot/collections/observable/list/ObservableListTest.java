@@ -1,5 +1,8 @@
 package com.bluespot.collections.observable.list;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
@@ -15,7 +18,7 @@ import org.junit.Test;
 
 import com.bluespot.collections.list.ListTest;
 
-public abstract class ObservableListTest extends ListTest {
+public final class ObservableListTest extends ListTest {
 
 	public ObservableList<String> listModel;
 
@@ -43,6 +46,21 @@ public abstract class ObservableListTest extends ListTest {
 
 		});
 
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testNPEOnNullListener() {
+		this.listModel.addListDataListener(null);
+	}
+
+	@Test
+	public void testSilentOnNullListenerRemoved() {
+		this.listModel.removeListDataListener(null);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testNPEOnNullCollectionCtor() {
+		new ObservableList<String>(null);
 	}
 
 	/**
@@ -140,7 +158,9 @@ public abstract class ObservableListTest extends ListTest {
 	@Test
 	public void testRemove() {
 		this.prepopulate();
-		this.listModel.remove("B");
+		assertThat(this.listModel.remove("B"), is(true));
+		assertThat(this.listModel.remove("Some absent value"), is(false));
+
 		Assert.assertThat("Event-list has a mismatched size.", this.eventList.size(), CoreMatchers.is(1));
 		final ListDataEvent event = this.eventList.remove();
 		Assert.assertThat(event.getType(), CoreMatchers.is(ListDataEvent.INTERVAL_REMOVED));
