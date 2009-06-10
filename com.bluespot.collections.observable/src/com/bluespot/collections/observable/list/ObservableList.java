@@ -2,6 +2,7 @@ package com.bluespot.collections.observable.list;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -19,7 +20,7 @@ import com.bluespot.collections.proxies.ListProxy;
  * @param <E>
  *            the type of elements in this list model
  */
-public class ObservableList<E> extends ListProxy<E> implements ListModel {
+public final class ObservableList<E> extends ListProxy<E> implements ListModel {
 
 	private final List<ListDataListener> listeners = new CopyOnWriteArrayList<ListDataListener>();
 
@@ -80,6 +81,9 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 	}
 
 	public void addListDataListener(final ListDataListener listener) {
+		if (listener == null) {
+			throw new NullPointerException("listener is null");
+		}
 		this.listeners.add(listener);
 	}
 
@@ -133,13 +137,25 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 				maximumBounds = maximumBounds == -1 ? index : Math.max(maximumBounds, index);
 			}
 		}
-		if (minimumBounds != -1 || maximumBounds != -1) {
+		if (minimumBounds != -1) {
+			assert maximumBounds != -1;
 			// The list will be affected.
 			super.removeAll(c);
 			this.fireContentsChanged(minimumBounds, maximumBounds);
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Returns an unmodifiable view of the listeners on this list.
+	 * 
+	 * @return an unmodifiable view of the listeners on this list. Any attempt
+	 *         to modify it will generate a
+	 *         {@link UnsupportedOperationException}
+	 */
+	public List<? extends ListDataListener> getListDataListeners() {
+		return Collections.unmodifiableList(this.listeners);
 	}
 
 	public void removeListDataListener(final ListDataListener listener) {
@@ -164,7 +180,8 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 			}
 			index++;
 		}
-		if (minimumBounds != -1 || maximumBounds != -1) {
+		if (minimumBounds != -1) {
+			assert maximumBounds != -1 : "maximumBounds is -1";
 			// The list will be affected.
 			super.retainAll(c);
 			this.fireContentsChanged(minimumBounds, maximumBounds);
@@ -215,8 +232,9 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 
 		});
 
-		this.addListDataListener(new ListDataListener() {
+		this.addListDataListener(new ListDataAdapter() {
 
+			@Override
 			public void contentsChanged(final ListDataEvent e) {
 				for (int index = e.getIndex0(); index <= e.getIndex1(); index++) {
 					if (!this.withinRange(index)) {
@@ -228,15 +246,6 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 
 			public int endIndex() {
 				return offset + sublist.size();
-			}
-
-			public void intervalAdded(final ListDataEvent e) {
-				// Do nothing!
-
-			}
-
-			public void intervalRemoved(final ListDataEvent e) {
-				// Do nothing!
 			}
 
 			public boolean withinRange(final int index) {
@@ -275,7 +284,7 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 	protected void fireIntervalAdded(final int startIndex, final int endIndex) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, startIndex, endIndex);
 		for (final ListDataListener listener : this.listeners) {
-			listener.contentsChanged(event);
+			listener.intervalAdded(event);
 		}
 	}
 
@@ -292,7 +301,7 @@ public class ObservableList<E> extends ListProxy<E> implements ListModel {
 	protected void fireIntervalRemoved(final int startIndex, final int endIndex) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, startIndex, endIndex);
 		for (final ListDataListener listener : this.listeners) {
-			listener.contentsChanged(event);
+			listener.intervalRemoved(event);
 		}
 	}
 
