@@ -4,6 +4,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.bluespot.swing.Components;
+
 /**
  * A scaffold for construction simple {@link JFrame} components to demonstrate
  * functionality.
@@ -24,6 +26,7 @@ public abstract class AbstractDemonstration implements Runnable {
 
 		this.initializeFrame(frame);
 
+		Components.center(frame);
 		frame.setVisible(true);
 
 	}
