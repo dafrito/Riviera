@@ -108,40 +108,40 @@ public final class Geometry {
     }
 
     /**
-     * Flips the specified {@link Dimension} around both axes. For example,
-     * {@code (1, 1)} will become {@code (-1, -1)}.
+     * Flips the specified {@link Dimension} around both axes. For example, a
+     * dimension of {@code (1, 1)} will become {@code (-1, -1)}.
      * 
      * @param dimension
      *            the {@code Dimension} that will be flipped as a result of this
      *            operation
-     * @see Geometry#scale(Dimension, double)
      */
     public static void flip(final Dimension dimension) {
-        Geometry.scale(dimension, -1.0d);
+        dimension.width *= -1;
+        dimension.height *= -1;
     }
 
     /**
-     * Flips the specified {@link Dimension} over the X-axis. For example,
-     * {@code (1, 1)} will become {@code (1, -1)}.
+     * Flips the specified {@link Dimension} over the X-axis. For example, a
+     * dimension of {@code (1, 1)} will become {@code (1, -1)}.
      * 
      * @param dimension
      *            the {@code Dimension} that will be flipped as a result of this
      *            operation
      */
     public static void flipOverX(final Dimension dimension) {
-        Geometry.scale(dimension, 1.0d, -1.0d);
+        dimension.height *= -1;
     }
 
     /**
-     * Flips the specified {@link Dimension} over the Y-axis. For example,
-     * {@code (1, 1)} will become {@code (-1, 1)}.
+     * Flips the specified {@link Dimension} over the Y-axis. For example, a
+     * dimension of {@code (1, 1)} will become {@code (-1, 1)}.
      * 
      * @param dimension
      *            the {@code Dimension} that will be flipped as a result of this
      *            operation
      */
     public static void flipOverY(final Dimension dimension) {
-        Geometry.scale(dimension, -1.0d, 1.0d);
+        dimension.width *= -1;
     }
 
     /**
@@ -214,10 +214,10 @@ public final class Geometry {
      * @param dimension
      *            the {@code Dimension} that will be halved as a result of this
      *            operation
-     * @see Geometry#scale(Dimension, double)
+     * @see Geometry#divide(Dimension, double)
      */
     public static void half(final Dimension dimension) {
-        Geometry.scale(dimension, .5d);
+        Geometry.divide(dimension, 2);
     }
 
     /**
@@ -307,33 +307,25 @@ public final class Geometry {
     }
 
     /**
-     * Multiply the specified {@link Dimension} by the specified multiplier.
-     * Scaling works as follows:
-     * <ul>
-     * <li>{@code 1.0} will do nothing
-     * <li>{@code 0.0} will make an empty dimension
-     * <li>{@code 2.0} will double its current size.
-     * </ul>
+     * Multiply the specified {@link Dimension} by the specified multiplier. The
+     * dimension's width and height will be multiplied by the specified
+     * multiplier.
      * 
      * @param dimension
      *            the {@code Dimension} to scale. It will be modified by this
      *            operation.
      * @param multiplier
      *            the scale
-     * @see Geometry#scale(Dimension, double, double)
+     * @see Geometry#multiply(Dimension, double, double)
      */
-    public static void scale(final Dimension dimension, final double multiplier) {
-        Geometry.scale(dimension, multiplier, multiplier);
+    public static void multiply(final Dimension dimension, final double multiplier) {
+        Geometry.multiply(dimension, multiplier, multiplier);
     }
 
     /**
-     * Multiply the specified {@link Dimension} by the specified multiplier.
-     * Scaling works as follows:
-     * <ul>
-     * <li>{@code 1.0} will do nothing
-     * <li>{@code 0.0} will make an empty dimension
-     * <li>{@code 2.0} will double its current size.
-     * </ul>
+     * Multiply the specified {@link Dimension} by the specified multiplier. The
+     * dimension's width and height will be multiplied by their respective
+     * multipliers.
      * 
      * @param dimension
      *            the {@code Dimension} that will be modified by this operation
@@ -341,9 +333,58 @@ public final class Geometry {
      *            The width's multiplier
      * @param heightMultiplier
      *            The height's multiplier
+     * @see #divide(Dimension, double, double)
      */
-    public static void scale(final Dimension dimension, final double widthMultiplier, final double heightMultiplier) {
+    public static void multiply(final Dimension dimension, final double widthMultiplier, final double heightMultiplier) {
         dimension.setSize(dimension.width * widthMultiplier, dimension.height * heightMultiplier);
+    }
+
+    /**
+     * Divides the specified {@link Dimension} by the specified denominators.
+     * The dimensions width and height will be divided by their respective
+     * denominators.
+     * 
+     * @param dimension
+     *            the {@code Dimension} that will be modified by this operation
+     * @param widthDenominator
+     *            A non-zero value that acts as the denominator for width in
+     *            this division operation.
+     * @param heightDenominator
+     *            A non-zero value that acts as the denominator for height in
+     *            this division operation.
+     * @throws IllegalArgumentException
+     *             if either denominator is zero
+     * @see #multiply(Dimension, double, double)
+     */
+    public static void divide(final Dimension dimension, final double widthDenominator, final double heightDenominator) {
+        if (widthDenominator == 0) {
+            throw new IllegalArgumentException("widthDenominator is zero");
+        }
+        if (heightDenominator == 0) {
+            throw new IllegalArgumentException("heightDenominator is zero");
+        }
+        dimension.setSize(dimension.width / widthDenominator, dimension.height / heightDenominator);
+    }
+
+    /**
+     * Divides the specified {@link Dimension} by the specified denominator. The
+     * dimension's width and height will be divided by the specified
+     * denominator.
+     * 
+     * @param dimension
+     *            the {@code Dimension} that will be modified by this operation
+     * @param denominator
+     *            A non-zero value that acts as the denominator for both width
+     *            and height in this division operation
+     * @throws IllegalArgumentException
+     *             if either denominator is zero
+     * @see #divide(Dimension, double, double)
+     */
+    public static void divide(final Dimension dimension, final double denominator) {
+        if (denominator == 0) {
+            throw new IllegalArgumentException("denominator is zero");
+        }
+        Geometry.divide(dimension, denominator, denominator);
     }
 
     /**
@@ -354,14 +395,14 @@ public final class Geometry {
      * @param rectangle
      *            the target {@code Rectangle} that will be modified by this
      *            operation
-     * @param scale
+     * @param multiplier
      *            the amount that the {@code Rectangle} will be scaled by
-     * @see Geometry#scale(Dimension, double)
+     * @see Geometry#multiply(Dimension, double)
      * @see Geometry#alignCenter(Rectangle, Point)
      */
-    public static void scale(final Rectangle rectangle, final double scale) {
+    public static void multiply(final Rectangle rectangle, final double multiplier) {
         final Dimension dimension = rectangle.getSize();
-        Geometry.scale(dimension, scale);
+        Geometry.multiply(dimension, multiplier);
         rectangle.setSize(dimension);
     }
 
