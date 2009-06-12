@@ -12,12 +12,12 @@ import javax.swing.event.ChangeListener;
  */
 public interface StateChangeListener<T> extends ChangeListener {
 
-	/**
-	 * This method is invoked whenever the state is about to change. The
-	 * specified event describes the change.
-	 * 
-	 * @param event
-	 *            the event that describes the state change
-	 */
-	void stateChanging(StateChangeEvent<T> event);
+    /**
+     * This method is invoked whenever the state is about to change. The
+     * specified event describes the change.
+     * 
+     * @param event
+     *            the event that describes the state change
+     */
+    void stateChanging(StateChangeEvent<T> event);
 }

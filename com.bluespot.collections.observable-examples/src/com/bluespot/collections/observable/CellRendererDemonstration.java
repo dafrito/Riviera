@@ -27,87 +27,87 @@ import com.bluespot.demonstration.Runner;
  */
 public final class CellRendererDemonstration extends AbstractDemonstration {
 
-	private static class MyCellRenderer extends JLabel implements ListCellRenderer {
+    private static class MyCellRenderer extends JLabel implements ListCellRenderer {
 
-		public MyCellRenderer() {
-			// Default constructor, defined explicitly to remove
-			// synthetic-access problems
-		}
+        public MyCellRenderer() {
+            // Default constructor, defined explicitly to remove
+            // synthetic-access problems
+        }
 
-		private static final long serialVersionUID = 5217981785927203654L;
+        private static final long serialVersionUID = 5217981785927203654L;
 
-		public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
-				final boolean isSelected, final boolean cellHasFocus) {
-			this.setOpaque(true);
-			this.setText(String.valueOf(value.toString().length()));
-			if (isSelected) {
-				this.setForeground(Color.WHITE);
-				this.setBackground(Color.BLUE);
-				this.setText(value.toString());
-			} else {
-				this.setForeground(Color.BLACK);
-				this.setBackground(Color.WHITE);
-			}
-			return this;
-		}
+        public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
+                final boolean isSelected, final boolean cellHasFocus) {
+            this.setOpaque(true);
+            this.setText(String.valueOf(value.toString().length()));
+            if (isSelected) {
+                this.setForeground(Color.WHITE);
+                this.setBackground(Color.BLUE);
+                this.setText(value.toString());
+            } else {
+                this.setForeground(Color.BLACK);
+                this.setBackground(Color.WHITE);
+            }
+            return this;
+        }
 
-	}
+    }
 
-	private final JList list = new JList();
+    private final JList list = new JList();
 
-	@Override
-	public void initializeFrame(final JFrame frame) {
+    @Override
+    public void initializeFrame(final JFrame frame) {
 
-		this.list.setCellRenderer(new MyCellRenderer());
+        this.list.setCellRenderer(new MyCellRenderer());
 
-		final ObservableList<String> strings = new ObservableList<String>();
-		this.list.setModel(strings);
+        final ObservableList<String> strings = new ObservableList<String>();
+        this.list.setModel(strings);
 
-		this.populateList(strings);
+        this.populateList(strings);
 
-		frame.setLayout(new BorderLayout());
-		frame.setSize(400, 400);
-		frame.getContentPane().add(new JScrollPane(this.list), BorderLayout.CENTER);
+        frame.setLayout(new BorderLayout());
+        frame.setSize(400, 400);
+        frame.getContentPane().add(new JScrollPane(this.list), BorderLayout.CENTER);
 
-		final JPanel panel = new JPanel();
+        final JPanel panel = new JPanel();
 
-		final JButton removeButton = new JButton("Remove");
-		removeButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				strings.remove(0);
-				removeButton.setEnabled(!strings.isEmpty());
-			}
-		});
-		removeButton.setEnabled(false);
-		panel.add(removeButton);
+        final JButton removeButton = new JButton("Remove");
+        removeButton.addActionListener(new ActionListener() {
+            public void actionPerformed(final ActionEvent arg0) {
+                strings.remove(0);
+                removeButton.setEnabled(!strings.isEmpty());
+            }
+        });
+        removeButton.setEnabled(false);
+        panel.add(removeButton);
 
-		final JButton addButton = new JButton("Add");
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(final ActionEvent arg0) {
-				strings.add("Hello, world! This is element " + strings.size());
-				removeButton.setEnabled(true);
-			}
-		});
-		panel.add(addButton);
+        final JButton addButton = new JButton("Add");
+        addButton.addActionListener(new ActionListener() {
+            public void actionPerformed(final ActionEvent arg0) {
+                strings.add("Hello, world! This is element " + strings.size());
+                removeButton.setEnabled(true);
+            }
+        });
+        panel.add(addButton);
 
-		frame.getContentPane().add(panel, BorderLayout.SOUTH);
-	}
+        frame.getContentPane().add(panel, BorderLayout.SOUTH);
+    }
 
-	private void populateList(final List<String> targetList) {
-		final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-		for (int i = 0; i < alphabet.length(); i++) {
-			targetList.add(String.valueOf(alphabet.charAt(i)));
-		}
-	}
+    private void populateList(final List<String> targetList) {
+        final String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        for (int i = 0; i < alphabet.length(); i++) {
+            targetList.add(String.valueOf(alphabet.charAt(i)));
+        }
+    }
 
-	/**
-	 * Creates a new {@link CellRendererDemonstration}.
-	 * 
-	 * @param args
-	 *            unused
-	 */
-	public static void main(final String[] args) {
-		Runner.run(new CellRendererDemonstration(), true);
-	}
+    /**
+     * Creates a new {@link CellRendererDemonstration}.
+     * 
+     * @param args
+     *            unused
+     */
+    public static void main(final String[] args) {
+        Runner.run(new CellRendererDemonstration(), true);
+    }
 
 }
