@@ -27,46 +27,46 @@ import com.bluespot.logging.handlers.ListHandler;
  */
 public final class ListHandlerDemonstration extends AbstractDemonstration {
 
-	@Override
-	public void initializeFrame(final JFrame frame) {
-		frame.setSize(400, 400);
+    @Override
+    public void initializeFrame(final JFrame frame) {
+        frame.setSize(400, 400);
 
-		final JSplitPane splitPane = new JSplitPane();
-		frame.setContentPane(splitPane);
+        final JSplitPane splitPane = new JSplitPane();
+        frame.setContentPane(splitPane);
 
-		final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
+        final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
 
-		final JList list = new JList(this.createLoggingListModel(logger));
+        final JList list = new JList(this.createLoggingListModel(logger));
 
-		splitPane.setLeftComponent(new JScrollPane(list));
+        splitPane.setLeftComponent(new JScrollPane(list));
 
-		final JPanel panel = new JPanel();
-		panel.addMouseListener(new MouseInputAdapter() {
+        final JPanel panel = new JPanel();
+        panel.addMouseListener(new MouseInputAdapter() {
 
-			@Override
-			public void mouseClicked(final MouseEvent event) {
-				logger.info(event.toString());
-			}
+            @Override
+            public void mouseClicked(final MouseEvent event) {
+                logger.info(event.toString());
+            }
 
-		});
-		splitPane.setRightComponent(panel);
-	}
+        });
+        splitPane.setRightComponent(panel);
+    }
 
-	private ListModel createLoggingListModel(final Logger associatedLogger) {
-		final ObservableList<LogRecord> listModel = new ObservableList<LogRecord>();
-		final Handler handler = new ListHandler(listModel);
-		associatedLogger.addHandler(handler);
-		return listModel;
-	}
+    private ListModel createLoggingListModel(final Logger associatedLogger) {
+        final ObservableList<LogRecord> listModel = new ObservableList<LogRecord>();
+        final Handler handler = new ListHandler(listModel);
+        associatedLogger.addHandler(handler);
+        return listModel;
+    }
 
-	/**
-	 * Creates a new list handler demonstration.
-	 * 
-	 * @param args
-	 *            unused
-	 */
-	public static void main(final String[] args) {
-		Runner.run(new ListHandlerDemonstration(), true);
-	}
+    /**
+     * Creates a new list handler demonstration.
+     * 
+     * @param args
+     *            unused
+     */
+    public static void main(final String[] args) {
+        Runner.run(new ListHandlerDemonstration(), true);
+    }
 
 }

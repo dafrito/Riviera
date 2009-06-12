@@ -18,49 +18,49 @@ import java.util.regex.Pattern;
  */
 public class RegexPredicate<T> implements Predicate<T> {
 
-	private final Pattern pattern;
+    private final Pattern pattern;
 
-	/**
-	 * Constructs a predicate using the specified pattern
-	 * 
-	 * @param pattern
-	 *            the pattern used in this predicate
-	 */
-	public RegexPredicate(final Pattern pattern) {
-		if (pattern == null) {
-			throw new NullPointerException("pattern is null");
-		}
-		this.pattern = pattern;
-	}
+    /**
+     * Constructs a predicate using the specified pattern
+     * 
+     * @param pattern
+     *            the pattern used in this predicate
+     */
+    public RegexPredicate(final Pattern pattern) {
+        if (pattern == null) {
+            throw new NullPointerException("pattern is null");
+        }
+        this.pattern = pattern;
+    }
 
-	/**
-	 * Returns the regular expression used in this predicate.
-	 * 
-	 * @return the regular expression used in this predicate
-	 */
-	public Pattern getPattern() {
-		return this.pattern;
-	}
+    /**
+     * Returns the regular expression used in this predicate.
+     * 
+     * @return the regular expression used in this predicate
+     */
+    public Pattern getPattern() {
+        return this.pattern;
+    }
 
-	/**
-	 * Returns the string version of the specified non-null value.
-	 * <p>
-	 * By default, this calls {@link Object#toString()}.
-	 * 
-	 * @param value
-	 *            the value used to generate the string
-	 * @return the string value of the specified value
-	 */
-	protected String getString(final T value) {
-		return value.toString();
-	}
+    /**
+     * Returns the string version of the specified non-null value.
+     * <p>
+     * By default, this calls {@link Object#toString()}.
+     * 
+     * @param value
+     *            the value used to generate the string
+     * @return the string value of the specified value
+     */
+    protected String getString(final T value) {
+        return value.toString();
+    }
 
-	@Override
-	public boolean test(final T value) {
-		if (value == null) {
-			return false;
-		}
-		return this.getPattern().matcher(this.getString(value)).matches();
-	}
+    @Override
+    public boolean test(final T value) {
+        if (value == null) {
+            return false;
+        }
+        return this.getPattern().matcher(this.getString(value)).matches();
+    }
 
 }

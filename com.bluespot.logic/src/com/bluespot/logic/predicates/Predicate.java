@@ -14,12 +14,12 @@ package com.bluespot.logic.predicates;
  */
 public interface Predicate<T> {
 
-	/**
-	 * Tests the specified value.
-	 * 
-	 * @param value
-	 *            the value to evaluate
-	 * @return some boolean value
-	 */
-	public boolean test(final T value);
+    /**
+     * Tests the specified value.
+     * 
+     * @param value
+     *            the value to evaluate
+     * @return some boolean value
+     */
+    public boolean test(final T value);
 }

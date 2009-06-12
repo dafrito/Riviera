@@ -15,50 +15,50 @@ import com.bluespot.logic.predicates.AdaptingPredicate;
  */
 public final class AdaptingPredicateBuilder<S, D> extends PredicateBuilder<S> {
 
-	private final Adapter<? super S, D> adapter;
-	private final PredicateBuilder<D> builder;
+    private final Adapter<? super S, D> adapter;
+    private final PredicateBuilder<D> builder;
 
-	/**
-	 * Constructs a new builder using the specified adapter for conversion.
-	 * 
-	 * @param adapter
-	 *            the adapter used for conversion
-	 */
-	public AdaptingPredicateBuilder(final Adapter<? super S, D> adapter) {
-		if (adapter == null) {
-			throw new NullPointerException("adapter is null");
-		}
-		this.adapter = adapter;
-		this.builder = new PredicateBuilder<D>();
-	}
+    /**
+     * Constructs a new builder using the specified adapter for conversion.
+     * 
+     * @param adapter
+     *            the adapter used for conversion
+     */
+    public AdaptingPredicateBuilder(final Adapter<? super S, D> adapter) {
+        if (adapter == null) {
+            throw new NullPointerException("adapter is null");
+        }
+        this.adapter = adapter;
+        this.builder = new PredicateBuilder<D>();
+    }
 
-	/**
-	 * Returns the adapter used in conversion.
-	 * 
-	 * @return the adapter used in conversion
-	 */
-	public Adapter<? super S, D> getAdapter() {
-		return this.adapter;
-	}
+    /**
+     * Returns the adapter used in conversion.
+     * 
+     * @return the adapter used in conversion
+     */
+    public Adapter<? super S, D> getAdapter() {
+        return this.adapter;
+    }
 
-	/**
-	 * Returns the builder used to construct this predicate. This refers to the
-	 * predicate for the converted value.
-	 * 
-	 * @return the builder used to construct this predicate.
-	 */
-	public PredicateBuilder<D> getBuilder() {
-		return this.builder;
-	}
+    /**
+     * Returns the builder used to construct this predicate. This refers to the
+     * predicate for the converted value.
+     * 
+     * @return the builder used to construct this predicate.
+     */
+    public PredicateBuilder<D> getBuilder() {
+        return this.builder;
+    }
 
-	@Override
-	public AdaptingPredicate<S, D> build() {
-		return new AdaptingPredicate<S, D>(this.adapter, this.builder.build());
-	}
+    @Override
+    public AdaptingPredicate<S, D> build() {
+        return new AdaptingPredicate<S, D>(this.adapter, this.builder.build());
+    }
 
-	@Override
-	public String toString() {
-		return String.format("has %s that is %s", this.getAdapter(), this.getBuilder());
-	}
+    @Override
+    public String toString() {
+        return String.format("has %s that is %s", this.getAdapter(), this.getBuilder());
+    }
 
 }
