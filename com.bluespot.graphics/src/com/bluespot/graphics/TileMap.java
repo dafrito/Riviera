@@ -9,19 +9,41 @@ import java.awt.geom.Point2D;
 import com.bluespot.collections.table.Table;
 import com.bluespot.geom.Geometry;
 
+/**
+ * A {@link Paintable} that will output a {@link Table}.
+ * 
+ * @author Aaron Faanes
+ * 
+ * @param <T>
+ *            the type of element in the table
+ */
 public abstract class TileMap<T> implements Paintable {
 
 	private final int tileHeight;
 
 	private final int tileWidth;
+
 	/**
 	 * The point (in map coordinates) which should be at 0,0 in screen
 	 * coordinates
 	 */
 	protected Point2D.Double origin = new Point2D.Double();
 
+	/**
+	 * The {@link Table} used as the data source for this tile map
+	 */
 	protected final Table<T> table;
 
+	/**
+	 * Constructs a tile map that will output the specified table.
+	 * 
+	 * @param table
+	 *            the drawn table
+	 * @param tileWidth
+	 *            the width of each tile
+	 * @param tileHeight
+	 *            the height of each tile
+	 */
 	public TileMap(final Table<T> table, final int tileWidth, final int tileHeight) {
 		this.table = table;
 		this.tileHeight = tileHeight;
@@ -48,11 +70,6 @@ public abstract class TileMap<T> implements Paintable {
 
 	public void paint(final Graphics2D g, final int width, final int height) {
 		this.doRender(g);
-	}
-
-	public void scrollTo(final Point point) {
-		System.out.println(point);
-
 	}
 
 	private Point adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
@@ -137,10 +154,37 @@ public abstract class TileMap<T> implements Paintable {
 		originalG.draw(originalG.getClip());
 	}
 
+	/**
+	 * A (poorly-named) method that is called whenever a new row is entered. The
+	 * dimension returned will be used to adjust the graphics context.
+	 * 
+	 * @param location
+	 *            the new row
+	 * @return the offset of the graphics context for the specified row
+	 */
 	protected Dimension newRow(final Point location) {
 		return new Dimension(0, 0);
 	}
 
-	protected abstract void paintTile(Graphics2D g, T value, Point location, int width, int height);
+	/**
+	 * Paints the specified tile. The tile should be drawn in a rectangle with
+	 * the top-left corner at the origin, and the size being the {@code width}
+	 * and {@code height}.
+	 * 
+	 * @param g
+	 *            the context to use to draw the tile
+	 * @param value
+	 *            the value of the current tile
+	 * @param tableIndex
+	 *            the index of the tile in the table. Do not use this as the
+	 *            origin - it will not work.
+	 * @param width
+	 *            the width of the tile. Any painting should completely fill
+	 *            this space.
+	 * @param height
+	 *            the height of the tile. Any painting should completely fill
+	 *            this space.
+	 */
+	protected abstract void paintTile(Graphics2D g, T value, Point tableIndex, int width, int height);
 
 }
