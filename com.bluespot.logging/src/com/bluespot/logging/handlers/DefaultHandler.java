@@ -11,14 +11,14 @@ import java.util.logging.Handler;
  */
 public abstract class DefaultHandler extends Handler {
 
-	@Override
-	public void close() throws SecurityException {
-		// Do nothing; this has no resources to close
-	}
+    @Override
+    public void close() throws SecurityException {
+        // Do nothing; this has no resources to close
+    }
 
-	@Override
-	public void flush() {
-		// Do nothing; this has no resources to flush
-	}
+    @Override
+    public void flush() {
+        // Do nothing; this has no resources to flush
+    }
 
 }
