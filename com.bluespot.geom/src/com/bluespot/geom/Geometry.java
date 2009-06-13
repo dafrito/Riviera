@@ -364,7 +364,8 @@ public final class Geometry {
         if (heightDenominator == 0) {
             throw new IllegalArgumentException("heightDenominator is zero");
         }
-        dimension.setSize(dimension.width / widthDenominator, dimension.height / heightDenominator);
+        dimension.width = (int) (dimension.width / widthDenominator);
+        dimension.height = (int) (dimension.height / heightDenominator);
     }
 
     /**
