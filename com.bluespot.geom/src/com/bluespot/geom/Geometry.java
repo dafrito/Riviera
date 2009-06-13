@@ -248,28 +248,29 @@ public final class Geometry {
     }
 
     /**
-     * Interpolates a {@link Point} between the given source and destination
-     * {@code Point} objects.
-     * <p>
-     * Typically, {@code interpolation} would be between {@code 0.0} and {@code
-     * 1.0} but larger, or negative, values may be used to generate points that
-     * are on the slope of the specified points.
+     * Creates a new {@link Point} that is interpolated between the given source
+     * and destination {@code Point} objects. The exact location of the returned
+     * point is determined by the value of {@code interpolation}. This method
+     * may be used to extrapolate points as well.
      * 
      * @param source
-     *            the source, or starting, {@code Point}
+     *            the source, or starting, {@code Point}. It is not modified by
+     *            this method.
      * @param destination
-     *            the final, or end, {@code Point}
+     *            the final, or end, {@code Point}. It is not modified by this
+     *            method.
      * @param interpolation
      *            the percent that the created point should use to interpolate.
      *            For example:
      *            <ul>
      *            <li>{@code 0.0} will make the created point equal to {@code
-     *            source} <li>{@code 1.0} will make the created point equal to
-     *            {@code destination} <li>{@code 2.0} will make the created
-     *            point be on the line made by the two specified points, but
-     *            twice as far away from {@code source} as {@code destination}
-     *            currently is.
-     * @return the interpolated {@code Point}
+     *            source}
+     *            <li>{@code 1.0} will make the created point equal to {@code
+     *            destination}
+     *            <li>{@code 2.0} will make the created point be on the line
+     *            made by the two specified points, but twice as far away from
+     *            {@code source} as {@code destination} currently is.
+     * @return a new, interpolated {@code Point}
      */
     public static Point interpolate(final Point source, final Point destination, final double interpolation) {
         final Dimension bounds = Geometry.bounds(source, destination);
