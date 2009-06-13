@@ -341,9 +341,30 @@ public final class Geometry {
     }
 
     /**
+     * Multiply the dimensions of the specified {@link Rectangle} by the
+     * specified multiplier. The {@code Rectangle} will remain aligned to its
+     * original top-left corner.
+     * 
+     * @param rectangle
+     *            the target {@code Rectangle} that will be modified by this
+     *            operation
+     * @param multiplier
+     *            the amount that the {@code Rectangle} will be scaled by
+     * @see Geometry#multiply(Dimension, double)
+     */
+    public static void multiply(final Rectangle rectangle, final double multiplier) {
+        final Dimension dimension = rectangle.getSize();
+        Geometry.multiply(dimension, multiplier);
+        rectangle.setSize(dimension);
+    }
+
+    /**
      * Divides the specified {@link Dimension} by the specified denominators.
      * The dimensions width and height will be divided by their respective
      * denominators.
+     * 
+     * <p>
+     * Values will be truncated using {@link Math#floor(double)}.
      * 
      * @param dimension
      *            the {@code Dimension} that will be modified by this operation
@@ -372,6 +393,8 @@ public final class Geometry {
      * Divides the specified {@link Dimension} by the specified denominator. The
      * dimension's width and height will be divided by the specified
      * denominator.
+     * <p>
+     * Values will be truncated using {@link Math#floor(double)}.
      * 
      * @param dimension
      *            the {@code Dimension} that will be modified by this operation
@@ -387,25 +410,6 @@ public final class Geometry {
             throw new IllegalArgumentException("denominator is zero");
         }
         Geometry.divide(dimension, denominator, denominator);
-    }
-
-    /**
-     * Scales the specified {@link Rectangle} by the specified scale. The
-     * resulting {@code Rectangle} will remain aligned to its original top-left
-     * corner.
-     * 
-     * @param rectangle
-     *            the target {@code Rectangle} that will be modified by this
-     *            operation
-     * @param multiplier
-     *            the amount that the {@code Rectangle} will be scaled by
-     * @see Geometry#multiply(Dimension, double)
-     * @see Geometry#alignCenter(Rectangle, Point)
-     */
-    public static void multiply(final Rectangle rectangle, final double multiplier) {
-        final Dimension dimension = rectangle.getSize();
-        Geometry.multiply(dimension, multiplier);
-        rectangle.setSize(dimension);
     }
 
     /**
