@@ -17,6 +17,31 @@ public final class Geometry {
         throw new AssertionError("This class cannot be instantiated");
     }
 
+    public static final Operations Floor = new AbstractOperations() {
+
+        @Override
+        protected int asInteger(final double value) {
+            return (int) Math.floor(value);
+        }
+
+    };
+
+    public static final Operations Round = new AbstractOperations() {
+
+        @Override
+        protected int asInteger(final double value) {
+            return (int) Math.round(value);
+        }
+    };
+
+    public static final Operations Ceil = new AbstractOperations() {
+
+        @Override
+        protected int asInteger(final double value) {
+            return (int) Math.ceil(value);
+        }
+    };
+
     /**
      * Vertically and horizontally centers the given {@link Rectangle} over the
      * given point.
@@ -29,7 +54,7 @@ public final class Geometry {
      */
     public static void alignCenter(final Rectangle rectangle, final Point center) {
         final Dimension halfDim = rectangle.getSize();
-        Geometry.half(halfDim);
+        Geometry.Round.halfSize(halfDim);
         rectangle.setLocation(new Point(center.x - halfDim.width, center.y - halfDim.height));
     }
 
@@ -209,18 +234,6 @@ public final class Geometry {
     }
 
     /**
-     * Halves the specified {@link Dimension}.
-     * 
-     * @param dimension
-     *            the {@code Dimension} that will be halved as a result of this
-     *            operation
-     * @see Geometry#divide(Dimension, double)
-     */
-    public static void half(final Dimension dimension) {
-        Geometry.divide(dimension, 2);
-    }
-
-    /**
      * Creates an {@link Insets} object with values of the given magnitude on
      * all sides.
      * 
@@ -305,111 +318,6 @@ public final class Geometry {
      */
     public static int minAxis(final Dimension dimension) {
         return Math.abs(dimension.width) < Math.abs(dimension.height) ? dimension.width : dimension.height;
-    }
-
-    /**
-     * Multiply the specified {@link Dimension} by the specified multiplier. The
-     * dimension's width and height will be multiplied by the specified
-     * multiplier.
-     * 
-     * @param dimension
-     *            the {@code Dimension} to scale. It will be modified by this
-     *            operation.
-     * @param multiplier
-     *            the scale
-     * @see Geometry#multiply(Dimension, double, double)
-     */
-    public static void multiply(final Dimension dimension, final double multiplier) {
-        Geometry.multiply(dimension, multiplier, multiplier);
-    }
-
-    /**
-     * Multiply the specified {@link Dimension} by the specified multiplier. The
-     * dimension's width and height will be multiplied by their respective
-     * multipliers.
-     * 
-     * @param dimension
-     *            the {@code Dimension} that will be modified by this operation
-     * @param widthMultiplier
-     *            The width's multiplier
-     * @param heightMultiplier
-     *            The height's multiplier
-     * @see #divide(Dimension, double, double)
-     */
-    public static void multiply(final Dimension dimension, final double widthMultiplier, final double heightMultiplier) {
-        dimension.setSize(dimension.width * widthMultiplier, dimension.height * heightMultiplier);
-    }
-
-    /**
-     * Multiply the dimensions of the specified {@link Rectangle} by the
-     * specified multiplier. The {@code Rectangle} will remain aligned to its
-     * original top-left corner.
-     * 
-     * @param rectangle
-     *            the target {@code Rectangle} that will be modified by this
-     *            operation
-     * @param multiplier
-     *            the amount that the {@code Rectangle} will be scaled by
-     * @see Geometry#multiply(Dimension, double)
-     */
-    public static void multiply(final Rectangle rectangle, final double multiplier) {
-        final Dimension dimension = rectangle.getSize();
-        Geometry.multiply(dimension, multiplier);
-        rectangle.setSize(dimension);
-    }
-
-    /**
-     * Divides the specified {@link Dimension} by the specified denominators.
-     * The dimensions width and height will be divided by their respective
-     * denominators.
-     * 
-     * <p>
-     * Values will be truncated using {@link Math#floor(double)}.
-     * 
-     * @param dimension
-     *            the {@code Dimension} that will be modified by this operation
-     * @param widthDenominator
-     *            A non-zero value that acts as the denominator for width in
-     *            this division operation.
-     * @param heightDenominator
-     *            A non-zero value that acts as the denominator for height in
-     *            this division operation.
-     * @throws IllegalArgumentException
-     *             if either denominator is zero
-     * @see #multiply(Dimension, double, double)
-     */
-    public static void divide(final Dimension dimension, final double widthDenominator, final double heightDenominator) {
-        if (widthDenominator == 0) {
-            throw new IllegalArgumentException("widthDenominator is zero");
-        }
-        if (heightDenominator == 0) {
-            throw new IllegalArgumentException("heightDenominator is zero");
-        }
-        dimension.width = (int) (dimension.width / widthDenominator);
-        dimension.height = (int) (dimension.height / heightDenominator);
-    }
-
-    /**
-     * Divides the specified {@link Dimension} by the specified denominator. The
-     * dimension's width and height will be divided by the specified
-     * denominator.
-     * <p>
-     * Values will be truncated using {@link Math#floor(double)}.
-     * 
-     * @param dimension
-     *            the {@code Dimension} that will be modified by this operation
-     * @param denominator
-     *            A non-zero value that acts as the denominator for both width
-     *            and height in this division operation
-     * @throws IllegalArgumentException
-     *             if either denominator is zero
-     * @see #divide(Dimension, double, double)
-     */
-    public static void divide(final Dimension dimension, final double denominator) {
-        if (denominator == 0) {
-            throw new IllegalArgumentException("denominator is zero");
-        }
-        Geometry.divide(dimension, denominator, denominator);
     }
 
     /**
