@@ -52,7 +52,7 @@ public abstract class TileMap<T> implements Paintable {
 
     public Dimension getSize() {
         final Dimension size = this.getTileSize();
-        Geometry.multiply(size, this.table.getWidth() + .5, this.table.getHeight() + 2);
+        Geometry.Ceil.multiply(size, this.table.getWidth() + .5, this.table.getHeight() + 2);
         return size;
     }
 
