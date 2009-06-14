@@ -1,5 +1,8 @@
 package com.bluespot.logic;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -53,6 +56,26 @@ public class PredicateTests {
             return value.intValue() % 3 == 0;
         }
     };
+
+    @Test
+    public void testLowerCase() {
+        assertThat(Predicates.isLowerCase().test("no time"), is(true));
+        assertThat(Predicates.isLowerCase().test("No Time"), is(false));
+        assertThat(Predicates.isUpperCase().test("No TiMe"), is(false));
+        assertThat(Predicates.isLowerCase().test("   "), is(true));
+        assertThat(Predicates.isLowerCase().test(""), is(true));
+        assertThat(Predicates.isLowerCase().test(null), is(false));
+    }
+
+    @Test
+    public void testUpperCase() {
+        assertThat(Predicates.isUpperCase().test("NO TIME"), is(true));
+        assertThat(Predicates.isUpperCase().test("no time"), is(false));
+        assertThat(Predicates.isUpperCase().test("No TiMe"), is(false));
+        assertThat(Predicates.isUpperCase().test("   "), is(true));
+        assertThat(Predicates.isUpperCase().test(""), is(true));
+        assertThat(Predicates.isUpperCase().test(null), is(false));
+    }
 
     @Test
     public void testEvenPredicate() {
