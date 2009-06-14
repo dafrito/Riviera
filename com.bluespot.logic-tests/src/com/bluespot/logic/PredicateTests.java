@@ -59,22 +59,22 @@ public class PredicateTests {
 
     @Test
     public void testLowerCase() {
-        assertThat(Predicates.isLowerCase().test("no time"), is(true));
-        assertThat(Predicates.isLowerCase().test("No Time"), is(false));
-        assertThat(Predicates.isUpperCase().test("No TiMe"), is(false));
-        assertThat(Predicates.isLowerCase().test("   "), is(true));
-        assertThat(Predicates.isLowerCase().test(""), is(true));
-        assertThat(Predicates.isLowerCase().test(null), is(false));
+        assertThat(Predicates.lowerCase().test("no time"), is(true));
+        assertThat(Predicates.lowerCase().test("No Time"), is(false));
+        assertThat(Predicates.lowerCase().test("No TiMe"), is(false));
+        assertThat(Predicates.lowerCase().test("   "), is(true));
+        assertThat(Predicates.lowerCase().test(""), is(true));
+        assertThat(Predicates.lowerCase().test(null), is(false));
     }
 
     @Test
     public void testUpperCase() {
-        assertThat(Predicates.isUpperCase().test("NO TIME"), is(true));
-        assertThat(Predicates.isUpperCase().test("no time"), is(false));
-        assertThat(Predicates.isUpperCase().test("No TiMe"), is(false));
-        assertThat(Predicates.isUpperCase().test("   "), is(true));
-        assertThat(Predicates.isUpperCase().test(""), is(true));
-        assertThat(Predicates.isUpperCase().test(null), is(false));
+        assertThat(Predicates.upperCase().test("NO TIME"), is(true));
+        assertThat(Predicates.upperCase().test("no time"), is(false));
+        assertThat(Predicates.upperCase().test("No TiMe"), is(false));
+        assertThat(Predicates.upperCase().test("   "), is(true));
+        assertThat(Predicates.upperCase().test(""), is(true));
+        assertThat(Predicates.upperCase().test(null), is(false));
     }
 
     @Test

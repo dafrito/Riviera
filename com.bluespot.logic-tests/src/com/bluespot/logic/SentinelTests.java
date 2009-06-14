@@ -9,6 +9,8 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.bluespot.logic.visitors.CompositeSentinel;
+
 public class SentinelTests {
 
     @Test
@@ -16,8 +18,8 @@ public class SentinelTests {
 
         final List<String> strings = new ArrayList<String>();
 
-        final Sentinel<String> sentinel = new Sentinel<String>(Predicates.isLowerCase());
-        sentinel.addVisitor(Visitors.populate(strings));
+        final CompositeSentinel<String> sentinel = new CompositeSentinel<String>(Predicates.lowerCase());
+        sentinel.addVisitor(Visitors.addTo(strings));
 
         sentinel.accept("no time");
         sentinel.accept("NO TIME");
