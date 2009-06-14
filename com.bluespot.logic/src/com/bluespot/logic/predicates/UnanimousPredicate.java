@@ -41,13 +41,6 @@ public final class UnanimousPredicate<T> extends CompositePredicate<T> {
     }
 
     @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + this.getPredicates().hashCode();
-        return result;
-    }
-
-    @Override
     public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
@@ -57,6 +50,13 @@ public final class UnanimousPredicate<T> extends CompositePredicate<T> {
         }
         final UnanimousPredicate<?> other = (UnanimousPredicate<?>) obj;
         return this.getPredicates().equals(other.getPredicates());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 5;
+        result = 31 * result + this.getPredicates().hashCode();
+        return result;
     }
 
     @Override
