@@ -1,4 +1,4 @@
-package com.bluespot.logic;
+package com.bluespot.logic.visitors;
 
 /**
  * A visitor of some elements {@code T}.
