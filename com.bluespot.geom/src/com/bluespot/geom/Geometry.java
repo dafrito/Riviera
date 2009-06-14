@@ -17,6 +17,9 @@ public final class Geometry {
         throw new AssertionError("This class cannot be instantiated");
     }
 
+    /**
+     * Operations that round by flooring fractional values.
+     */
     public static final Operations Floor = new AbstractOperations() {
 
         @Override
@@ -26,6 +29,9 @@ public final class Geometry {
 
     };
 
+    /**
+     * Operations that round by rounding fractional values.
+     */
     public static final Operations Round = new AbstractOperations() {
 
         @Override
@@ -34,6 +40,9 @@ public final class Geometry {
         }
     };
 
+    /**
+     * Operations that round by ceiling fractional values.
+     */
     public static final Operations Ceil = new AbstractOperations() {
 
         @Override

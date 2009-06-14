@@ -25,7 +25,7 @@ public interface Operations {
     /**
      * Doubles the specified {@link Rectangle}.
      * 
-     * @param dimension
+     * @param rectangle
      *            the {@code Rectangle} that will be halved as a result of this
      *            operation
      * @see #multiply(Rectangle, double)
@@ -45,7 +45,7 @@ public interface Operations {
     /**
      * Halves the specified {@link Rectangle}.
      * 
-     * @param dimension
+     * @param rectangle
      *            the {@code Rectangle} that will be halved as a result of this
      *            operation
      * @see #divide(Rectangle, double)
@@ -109,11 +109,11 @@ public interface Operations {
      * @param rectangle
      *            the target {@code Rectangle} that will be modified by this
      *            operation
-     * @param widthDenominator
-     *            a non-zero value that acts as the denominator for width in
-     *            this division operation
-     * @param heightDenominator
-     *            a non-zero value that acts as the denominator for height in
+     * @param widthMultipler
+     *            a non-zero value that acts as the multiplier for width in this
+     *            division operation
+     * @param heightMultiplier
+     *            a non-zero value that acts as the multiplier for height in
      *            this division operation
      */
     public void multiply(Rectangle rectangle, double widthMultipler, double heightMultiplier);
