@@ -21,6 +21,8 @@ public final class RegexPredicate<T> implements Predicate<T> {
      * 
      * @param pattern
      *            the pattern used in this predicate
+     * @throws NullPointerException
+     *             if {@code pattern} is null
      */
     public RegexPredicate(final Pattern pattern) {
         if (pattern == null) {
@@ -44,6 +46,30 @@ public final class RegexPredicate<T> implements Predicate<T> {
             return false;
         }
         return this.getPattern().matcher(value.toString()).matches();
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof RegexPredicate<?>)) {
+            return false;
+        }
+        final RegexPredicate<?> other = (RegexPredicate<?>) obj;
+        return this.getPattern().equals(other.getPattern());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 13;
+        result = 31 * result + this.getPattern().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("matches '%s'", this.getPattern());
     }
 
 }
