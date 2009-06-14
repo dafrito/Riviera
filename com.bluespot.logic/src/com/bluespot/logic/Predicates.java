@@ -13,10 +13,11 @@ import com.bluespot.logic.predicates.UnanimousPredicate;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 
 /**
- * A set of pre-built predicates. Predicates are essentially poor man's function
+ * A set of factory methods for semantically constructing {@link Predicate}
  * objects.
  * 
  * @author Aaron Faanes
+ * @see Predicate
  */
 public final class Predicates {
 
@@ -26,13 +27,26 @@ public final class Predicates {
     }
 
     /**
-     * Returns a builder for composite predicates.
+     * Returns a new {@link PredicateBuilder} for composite predicates.
      * 
      * @param <T>
      *            the type of the tested value
      * @return a builder for composite predicates
+     * @see PredicateBuilder
      */
     public static <T> PredicateBuilder<T> group() {
+        return new PredicateBuilder<T>();
+    }
+
+    /**
+     * Returns a new {@link PredicateBuilder} for composite predicates.
+     * 
+     * @param <T>
+     *            the type of the tested value
+     * @return a builder for composite predicates
+     * @see PredicateBuilder
+     */
+    public static <T> PredicateBuilder<T> value() {
         return new PredicateBuilder<T>();
     }
 
@@ -296,9 +310,9 @@ public final class Predicates {
      * locale-dependent.
      * 
      * @return a new {@code Predicate} that tests whether a string is lower-case
-     * @see #isUpperCase()
+     * @see #upperCase()
      */
-    public static Predicate<String> isLowerCase() {
+    public static Predicate<String> lowerCase() {
         return Predicates.LOWER_CASE;
     }
 
@@ -329,9 +343,9 @@ public final class Predicates {
      * locale-dependent.
      * 
      * @return a new {@code Predicate} that tests whether a string is lower-case
-     * @see #isLowerCase()
+     * @see #lowerCase()
      */
-    public static Predicate<String> isUpperCase() {
+    public static Predicate<String> upperCase() {
         return Predicates.UPPER_CASE;
     }
 
