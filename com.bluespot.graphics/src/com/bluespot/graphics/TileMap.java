@@ -10,7 +10,8 @@ import com.bluespot.collections.table.Table;
 import com.bluespot.geom.Geometry;
 
 /**
- * A {@link Paintable} that will output a {@link Table}.
+ * A {@link Paintable} that will output a {@link Table} as an isometric tile
+ * map.
  * 
  * @author Aaron Faanes
  * 
@@ -50,26 +51,71 @@ public abstract class TileMap<T> implements Paintable {
         this.tileWidth = tileWidth;
     }
 
+    /**
+     * Returns the size of this tile map, in pixels.
+     * 
+     * @return the size of this tile map in pixels
+     */
     public Dimension getSize() {
         final Dimension size = this.getTileSize();
         Geometry.Ceil.multiply(size, this.table.getWidth() + .5, this.table.getHeight() + 2);
         return size;
     }
 
+    /**
+     * Returns the height of a single tile in this tile map.
+     * 
+     * @return the height of a single tile
+     */
     public int getTileHeight() {
         return this.tileHeight;
     }
 
-    public Dimension getTileSize() {
-        return new Dimension(this.getTileWidth(), this.getTileHeight());
-    }
-
+    /**
+     * Returns the width of a single tile in this tile map.
+     * 
+     * @return the width of a single tile
+     */
     public int getTileWidth() {
         return this.tileWidth;
     }
 
-    public void paint(final Graphics2D g, final int width, final int height) {
-        this.doRender(g);
+    /**
+     * Returns a new {@link Dimension} object that represents the dimensions of
+     * a single tile. The returned object may be freely modified.
+     * 
+     * @return the size of a single tile
+     */
+    public Dimension getTileSize() {
+        return new Dimension(this.getTileWidth(), this.getTileHeight());
+    }
+
+    public void paint(final Graphics2D originalG, final int width, final int height) {
+        final Graphics2D g = (Graphics2D) originalG.create();
+        final Point firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
+
+        final Dimension initialOffset = new Dimension(this.getTileWidth() / 2, this.getTileHeight() / 2);
+
+        final Dimension tileSize = g.getClipBounds().getSize();
+        tileSize.width /= this.getTileWidth();
+        tileSize.height /= this.getTileHeight();
+        tileSize.height *= 2;
+
+        // God knows how many tiles we'll need to render, so just render a lot
+        // more than we need.
+        tileSize.width += 3;
+        tileSize.height += 2;
+
+        final Point lastTile = new Point(firstTile.x + tileSize.width, firstTile.y + tileSize.height * 2);
+        lastTile.x = Math.min(this.table.getWidth() - 1, Math.max(0, lastTile.x));
+        lastTile.y = Math.min(this.table.getHeight() - 1, Math.max(0, lastTile.y));
+
+        final Table<T> subtable = this.table.subTable(firstTile, new Dimension(lastTile.x - firstTile.x, lastTile.y
+                - firstTile.y));
+        this.renderTable(g, subtable, initialOffset);
+
+        originalG.setColor(Color.red);
+        originalG.draw(originalG.getClip());
     }
 
     private Point adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
@@ -124,34 +170,6 @@ public abstract class TileMap<T> implements Paintable {
             final Dimension offset = this.newRow(location);
             g.translate(offset.width, offset.height);
         }
-    }
-
-    protected void doRender(final Graphics2D originalG) {
-        final Graphics2D g = (Graphics2D) originalG.create();
-        final Point firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
-
-        final Dimension initialOffset = new Dimension(this.getTileWidth() / 2, this.getTileHeight() / 2);
-
-        final Dimension tileSize = g.getClipBounds().getSize();
-        tileSize.width /= this.getTileWidth();
-        tileSize.height /= this.getTileHeight();
-        tileSize.height *= 2;
-
-        // God knows how many tiles we'll need to render, so just render a lot
-        // more than we need.
-        tileSize.width += 3;
-        tileSize.height += 2;
-
-        final Point lastTile = new Point(firstTile.x + tileSize.width, firstTile.y + tileSize.height * 2);
-        lastTile.x = Math.min(this.table.getWidth() - 1, Math.max(0, lastTile.x));
-        lastTile.y = Math.min(this.table.getHeight() - 1, Math.max(0, lastTile.y));
-
-        final Table<T> subtable = this.table.subTable(firstTile, new Dimension(lastTile.x - firstTile.x, lastTile.y
-                - firstTile.y));
-        this.renderTable(g, subtable, initialOffset);
-
-        originalG.setColor(Color.red);
-        originalG.draw(originalG.getClip());
     }
 
     /**
