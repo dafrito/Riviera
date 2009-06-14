@@ -12,7 +12,7 @@ import java.util.List;
  * @param <T>
  *            the type of the tested value
  */
-public class UnilateralPredicate<T> extends CompositePredicate<T> {
+public final class UnilateralPredicate<T> extends CompositePredicate<T> {
 
     /**
      * Constructs a unilateral predicate using the specified predicates.
@@ -31,6 +31,25 @@ public class UnilateralPredicate<T> extends CompositePredicate<T> {
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof UnilateralPredicate<?>)) {
+            return false;
+        }
+        final UnilateralPredicate<?> other = (UnilateralPredicate<?>) obj;
+        return this.getPredicates().equals(other.getPredicates());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 11;
+        result = 31 * result + this.getPredicates().hashCode();
+        return result;
     }
 
     @Override
