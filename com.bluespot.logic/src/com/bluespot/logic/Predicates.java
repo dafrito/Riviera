@@ -20,66 +20,6 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  */
 public final class Predicates {
 
-    /**
-     * A predicate that always returns {@code true}.
-     */
-    public static final Predicate<Object> TRUTH = new Predicate<Object>() {
-
-        public boolean test(final Object value) {
-            return true;
-        }
-
-        @Override
-        public String toString() {
-            return "is anything";
-        }
-    };
-
-    /**
-     * A predicate that always returns {@code false}.
-     */
-    public static final Predicate<Object> NEVER = new Predicate<Object>() {
-
-        public boolean test(final Object value) {
-            return false;
-        }
-
-        @Override
-        public String toString() {
-            return "is impossible";
-        }
-    };
-
-    /**
-     * A predicate that tests for null values.
-     */
-    public static final Predicate<Object> NULL = new Predicate<Object>() {
-
-        public boolean test(final Object value) {
-            return value == null;
-        }
-
-        @Override
-        public String toString() {
-            return "is null";
-        }
-    };
-
-    /**
-     * A predicate that tests for non-null values.
-     */
-    public static final Predicate<Object> NOT_NULL = new Predicate<Object>() {
-
-        public boolean test(final Object value) {
-            return value != null;
-        }
-
-        @Override
-        public String toString() {
-            return "is not null";
-        }
-    };
-
     private Predicates() {
         // Suppress default constructor to ensure non-instantiability
         throw new AssertionError();
@@ -97,6 +37,23 @@ public final class Predicates {
     }
 
     /**
+     * A predicate that tests for null values.
+     * 
+     * @see #nullValue()
+     */
+    private static final Predicate<Object> NULL = new Predicate<Object>() {
+
+        public boolean test(final Object value) {
+            return value == null;
+        }
+
+        @Override
+        public String toString() {
+            return "is null";
+        }
+    };
+
+    /**
      * Returns a predicate that evaluates to {@code true} if and only if the
      * tested value is null.
      * 
@@ -106,6 +63,23 @@ public final class Predicates {
     public static Predicate<Object> nullValue() {
         return Predicates.NULL;
     }
+
+    /**
+     * A predicate that tests for non-null values.
+     * 
+     * @see #notNullValue()
+     */
+    private static final Predicate<Object> NOT_NULL = new Predicate<Object>() {
+
+        public boolean test(final Object value) {
+            return value != null;
+        }
+
+        @Override
+        public String toString() {
+            return "is not null";
+        }
+    };
 
     /**
      * Returns a predicate that evaluates to {@code true} if and only if the
@@ -119,6 +93,23 @@ public final class Predicates {
     }
 
     /**
+     * A predicate that always returns {@code true}.
+     * 
+     * @see #truth()
+     */
+    private static final Predicate<Object> TRUTH = new Predicate<Object>() {
+
+        public boolean test(final Object value) {
+            return true;
+        }
+
+        @Override
+        public String toString() {
+            return "is anything";
+        }
+    };
+
+    /**
      * Returns a predicate that always evaluates to {@code true}.
      * 
      * @return a predicate that always evaluates to {@code true}
@@ -126,6 +117,23 @@ public final class Predicates {
     public static Predicate<Object> truth() {
         return Predicates.TRUTH;
     }
+
+    /**
+     * A predicate that always returns {@code false}.
+     * 
+     * @see #never()
+     */
+    private static final Predicate<Object> NEVER = new Predicate<Object>() {
+
+        public boolean test(final Object value) {
+            return false;
+        }
+
+        @Override
+        public String toString() {
+            return "is impossible";
+        }
+    };
 
     /**
      * Returns a predicate that always evaluates to {@code false}.
@@ -259,6 +267,72 @@ public final class Predicates {
      */
     public static <T> UnanimousPredicate<T> all(final Predicate<? super T>[] predicates) {
         return new UnanimousPredicate<T>(Arrays.asList(predicates));
+    }
+
+    /**
+     * A predicate that tests for lower-case strings.
+     * 
+     * @see #isLowerCase()
+     */
+    private static final Predicate<String> LOWER_CASE = new Predicate<String>() {
+        public boolean test(final String value) {
+            if (value == null) {
+                return false;
+            }
+            return value.toLowerCase().equals(value);
+        }
+    };
+
+    /**
+     * Returns a new {@link Predicate} that tests whether a string is
+     * lower-case. Specifically, the predicate tests whether the lower-cased
+     * version of a given string is equal to the original version. As a
+     * consequence, strings that contain characters that cannot be upper or
+     * lower-case will implicitly evaluate to {@code true}. This includes
+     * numbers, the empty string {@code ""}, whitespace, and all other special
+     * characters. Null values, however, will evaluate to {@code false}.
+     * <p>
+     * Since this method relies on {@link String#toLowerCase()}, results will be
+     * locale-dependent.
+     * 
+     * @return a new {@code Predicate} that tests whether a string is lower-case
+     * @see #isUpperCase()
+     */
+    public static Predicate<String> isLowerCase() {
+        return Predicates.LOWER_CASE;
+    }
+
+    /**
+     * A predicate that tests for upper-case strings.
+     * 
+     * @see #isLowerCase()
+     */
+    private static final Predicate<String> UPPER_CASE = new Predicate<String>() {
+        public boolean test(final String value) {
+            if (value == null) {
+                return false;
+            }
+            return value.toUpperCase().equals(value);
+        }
+    };
+
+    /**
+     * Returns a new {@link Predicate} that tests whether a string is
+     * lower-case. Specifically, the predicate tests whether the upper-cased
+     * version of a given string is equal to the original version. As a
+     * consequence, strings that contain characters that cannot be upper or
+     * lower-case will implicitly evaluate to {@code true}. This includes
+     * numbers, the empty string {@code ""}, whitespace, and all other special
+     * characters. Null values, however, will evaluate to {@code false}.
+     * <p>
+     * Since this method relies on {@link String#toLowerCase()}, results will be
+     * locale-dependent.
+     * 
+     * @return a new {@code Predicate} that tests whether a string is lower-case
+     * @see #isLowerCase()
+     */
+    public static Predicate<String> isUpperCase() {
+        return Predicates.UPPER_CASE;
     }
 
 }
