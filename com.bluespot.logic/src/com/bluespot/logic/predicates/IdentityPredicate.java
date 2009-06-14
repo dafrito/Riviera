@@ -56,7 +56,7 @@ public final class IdentityPredicate<T> implements Predicate<T> {
 
     @Override
     public String toString() {
-        return String.format("exact(%s)", this.getConstant());
+        return String.format("is exactly %s", this.getConstant());
     }
 
 }

@@ -63,6 +63,6 @@ public final class InversePredicate<T> implements Predicate<T> {
 
     @Override
     public String toString() {
-        return String.format("not(%s)", this.getPredicate());
+        return String.format("not %s", this.getPredicate());
     }
 }
