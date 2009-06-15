@@ -1,6 +1,5 @@
 package com.bluespot.logic.visitors;
 
-import com.bluespot.logic.Visitor;
 import com.bluespot.logic.adapters.Adapter;
 
 /**
