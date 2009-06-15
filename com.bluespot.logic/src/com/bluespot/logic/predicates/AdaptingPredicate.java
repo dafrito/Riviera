@@ -3,8 +3,9 @@ package com.bluespot.logic.predicates;
 import com.bluespot.logic.adapters.Adapter;
 
 /**
- * A predicate that uses the specified adapter to convert a given value. The
- * adapted value will then be passed to the specified predicate.
+ * A {@link Predicate} that uses the specified {@link Adapter} to convert a
+ * given value. The adapted value will then be passed to the specified
+ * predicate.
  * 
  * @author Aaron Faanes
  * 
@@ -27,6 +28,8 @@ public class AdaptingPredicate<S, D> implements Predicate<S> {
      *            the adapter used for conversion
      * @param predicate
      *            the predicate for the adapted value
+     * @throws NullPointerException
+     *             if either argument is null
      */
     public AdaptingPredicate(final Adapter<? super S, D> adapter, final Predicate<? super D> predicate) {
         if (adapter == null) {
