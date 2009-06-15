@@ -1,14 +1,17 @@
 package com.bluespot.logic;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bluespot.logic.predicates.EndsWithPredicate;
 import com.bluespot.logic.predicates.EqualityPredicate;
 import com.bluespot.logic.predicates.IdentityPredicate;
 import com.bluespot.logic.predicates.InversePredicate;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.predicates.RegexPredicate;
+import com.bluespot.logic.predicates.StartsWithPredicate;
 import com.bluespot.logic.predicates.UnanimousPredicate;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 
@@ -23,7 +26,7 @@ public final class Predicates {
 
     private Predicates() {
         // Suppress default constructor to ensure non-instantiability
-        throw new AssertionError();
+        throw new AssertionError("Instantiation not allowed");
     }
 
     /**
@@ -55,7 +58,7 @@ public final class Predicates {
      * 
      * @see #nullValue()
      */
-    private static final Predicate<Object> NULL = new Predicate<Object>() {
+    private static final Predicate<Object> PREDICATE_NULL = new Predicate<Object>() {
 
         public boolean test(final Object value) {
             return value == null;
@@ -75,7 +78,7 @@ public final class Predicates {
      *         value
      */
     public static Predicate<Object> nullValue() {
-        return Predicates.NULL;
+        return Predicates.PREDICATE_NULL;
     }
 
     /**
@@ -83,7 +86,7 @@ public final class Predicates {
      * 
      * @see #notNullValue()
      */
-    private static final Predicate<Object> NOT_NULL = new Predicate<Object>() {
+    private static final Predicate<Object> PREDICATE_NOT_NULL = new Predicate<Object>() {
 
         public boolean test(final Object value) {
             return value != null;
@@ -103,7 +106,7 @@ public final class Predicates {
      *         specified value
      */
     public static Predicate<Object> notNullValue() {
-        return Predicates.NOT_NULL;
+        return Predicates.PREDICATE_NOT_NULL;
     }
 
     /**
@@ -111,7 +114,7 @@ public final class Predicates {
      * 
      * @see #truth()
      */
-    private static final Predicate<Object> TRUTH = new Predicate<Object>() {
+    private static final Predicate<Object> PREDICATE_TRUTH = new Predicate<Object>() {
 
         public boolean test(final Object value) {
             return true;
@@ -129,7 +132,7 @@ public final class Predicates {
      * @return a predicate that always evaluates to {@code true}
      */
     public static Predicate<Object> truth() {
-        return Predicates.TRUTH;
+        return Predicates.PREDICATE_TRUTH;
     }
 
     /**
@@ -137,7 +140,7 @@ public final class Predicates {
      * 
      * @see #never()
      */
-    private static final Predicate<Object> NEVER = new Predicate<Object>() {
+    private static final Predicate<Object> PREDICATE_NEVER = new Predicate<Object>() {
 
         public boolean test(final Object value) {
             return false;
@@ -155,7 +158,7 @@ public final class Predicates {
      * @return a predicate that always evaluates to {@code false}
      */
     public static Predicate<Object> never() {
-        return Predicates.NEVER;
+        return Predicates.PREDICATE_NEVER;
     }
 
     /**
@@ -284,16 +287,53 @@ public final class Predicates {
     }
 
     /**
+     * Creates a {@link RegexPredicate} that evaluates to {@code true} if and
+     * only if the tested string value starts with the specified string.
+     * 
+     * @param <T>
+     *            the tested value. Tested values will be converted to strings
+     *            using {@link Object#toString()}
+     * @param startingValue
+     *            the value that the tested string should start with
+     * @return a predicate that tests for the specified string
+     * @see #endsWith(String)
+     */
+    public static <T> Predicate<T> startsWith(final String startingValue) {
+        return new StartsWithPredicate<T>(startingValue);
+    }
+
+    /**
+     * Creates a {@link RegexPredicate} that evaluates to {@code true} if and
+     * only if the tested string value ends with the specified string.
+     * 
+     * @param <T>
+     *            the tested value. Tested values will be converted to strings
+     *            using {@link Object#toString()}
+     * @param endingValue
+     *            the value that the tested string should end with
+     * @return a regex predicate that tests for the specified string
+     * @see #startsWith(String)
+     */
+    public static <T> Predicate<T> endsWith(final String endingValue) {
+        return new EndsWithPredicate<T>(endingValue);
+    }
+
+    /**
      * A predicate that tests for lower-case strings.
      * 
      * @see #isLowerCase()
      */
-    private static final Predicate<String> LOWER_CASE = new Predicate<String>() {
+    private static final Predicate<String> PREDICATE_LOWER_CASE = new Predicate<String>() {
         public boolean test(final String value) {
             if (value == null) {
                 return false;
             }
             return value.toLowerCase().equals(value);
+        }
+
+        @Override
+        public String toString() {
+            return "is lower case";
         }
     };
 
@@ -313,7 +353,7 @@ public final class Predicates {
      * @see #upperCase()
      */
     public static Predicate<String> lowerCase() {
-        return Predicates.LOWER_CASE;
+        return Predicates.PREDICATE_LOWER_CASE;
     }
 
     /**
@@ -321,12 +361,17 @@ public final class Predicates {
      * 
      * @see #isLowerCase()
      */
-    private static final Predicate<String> UPPER_CASE = new Predicate<String>() {
+    private static final Predicate<String> PREDICATE_UPPER_CASE = new Predicate<String>() {
         public boolean test(final String value) {
             if (value == null) {
                 return false;
             }
             return value.toUpperCase().equals(value);
+        }
+
+        @Override
+        public String toString() {
+            return "is upper case";
         }
     };
 
@@ -346,7 +391,39 @@ public final class Predicates {
      * @see #lowerCase()
      */
     public static Predicate<String> upperCase() {
-        return Predicates.UPPER_CASE;
+        return Predicates.PREDICATE_UPPER_CASE;
+    }
+
+    /**
+     * A predicate that tests whether a given file exists.
+     * 
+     * @see #fileExists()
+     */
+    private static final Predicate<File> PREDICATE_FILE_EXISTS = new Predicate<File>() {
+        public boolean test(final File value) {
+            if (value == null) {
+                return false;
+            }
+            return value.exists();
+        }
+
+        @Override
+        public String toString() {
+            return "exists";
+        }
+    };
+
+    /**
+     * Returns a predicate that tests whether a given file exists. The returned
+     * predicate will evaluate to {@code true} if and only if
+     * {@link File#exists()} returns {@code true} for the given file. Null
+     * values always evaluate to {@code false}.
+     * 
+     * @return a predicate that tests whether a given file exists using
+     *         {@link File#exists()}
+     */
+    public static Predicate<File> fileExists() {
+        return PREDICATE_FILE_EXISTS;
     }
 
 }
