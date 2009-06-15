@@ -2,7 +2,6 @@ package com.bluespot.logic.visitors;
 
 import java.util.Collection;
 
-import com.bluespot.logic.Visitor;
 
 /**
  * A {@link Visitor} that prunes a specified collection. For every element that
