@@ -20,14 +20,34 @@ public class PredicateBuilder<T> {
 
     private final AndPredicateBuilder<T> andBuilder = new AndPredicateBuilder<T>();
 
-    private final List<PredicateBuilder<T>> subBuilders = new ArrayList<PredicateBuilder<T>>();
+    private final List<AdaptingPredicateBuilder<? super T, ?>> subBuilders = new ArrayList<AdaptingPredicateBuilder<? super T, ?>>();
 
     private final List<OrPredicateBuilder<T>> orBuilders = new ArrayList<OrPredicateBuilder<T>>();
 
     /**
-     * Creates an {@link PredicateBuilder} that uses the specified adapter for
-     * conversion. Useful when writing expressions that test some component of a
-     * given test value.
+     * Creates an {@link AdaptingPredicateBuilder} that uses the specified
+     * adapter for conversion. The constructed predicate will evaluate to
+     * {@code true} if and only if the specified builder's constructed predicate
+     * evaluates to {@code true}. Adapting predicates are useful when you're
+     * writing expressions that test some component of a given test value.
+     * <p>
+     * This builder will implicitly add a {@link Predicates#notNullValue()}
+     * predicate to any builder created by this method if that builder is empty
+     * during construction. (Emptiness is determined by
+     * {@link PredicateBuilder#hasPredicates()}). This allows for this intuitive
+     * behavior to work properly:
+     * 
+     * <pre>
+     * builder.has(childFile(&quot;hello.txt&quot;));
+     * </pre>
+     * 
+     * If we didn't add the rule, the adapting predicate would always evaluate
+     * to {@code true}. If the builder is not empty, then no predicates will be
+     * added. Otherwise, the following rule would never be true:
+     * 
+     * <pre>
+     * builder.has(childFile(&quot;hello.txt&quot;)).that(is(nullValue()));
+     * </pre>
      * 
      * @param <D>
      *            the type of the converted value
@@ -43,7 +63,9 @@ public class PredicateBuilder<T> {
 
     /**
      * Returns a {@link OrPredicateBuilder} that includes the specified
-     * predicate.
+     * predicate. This builder's constructed predicate will evaluate to {@code
+     * true} if and only if at least one of the returned builder's child
+     * predicates evaluate to {@code true}.
      * 
      * @param predicate
      *            the first predicate to add to the predicate builder
@@ -57,47 +79,82 @@ public class PredicateBuilder<T> {
     }
 
     /**
-     * Adds the specified predicate to this builder.
+     * Adds the specified predicate to this builder. The constructed predicate
+     * will evaluate to {@code true} if and only if the specified predicate will
+     * evaluate to {@code true}.
+     * 
+     * @param predicate
+     *            the predicate to add to this builder
+     * @see UnanimousPredicate
+     */
+    public void addRequirement(final Predicate<? super T> predicate) {
+        this.andBuilder.and(predicate);
+    }
+
+    /**
+     * Adds the specified predicate to this builder. This is an alias for
+     * {@link #addRequirement(Predicate)}.
      * 
      * @param predicate
      *            the predicate to add to this builder
      * @return this builder
      */
     public PredicateBuilder<T> and(final Predicate<? super T> predicate) {
-        return this.is(predicate);
+        this.addRequirement(predicate);
+        return this;
     }
 
     /**
      * Adds the specified predicate to this builder. This is an alias for
-     * {@link #and(Predicate)}, but is useful for readability purposes.
+     * {@link #addRequirement(Predicate)}.
      * 
      * @param predicate
      *            the predicate to add to this builder
      * @return this builder
      */
     public PredicateBuilder<T> is(final Predicate<? super T> predicate) {
-        this.andBuilder.and(predicate);
+        this.addRequirement(predicate);
         return this;
     }
 
     /**
      * Adds the specified predicate to this builder. This is an alias for
-     * {@link #and(Predicate)}, but is useful for readability purposes.
+     * {@link #addRequirement(Predicate)}.
      * 
      * @param predicate
      *            the predicate to add to this builder
      * @return this builder
      */
     public PredicateBuilder<T> that(final Predicate<? super T> predicate) {
-        return this.is(predicate);
+        this.addRequirement(predicate);
+        return this;
+    }
+
+    /**
+     * Returns whether this builder contains any child predicates.
+     * 
+     * @return {@code true} if this builder contains any child predicates,
+     *         otherwise {@code false}
+     */
+    public boolean hasPredicates() {
+        if (this.andBuilder.hasPredicates()) {
+            return true;
+        }
+        if (!this.subBuilders.isEmpty()) {
+            return true;
+        }
+        if (!this.orBuilders.isEmpty()) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * Constructs a predicate that represents the predicates in this builder.
      * This builder may optimize the returned predicate, so the order or format
      * may be modified. The meaning of the constructed predicate is not
-     * affected, but ensure that the predicates used do not depend on the order
-     * of invocation; all predicates are self-contained and atomic.
+     * affected,but ensure that the predicates used do not depend on the order
+     * of invocation; all predicates should be self-contained and atomic.
      * 
      * @return a predicate that represents the predicates in this builder
      */
@@ -110,8 +167,22 @@ public class PredicateBuilder<T> {
         }
 
         // Build all 'has' predicates
-        for (final PredicateBuilder<T> subBuilder : this.subBuilders) {
-            predicates.add(subBuilder.build());
+        for (final AdaptingPredicateBuilder<? super T, ?> subBuilder : this.subBuilders) {
+            if (!subBuilder.hasPredicates()) {
+                /*
+                 * We assume that empty adapted builders mean
+                 * "adapt this value and check if it's null." Therefore, we want
+                 * to add Predicates#notNullValue() to any constructed
+                 * predicate. However, we don't want to go around adding
+                 * predicates to builders that may be used in other places, so
+                 * we make a new builder and add our requirement to that.
+                 */
+                final AdaptingPredicateBuilder<? super T, ?> builder = AdaptingPredicateBuilder.newBuilder(subBuilder.getAdapter());
+                builder.getBuilder().addRequirement(Predicates.notNullValue());
+                predicates.add(builder.build());
+            } else {
+                predicates.add(subBuilder.build());
+            }
         }
 
         // Build all 'or' builders
@@ -120,7 +191,7 @@ public class PredicateBuilder<T> {
         }
 
         if (predicates.isEmpty()) {
-            // If we're empty, we're always true, so don't even make a more
+            // If we're empty, we're always true, so don't make a more
             // complicated predicate
             return Predicates.truth();
         }
