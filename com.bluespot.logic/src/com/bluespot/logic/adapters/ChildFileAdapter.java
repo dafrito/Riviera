@@ -64,6 +64,6 @@ public final class ChildFileAdapter implements Adapter<File, File> {
 
     @Override
     public String toString() {
-        return String.format("has child with name \"%s\"", this.getChildName());
+        return String.format("child file with name \"%s\"", this.getChildName());
     }
 }
