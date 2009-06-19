@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 
 /**
- * Defines a set of geometric operations. Implementators typically vary by the
+ * Defines a set of geometric operations. Implementers typically vary by the
  * precision and rounding rules the implements.
  * 
  * @author Aaron Faanes

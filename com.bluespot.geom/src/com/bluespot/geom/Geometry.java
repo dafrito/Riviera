@@ -9,12 +9,13 @@ import java.awt.Rectangle;
  * Collection of useful methods relating to geometry.
  * 
  * @author Aaron Faanes
- * 
+ * @see Operations
  */
 public final class Geometry {
 
     private Geometry() {
-        throw new AssertionError("This class cannot be instantiated");
+        // Suppress default constructor to ensure non-instantiability
+        throw new AssertionError("Instantiation not allowed");
     }
 
     /**
@@ -198,7 +199,7 @@ public final class Geometry {
      * 
      * @param hypotenuse
      *            the hypotenuse of the created {@code Dimension}
-     * @return a {@Dimension} as described above
+     * @return a {@code Dimension} as described above
      */
     public static Dimension getDimensionFromHypotenuse(final double hypotenuse) {
         final int side = (int) Math.sqrt(Math.pow(hypotenuse, 2) / 2);
