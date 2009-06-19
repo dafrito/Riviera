@@ -8,7 +8,7 @@ public class Field<E> {
 	private Description description = new Description();
 
 	public Field(final Committable<E> committable) {
-		this(committable, null);
+		this(committable, "");
 	}
 
 	public Field(final Committable<E> committable, final String name) {
