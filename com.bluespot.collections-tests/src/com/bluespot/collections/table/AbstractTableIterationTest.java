@@ -2,17 +2,16 @@ package com.bluespot.collections.table;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.awt.Point;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.collections.table.iteration.TableIteration;
 
-public abstract class TableIterationTest<T> {
+public abstract class AbstractTableIterationTest<T> {
 
     protected TableIteration strategy;
 
@@ -28,62 +27,59 @@ public abstract class TableIterationTest<T> {
     public void testCompareEqual() {
         final Point point = this.getLastPoint();
         this.strategy.next(point);
-        Assert.assertThat(this.strategy.comparePoints(this.table, this.getOrigin(), this.strategy.wrap(this.table,
-                point)), CoreMatchers.is(0));
+        assertThat(this.strategy.comparePoints(this.table, this.getOrigin(), this.strategy.wrap(this.table, point)),
+                is(0));
     }
 
     @Test
     public void testCompareEqualWrapped() {
         final Point point = this.getLastPoint();
         this.strategy.next(point);
-        Assert.assertTrue(this.strategy.comparePoints(this.table, this.getOrigin(), point) == 0);
+        assertTrue(this.strategy.comparePoints(this.table, this.getOrigin(), point) == 0);
     }
 
     @Test
     public void testCompareGreaterThan() {
         final Point point = this.getOrigin();
         this.strategy.next(point);
-        Assert.assertTrue(this.strategy.comparePoints(this.table, this.getLastPoint(), point) > 0);
+        assertTrue(this.strategy.comparePoints(this.table, this.getLastPoint(), point) > 0);
     }
 
     @Test
     public void testCompareLessThan() {
         final Point point = this.getOrigin();
         this.strategy.next(point);
-        Assert.assertTrue(this.strategy.comparePoints(this.table, this.getOrigin(), point) < 0);
+        assertTrue(this.strategy.comparePoints(this.table, this.getOrigin(), point) < 0);
     }
 
     @Test
     public void testExtraColumn() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(2, 0)), CoreMatchers.is(this.getExtraColumn()));
+        assertThat(this.strategy.wrap(this.table, new Point(2, 0)), is(this.getExtraColumn()));
     }
 
     @Test
     public void testExtraRow() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(0, 2)), CoreMatchers.is(this.getExtraRow()));
+        assertThat(this.strategy.wrap(this.table, new Point(0, 2)), is(this.getExtraRow()));
     }
 
     @Test
     public void testNextPoint() {
-        Assert.assertThat(this.strategy.wrap(this.table, this.getUnwrappedPoint()),
-                CoreMatchers.is(this.getUnwrappedPoint()));
+        assertThat(this.strategy.wrap(this.table, this.getUnwrappedPoint()), is(this.getUnwrappedPoint()));
     }
 
     @Test
     public void testOneColumnBeforeOrigin() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(-1, 0)),
-                CoreMatchers.is(this.getOneColumnBeforeOrigin()));
+        assertThat(this.strategy.wrap(this.table, new Point(-1, 0)), is(this.getOneColumnBeforeOrigin()));
     }
 
     @Test
     public void testOneRowBeforeOrigin() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(0, -1)),
-                CoreMatchers.is(this.getOneRowBeforeOrigin()));
+        assertThat(this.strategy.wrap(this.table, new Point(0, -1)), is(this.getOneRowBeforeOrigin()));
     }
 
     @Test
     public void testOrigin() {
-        Assert.assertThat(this.strategy.wrap(this.table, this.getOrigin()), CoreMatchers.is(this.getOrigin()));
+        assertThat(this.strategy.wrap(this.table, this.getOrigin()), is(this.getOrigin()));
     }
 
     @Test
@@ -96,25 +92,22 @@ public abstract class TableIterationTest<T> {
 
     @Test
     public void testThreeColumnsBeforeOrigin() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(-3, 0)),
-                CoreMatchers.is(this.getThreeColumnsBeforeOrigin()));
+        assertThat(this.strategy.wrap(this.table, new Point(-3, 0)), is(this.getThreeColumnsBeforeOrigin()));
     }
 
     @Test
     public void testThreeRowsBeforeOrigin() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(0, -3)),
-                CoreMatchers.is(this.getThreeRowsBeforeOrigin()));
+        assertThat(this.strategy.wrap(this.table, new Point(0, -3)), is(this.getThreeRowsBeforeOrigin()));
     }
 
     @Test
     public void testTwoColumnsAfterEnd() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(3, 0)),
-                CoreMatchers.is(this.getTwoColumnsAfterEnd()));
+        assertThat(this.strategy.wrap(this.table, new Point(3, 0)), is(this.getTwoColumnsAfterEnd()));
     }
 
     @Test
     public void testTwoRowsAfterEnd() {
-        Assert.assertThat(this.strategy.wrap(this.table, new Point(0, 3)), CoreMatchers.is(this.getTwoRowsAfterEnd()));
+        assertThat(this.strategy.wrap(this.table, new Point(0, 3)), is(this.getTwoRowsAfterEnd()));
     }
 
     /**

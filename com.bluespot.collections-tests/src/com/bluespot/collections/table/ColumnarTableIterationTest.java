@@ -5,7 +5,7 @@ import java.awt.Point;
 import com.bluespot.collections.table.iteration.ColumnarTableIteration;
 import com.bluespot.collections.table.iteration.TableIteration;
 
-public class ColumnarTableIterationTest extends TableIterationTest<Integer> {
+public class ColumnarTableIterationTest extends AbstractTableIterationTest<Integer> {
 
     @Override
     protected Point getExtraColumn() {

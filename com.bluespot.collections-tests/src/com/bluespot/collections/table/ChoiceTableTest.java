@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ChoiceTableTest extends TableTest<TestEnum> {
+public class ChoiceTableTest extends AbstractTableTest<TestEnum> {
 
     public ChoiceTableTest() {
         super(TestEnum.EMPTY);

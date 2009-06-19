@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import com.bluespot.collections.table.iteration.NaturalTableIteration;
 
-public abstract class TableTest<T> {
+public abstract class AbstractTableTest<T> {
 
     /**
      * Constructs a new test suite using the specified value as the default
@@ -26,7 +26,7 @@ public abstract class TableTest<T> {
      *            whenever a default value is not explicitly supplied.
      * @see #newTable(int, int, Object)
      */
-    public TableTest(final T defaultDefaultValue) {
+    public AbstractTableTest(final T defaultDefaultValue) {
         this.defaultDefaultValue = defaultDefaultValue;
     }
 
@@ -41,9 +41,9 @@ public abstract class TableTest<T> {
         } else {
             try {
                 this.newTable(2, 2, null);
-                fail("Table#ctor: Table should throw IAE if it does not allow default values");
-            } catch (final IllegalArgumentException iae) {
-                // We expected this, so continue
+                fail("Expected IAE on disallowed null default value");
+            } catch (final IllegalArgumentException e) {
+                // Expected, so continue.
             }
         }
     }
