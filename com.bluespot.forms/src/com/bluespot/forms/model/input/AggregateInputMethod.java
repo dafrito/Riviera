@@ -5,7 +5,7 @@ import java.util.Map;
 
 import com.bluespot.forms.property.DefaultPropertySheet;
 
-public class AggregateInputMethod extends InputMethod<DefaultPropertySheet> {
+public class AggregateInputMethod implements InputMethod<DefaultPropertySheet> {
 
     private final Map<String, InputMethod<?>> inputMethods = new HashMap<String, InputMethod<?>>();
 
@@ -17,13 +17,9 @@ public class AggregateInputMethod extends InputMethod<DefaultPropertySheet> {
         this.inputMethods.clear();
     }
 
-    @Override
     public DefaultPropertySheet getValue() {
         final DefaultPropertySheet properties = new DefaultPropertySheet();
         for (final Map.Entry<String, InputMethod<?>> entry : this.inputMethods.entrySet()) {
-            if (!entry.getValue().hasAnyValue()) {
-                return null;
-            }
             properties.setProperty(entry.getKey(), entry.getValue());
         }
         return properties.freeze();

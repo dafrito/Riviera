@@ -7,7 +7,7 @@ import java.util.List;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.ListSelectionModel;
 
-public class SubsetInputMethod<E> extends InputMethod<List<E>> {
+public class SubsetInputMethod<E> implements InputMethod<List<E>> {
 
     private List<E> list;
 

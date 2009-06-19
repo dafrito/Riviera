@@ -1,6 +1,6 @@
 package com.bluespot.forms.model.input;
 
-public class ConstantInputMethod<E> extends InputMethod<E> {
+public class ConstantInputMethod<E> implements InputMethod<E> {
 
     private final E value;
 
