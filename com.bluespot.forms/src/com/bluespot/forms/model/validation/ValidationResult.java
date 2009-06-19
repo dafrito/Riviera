@@ -73,23 +73,28 @@ public class ValidationResult<E> {
     }
 
     /**
-     * Creates a summary that consists of the given results, which are
-     * validation reports using the given value.
+     * Creates a {@link ValidationSummary} that consists of the specified
+     * results.
      * 
      * @param <T>
-     *            The type of ValidationResults given.
-     * @param value
-     *            The candidate value. This was the one that was tested .
+     *            the type of the validated candidate
+     * @param candidate
+     *            the candidate value
      * @param results
      *            The results of validation.
-     * @return A ValidationSummary using the given parameters.
+     * @return a {@code ValidationSummary} created from the specified results
+     * 
+     * @see ValidationResult
      */
-    public static <T> ValidationSummary<T> collectResults(final T value, final List<ValidationResult<T>> results) {
+    public static <T> ValidationSummary<T> collectResults(final T candidate, final List<ValidationResult<T>> results) {
         boolean successful = true;
         for (final ValidationResult<T> result : results) {
             successful = successful && result.isSuccessful();
+            if (!successful) {
+                break;
+            }
         }
-        return new ValidationSummary<T>(value, successful, results);
+        return new ValidationSummary<T>(candidate, successful, results);
     }
 
     public static <E> ValidationResult<E> failedDependencies(final Validator<E> validator, final E value,
