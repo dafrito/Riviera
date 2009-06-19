@@ -2,7 +2,6 @@ package com.bluespot.logic.visitors;
 
 import java.util.Collection;
 
-
 /**
  * A {@link Visitor} that prunes a specified collection. For every element that
  * is accepted by this visitor, a call to {@link Collection#remove(Object)} will
@@ -74,6 +73,6 @@ public class PruningVisitor<T> implements Visitor<T> {
 
     @Override
     public String toString() {
-        return String.format("PruningVisitor - collection: %s", this.getCollection());
+        return String.format("remove from collection \"%s\"", this.getCollection());
     }
 }
