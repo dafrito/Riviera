@@ -14,6 +14,8 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SingleSelectionModel;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataListener;
@@ -32,6 +34,83 @@ import com.bluespot.logic.adapters.Adapter;
  * 
  */
 public final class Components {
+
+    /**
+     * An collection of built-in Swing look and feels. This saves clients the
+     * trouble of manually setting the look and feel.
+     * 
+     * @author Aaron Faanes
+     * 
+     * @see javax.swing.LookAndFeel
+     */
+    public enum LookAndFeel {
+
+        /**
+         * Represents the Nimbus look-and-feel that was added in Java 6 Update
+         * 10.
+         */
+        NIMBUS() {
+
+            private volatile String name;
+
+            @Override
+            public String getName() {
+                if (this.name == null) {
+                    for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+                        if (info.getClassName().contains("nimbus")) {
+                            this.name = info.getClassName();
+                        }
+                    }
+                }
+                return this.name;
+            }
+
+        },
+
+        /**
+         * Represents the look-and-feel that emulates the system
+         * 
+         * @see UIManager#getSystemLookAndFeelClassName()
+         */
+        SYSTEM() {
+
+            @Override
+            public String getName() {
+                return UIManager.getSystemLookAndFeelClassName();
+            }
+        };
+
+        /**
+         * Returns the name of the class that implements this look-and-feel. The
+         * returned name, if non-null, can be directly used in a
+         * {@link UIManager#setLookAndFeel(String)} invocation. If the returned
+         * value is null, then no class name could be found.
+         * 
+         * 
+         * @return the name of the class that implements this look-and-feel, or
+         *         {@code null} if no class name could be found
+         */
+        public abstract String getName();
+
+        /**
+         * Sets the global look and feel to this look and feel.
+         * 
+         * @return {@code true} if setting the look-and-feel was successful,
+         *         otherwise {@code false}
+         */
+        public boolean activate() {
+            final String name = this.getName();
+            if (name == null) {
+                return false;
+            }
+            try {
+                UIManager.setLookAndFeel(name);
+                return true;
+            } catch (final Exception e) {
+                return false;
+            }
+        }
+    }
 
     /**
      * Populates the specified container with elements in the
@@ -310,6 +389,19 @@ public final class Components {
         final Object antialiased = isAntialiased ? RenderingHints.VALUE_ANTIALIAS_ON
                 : RenderingHints.VALUE_ANTIALIAS_OFF;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiased);
+    }
+
+    /**
+     * Sets the Swing look and feel using the specified {@link LookAndFeel}
+     * instance.
+     * 
+     * @param laf
+     *            the look and feel to activates
+     * @return {@code true} if the activation succeeded, otherwise {@code false}
+     * @see LookAndFeel#activate()
+     */
+    public static boolean setLookAndFeel(final LookAndFeel laf) {
+        return laf.activate();
     }
 
     /**
