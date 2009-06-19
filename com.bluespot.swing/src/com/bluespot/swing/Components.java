@@ -35,6 +35,11 @@ import com.bluespot.logic.adapters.Adapter;
  */
 public final class Components {
 
+    private Components() {
+        // Suppress default constructor to ensure non-instantiability.
+        throw new AssertionError("Instantiation not allowed");
+    }
+
     /**
      * An collection of built-in Swing look and feels. This saves clients the
      * trouble of manually setting the look and feel.
@@ -109,6 +114,64 @@ public final class Components {
             } catch (final Exception e) {
                 return false;
             }
+        }
+    }
+
+    /**
+     * Levels of texture interpolation
+     * 
+     * @author Aaron Faanes
+     * 
+     */
+    public static enum Interpolation {
+        /**
+         * Represents bicubic texture filtering.
+         * 
+         * @see RenderingHints#VALUE_INTERPOLATION_BICUBIC
+         */
+        BICUBIC(RenderingHints.VALUE_INTERPOLATION_BICUBIC),
+
+        /**
+         * Represents bilinear texture filtering.
+         * 
+         * @see RenderingHints#VALUE_INTERPOLATION_BILINEAR
+         */
+        BILINEAR(RenderingHints.VALUE_INTERPOLATION_BILINEAR),
+
+        /**
+         * Represents nearest-neighbor filtering.
+         * 
+         * @see RenderingHints#VALUE_INTERPOLATION_NEAREST_NEIGHBOR
+         * 
+         */
+        NEAREST_NEIGHBOR(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
+
+        private final Object interpolationValue;
+
+        private Interpolation(final Object interpolationValue) {
+            this.interpolationValue = interpolationValue;
+        }
+
+        /**
+         * Returns the value of this filtering strategy, as it is known to
+         * Swing.
+         * 
+         * @return the value of this filtering strategy
+         * 
+         * @see Graphics2D#setRenderingHint(java.awt.RenderingHints.Key, Object)
+         */
+        public Object getValue() {
+            return this.interpolationValue;
+        }
+
+        /**
+         * Sets the graphics context to use this filtering strategy.
+         * 
+         * @param g
+         *            the context to modify
+         */
+        public void set(final Graphics2D g) {
+            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, this.getValue());
         }
     }
 
@@ -236,68 +299,6 @@ public final class Components {
         } else {
             SwingUtilities.invokeLater(firstTimeRefresh);
         }
-    }
-
-    /**
-     * Levels of texture interpolation
-     * 
-     * @author Aaron Faanes
-     * 
-     */
-    public static enum Interpolation {
-        /**
-         * Represents bicubic texture filtering.
-         * 
-         * @see RenderingHints#VALUE_INTERPOLATION_BICUBIC
-         */
-        BICUBIC(RenderingHints.VALUE_INTERPOLATION_BICUBIC),
-
-        /**
-         * Represents bilinear texture filtering.
-         * 
-         * @see RenderingHints#VALUE_INTERPOLATION_BILINEAR
-         */
-        BILINEAR(RenderingHints.VALUE_INTERPOLATION_BILINEAR),
-
-        /**
-         * Represents nearest-neighbor filtering.
-         * 
-         * @see RenderingHints#VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-         * 
-         */
-        NEAREST_NEIGHBOR(RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-
-        private final Object interpolationValue;
-
-        private Interpolation(final Object interpolationValue) {
-            this.interpolationValue = interpolationValue;
-        }
-
-        /**
-         * Returns the value of this filtering strategy, as it is known to
-         * Swing.
-         * 
-         * @return the value of this filtering strategy
-         * 
-         * @see Graphics2D#setRenderingHint(java.awt.RenderingHints.Key, Object)
-         */
-        public Object getValue() {
-            return this.interpolationValue;
-        }
-
-        /**
-         * Sets the graphics context to use this filtering strategy.
-         * 
-         * @param g
-         *            the context to modify
-         */
-        public void set(final Graphics2D g) {
-            g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, this.getValue());
-        }
-    }
-
-    private Components() {
-        throw new AssertionError("This class cannot be instantiated.");
     }
 
     /**
