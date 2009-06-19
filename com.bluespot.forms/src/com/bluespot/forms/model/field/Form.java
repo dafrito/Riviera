@@ -6,16 +6,12 @@ import com.bluespot.forms.property.DefaultPropertySheet;
 
 public class Form extends Field<DefaultPropertySheet> {
 
-    public Form() {
-        this(null);
-    }
-
-    public Form(final String name) {
-        super(new CommittableGroup(), name);
+    public Form(final Description description) {
+        super(new CommittableGroup(), description);
     }
 
     public void addField(final Field<?> field) {
-        this.getCommittableGroup().addCommittable(field.getName(), field.getCommittable());
+        this.getCommittableGroup().addCommittable(field.getDescription().getId(), field.getCommittable());
     }
 
     public void addField(final String name, final Committable<?> committable) {
@@ -35,7 +31,7 @@ public class Form extends Field<DefaultPropertySheet> {
     }
 
     public void removeField(final Field<?> field) {
-        this.getCommittableGroup().removeCommittable(field.getName(), field.getCommittable());
+        this.getCommittableGroup().removeCommittable(field.getDescription().getId(), field.getCommittable());
     }
 
     public void removeField(final String name, final Committable<?> committable) {
