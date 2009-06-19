@@ -1,4 +1,4 @@
-package com.bluespot.reflection.tests;
+package com.bluespot.reflection;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
