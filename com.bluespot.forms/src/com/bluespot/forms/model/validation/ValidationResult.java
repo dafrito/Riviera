@@ -5,117 +5,117 @@ import java.util.List;
 
 public class ValidationResult<E> {
 
-	public static class DependencyValidationException extends Exception {
-	
-		private static final long serialVersionUID = 6217081622731218877L;
-		
-		private final List<Exception> causes;
+    public static class DependencyValidationException extends Exception {
 
-		public DependencyValidationException(final List<Exception> causes) {
-			super(DependencyValidationException.MESSAGE);
-			this.causes = Collections.unmodifiableList(causes);
-		}
+        private static final long serialVersionUID = 6217081622731218877L;
 
-		public List<Exception> getCauses() {
-			return this.causes;
-		}
+        private final List<Exception> causes;
 
-		public static final String MESSAGE = "One or more dependencies did not validate.";
-	}
+        public DependencyValidationException(final List<Exception> causes) {
+            super(DependencyValidationException.MESSAGE);
+            this.causes = Collections.unmodifiableList(causes);
+        }
 
-	protected final Exception cause;
+        public List<Exception> getCauses() {
+            return this.causes;
+        }
 
-	protected final boolean successful;
+        public static final String MESSAGE = "One or more dependencies did not validate.";
+    }
 
-	protected final Validator<E> validator;
+    protected final Exception cause;
 
-	protected final E value;
+    protected final boolean successful;
 
-	protected ValidationResult(final E value, final boolean successful) {
-		this(null, value, successful, null);
-	}
+    protected final Validator<E> validator;
 
-	protected ValidationResult(final Validator<E> validator, final E value) {
-		this(validator, value, true, null);
-	}
+    protected final E value;
 
-	protected ValidationResult(final Validator<E> validator, final E value, final boolean successful) {
-		this(validator, value, successful, null);
-	}
+    protected ValidationResult(final E value, final boolean successful) {
+        this(null, value, successful, null);
+    }
 
-	protected ValidationResult(final Validator<E> validator, final E value, final boolean successful,
-			final Exception cause) {
-		this.validator = validator;
-		this.successful = successful;
-		this.value = value;
-		this.cause = cause;
-	}
+    protected ValidationResult(final Validator<E> validator, final E value) {
+        this(validator, value, true, null);
+    }
 
-	protected ValidationResult(final Validator<E> validator, final E value, final Exception cause) {
-		this(validator, value, false, cause);
-	}
+    protected ValidationResult(final Validator<E> validator, final E value, final boolean successful) {
+        this(validator, value, successful, null);
+    }
 
-	public Exception getCause() {
-		return this.cause;
-	}
+    protected ValidationResult(final Validator<E> validator, final E value, final boolean successful,
+            final Exception cause) {
+        this.validator = validator;
+        this.successful = successful;
+        this.value = value;
+        this.cause = cause;
+    }
 
-	public Validator<E> getValidator() {
-		return this.validator;
-	}
+    protected ValidationResult(final Validator<E> validator, final E value, final Exception cause) {
+        this(validator, value, false, cause);
+    }
 
-	public E getValue() {
-		return this.value;
-	}
+    public Exception getCause() {
+        return this.cause;
+    }
 
-	public boolean isSuccessful() {
-		return this.successful;
-	}
+    public Validator<E> getValidator() {
+        return this.validator;
+    }
 
-	/**
-	 * Creates a summary that consists of the given results, which are
-	 * validation reports using the given value.
-	 * 
-	 * @param <T>
-	 *            The type of ValidationResults given.
-	 * @param value
-	 *            The candidate value. This was the one that was tested .
-	 * @param results
-	 *            The results of validation.
-	 * @return A ValidationSummary using the given parameters.
-	 */
-	public static <T> ValidationSummary<T> collectResults(final T value, final List<ValidationResult<T>> results) {
-		boolean successful = true;
-		for (final ValidationResult<T> result : results) {
-			successful = successful && result.isSuccessful();
-		}
-		return new ValidationSummary<T>(value, successful, results);
-	}
+    public E getValue() {
+        return this.value;
+    }
 
-	public static <E> ValidationResult<E> failedDependencies(final Validator<E> validator, final E value,
-			final List<Exception> causes) {
-		return new ValidationResult<E>(validator, value, false, new DependencyValidationException(causes));
-	}
+    public boolean isSuccessful() {
+        return this.successful;
+    }
 
-	public static <E> ValidationResult<E> failedResult(final Validator<E> validator, final E value) {
-		return new ValidationResult<E>(validator, value, false);
-	}
+    /**
+     * Creates a summary that consists of the given results, which are
+     * validation reports using the given value.
+     * 
+     * @param <T>
+     *            The type of ValidationResults given.
+     * @param value
+     *            The candidate value. This was the one that was tested .
+     * @param results
+     *            The results of validation.
+     * @return A ValidationSummary using the given parameters.
+     */
+    public static <T> ValidationSummary<T> collectResults(final T value, final List<ValidationResult<T>> results) {
+        boolean successful = true;
+        for (final ValidationResult<T> result : results) {
+            successful = successful && result.isSuccessful();
+        }
+        return new ValidationSummary<T>(value, successful, results);
+    }
 
-	public static <E> ValidationResult<E> failedResult(final Validator<E> validator, final E value,
-			final Exception cause) {
-		return new ValidationResult<E>(validator, value, false, cause);
-	}
+    public static <E> ValidationResult<E> failedDependencies(final Validator<E> validator, final E value,
+            final List<Exception> causes) {
+        return new ValidationResult<E>(validator, value, false, new DependencyValidationException(causes));
+    }
 
-	public static <E> ValidationResult<E> forwardResult(final Validator<E> validator, final E value,
-			final ValidationResult<?> result) {
-		return new ValidationResult<E>(validator, value, result.isSuccessful(), result.getCause());
-	}
+    public static <E> ValidationResult<E> failedResult(final Validator<E> validator, final E value) {
+        return new ValidationResult<E>(validator, value, false);
+    }
 
-	public static <E> ValidationResult<E> result(final Validator<E> validator, final E value, final boolean success) {
-		return new ValidationResult<E>(validator, value, success);
-	}
+    public static <E> ValidationResult<E> failedResult(final Validator<E> validator, final E value,
+            final Exception cause) {
+        return new ValidationResult<E>(validator, value, false, cause);
+    }
 
-	public static <E> ValidationResult<E> successfulResult(final Validator<E> validator, final E value) {
-		return new ValidationResult<E>(validator, value, true);
-	}
+    public static <E> ValidationResult<E> forwardResult(final Validator<E> validator, final E value,
+            final ValidationResult<?> result) {
+        return new ValidationResult<E>(validator, value, result.isSuccessful(), result.getCause());
+    }
+
+    public static <E> ValidationResult<E> result(final Validator<E> validator, final E value, final boolean success) {
+        return new ValidationResult<E>(validator, value, success);
+    }
+
+    public static <E> ValidationResult<E> successfulResult(final Validator<E> validator, final E value) {
+        return new ValidationResult<E>(validator, value, true);
+    }
 
 }
