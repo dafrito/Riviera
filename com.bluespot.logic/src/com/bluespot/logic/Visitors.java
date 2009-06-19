@@ -2,8 +2,6 @@ package com.bluespot.logic;
 
 import java.util.Collection;
 
-import junit.framework.AssertionFailedError;
-
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.visitors.AdaptingVisitor;
@@ -34,7 +32,7 @@ public final class Visitors {
 
     private Visitors() {
         // Suppress default constructor to ensure non-instantiability.
-        throw new AssertionFailedError("Instantiation not allowed");
+        throw new AssertionError("Instantiation not allowed");
     }
 
     /**
