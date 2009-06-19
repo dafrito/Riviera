@@ -1,8 +1,14 @@
 package com.bluespot.logic;
 
+import static com.bluespot.logic.Adapters.childFile;
+import static com.bluespot.logic.Adapters.fileName;
+import static com.bluespot.logic.Predicates.not;
+import static com.bluespot.logic.Predicates.startsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -56,6 +62,29 @@ public class PredicateTests {
             return value.intValue() % 3 == 0;
         }
     };
+
+    @Test
+    public void testEquality() {
+        final PredicateBuilder<File> predicate = new PredicateBuilder<File>();
+        predicate.has(fileName()).that(not(startsWith(".")));
+        predicate.has(childFile("src"));
+        System.out.println(predicate.build());
+        assertTrue(predicate.build().equals(predicate.build()));
+    }
+
+    @Test
+    public void testHasCanStillCheckForNullValues() {
+        final PredicateBuilder<String> builder = new PredicateBuilder<String>();
+        builder.has(this.adaptLength).addRequirement(Predicates.nullValue());
+        assertThat(builder.build().test(null), is(true));
+    }
+
+    @Test
+    public void testHasImplicitlyMeansNotNull() {
+        final PredicateBuilder<String> builder = new PredicateBuilder<String>();
+        builder.has(this.adaptLength);
+        assertThat(builder.build().test(null), is(false));
+    }
 
     @Test
     public void testLowerCase() {
@@ -220,6 +249,32 @@ public class PredicateTests {
     @Test(expected = IllegalArgumentException.class)
     public void testUnanimousPredicateThrowsOnEmptyPredicate() {
         new UnanimousPredicate<Integer>(Collections.<Predicate<? super Integer>> emptyList());
+    }
+
+    @Test
+    public void testStartsWith() {
+        final Predicate<String> predicate = Predicates.startsWith("foo");
+        assertThat(predicate.test("foobar"), is(true));
+        assertThat(predicate.test("bar"), is(false));
+        assertThat(predicate.test("barfoo"), is(false));
+        assertThat(predicate.test("foo"), is(true));
+        assertThat(predicate.test(null), is(false));
+        assertThat(Predicates.startsWith("f[o]o").test("foo"), is(false));
+        assertThat(Predicates.startsWith(".").test("notime"), is(false));
+        assertThat(Predicates.startsWith(".").test(".otime"), is(true));
+    }
+
+    @Test
+    public void testEndsWith() {
+        final Predicate<String> predicate = Predicates.endsWith("foo");
+        assertThat(predicate.test("barfoo"), is(true));
+        assertThat(predicate.test("foobar"), is(false));
+        assertThat(predicate.test("bar"), is(false));
+        assertThat(predicate.test("foo"), is(true));
+        assertThat(predicate.test(null), is(false));
+        assertThat(Predicates.endsWith("f[o]o").test("foo"), is(false));
+        assertThat(Predicates.endsWith(".").test("notime"), is(false));
+        assertThat(Predicates.endsWith(".").test("notime."), is(true));
     }
 
     @Test
