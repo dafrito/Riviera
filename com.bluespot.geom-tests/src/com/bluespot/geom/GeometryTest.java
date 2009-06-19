@@ -1,4 +1,4 @@
-package com.bluespot.geom.tests;
+package com.bluespot.geom;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;

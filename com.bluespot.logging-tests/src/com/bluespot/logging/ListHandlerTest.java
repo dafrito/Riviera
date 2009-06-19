@@ -1,4 +1,4 @@
-package com.bluespot.logging.tests;
+package com.bluespot.logging;
 
 import java.util.Collection;
 import java.util.List;
