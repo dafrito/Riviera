@@ -7,6 +7,8 @@ public class ValidationResult<E> {
 
     public static class DependencyValidationException extends Exception {
 
+        private static final String MESSAGE = "One or more dependencies did not validate.";
+
         private static final long serialVersionUID = 6217081622731218877L;
 
         private final List<Exception> causes;
@@ -20,7 +22,6 @@ public class ValidationResult<E> {
             return this.causes;
         }
 
-        public static final String MESSAGE = "One or more dependencies did not validate.";
     }
 
     protected final Exception cause;
