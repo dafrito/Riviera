@@ -6,9 +6,9 @@ import com.bluespot.collections.table.Table;
 import com.bluespot.collections.table.TableIterator;
 
 /**
- * A strategy for table iteration. Table iteration strategies should be
- * stateless singletons. You should include stateful behavior inside a
- * {@link TableIterator}.
+ * A strategy for iterating over {@link Table} objects. Table iteration
+ * strategies should be stateless singletons. You should include stateful
+ * behavior inside a {@link TableIterator}.
  * 
  * @author Aaron Faanes
  * @see Table
