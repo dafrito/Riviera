@@ -16,7 +16,7 @@ public final class Adapters {
 
     private Adapters() {
         // Suppress default constructor to ensure non-instantiability
-        throw new AssertionError();
+        throw new AssertionError("Instantiation not allowed");
     }
 
     private static final Adapter<Object, String> ADAPTER_TO_STRING = new Adapter<Object, String>() {
