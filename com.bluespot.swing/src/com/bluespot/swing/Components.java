@@ -391,33 +391,6 @@ public final class Components {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, antialiased);
     }
 
-    /**
-     * Sets the Swing look and feel using the specified {@link LookAndFeel}
-     * instance.
-     * 
-     * @param laf
-     *            the look and feel to activates
-     * @return {@code true} if the activation succeeded, otherwise {@code false}
-     * @see LookAndFeel#activate()
-     */
-    public static boolean setLookAndFeel(final LookAndFeel laf) {
-        return laf.activate();
-    }
-
-    /**
-     * Sets the graphics context to use the specified level of texture
-     * interpolation.
-     * 
-     * @param g
-     *            the graphics context to modify
-     * @param interpolation
-     *            the level of texture interpolation
-     * @see RenderingHints#KEY_INTERPOLATION
-     */
-    public static void setInterpolation(final Graphics2D g, final Interpolation interpolation) {
-        interpolation.set(g);
-    }
-
 }
 
 /**
