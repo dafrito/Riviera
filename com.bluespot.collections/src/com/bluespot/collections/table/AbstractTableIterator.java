@@ -8,7 +8,7 @@ import java.awt.Point;
  * @author Aaron Faanes
  * @param <T>
  *            Type of element contained in this iterator's parent table
- * @See {@link StrategyTableIterator}
+ * @see StrategyTableIterator
  */
 public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 
