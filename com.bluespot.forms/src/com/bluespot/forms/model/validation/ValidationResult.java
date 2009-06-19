@@ -6,6 +6,9 @@ import java.util.List;
 public class ValidationResult<E> {
 
 	public static class DependencyValidationException extends Exception {
+	
+		private static final long serialVersionUID = 6217081622731218877L;
+		
 		private final List<Exception> causes;
 
 		public DependencyValidationException(final List<Exception> causes) {
