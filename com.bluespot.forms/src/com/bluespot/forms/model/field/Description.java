@@ -1,13 +1,18 @@
 package com.bluespot.forms.model.field;
 
+/**
+ * Represents an immutable description of something.
+ * 
+ * @author Aaron Faanes
+ * @deprecated This class should not be used. It does not decompose well; we're
+ *             interested in string IDs part of the time, and full descriptions
+ *             other times.
+ */
+@Deprecated
 public final class Description {
     private final String informationBlurb;
     private final String label;
     private final String name;
-
-    public Description() {
-        this("", "", "");
-    }
 
     public Description(final String name) {
         this(name, "", "");
@@ -39,7 +44,7 @@ public final class Description {
         return this.label;
     }
 
-    public String getName() {
+    public String getId() {
         return this.name;
     }
 }
