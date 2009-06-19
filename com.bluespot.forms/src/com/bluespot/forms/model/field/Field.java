@@ -4,16 +4,18 @@ import com.bluespot.forms.model.commit.Committable;
 
 public class Field<E> {
 
-    private Committable<E> committable;
-    private Description description = new Description();
+    private final Committable<E> committable;
+    private final Description description;
 
-    public Field(final Committable<E> committable) {
-        this(committable, "");
-    }
-
-    public Field(final Committable<E> committable, final String name) {
+    public Field(final Committable<E> committable, final Description description) {
+        if (committable == null) {
+            throw new NullPointerException("committable is null");
+        }
+        if (description == null) {
+            throw new NullPointerException("description is null");
+        }
         this.committable = committable;
-        this.setName(name);
+        this.description = description;
     }
 
     public Committable<E> getCommittable() {
@@ -24,31 +26,4 @@ public class Field<E> {
         return this.description;
     }
 
-    public String getInformationBlurb() {
-        return this.getDescription().getInformationBlurb();
-    }
-
-    public String getLabel() {
-        return this.getDescription().getLabel();
-    }
-
-    public String getName() {
-        return this.getDescription().getName();
-    }
-
-    public void setInformationBlurb(final String newInformationBlurb) {
-        this.setDescription(this.getDescription().changeInformationBlurb(newInformationBlurb));
-    }
-
-    public void setLabel(final String label) {
-        this.setDescription(this.getDescription().changeLabel(label));
-    }
-
-    public void setName(final String name) {
-        this.setDescription(this.getDescription().changeName(name));
-    }
-
-    protected void setDescription(final Description description) {
-        this.description = description;
-    }
 }
