@@ -30,30 +30,30 @@ public class CollectionUtil {
      * removed or added. As a consequence, this will yield proper results when
      * using the specified deque is an {@code ObservableDeque}.
      * 
-     * @param <E>
-     *            the common supertype of the collections
-     * @param targetCollection
-     *            the target collection that is modified. At the end of this
-     *            method, this will be equal to the reference collection.
      * @param referenceCollection
      *            the reference collection. At the end of this method, this will
      *            be equal to the target collection
+     * @param targetCollection
+     *            the target collection that is modified. At the end of this
+     *            method, this will be equal to the reference collection.
+     * 
+     * @param <E>
+     *            the common supertype of the collections
      * @throws IllegalStateException
      *             if the values are not allowed to be added to the {@code
      *             targetCollection}
      */
-    public static <E> void synchronizeDeques(final Deque<E> targetCollection,
-            final Deque<? extends E> referenceCollection) {
-        CollectionUtil.removeDifferingTail(targetCollection, referenceCollection);
+    public static <E> void synchronizeDeques(final Deque<? extends E> referenceCollection,
+            final Deque<E> targetCollection) {
+        CollectionUtil.removeDifferingTail(referenceCollection, targetCollection);
         final int equalElements = targetCollection.size();
         int i = 0;
         for (final Iterator<? extends E> iterator = referenceCollection.iterator(); iterator.hasNext(); i++) {
             final E value = iterator.next();
-            if (i > equalElements) {
+            if (i >= equalElements) {
                 targetCollection.addLast(value);
             }
         }
-
     }
 
     /**
@@ -71,17 +71,18 @@ public class CollectionUtil {
      * collection, only from the end. This is useful if you wish to synchronize
      * two {@code ObservableDeque} objects.
      * 
-     * @param <E>
-     *            the common supertype of the two deques
-     * @param targetCollection
-     *            the deque to modify
      * @param referenceCollection
      *            the reference deque
+     * @param targetCollection
+     *            the deque to modify
+     * 
+     * @param <E>
+     *            the common supertype of the two deques
      * @return the number of removed elements. This will be at least zero, up to
      *         the size of {@code targetCollection}.
      */
-    public static <E> int removeDifferingTail(final Deque<? extends E> targetCollection,
-            final Deque<? extends E> referenceCollection) {
+    public static <E> int removeDifferingTail(final Deque<? extends E> referenceCollection,
+            final Deque<? extends E> targetCollection) {
         int equalElements = 0;
         final Iterator<? extends E> targetIterator = targetCollection.iterator();
         final Iterator<? extends E> referenceIterator = referenceCollection.iterator();
@@ -134,26 +135,32 @@ public class CollectionUtil {
      *            the collection that is modified in this method
      * @param numRemoved
      *            the number of elements to remove
-     * @throws IllegalArgumentException
-     *             if {@code numRemoved} is greater than the collection's size
+     * @throws IndexOutOfBoundsException
+     *             if {@code numRemoved} is out of bounds
      */
     public static void removeFromStart(final Collection<?> collection, final int numRemoved) {
         int i = 0;
         if (numRemoved > collection.size()) {
-            throw new IllegalArgumentException("numRemoved is greater than the collection's current size");
+            throw new IndexOutOfBoundsException("numRemoved is greater than the collection's current size");
+        }
+        if (numRemoved < 0) {
+            throw new IndexOutOfBoundsException("numRemoved < 0");
         }
         for (final Iterator<?> iterator = collection.iterator(); iterator.hasNext(); i++) {
             if (i >= numRemoved) {
                 // We've removed enough, return
                 return;
             }
+            iterator.next();
             iterator.remove();
         }
     }
 
     /**
-     * Removes all elements in the specified collection that are after the
-     * specified index.
+     * Removes all elements in the specified collection that are strictly after,
+     * or currently at, the specified index. The resulting collection is
+     * essentially a sublist with a range of {@code [0,2)}.
+     * 
      * 
      * @param collection
      *            the collection that is modified in this method
@@ -163,9 +170,12 @@ public class CollectionUtil {
      *             if {@code removeIndex} is less than zero; this method should
      *             not be used to implicitly clear collections
      */
-    public static void removeAfter(final Collection<?> collection, final int removeIndex) {
+    public static void removeStartingFrom(final Collection<?> collection, final int removeIndex) {
         if (removeIndex < 0) {
-            throw new IllegalArgumentException("removeIndex is less than zero");
+            throw new IndexOutOfBoundsException("removeIndex is less than zero");
+        }
+        if (removeIndex > collection.size()) {
+            throw new IndexOutOfBoundsException("removeIndex is greater than the specified collection's size");
         }
         int i = 0;
         for (final Iterator<?> iterator = collection.iterator(); iterator.hasNext(); i++) {
@@ -190,7 +200,7 @@ public class CollectionUtil {
      *            the element that marks the new end of the collection. All
      *            subsequent elements will be removed.
      */
-    public static <E> void removeAfter(final Collection<? extends E> collection, final E element) {
+    public static <E> void removeStartingFrom(final Collection<? extends E> collection, final E element) {
         boolean isRemoving = false;
         for (final Iterator<? extends E> iterator = collection.iterator(); iterator.hasNext();) {
             final E candidate = iterator.next();
@@ -208,8 +218,9 @@ public class CollectionUtil {
     }
 
     /**
-     * Removes all elements that are in front of the specified element. If the
-     * deque does not contain the specified element, all elements are removed.
+     * Removes all elements that are strictly in front of, but not equal to, the
+     * specified element. If the deque does not contain the specified element,
+     * all elements are removed.
      * <p>
      * This method will not perform spurious removes or additions. The only
      * elements removed are ones that are before, but not equal to, the
@@ -238,8 +249,9 @@ public class CollectionUtil {
     }
 
     /**
-     * Removes all elements that are behind the specified element. If the deque
-     * does not contain the specified element, all elements are removed.
+     * Removes all elements that are strictly behind, but not equal to, the
+     * specified element. If the deque does not contain the specified element,
+     * all elements are removed.
      * <p>
      * This method will not perform spurious removes or additions. The only
      * elements removed are ones that are after, but not equal to, the specified
