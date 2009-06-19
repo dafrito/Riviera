@@ -10,7 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public abstract class ListTest {
+public abstract class AbstractListTest {
 
     protected List<String> list;
 

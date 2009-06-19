@@ -16,9 +16,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bluespot.collections.list.ListTest;
+import com.bluespot.collections.list.AbstractListTest;
 
-public final class ObservableListTest extends ListTest {
+public final class ObservableListTest extends AbstractListTest {
 
     public ObservableList<String> listModel;
 
