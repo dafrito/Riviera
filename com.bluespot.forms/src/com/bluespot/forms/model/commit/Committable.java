@@ -38,14 +38,6 @@ public class Committable<E> {
         this.validator = validator;
     }
 
-    public ValidationSummary<Commit<E>> commit() {
-        final Commit<E> commit = this.createCommit(this.getInputMethod().getValue());
-        final ValidationSummary<Commit<E>> result = this.getValidator().validate(commit);
-        this.committedValue = commit.getNewValue();
-        this.fireCommitResult(result);
-        return result;
-    }
-
     public InputMethod<? extends E> getCommittedInputMethod() {
         return this.committedValueInputMethod;
     }
@@ -54,24 +46,29 @@ public class Committable<E> {
         return this.getCommittedInputMethod().getValue();
     }
 
-    public InputMethod<? extends E> getInputMethod() {
-        if (this.inputMethod == null) {
-            throw new NullPointerException("inputMethod cannot be null");
-        }
-        return this.inputMethod;
+    public ValidationSummary<Commit<E>> commit() {
+        final Commit<E> commit = this.createCommit(this.getInputMethod().getValue());
+        final ValidationSummary<Commit<E>> result = this.getValidator().validate(commit);
+        this.committedValue = commit.getNewValue();
+        this.fireCommitResult(result);
+        return result;
     }
 
-    public AggregateValidator<Commit<E>> getValidator() {
-        return this.validator;
+    protected Commit<E> createCommit(final E newValue) {
+        final E oldValue = this.getCommittedInputMethod().getValue();
+        return new Commit<E>(this, oldValue, newValue);
+    }
+
+    public InputMethod<? extends E> getInputMethod() {
+        return this.inputMethod;
     }
 
     public void setInputMethod(final InputMethod<? extends E> inputMethod) {
         this.inputMethod = inputMethod;
     }
 
-    protected Commit<E> createCommit(final E newValue) {
-        final E oldValue = this.getCommittedInputMethod().getValue();
-        return new Commit<E>(this, oldValue, newValue);
+    public AggregateValidator<Commit<E>> getValidator() {
+        return this.validator;
     }
 
     public void addCommitListener(final CommitListener<E> listener) {
