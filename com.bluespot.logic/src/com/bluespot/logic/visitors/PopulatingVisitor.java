@@ -2,7 +2,6 @@ package com.bluespot.logic.visitors;
 
 import java.util.Collection;
 
-
 /**
  * A {@link Visitor} that populates a specified collection. For every element
  * that is accepted by this visitor, a call to {@link Collection#add(Object)}
@@ -74,6 +73,6 @@ public class PopulatingVisitor<T> implements Visitor<T> {
 
     @Override
     public String toString() {
-        return String.format("PopulatingVisitor - collection: %s", this.getCollection());
+        return String.format("add to collection \"%s\"", this.getCollection());
     }
 }
