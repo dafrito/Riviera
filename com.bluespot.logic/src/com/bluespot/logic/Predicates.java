@@ -30,6 +30,71 @@ public final class Predicates {
     }
 
     /**
+     * A predicate that tests whether a given file exists and is a directory.
+     * 
+     * @see #isDirectory()
+     */
+    private static final Predicate<File> PREDICATE_IS_DIRECTORY = new Predicate<File>() {
+
+        public boolean test(final File value) {
+            if (value == null) {
+                return false;
+            }
+            return value.isDirectory();
+        }
+
+        @Override
+        public String toString() {
+            return "is directory";
+        }
+    };
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * given {@link File} exists and is a directory. Null values evaluate to
+     * {@code false}.
+     * 
+     * @return a predicate that tests whether a given {@code File} is a
+     *         directory
+     * @see File#isDirectory()
+     */
+    public static Predicate<File> isDirectory() {
+        return PREDICATE_IS_DIRECTORY;
+    }
+
+    /**
+     * A predicate that tests whether a given file exists and is a file
+     * 
+     * @see #isFile()
+     */
+    private static final Predicate<File> PREDICATE_IS_FILE = new Predicate<File>() {
+
+        public boolean test(final File value) {
+            if (value == null) {
+                return false;
+            }
+            return value.isFile();
+        }
+
+        @Override
+        public String toString() {
+            return "is file";
+        }
+    };
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * given {@link File} exists and is a file. Null values evaluate to {@code
+     * false}.
+     * 
+     * @return a predicate that tests whether a given {@code File} is a file
+     * @see File#isFile()
+     */
+    public static Predicate<File> isFile() {
+        return PREDICATE_IS_FILE;
+    }
+
+    /**
      * Returns a new {@link PredicateBuilder} for composite predicates.
      * 
      * @param <T>
