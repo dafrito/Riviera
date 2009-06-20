@@ -1,11 +1,13 @@
 package com.bluespot.logging.example;
 
+import java.awt.Dimension;
 import java.awt.event.MouseEvent;
 import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -27,11 +29,9 @@ import com.bluespot.logging.handlers.ListHandler;
 public final class ListHandlerDemonstration extends Demonstration {
 
     @Override
-    public void initializeFrame(final JFrame frame) {
-        frame.setSize(400, 400);
-
-        final JSplitPane splitPane = new JSplitPane();
-        frame.setContentPane(splitPane);
+    protected JComponent newContentPane() {
+        final JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+        splitPane.setPreferredSize(new Dimension(400, 400));
 
         final Logger logger = Logger.getLogger(this.getClass().getPackage().getName());
 
@@ -40,6 +40,7 @@ public final class ListHandlerDemonstration extends Demonstration {
         splitPane.setLeftComponent(new JScrollPane(list));
 
         final JPanel panel = new JPanel();
+        panel.add(new JLabel("Click here to log mouse events!"));
         panel.addMouseListener(new MouseInputAdapter() {
 
             @Override
@@ -49,6 +50,8 @@ public final class ListHandlerDemonstration extends Demonstration {
 
         });
         splitPane.setRightComponent(panel);
+        splitPane.setResizeWeight(.8);
+        return splitPane;
     }
 
     private ListModel createLoggingListModel(final Logger associatedLogger) {

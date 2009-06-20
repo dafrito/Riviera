@@ -55,7 +55,7 @@ public final class CellRendererDemonstration extends Demonstration {
     private final JList list = new JList();
 
     @Override
-    public void initializeFrame(final JFrame frame) {
+    public boolean initializeFrame(final JFrame frame) {
 
         this.list.setCellRenderer(new MyCellRenderer());
 
@@ -90,6 +90,7 @@ public final class CellRendererDemonstration extends Demonstration {
         panel.add(addButton);
 
         frame.getContentPane().add(panel, BorderLayout.SOUTH);
+        return true;
     }
 
     private void populateList(final List<String> targetList) {

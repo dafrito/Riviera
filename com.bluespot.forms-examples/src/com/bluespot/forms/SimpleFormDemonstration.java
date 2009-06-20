@@ -16,7 +16,7 @@ import com.bluespot.swing.GroupLayoutBuilder;
 public final class SimpleFormDemonstration extends Demonstration {
 
     @Override
-    protected void initializeFrame(final JFrame frame) {
+    protected boolean initializeFrame(final JFrame frame) {
         Components.LookAndFeel.SYSTEM.activate();
         final GroupLayoutBuilder form = new GroupLayoutBuilder();
         form.label("<html>Type in a name of a program, folder, document, or <br/>Internet resource, and Windows will open it for you.</html>");
@@ -27,7 +27,7 @@ public final class SimpleFormDemonstration extends Demonstration {
         final JComponent comp = form.build();
         frame.setContentPane(comp);
         frame.pack();
-
+        return true;
     }
 
     /**

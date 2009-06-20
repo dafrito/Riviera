@@ -1,6 +1,9 @@
 package com.bluespot.demonstration;
 
+import java.awt.BorderLayout;
+
 import javax.swing.BorderFactory;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -13,22 +16,91 @@ import com.bluespot.swing.Components;
  * @author Aaron Faanes
  * 
  */
-public abstract class Demonstration implements Runnable {
+public abstract class Demonstration {
 
-    public void run() {
-
+    private final void bootstrap() {
         final JFrame frame = new JFrame(this.getTitle());
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.preInitialize(frame);
+        if (this.initialize(frame)) {
+            this.postInitialize(frame);
+        }
+    }
 
-        final JPanel panel = new JPanel();
+    /**
+     * 
+     * @param frame
+     *            the target frame that is initialized with this demonstration
+     */
+    protected final void preInitialize(final JFrame frame) {
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    /**
+     * Adds all children and lays out the specified frame. This method is
+     * invoked after {@link #preInitialize(JFrame)} and before
+     * {@link #postInitialize(JFrame)}.
+     * <p>
+     * The default implementation sets the content pane of the specified frame
+     * to this demonstration's content pane, as returned by
+     * {@link #getContentPane()}.
+     * <p>
+     * Legacy demonstrations that implement {@link #initializeFrame(JFrame)} and
+     * return {@code true} will bypass any call to {@link #newContentPane()}.
+     * {@link #postInitialize(JFrame)} will also not be called. As a result,
+     * implementers of {@link #initializeFrame(JFrame)} are responsible for
+     * setting the size of the frame.
+     * 
+     * @param frame
+     *            the target frame that is initialized with this demonstration
+     * @return {@code true} if {@link #postInitialize(JFrame)} should be invoked
+     */
+    protected final boolean initialize(final JFrame frame) {
+        if (this.initializeFrame(frame)) {
+            // Set visibility and return early for legacy demonstrations.
+            Components.center(frame);
+            frame.setVisible(true);
+            return false;
+        }
+        final JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         frame.setContentPane(panel);
+        panel.add(this.getContentPane());
+        return true;
+    }
 
-        this.initializeFrame(frame);
-
+    /**
+     * Sets the size, position, and visibility of the specified frame. This
+     * method is called immediately after {@link #initialize(JFrame)}.
+     * <p>
+     * The default implementation calls {@link JFrame#pack()} on the specified
+     * frame, centers it, and shows it.
+     * <p>
+     * If {@link #initializeFrame(JFrame)} returns {@code true}, this method
+     * will never be invoked.
+     * 
+     * @param frame
+     *            the target frame that is initialized with this demonstration
+     */
+    protected final void postInitialize(final JFrame frame) {
+        frame.pack();
         Components.center(frame);
         frame.setVisible(true);
+    }
 
+    /**
+     * Creates, lays out, and adds all children to the specified frame.
+     * 
+     * @deprecated This method should no longer be used, as it directly modifies
+     *             the specified frame. Instead, implement
+     *             {@link #newContentPane()}.
+     * @param frame
+     *            the frame to populate and lay out
+     * @return {@code true} if the specified frame was initialized, otherwise
+     *         {@code false}
+     */
+    @Deprecated
+    protected boolean initializeFrame(final JFrame frame) {
+        return false;
     }
 
     /**
@@ -40,13 +112,52 @@ public abstract class Demonstration implements Runnable {
         return this.getClass().getSimpleName();
     }
 
+    private JComponent component;
+
     /**
-     * Create and populate the specified frame with your demonstration.
+     * Returns the content pane used with this demonstration. This will cache a
+     * created content pane, so {@link #newContentPane()} will only be called
+     * once.
+     * <p>
+     * This method may be unused if {@link #initialize(JFrame)} is overridden.
+     * However, this method of implementing a {@link Demonstration} is
+     * deprecated since it directly modifies a frame.
      * 
-     * @param frame
-     *            Root frame to populate with whatever you're demonstrating.
+     * @return the content pane for this demonstration
+     * 
+     * @throws IllegalStateException
+     *             if this method is invoked on a non-EDT thread
+     * @throws NullPointerException
+     *             if {@link #newContentPane()} returns a null content pane
+     * @throws UnsupportedOperationException
+     *             if {@link #newContentPane()} is not overridden
      */
-    protected abstract void initializeFrame(final JFrame frame);
+    public final JComponent getContentPane() {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            throw new IllegalStateException("Method must be invoked within the EDT");
+        }
+        if (this.component == null) {
+            this.component = this.newContentPane();
+            if (this.component == null) {
+                throw new NullPointerException("newly created component is null");
+            }
+        }
+        return this.component;
+    }
+
+    /**
+     * Create a new content pane that contains your demonstration. If you're
+     * using the new style of demonstrations, you must override this method. If,
+     * instead, you're using the legacy form, then you must override
+     * {@link #initialize(JFrame)}.
+     * 
+     * @return the created content pane
+     * @throws UnsupportedOperationException
+     *             if this method is not overridden
+     */
+    protected JComponent newContentPane() {
+        throw new UnsupportedOperationException("Not implemented");
+    }
 
     /**
      * Runs the specified runnable on the EDT. The class provided must have a
@@ -55,24 +166,32 @@ public abstract class Demonstration implements Runnable {
      * @param klass
      *            the class from which a runnable is created
      */
-    public static void launch(final Class<? extends Runnable> klass) {
+    public static void launch(final Class<? extends Demonstration> klass) {
         if (!Components.LookAndFeel.NIMBUS.activate()) {
-            // Activate system look-and-feel if Nimbus is unavailable
+            /*
+             * Activate system look-and-feel if Nimbus is unavailable. If this
+             * one fails, then we just give up and use the default.
+             */
             Components.LookAndFeel.SYSTEM.activate();
         }
         SwingUtilities.invokeLater(new Runnable() {
-
-            @Override
             public void run() {
+                Demonstration demonstration = null;
                 try {
-                    klass.newInstance().run();
+                    demonstration = klass.newInstance();
                 } catch (final InstantiationException e) {
-                    e.printStackTrace();
+                    /*
+                     * Creating a new demonstration should never fail, and any
+                     * occurrence always indicates programming errors. At any
+                     * rate, this seems smarter than printing the stack trace.
+                     */
+                    throw new AssertionError(e);
                 } catch (final IllegalAccessException e) {
-                    e.printStackTrace();
+                    // See above message.
+                    throw new AssertionError(e);
                 }
+                demonstration.bootstrap();
             }
-
         });
     }
 }

@@ -28,7 +28,7 @@ public final class ObservableListDemonstration extends Demonstration {
     private final JList list = new JList((ListModel) this.strings);
 
     @Override
-    public void initializeFrame(final JFrame frame) {
+    public boolean initializeFrame(final JFrame frame) {
         frame.setLayout(new BorderLayout());
         frame.setSize(400, 400);
 
@@ -62,6 +62,7 @@ public final class ObservableListDemonstration extends Demonstration {
         buttons.add(addButton);
 
         frame.getContentPane().add(buttons, BorderLayout.SOUTH);
+        return true;
     }
 
     /**
