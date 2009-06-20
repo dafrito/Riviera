@@ -204,8 +204,8 @@ public interface PropertySheet {
      * @return {@code true} if this property sheet changed as a result of this
      *         call
      * @see PropertySheet#getBoolean(String)
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setBoolean(final String name, final boolean value);
 
@@ -227,8 +227,8 @@ public interface PropertySheet {
      * @see PropertySheet#getDouble(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setDouble(final String name, final double value);
 
@@ -250,8 +250,8 @@ public interface PropertySheet {
      * @see PropertySheet#getFloat(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setFloat(final String name, final float value);
 
@@ -273,8 +273,8 @@ public interface PropertySheet {
      * @see PropertySheet#getInteger(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setInteger(final String name, final int value);
 
@@ -296,8 +296,8 @@ public interface PropertySheet {
      * @see PropertySheet#getLong(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setLong(final String name, final long value);
 
@@ -319,8 +319,8 @@ public interface PropertySheet {
      * @see PropertySheet#getObject(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setObject(final String name, final Object value);
 
@@ -342,8 +342,8 @@ public interface PropertySheet {
      * @see PropertySheet#getString(String)
      * @return {@code true} if this property sheet changed as a result of this
      *         call
-     * @throw {@link ImmutablePropertySheetException} if this property sheet
-     *        does not support modification.
+     * @throws ImmutablePropertySheetException
+     *             if this property sheet does not support modification.
      */
     public boolean setString(final String name, final String value);
 }
