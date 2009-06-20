@@ -2,11 +2,14 @@ package com.bluespot.swing;
 
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.GroupLayout.Group;
+import javax.swing.GroupLayout.ParallelGroup;
+import javax.swing.GroupLayout.SequentialGroup;
 
 /**
  * Assists in building a layout with {@link GroupLayout}.
@@ -16,12 +19,19 @@ import javax.swing.GroupLayout.Group;
  */
 public class GroupLayoutBuilder {
 
-    private final JComponent component;
-    private final Group fieldGroup;
-    private final Group horizontalGroup;
-    private final Group labelGroup;
     private final GroupLayout layout;
-    private final Group verticalGroup;
+
+    private final JComponent component;
+
+    private final ParallelGroup fieldsGroup;
+    private final ParallelGroup horizontalGroup;
+
+    /**
+     * The horizontal group that contains all of the field labels.
+     */
+    private final ParallelGroup labelsGroup;
+
+    private final SequentialGroup verticalGroup;
 
     /**
      * Constructs a new {@link GroupLayoutBuilder} using a newly created
@@ -47,24 +57,29 @@ public class GroupLayoutBuilder {
         this.layout = new GroupLayout(this.component);
         this.horizontalGroup = this.layout.createParallelGroup();
         this.verticalGroup = this.layout.createSequentialGroup();
-        this.labelGroup = this.layout.createParallelGroup();
-        this.fieldGroup = this.layout.createParallelGroup();
+        this.labelsGroup = this.layout.createParallelGroup();
+        this.fieldsGroup = this.layout.createParallelGroup();
 
-        this.horizontalGroup.addGroup(this.layout.createSequentialGroup().addGroup(this.labelGroup).addGroup(
-                this.fieldGroup));
+        final SequentialGroup horizontalGroups = this.layout.createSequentialGroup();
+        horizontalGroups.addGroup(this.labelsGroup);
+        horizontalGroups.addGroup(this.fieldsGroup);
+
+        this.horizontalGroup.addGroup(horizontalGroups);
     }
 
     /**
      * Adds a {@link JLabel} that contains the specified text to this builder.
      * It will be laid out directly beneath any previous components.
      * 
-     * @param label
+     * @param labelText
      *            the label text
-     * @return this builder object
-     * @see GroupLayoutBuilder#add(JComponent)
+     * @return this created {@code JLabel} object
+     * @see GroupLayoutBuilder#row(JComponent)
      */
-    public GroupLayoutBuilder label(final String label) {
-        return this.add(new JLabel(label));
+    public JLabel label(final String labelText) {
+        final JLabel label = new JLabel(labelText);
+        this.row(label);
+        return label;
     }
 
     /**
@@ -76,10 +91,25 @@ public class GroupLayoutBuilder {
      *            the added component
      * @return this builder object
      */
-    public GroupLayoutBuilder add(final JComponent comp) {
+    public GroupLayoutBuilder row(final JComponent comp) {
         this.horizontalGroup.addComponent(comp);
         this.verticalGroup.addComponent(comp);
         return this;
+    }
+
+    /**
+     * Creates a {@link JTextField} and adds it, along with a label that
+     * contains the specified text, to this layout. This is a cover method for
+     * {@link #field(String, JComponent)}.
+     * 
+     * @param labelName
+     *            the label text
+     * @return the created {@link JTextField} object
+     */
+    public JTextField field(final String labelName) {
+        final JTextField textField = new JTextField();
+        this.field(labelName, textField);
+        return textField;
     }
 
     /**
@@ -89,18 +119,43 @@ public class GroupLayoutBuilder {
      * 
      * @param labelName
      *            the label text
-     * @param comp
+     * @param child
      *            the added component
      * @return this builder object
      */
-    public GroupLayoutBuilder field(final String labelName, final JComponent comp) {
-        final JLabel label = new JLabel(labelName);
-        this.labelGroup.addComponent(label);
-        this.fieldGroup.addComponent(comp);
-        this.verticalGroup.addGroup(this.layout.createParallelGroup(Alignment.BASELINE)
-                .addComponent(label)
-                .addComponent(comp));
+    public GroupLayoutBuilder field(final String labelName, final JComponent child) {
+        String modifiedLabelText = labelName;
+        if (!labelName.matches("^.+:\\s*$")) {
+            modifiedLabelText += ":";
+        }
+        final JLabel label = new JLabel(modifiedLabelText);
+        label.setLabelFor(child);
+        this.labelsGroup.addComponent(label);
+        this.fieldsGroup.addComponent(child);
+
+        final ParallelGroup fieldGroup = this.layout.createParallelGroup(Alignment.BASELINE);
+        fieldGroup.addComponent(label);
+        fieldGroup.addComponent(child);
+        this.verticalGroup.addGroup(fieldGroup);
+
         return this;
+    }
+
+    /**
+     * Creates and adds a {@link JButton} to this builder. The created button
+     * will use the specified text as its label.
+     * 
+     * @param buttonText
+     *            the text used in the created button
+     * @return the created {@code JButton} object
+     */
+    public JButton button(final String buttonText) {
+        final JButton button = new JButton(buttonText);
+
+        this.fieldsGroup.addGroup(Alignment.TRAILING, this.layout.createSequentialGroup().addComponent(button));
+        this.verticalGroup.addComponent(button);
+
+        return button;
     }
 
     /**
