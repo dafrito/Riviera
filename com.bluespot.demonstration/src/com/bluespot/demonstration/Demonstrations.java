@@ -10,7 +10,7 @@ import com.bluespot.swing.Components;
  * @author Aaron Faanes
  * 
  */
-public class Runner {
+public class Demonstrations {
 
     /**
      * Runs the specified runnable on the EDT. The class provided must have a
@@ -20,7 +20,7 @@ public class Runner {
      *            the class from which a runnable is created
      */
     public static void run(final Class<? extends Runnable> klass) {
-        Runner.run(new Runnable() {
+        Demonstrations.run(new Runnable() {
 
             @Override
             public void run() {

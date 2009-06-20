@@ -17,7 +17,7 @@ import javax.swing.ListCellRenderer;
 
 import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Runner;
+import com.bluespot.demonstration.Demonstrations;
 
 /**
  * Demonstrates cell rendering using an {@link ObservableList}.
@@ -101,13 +101,13 @@ public final class CellRendererDemonstration extends AbstractDemonstration {
     }
 
     /**
-     * Creates a new {@link CellRendererDemonstration}.
+     * Creates a new {@link CellRendererDemonstration} using {@link Demonstrations}.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Runner.run(new CellRendererDemonstration(), true);
+        Demonstrations.run(CellRendererDemonstration.class);
     }
 
 }

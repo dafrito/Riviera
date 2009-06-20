@@ -15,7 +15,7 @@ import javax.swing.event.MouseInputAdapter;
 
 import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Runner;
+import com.bluespot.demonstration.Demonstrations;
 import com.bluespot.logging.handlers.ListHandler;
 
 /**
@@ -66,7 +66,7 @@ public final class ListHandlerDemonstration extends AbstractDemonstration {
      *            unused
      */
     public static void main(final String[] args) {
-        Runner.run(new ListHandlerDemonstration(), true);
+        Demonstrations.run(ListHandlerDemonstration.class);
     }
 
 }

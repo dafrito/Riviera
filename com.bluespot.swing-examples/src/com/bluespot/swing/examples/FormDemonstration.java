@@ -3,7 +3,7 @@ package com.bluespot.swing.examples;
 import javax.swing.JFrame;
 
 import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Runner;
+import com.bluespot.demonstration.Demonstrations;
 import com.bluespot.swing.SimpleSwingForm;
 
 /**
@@ -40,7 +40,7 @@ public final class FormDemonstration extends AbstractDemonstration {
 	 *            unused
 	 */
 	public static void main(final String[] args) {
-		Runner.run(new FormDemonstration(), true);
+		Demonstrations.run(FormDemonstration.class);
 	}
 
 }

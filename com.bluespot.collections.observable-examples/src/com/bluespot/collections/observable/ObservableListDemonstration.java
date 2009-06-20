@@ -14,7 +14,7 @@ import javax.swing.ListModel;
 
 import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Runner;
+import com.bluespot.demonstration.Demonstrations;
 
 /**
  * A very simple demo showing an {@link ObservableList} acting as a list model.
@@ -66,14 +66,14 @@ public final class ObservableListDemonstration extends AbstractDemonstration {
     }
 
     /**
-     * Entry point. This uses {@link Runner#run(Runnable, boolean)} to create
+     * Entry point. This uses {@link Demonstrations#run(Runnable, boolean)} to create
      * this demonstration.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Runner.run(new ObservableListDemonstration(), true);
+        Demonstrations.run(ObservableListDemonstration.class);
     }
 
 }
