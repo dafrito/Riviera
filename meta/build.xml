@@ -19,7 +19,7 @@
 	<path id="compile.srcdir">
 		<dirset dir="${build.root.dir}">
 			<include name="com.bluespot*/src" />
-			<exclude name="com.bluespot*-tests/**" />
+			<exclude name="com.bluespot*-tests/**" />
 		</dirset>
 	</path>
 
@@ -47,7 +47,7 @@
 	<!-- Source locations for our tests -->
 	<path id="test.compile.srcdir">
 		<dirset dir="${build.root.dir}">
-			<include name="com.bluespot*-tests/src" />
+			<include name="com.bluespot*-tests/src" />
 		</dirset>
 	</path>
 
