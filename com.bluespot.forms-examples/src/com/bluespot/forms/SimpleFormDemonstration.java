@@ -4,7 +4,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Runner;
+import com.bluespot.demonstration.Demonstrations;
 import com.bluespot.swing.Components;
 import com.bluespot.swing.GroupLayoutBuilder;
 
@@ -14,7 +14,7 @@ import com.bluespot.swing.GroupLayoutBuilder;
  * @author Aaron Faanes
  * 
  */
-public final class SimpleUseCase extends AbstractDemonstration {
+public final class SimpleFormDemonstration extends AbstractDemonstration {
 
     @Override
     protected void initializeFrame(final JFrame frame) {
@@ -32,13 +32,13 @@ public final class SimpleUseCase extends AbstractDemonstration {
     }
 
     /**
-     * Runs a {@link SimpleUseCase} using {@link Runner}.
+     * Runs a {@link SimpleFormDemonstration} using {@link Demonstrations}.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Runner.run(SimpleUseCase.class);
+        Demonstrations.run(SimpleFormDemonstration.class);
     }
 
 }
