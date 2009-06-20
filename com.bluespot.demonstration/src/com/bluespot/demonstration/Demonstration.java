@@ -3,17 +3,17 @@ package com.bluespot.demonstration;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import com.bluespot.swing.Components;
 
 /**
- * A scaffold for construction simple {@link JFrame} components to demonstrate
- * functionality.
+ * A simple utility that runs {@code Runnable}s and set ups the look and feel.
  * 
  * @author Aaron Faanes
  * 
  */
-public abstract class AbstractDemonstration implements Runnable {
+public abstract class Demonstration implements Runnable {
 
     public void run() {
 
@@ -48,4 +48,31 @@ public abstract class AbstractDemonstration implements Runnable {
      */
     protected abstract void initializeFrame(final JFrame frame);
 
+    /**
+     * Runs the specified runnable on the EDT. The class provided must have a
+     * zero-argument constructor.
+     * 
+     * @param klass
+     *            the class from which a runnable is created
+     */
+    public static void launch(final Class<? extends Runnable> klass) {
+        if (!Components.LookAndFeel.NIMBUS.activate()) {
+            // Activate system look-and-feel if Nimbus is unavailable
+            Components.LookAndFeel.SYSTEM.activate();
+        }
+        SwingUtilities.invokeLater(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    klass.newInstance().run();
+                } catch (final InstantiationException e) {
+                    e.printStackTrace();
+                } catch (final IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
 }

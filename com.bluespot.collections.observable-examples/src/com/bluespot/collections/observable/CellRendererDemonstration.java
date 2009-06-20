@@ -16,8 +16,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListCellRenderer;
 
 import com.bluespot.collections.observable.list.ObservableList;
-import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Demonstrations;
+import com.bluespot.demonstration.Demonstration;
 
 /**
  * Demonstrates cell rendering using an {@link ObservableList}.
@@ -25,7 +24,7 @@ import com.bluespot.demonstration.Demonstrations;
  * @author Aaron Faanes
  * 
  */
-public final class CellRendererDemonstration extends AbstractDemonstration {
+public final class CellRendererDemonstration extends Demonstration {
 
     private static class MyCellRenderer extends JLabel implements ListCellRenderer {
 
@@ -101,13 +100,14 @@ public final class CellRendererDemonstration extends AbstractDemonstration {
     }
 
     /**
-     * Creates a new {@link CellRendererDemonstration} using {@link Demonstrations}.
+     * Creates a new {@link CellRendererDemonstration} using
+     * {@link Demonstration}.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Demonstrations.run(CellRendererDemonstration.class);
+        Demonstration.launch(CellRendererDemonstration.class);
     }
 
 }

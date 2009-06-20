@@ -13,8 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 
 import com.bluespot.collections.observable.list.ObservableList;
-import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Demonstrations;
+import com.bluespot.demonstration.Demonstration;
 
 /**
  * A very simple demo showing an {@link ObservableList} acting as a list model.
@@ -22,7 +21,7 @@ import com.bluespot.demonstration.Demonstrations;
  * @author Aaron Faanes
  * 
  */
-public final class ObservableListDemonstration extends AbstractDemonstration {
+public final class ObservableListDemonstration extends Demonstration {
 
     private final List<String> strings = new ObservableList<String>();
 
@@ -66,14 +65,14 @@ public final class ObservableListDemonstration extends AbstractDemonstration {
     }
 
     /**
-     * Entry point. This uses {@link Demonstrations#run(Runnable, boolean)} to create
-     * this demonstration.
+     * Creates a new {@link ObservableListDemonstration} using the
+     * {@link Demonstration} framework.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Demonstrations.run(ObservableListDemonstration.class);
+        Demonstration.launch(ObservableListDemonstration.class);
     }
 
 }

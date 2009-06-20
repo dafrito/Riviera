@@ -3,8 +3,7 @@ package com.bluespot.forms;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
-import com.bluespot.demonstration.AbstractDemonstration;
-import com.bluespot.demonstration.Demonstrations;
+import com.bluespot.demonstration.Demonstration;
 import com.bluespot.swing.Components;
 import com.bluespot.swing.GroupLayoutBuilder;
 
@@ -14,7 +13,7 @@ import com.bluespot.swing.GroupLayoutBuilder;
  * @author Aaron Faanes
  * 
  */
-public final class SimpleFormDemonstration extends AbstractDemonstration {
+public final class SimpleFormDemonstration extends Demonstration {
 
     @Override
     protected void initializeFrame(final JFrame frame) {
@@ -32,13 +31,13 @@ public final class SimpleFormDemonstration extends AbstractDemonstration {
     }
 
     /**
-     * Runs a {@link SimpleFormDemonstration} using {@link Demonstrations}.
+     * Runs a {@link SimpleFormDemonstration} using {@link Demonstration}.
      * 
      * @param args
      *            unused
      */
     public static void main(final String[] args) {
-        Demonstrations.run(SimpleFormDemonstration.class);
+        Demonstration.launch(SimpleFormDemonstration.class);
     }
 
 }
