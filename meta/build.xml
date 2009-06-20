@@ -1,110 +1,144 @@
 <?xml version="1.0" ?>
 <project name="Riviera" default="test">
-	
-	<!-- The version of the library -->
-	<property name="build.version" value="0.1" />
+    <property file="build.properties" />
+    <property file="secrets.properties" />
 
-	<!-- The directory that houses all intermediate files -->
-	<property name="build.dir" location="build" />
+    <!-- The directory that houses all intermediate files -->
+    <property name="build.dir" location="build" />
 
-	<!-- The directory that will store all compiled classes -->
-	<property name="build.classes.dir" location="${build.dir}/classes" />
-	<!-- The root of all projects, used to find buildable classes -->
-	<property name="build.root.dir" location=".." />
+    <!-- The directory that stores our distributable files -->
+    <property name="dist.dir" location="dist" />
 
-	<!-- The directory that houses all libraries used to build this project -->
-	<property name="build.lib.dir" value="lib" />
-	<path id="compile.srcdir">
-		<dirset dir="${build.root.dir}">
-			<include name="com.bluespot*/src" />
-			<exclude name="com.bluespot*-tests/**" />
-		</dirset>
-	</path>
+    <!-- The directory that will store all compiled classes -->
+    <property name="build.classes.dir" location="${build.dir}/classes" />
+    <!-- The root of all projects, used to find buildable classes -->
+    <property name="build.root.dir" location=".." />
 
-	<!-- The classpath that contains all third-party libraries for this project -->
-	<path id="compile.classpath">
-		<fileset dir="${build.lib.dir}">
-			<include name="**/*.jar" />
-		</fileset>
-	</path>
+    <!-- The directory that houses all libraries used to build this project -->
+    <property name="build.lib.dir" value="lib" />
+    <path id="compile.srcdir">
+        <dirset dir="${build.root.dir}">
+            <include name="com.bluespot*/src" />
+            <exclude name="com.bluespot*-tests/**" />
+        </dirset>
+    </path>
 
-	<!-- The directories that will store test artificats -->
-	<property name="test.dir" value="${build.dir}/tests" />
-	<property name="test.data.dir" value="${test.dir}/data" />
-	<property name="test.reports.dir" value="${test.dir}/reports" />
-	<property name="test.classes.dir" location="${test.dir}/classes" />
-	<!-- The directory that stores our distributable files -->
-	<property name="dist.dir" location="dist" />
+    <!-- The classpath that contains all third-party libraries for this project -->
+    <path id="compile.classpath">
+        <fileset dir="${build.lib.dir}">
+            <include name="**/*.jar" />
+        </fileset>
+    </path>
 
-	<!-- The name of the distributable jar file -->
-	<property name="dist.jar.name" value="riviera.jar" />
+    <!-- The directories that will store test artificats -->
+    <property name="test.dir" value="${build.dir}/tests" />
+    <property name="test.data.dir" value="${test.dir}/data" />
+    <property name="test.reports.dir" value="${dist.dir}/tests" />
+    <property name="test.classes.dir" location="${test.dir}/classes" />
 
-	<property name="dist.jar.location" value="${dist.dir}/${dist.jar.name}" />
+    <!-- The name of the distributable jar file -->
+    <property name="dist.jar.name" value="${project.name}-${project.version}.jar" />
 
-	<!-- Source locations for our tests -->
-	<path id="test.compile.srcdir">
-		<dirset dir="${build.root.dir}">
-			<include name="com.bluespot*-tests/src" />
-		</dirset>
-	</path>
+    <property name="dist.jar.location" value="${dist.dir}/${dist.jar.name}" />
 
-	<!-- Classpath for our tests -->
-	<path id="test.compile.classpath">
-		<path refid="compile.classpath" />
-		<pathelement location="${dist.jar.location}" />
-	</path>
+    <!-- Source locations for our tests -->
+    <path id="test.compile.srcdir">
+        <dirset dir="${build.root.dir}">
+            <include name="com.bluespot*-tests/src" />
+        </dirset>
+    </path>
 
-	<target name="init" description="Creates all directories used in building this project.">
-		<mkdir dir="${build.classes.dir}" />
-		<mkdir dir="${dist.dir}" />
-	</target>
+    <!-- Classpath for our tests -->
+    <path id="test.compile.classpath">
+        <path refid="compile.classpath" />
+        <pathelement location="${dist.jar.location}" />
+    </path>
 
-	<target name="test-init" description="Creates all directories used while testing this project.">
-		<mkdir dir="${test.data.dir}" />
-		<mkdir dir="${test.reports.dir}" />
-		<mkdir dir="${test.classes.dir}" />
-	</target>
-	<target name="clean" description="Removes any intermediate files.">
-		<delete dir="${build.dir}" />
-		<delete dir="${dist.dir}" />
-	</target>
+    <!-- Source location for all javadoc -->
+    <path id="javadoc.srcdir">
+        <path refid="compile.srcdir" />
+    </path>
 
-	<target name="compile" depends="init" description="Compiles this project.">
-		<javac destdir="${build.classes.dir}" debug="on">
-			<src refid="compile.srcdir" />
-			<classpath refid="compile.classpath" />
-		</javac>
-	</target>
-	<target name="dist" depends="compile" description="Creates redistributables of this project.">
-		<jar destfile="${dist.dir}/${dist.jar.name}" basedir="${build.classes.dir}" />
-	</target>
-	<target name="test" depends="test-compile" description="Runs all tests.">
-		<junit printsummary="false" haltonfailure="false" errorproperty="test.failed" failureproperty="test.failed">
-			<formatter type="xml" />
-			<classpath>
-				<path refid="test.compile.classpath" />
-				<pathelement location="${test.classes.dir}" />
-			</classpath>
-			<batchtest todir="${test.data.dir}">
-				<fileset dir="${test.classes.dir}">
-					<include name="**/*Test.class" />
-					<include name="**/*Test?.class" />
-					<exclude name="**/*$*" />
-					<exclude name="**/Abstract*" />
-				</fileset>
-			</batchtest>
-		</junit>
-		<junitreport todir="${test.data.dir}">
-			<fileset dir="${test.data.dir}">
-				<include name="TEST-*.xml" />
-			</fileset>
-			<report format="frames" todir="${test.reports.dir}" />
-		</junitreport>		<fail if="test.failed">			Tests failed. Check ${test.reports.dir}		</fail>
-	</target>
-	<target name="test-compile" depends="dist, test-init" description="Compiles all tests.">
-		<javac destdir="${test.classes.dir}" debug="on">
-			<src refid="test.compile.srcdir" />
-			<classpath refid="test.compile.classpath" />
-		</javac>
-	</target>
+    <path id="javadoc.classpath">
+        <path refid="compile.classpath" />
+    </path>
+
+    <property name="javadoc.dir" location="${dist.dir}/docs" />
+
+    <property name="deploy.ftp.passive" value="true" />
+
+    <property name="deploy.ftp.remotedir" value="${deploy.ftp.basedir}" />
+
+    <target name="init" description="Creates all directories used in building this project.">
+        <mkdir dir="${build.classes.dir}" />
+        <mkdir dir="${dist.dir}" />
+    </target>
+
+    <target name="test-init" description="Creates all directories used while testing this project.">
+        <mkdir dir="${test.data.dir}" />
+        <mkdir dir="${test.reports.dir}" />
+        <mkdir dir="${test.classes.dir}" />
+    </target>
+    <target name="clean" description="Removes any intermediate files.">
+        <delete dir="${build.dir}" />
+        <delete dir="${dist.dir}" />
+    </target>
+
+    <target name="compile" depends="init" description="Compiles this project.">
+        <javac destdir="${build.classes.dir}" debug="on">
+            <src refid="compile.srcdir" />
+            <classpath refid="compile.classpath" />
+        </javac>
+    </target>
+    <target name="dist" depends="compile" description="Creates redistributables of this project.">
+        <jar destfile="${dist.dir}/${dist.jar.name}" basedir="${build.classes.dir}" />
+    </target>
+
+    <target name="javadoc" depends="test" description="Creates Javadoc from the source of this project">
+        <javadoc destdir="${javadoc.dir}">
+            <sourcepath refid="javadoc.srcdir" />
+            <classpath refid="javadoc.classpath" />
+            <link href="http://java.sun.com/javase/6/docs/api" />
+            <link href="http://jpcap.sourceforge.net/javadoc" />
+        </javadoc>
+    </target>
+
+    <target name="deploy" depends="javadoc, dist, test" description="Deploys this project to a remote server">
+        <ftp action="mkdir" server="${deploy.ftp.server}" userid="${deploy.ftp.userid}" password="${deploy.ftp.password}" remotedir="${deploy.ftp.remotedir}/" />
+        <ftp action="send" server="${deploy.ftp.server}" userid="${deploy.ftp.userid}" password="${deploy.ftp.password}" passive="${deploy.ftp.passive}" depends="true" verbose="true" remotedir="${deploy.ftp.remotedir}">
+            <fileset file="index.html" />
+        </ftp>
+        <ftp action="send" server="${deploy.ftp.server}" userid="${deploy.ftp.userid}" password="${deploy.ftp.password}" passive="${deploy.ftp.passive}" depends="true" verbose="true" remotedir="${deploy.ftp.remotedir}">
+            <fileset dir="${dist.dir}" />
+        </ftp>
+    </target>
+    <target name="test" depends="test-compile" description="Runs all tests.">
+        <junit printsummary="false" haltonfailure="false" errorproperty="test.failed" failureproperty="test.failed">
+            <formatter type="xml" />
+            <classpath>
+                <path refid="test.compile.classpath" />
+                <pathelement location="${test.classes.dir}" />
+            </classpath>
+            <batchtest todir="${test.data.dir}">
+                <fileset dir="${test.classes.dir}">
+                    <include name="**/*Test.class" />
+                    <include name="**/*Test?.class" />
+                    <exclude name="**/*$*" />
+                    <exclude name="**/Abstract*" />
+                </fileset>
+            </batchtest>
+        </junit>
+        <junitreport todir="${test.data.dir}">
+            <fileset dir="${test.data.dir}">
+                <include name="TEST-*.xml" />
+            </fileset>
+            <report format="frames" todir="${test.reports.dir}" />
+        </junitreport>        <fail if="test.failed" message="Tests failed. Check ${test.reports.dir}" />
+    </target>
+    <target name="test-compile" depends="dist, test-init" description="Compiles all tests.">
+        <javac destdir="${test.classes.dir}" debug="on">
+            <src refid="test.compile.srcdir" />
+            <classpath refid="test.compile.classpath" />
+        </javac>
+    </target>
 </project>
