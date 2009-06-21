@@ -43,24 +43,12 @@ public abstract class Demonstration {
      * The default implementation sets the content pane of the specified frame
      * to this demonstration's content pane, as returned by
      * {@link #getContentPane()}.
-     * <p>
-     * Legacy demonstrations that implement {@link #initializeFrame(JFrame)} and
-     * return {@code true} will bypass any call to {@link #newContentPane()}.
-     * {@link #postInitialize(JFrame)} will also not be called. As a result,
-     * implementers of {@link #initializeFrame(JFrame)} are responsible for
-     * setting the size of the frame.
      * 
      * @param frame
      *            the target frame that is initialized with this demonstration
      * @return {@code true} if {@link #postInitialize(JFrame)} should be invoked
      */
     protected final boolean initialize(final JFrame frame) {
-        if (this.initializeFrame(frame)) {
-            // Set visibility and return early for legacy demonstrations.
-            Components.center(frame);
-            frame.setVisible(true);
-            return false;
-        }
         final JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         frame.setContentPane(panel);
@@ -74,9 +62,6 @@ public abstract class Demonstration {
      * <p>
      * The default implementation calls {@link JFrame#pack()} on the specified
      * frame, centers it, and shows it.
-     * <p>
-     * If {@link #initializeFrame(JFrame)} returns {@code true}, this method
-     * will never be invoked.
      * 
      * @param frame
      *            the target frame that is initialized with this demonstration
@@ -85,22 +70,6 @@ public abstract class Demonstration {
         frame.pack();
         Components.center(frame);
         frame.setVisible(true);
-    }
-
-    /**
-     * Creates, lays out, and adds all children to the specified frame.
-     * 
-     * @deprecated This method should no longer be used, as it directly modifies
-     *             the specified frame. Instead, implement
-     *             {@link #newContentPane()}.
-     * @param frame
-     *            the frame to populate and lay out
-     * @return {@code true} if the specified frame was initialized, otherwise
-     *         {@code false}
-     */
-    @Deprecated
-    protected boolean initializeFrame(final JFrame frame) {
-        return false;
     }
 
     /**
@@ -118,10 +87,6 @@ public abstract class Demonstration {
      * Returns the content pane used with this demonstration. This will cache a
      * created content pane, so {@link #newContentPane()} will only be called
      * once.
-     * <p>
-     * This method may be unused if {@link #initialize(JFrame)} is overridden.
-     * However, this method of implementing a {@link Demonstration} is
-     * deprecated since it directly modifies a frame.
      * 
      * @return the content pane for this demonstration
      * 
