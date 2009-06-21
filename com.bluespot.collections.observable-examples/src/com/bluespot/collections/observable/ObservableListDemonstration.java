@@ -1,12 +1,13 @@
 package com.bluespot.collections.observable;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -28,13 +29,14 @@ public final class ObservableListDemonstration extends Demonstration {
     private final JList list = new JList((ListModel) this.strings);
 
     @Override
-    public boolean initializeFrame(final JFrame frame) {
-        frame.setLayout(new BorderLayout());
-        frame.setSize(400, 400);
+    protected JComponent newContentPane() {
+        final JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(400, 400));
 
-        frame.getContentPane().add(new JScrollPane(this.list), BorderLayout.CENTER);
+        panel.add(new JScrollPane(this.list), BorderLayout.CENTER);
 
         final JPanel buttons = new JPanel();
+        panel.add(buttons, BorderLayout.SOUTH);
 
         final List<String> thisStrings = this.strings;
 
@@ -61,8 +63,7 @@ public final class ObservableListDemonstration extends Demonstration {
         });
         buttons.add(addButton);
 
-        frame.getContentPane().add(buttons, BorderLayout.SOUTH);
-        return true;
+        return panel;
     }
 
     /**

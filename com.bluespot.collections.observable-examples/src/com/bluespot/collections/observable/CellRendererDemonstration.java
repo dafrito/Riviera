@@ -3,12 +3,13 @@ package com.bluespot.collections.observable;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -27,11 +28,6 @@ import com.bluespot.demonstration.Demonstration;
 public final class CellRendererDemonstration extends Demonstration {
 
     private static class MyCellRenderer extends JLabel implements ListCellRenderer {
-
-        public MyCellRenderer() {
-            // Default constructor, defined explicitly to remove
-            // synthetic-access problems
-        }
 
         private static final long serialVersionUID = 5217981785927203654L;
 
@@ -52,23 +48,20 @@ public final class CellRendererDemonstration extends Demonstration {
 
     }
 
-    private final JList list = new JList();
-
     @Override
-    public boolean initializeFrame(final JFrame frame) {
-
-        this.list.setCellRenderer(new MyCellRenderer());
+    protected JComponent newContentPane() {
+        final JPanel container = new JPanel(new BorderLayout());
+        container.setPreferredSize(new Dimension(400, 400));
 
         final ObservableList<String> strings = new ObservableList<String>();
-        this.list.setModel(strings);
-
         this.populateList(strings);
 
-        frame.setLayout(new BorderLayout());
-        frame.setSize(400, 400);
-        frame.getContentPane().add(new JScrollPane(this.list), BorderLayout.CENTER);
+        final JList list = new JList(strings);
+        list.setCellRenderer(new MyCellRenderer());
 
-        final JPanel panel = new JPanel();
+        container.add(new JScrollPane(list), BorderLayout.CENTER);
+
+        final JPanel buttons = new JPanel();
 
         final JButton removeButton = new JButton("Remove");
         removeButton.addActionListener(new ActionListener() {
@@ -78,7 +71,7 @@ public final class CellRendererDemonstration extends Demonstration {
             }
         });
         removeButton.setEnabled(false);
-        panel.add(removeButton);
+        buttons.add(removeButton);
 
         final JButton addButton = new JButton("Add");
         addButton.addActionListener(new ActionListener() {
@@ -87,10 +80,10 @@ public final class CellRendererDemonstration extends Demonstration {
                 removeButton.setEnabled(true);
             }
         });
-        panel.add(addButton);
+        buttons.add(addButton);
 
-        frame.getContentPane().add(panel, BorderLayout.SOUTH);
-        return true;
+        container.add(buttons, BorderLayout.SOUTH);
+        return container;
     }
 
     private void populateList(final List<String> targetList) {
