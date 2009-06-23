@@ -97,6 +97,11 @@ import javax.swing.WindowConstants;
 public abstract class SingleFrameApplication extends Application {
     private static final Logger logger = Logger.getLogger(SingleFrameApplication.class.getName());
 
+    @Deprecated
+    public SingleFrameApplication() {
+        this(new ApplicationContext());
+    }
+
     public SingleFrameApplication(final ApplicationContext context) {
         super(context);
     }
