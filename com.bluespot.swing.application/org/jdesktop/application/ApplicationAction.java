@@ -645,8 +645,6 @@ public class ApplicationAction extends AbstractAction {
     }
 
     private void noProxyActionPerformed(final ActionEvent actionEvent) {
-        Object taskObject = null;
-
         /*
          * Create the arguments array for actionMethod by calling
          * getActionArgument() for each parameter.
@@ -670,19 +668,71 @@ public class ApplicationAction extends AbstractAction {
          * then execute it.
          */
         try {
-            final Object target = this.appAM.getActionsObject();
-            taskObject = this.actionMethod.invoke(target, arguments);
-        } catch (final Exception e) {
-            this.actionFailed(actionEvent, e);
-        }
-
-        if (taskObject instanceof Task) {
-            final Task task = (Task) taskObject;
+            final Object taskObject = this.invoke(this.appAM.getActionsObject(), arguments);
+            if (!(taskObject instanceof Task)) {
+                return;
+            }
+            final Task<?, ?> task = (Task<?, ?>) taskObject;
             if (task.getInputBlocker() == null) {
                 task.setInputBlocker(this.createInputBlocker(task, actionEvent));
             }
             final ApplicationContext ctx = this.appAM.getContext();
             ctx.getTaskService().execute(task);
+        } catch (final ActionFailedException afe) {
+            this.actionFailed(actionEvent, afe.getCause());
+        }
+    }
+
+    private static class ActionFailedException extends Exception {
+        private static final long serialVersionUID = -5000470233984367537L;
+
+        public ActionFailedException(final Throwable cause) {
+            super(cause);
+        }
+    }
+
+    private Object invoke(final Object target, final Object... arguments) throws ActionFailedException {
+        if (this.actionMethod.isAccessible()) {
+            try {
+                // Try simply invoking this method.
+                return this.actionMethod.invoke(target, arguments);
+            } catch (final Exception ex) {
+                /*
+                 * Some exception was thrown from within the method, so just
+                 * wrap and propagate it.
+                 */
+                throw new ActionFailedException(ex);
+            }
+        }
+        // It's not accessible, so try making it accessible.
+        try {
+            this.actionMethod.setAccessible(true);
+        } catch (final SecurityException se) {
+            // We can't make it accessible, so just throw.
+            throw new ActionFailedException(se);
+        }
+        try {
+            return this.actionMethod.invoke(target, arguments);
+        } catch (final Exception e) {
+            throw new ActionFailedException(e);
+        } finally {
+            /*
+             * Try to clean up our accessible stuff. Note that the assertion
+             * error will wipe out any exception that was caught during
+             * invocation.
+             */
+            try {
+                this.actionMethod.setAccessible(false);
+            } catch (final SecurityException se) {
+                /*
+                 * We shouldn't ever cause a SecurityException unless
+                 * permissions have changed since we invoked our action. Since
+                 * we left the method in an inconsistent state, the best
+                 * recourse seems to just throw this error.
+                 */
+                throw new AssertionError(String.format(
+                        "setAccessible failed even though it succeeded previously. Cause: %s", se));
+            }
         }
     }
 
@@ -860,7 +910,7 @@ public class ApplicationAction extends AbstractAction {
     /*
      * Log enough output for a developer to figure out what went wrong.
      */
-    private void actionFailed(final ActionEvent actionEvent, final Exception e) {
+    private void actionFailed(final ActionEvent actionEvent, final Throwable e) {
         // TBD Log an error
         // e.printStackTrace();
         throw new Error(e);
