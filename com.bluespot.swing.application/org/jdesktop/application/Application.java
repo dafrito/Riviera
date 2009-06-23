@@ -132,16 +132,20 @@ public abstract class Application extends AbstractBean {
     private final List<ExitListener> exitListeners;
     private final ApplicationContext context;
 
+    protected Application() {
+        this(new ApplicationContext());
+    }
+
     /**
      * Not to be called directly, see {@link #launch launch}.
      * <p>
-     * Subclasses can provide a no-args construtor to initialize private final
+     * Subclasses can provide a no-args constructor to initialize private final
      * state however GUI initialization, and anything else that might refer to
      * public API, should be done in the {@link #startup startup} method.
      */
-    protected Application() {
+    protected Application(final ApplicationContext context) {
         this.exitListeners = new CopyOnWriteArrayList<ExitListener>();
-        this.context = new ApplicationContext();
+        this.context = context;
     }
 
     /**
@@ -195,6 +199,18 @@ public abstract class Application extends AbstractBean {
      * static blocks/initializers happen afterwards.
      */
     static <T extends Application> T create(final Class<T> applicationClass) throws Exception {
+        /*
+         * Initialize the ApplicationContext application properties
+         */
+        final ApplicationContext context = new ApplicationContext();
+        context.setApplicationClass(applicationClass);
+
+        /*
+         * Load the application resource map, notably the Application.*
+         * properties.
+         */
+        final ResourceMap appResourceMap = context.getResourceMap();
+        appResourceMap.putResource("platform", Application.platform());
 
         if (!Beans.isDesignTime()) {
             /*
@@ -208,39 +224,7 @@ public abstract class Application extends AbstractBean {
             } catch (final SecurityException ignoreException) {
                 // Unsigned apps can't set this property.
             }
-        }
 
-        /*
-         * Construct the Application object. The following complications,
-         * relative to just calling applicationClass.newInstance(), allow a
-         * privileged app to have a private static inner Application subclass.
-         */
-        final Constructor<T> ctor = applicationClass.getDeclaredConstructor();
-        if (!ctor.isAccessible()) {
-            try {
-                ctor.setAccessible(true);
-            } catch (final SecurityException ignore) {
-                // ctor.newInstance() will throw an IllegalAccessException
-            }
-        }
-        final T application = ctor.newInstance();
-
-        /*
-         * Initialize the ApplicationContext application properties
-         */
-        final ApplicationContext ctx = application.getContext();
-        ctx.setApplicationClass(applicationClass);
-        ctx.setApplication(application);
-
-        /*
-         * Load the application resource map, notably the Application.*
-         * properties.
-         */
-        final ResourceMap appResourceMap = ctx.getResourceMap();
-
-        appResourceMap.putResource("platform", Application.platform());
-
-        if (!Beans.isDesignTime()) {
             /*
              * Initialize the UIManager lookAndFeel property with the
              * Application.lookAndFeel resource. If the the resource isn't
@@ -269,11 +253,26 @@ public abstract class Application extends AbstractBean {
                     }
                 }
             } catch (final Exception e) {
-                final String s = "Couldn't set LookandFeel " + key + " = \"" + lnfResource + "\"";
-                Application.logger.log(Level.WARNING, s, e);
+                Application.logger.log(Level.WARNING, String.format(
+                        "Couldn't set look and feel, '%s', from resource: '%s'", key, lnfResource), e);
             }
         }
 
+        /*
+         * Construct the Application object. The following complications,
+         * relative to just calling applicationClass.newInstance(), allow a
+         * privileged app to have a private static inner Application subclass.
+         */
+        final Constructor<T> ctor = applicationClass.getDeclaredConstructor(ApplicationContext.class);
+        if (!ctor.isAccessible()) {
+            try {
+                ctor.setAccessible(true);
+            } catch (final SecurityException ignore) {
+                // ctor.newInstance() will throw an IllegalAccessException
+            }
+        }
+        final T application = ctor.newInstance(context);
+        context.setApplication(application);
         return application;
     }
 
@@ -634,8 +633,7 @@ public abstract class Application extends AbstractBean {
             try {
                 Application.application = Application.create(applicationClass);
             } catch (final Exception e) {
-                final String msg = String.format("Couldn't construct %s", applicationClass);
-                throw (new Error(msg, e));
+                throw new Error(String.format("Couldn't construct %s", applicationClass), e);
             }
         }
         return applicationClass.cast(Application.application);
