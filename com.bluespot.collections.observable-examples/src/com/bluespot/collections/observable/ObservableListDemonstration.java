@@ -2,16 +2,15 @@ package com.bluespot.collections.observable;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
+
+import org.jdesktop.application.Action;
+import org.jdesktop.application.ApplicationContext;
+import org.jdesktop.application.SingleFrameApplication;
 
 import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.demonstration.Demonstration;
@@ -22,14 +21,35 @@ import com.bluespot.demonstration.Demonstration;
  * @author Aaron Faanes
  * 
  */
-public final class ObservableListDemonstration extends Demonstration {
+public final class ObservableListDemonstration extends SingleFrameApplication {
 
-    private final List<String> strings = new ObservableList<String>();
+    private final ObservableList<String> strings = new ObservableList<String>();
 
-    private final JList list = new JList((ListModel) this.strings);
+    private final JList list = new JList(this.strings);
+
+    private final JButton addButton = new JButton("Add");
+
+    private final JButton removeButton = new JButton("Remove");
+
+    public ObservableListDemonstration(final ApplicationContext context) {
+        super(context);
+    }
+
+    @Action
+    private void addElement() {
+        this.strings.add("Hello, world! This is element " + this.strings.size());
+        this.removeButton.setEnabled(true);
+    }
+
+    @Action
+    private void removeElement() {
+        assert !this.strings.isEmpty();
+            this.strings.remove(0);
+        this.removeButton.setEnabled(!this.strings.isEmpty());
+    }
 
     @Override
-    protected JComponent newContentPane() {
+    protected void startup() {
         final JPanel panel = new JPanel(new BorderLayout());
         panel.setPreferredSize(new Dimension(400, 400));
 
@@ -37,33 +57,14 @@ public final class ObservableListDemonstration extends Demonstration {
 
         final JPanel buttons = new JPanel();
         panel.add(buttons, BorderLayout.SOUTH);
+        buttons.add(this.addButton);
+        buttons.add(this.removeButton);
 
-        final List<String> thisStrings = this.strings;
+        this.addButton.setAction(this.getContext().getActionMap().get("addElement"));
+        this.removeButton.setAction(this.getContext().getActionMap().get("removeElement"));
+        this.removeButton.setEnabled(false);
 
-        // Create our remove button
-        final JButton removeButton = new JButton("Remove");
-        removeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent arg0) {
-                thisStrings.remove(0);
-                if (thisStrings.isEmpty()) {
-                    removeButton.setEnabled(false);
-                }
-            }
-        });
-        removeButton.setEnabled(false);
-        buttons.add(removeButton);
-
-        // Create the add button
-        final JButton addButton = new JButton("Add");
-        addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent arg0) {
-                thisStrings.add("Hello, world! This is element " + thisStrings.size());
-                removeButton.setEnabled(true);
-            }
-        });
-        buttons.add(addButton);
-
-        return panel;
+        this.show(panel);
     }
 
     /**
@@ -74,7 +75,7 @@ public final class ObservableListDemonstration extends Demonstration {
      *            unused
      */
     public static void main(final String[] args) {
-        Demonstration.launch(ObservableListDemonstration.class);
+        launch(ObservableListDemonstration.class, args);
     }
 
 }
