@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.input;
+package com.bluespot.forms.input;
 
 public class MutableInputMethod<E> implements InputMethod<E> {
 

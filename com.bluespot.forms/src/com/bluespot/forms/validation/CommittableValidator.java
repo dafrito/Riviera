@@ -1,6 +1,6 @@
-package com.bluespot.forms.model.validation;
+package com.bluespot.forms.validation;
 
-import com.bluespot.forms.model.commit.Committable;
+import com.bluespot.forms.commit.Committable;
 
 public final class CommittableValidator extends ListValidator<Committable<?>> {
 

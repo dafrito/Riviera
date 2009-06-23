@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.input;
+package com.bluespot.forms.input;
 
 public interface InputMethod<E> {
 

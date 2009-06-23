@@ -1,11 +1,11 @@
-package com.bluespot.forms.model.commit;
+package com.bluespot.forms.commit;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import com.bluespot.forms.model.input.InputMethod;
-import com.bluespot.forms.model.validation.AggregateValidator;
-import com.bluespot.forms.model.validation.ValidationSummary;
+import com.bluespot.forms.input.InputMethod;
+import com.bluespot.forms.validation.AggregateValidator;
+import com.bluespot.forms.validation.ValidationSummary;
 
 public class Committable<E> {
 

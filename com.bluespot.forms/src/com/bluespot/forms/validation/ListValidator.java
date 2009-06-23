@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.validation;
+package com.bluespot.forms.validation;
 
 import java.util.ArrayList;
 import java.util.List;

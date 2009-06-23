@@ -1,13 +1,13 @@
-package com.bluespot.forms.model.commit;
+package com.bluespot.forms.commit;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bluespot.forms.model.input.AggregateInputMethod;
-import com.bluespot.forms.model.validation.CommittableValidator;
-import com.bluespot.forms.model.validation.ValidationResult;
-import com.bluespot.forms.model.validation.Validator;
+import com.bluespot.forms.input.AggregateInputMethod;
 import com.bluespot.forms.property.DefaultPropertySheet;
+import com.bluespot.forms.validation.CommittableValidator;
+import com.bluespot.forms.validation.ValidationResult;
+import com.bluespot.forms.validation.Validator;
 
 public class CommittableGroup extends Committable<DefaultPropertySheet> {
 

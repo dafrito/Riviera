@@ -1,6 +1,6 @@
-package com.bluespot.forms.model.field;
+package com.bluespot.forms.field;
 
-import com.bluespot.forms.model.commit.Committable;
+import com.bluespot.forms.commit.Committable;
 
 public class Field<E> {
 

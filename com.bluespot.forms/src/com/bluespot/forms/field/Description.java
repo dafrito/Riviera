@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.field;
+package com.bluespot.forms.field;
 
 /**
  * Represents an immutable description of something.

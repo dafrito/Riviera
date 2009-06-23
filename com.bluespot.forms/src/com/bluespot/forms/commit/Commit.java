@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.commit;
+package com.bluespot.forms.commit;
 
 public class Commit<E> {
     private final E newValue;

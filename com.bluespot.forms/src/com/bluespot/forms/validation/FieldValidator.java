@@ -1,6 +1,6 @@
-package com.bluespot.forms.model.validation;
+package com.bluespot.forms.validation;
 
-import com.bluespot.forms.model.commit.Commit;
+import com.bluespot.forms.commit.Commit;
 
 public class FieldValidator<E> extends ForwardingValidator<Commit<E>, E> {
 

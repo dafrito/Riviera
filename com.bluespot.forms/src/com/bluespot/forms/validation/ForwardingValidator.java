@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.validation;
+package com.bluespot.forms.validation;
 
 public abstract class ForwardingValidator<E, T> implements Validator<E> {
 

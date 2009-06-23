@@ -1,6 +1,6 @@
-package com.bluespot.forms.model.commit;
+package com.bluespot.forms.commit;
 
-import com.bluespot.forms.model.validation.ValidationSummary;
+import com.bluespot.forms.validation.ValidationSummary;
 
 public class CommitListenerAdapter<E> implements CommitListener<E> {
 

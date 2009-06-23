@@ -1,7 +1,7 @@
-package com.bluespot.forms.model.field;
+package com.bluespot.forms.field;
 
-import com.bluespot.forms.model.commit.Committable;
-import com.bluespot.forms.model.commit.CommittableGroup;
+import com.bluespot.forms.commit.Committable;
+import com.bluespot.forms.commit.CommittableGroup;
 import com.bluespot.forms.property.DefaultPropertySheet;
 
 public class Form extends Field<DefaultPropertySheet> {

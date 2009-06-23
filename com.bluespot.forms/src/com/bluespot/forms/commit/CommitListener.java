@@ -1,8 +1,8 @@
-package com.bluespot.forms.model.commit;
+package com.bluespot.forms.commit;
 
 import java.util.EventListener;
 
-import com.bluespot.forms.model.validation.ValidationSummary;
+import com.bluespot.forms.validation.ValidationSummary;
 
 public interface CommitListener<E> extends EventListener {
     public void commitFailed(ValidationSummary<Commit<E>> result);

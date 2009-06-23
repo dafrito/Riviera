@@ -1,4 +1,4 @@
-package com.bluespot.forms.model.input;
+package com.bluespot.forms.input;
 
 import java.util.HashMap;
 import java.util.Map;
