@@ -12,8 +12,8 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * generally evaluate to {@code false}.
  * <p>
  * Predicates can be constructed using a {@link PredicateBuilder}. This allows
- * you to construct predicates in a readable, domain-specific way. Predicate
- * builders also provide more imperative, traditional methods if you're not
+ * you to construct predicates in a readable, domain-specific way. These
+ * builders also provide more traditional imperative methods if you're not
  * interesting in working with the DSL.
  * <p>
  * Many common predicates have already been written and factory methods for them
