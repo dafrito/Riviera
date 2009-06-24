@@ -11,7 +11,6 @@ import com.bluespot.logic.predicates.Predicate;
  * 
  * @param <T>
  *            the type of value expected by this sentinel
- * @see CompositeSentinel
  */
 public class Sentinel<T> implements Visitor<T> {
 
@@ -59,8 +58,8 @@ public class Sentinel<T> implements Visitor<T> {
     }
 
     /**
-     * Checks the specified value. If it passes this sentinel's test, it will be
-     * passed to all of this sentinel's visitors.
+     * Checks the specified value. If this sentinel's predicate evaluates the
+     * value to {@code true}, it will be passed to this sentinel's visitor.
      * 
      * @param value
      *            the value to check
