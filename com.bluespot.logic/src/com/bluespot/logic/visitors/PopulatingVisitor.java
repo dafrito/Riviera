@@ -61,7 +61,10 @@ public class PopulatingVisitor<T> implements Visitor<T> {
          * Intentionally use identity here; we don't want false positives for
          * lists that contain the same items
          */
-        return visitor.getCollection() == this.getCollection();
+        if (visitor.getCollection() != this.getCollection()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
