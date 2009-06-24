@@ -1,6 +1,7 @@
 package com.bluespot.logic.predicates;
 
 import com.bluespot.logic.Predicates;
+import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 
 /**
@@ -22,6 +23,14 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * All predicates should implement {@link Object#equals(Object)} appropriately,
  * even composite ones. This is possible because constructed predicates are
  * immutable.
+ * <p>
+ * Predicates are, in their crudest form, an {@link Adapter} implementations
+ * that convert some arbitrary value to a {@code Boolean}. I opted against
+ * realizing this in the code, however, because it does not make sense
+ * semantically. Predicates are responsible for testing values, whereas adapters
+ * are responsible for converting values. These are separate responsibilities,
+ * and I don't believe that testing is a special case of conversion
+ * semantically, so I didn't extend {@code Adapter}.
  * 
  * @author Aaron Faanes
  * 
