@@ -16,7 +16,7 @@ import com.bluespot.logic.predicates.Predicate;
  * 
  * @param <T>
  *            the type of value expected by this sentinel
- * @see SingleSentinel
+ * @see Sentinel
  */
 public final class CompositeSentinel<T> implements Visitor<T> {
 

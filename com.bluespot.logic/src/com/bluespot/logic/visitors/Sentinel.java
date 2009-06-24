@@ -13,7 +13,7 @@ import com.bluespot.logic.predicates.Predicate;
  *            the type of value expected by this sentinel
  * @see CompositeSentinel
  */
-public class SingleSentinel<T> implements Visitor<T> {
+public class Sentinel<T> implements Visitor<T> {
 
     private final Predicate<? super T> predicate;
     private final Visitor<? super T> visitor;
@@ -29,7 +29,7 @@ public class SingleSentinel<T> implements Visitor<T> {
      * @throws NullPointerException
      *             if either argument is null
      */
-    public SingleSentinel(final Predicate<? super T> predicate, final Visitor<? super T> visitor) {
+    public Sentinel(final Predicate<? super T> predicate, final Visitor<? super T> visitor) {
         if (predicate == null) {
             throw new NullPointerException("predicate is null");
         }
@@ -77,10 +77,10 @@ public class SingleSentinel<T> implements Visitor<T> {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof SingleSentinel<?>)) {
+        if (!(obj instanceof Sentinel<?>)) {
             return false;
         }
-        final SingleSentinel<?> other = (SingleSentinel<?>) obj;
+        final Sentinel<?> other = (Sentinel<?>) obj;
         if (!this.getPredicate().equals(other.getPredicate())) {
             return false;
         }
