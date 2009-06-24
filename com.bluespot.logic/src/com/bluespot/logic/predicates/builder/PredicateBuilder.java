@@ -9,7 +9,7 @@ import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.predicates.UnanimousPredicate;
 
 /**
- * A builder that constructs predicates in a readable fashion.
+ * A builder that constructs {@link Predicate} objects in a readable fashion.
  * 
  * @author Aaron Faanes
  * 
