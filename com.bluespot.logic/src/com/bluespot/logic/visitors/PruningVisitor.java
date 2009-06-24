@@ -14,7 +14,7 @@ import java.util.Collection;
  *            the type of value that is accepted by this visitor
  * @see PopulatingVisitor
  */
-public class PruningVisitor<T> implements Visitor<T> {
+public final class PruningVisitor<T> implements Visitor<T> {
 
     private final Collection<? super T> collection;
 

@@ -12,7 +12,7 @@ import com.bluespot.logic.predicates.Predicate;
  * @param <T>
  *            the type of value expected by this sentinel
  */
-public class Sentinel<T> implements Visitor<T> {
+public final class Sentinel<T> implements Visitor<T> {
 
     private final Predicate<? super T> predicate;
     private final Visitor<? super T> visitor;

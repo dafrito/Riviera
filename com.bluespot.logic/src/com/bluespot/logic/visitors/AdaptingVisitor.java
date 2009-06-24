@@ -16,7 +16,7 @@ import com.bluespot.logic.adapters.Adapter;
  *            the type of value that is sent to the target visitor
  * @see Adapter
  */
-public class AdaptingVisitor<S, D> implements Visitor<S> {
+public final class AdaptingVisitor<S, D> implements Visitor<S> {
 
     private final Adapter<? super S, ? extends D> adapter;
     private final Visitor<? super D> targetVisitor;

@@ -17,7 +17,7 @@ import com.bluespot.logic.adapters.Adapter;
  *            the value tested in this predicate
  * @see StartsWithPredicate
  */
-public class EndsWithPredicate<T> implements Predicate<T> {
+public final class EndsWithPredicate<T> implements Predicate<T> {
 
     private final String endingString;
     private final Adapter<? super T, String> adapter;

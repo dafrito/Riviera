@@ -14,7 +14,7 @@ import com.bluespot.logic.adapters.Adapter;
  * @param <D>
  *            the type of the converted value
  */
-public class AdaptingPredicate<S, D> implements Predicate<S> {
+public final class AdaptingPredicate<S, D> implements Predicate<S> {
 
     private final Adapter<? super S, D> adapter;
 
