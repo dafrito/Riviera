@@ -6,6 +6,11 @@ import com.bluespot.logic.predicates.Predicate;
  * A {@link Visitor} that conditionally forwards values to a given visitor. For
  * any given value, that value must first evaluate to {@code true} from the
  * sentinel's predicate before it is sent to the sentinel's visitor.
+ * <p>
+ * At a higher level, sentinels represent "filters" of data. They provide a very
+ * useful bridge between {@code Predicate} objects and their {@code Visitor}
+ * counterparts. Sentinels also implement the {@code Visitor} interface
+ * themselves, allowing arbitrarily complex nesting of these objects.
  * 
  * @author Aaron Faanes
  * 
