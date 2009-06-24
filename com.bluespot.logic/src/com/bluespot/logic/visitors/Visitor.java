@@ -9,6 +9,7 @@ package com.bluespot.logic.visitors;
  *            the type of element this visitor expects.
  */
 public interface Visitor<T> {
+
     /**
      * This method is invoked when the visitor receives a value.
      * 
