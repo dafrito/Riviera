@@ -181,6 +181,18 @@ public final class Geometry {
 
     /**
      * Returns a {@link Point} that is equal to the center of the specified
+     * {@link Dimension} object.
+     * 
+     * @param dimension
+     *            the {@code Dimension} used in this operation
+     * @return the center of the specified {@code Dimension}
+     */
+    public static Point getCenter(final Dimension dimension) {
+        return new Point(dimension.width / 2, dimension.height / 2);
+    }
+
+    /**
+     * Returns a {@link Point} that is equal to the center of the specified
      * {@link Rectangle} object.
      * 
      * @param rectangle
