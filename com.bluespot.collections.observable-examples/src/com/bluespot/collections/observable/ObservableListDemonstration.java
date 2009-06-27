@@ -36,15 +36,15 @@ public final class ObservableListDemonstration extends SingleFrameApplication {
     }
 
     @Action
-    private void addElement() {
+    protected void addElement() {
         this.strings.add("Hello, world! This is element " + this.strings.size());
         this.removeButton.setEnabled(true);
     }
 
     @Action
-    private void removeElement() {
+    protected void removeElement() {
         assert !this.strings.isEmpty();
-            this.strings.remove(0);
+        this.strings.remove(0);
         this.removeButton.setEnabled(!this.strings.isEmpty());
     }
 
