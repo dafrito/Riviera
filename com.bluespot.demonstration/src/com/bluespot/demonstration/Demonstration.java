@@ -32,7 +32,7 @@ public abstract class Demonstration {
      * @param frame
      *            the target frame that is initialized with this demonstration
      */
-    protected final void preInitialize(final JFrame frame) {
+    protected void preInitialize(final JFrame frame) {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
@@ -66,7 +66,7 @@ public abstract class Demonstration {
      * @param frame
      *            the target frame that is initialized with this demonstration
      */
-    protected final void postInitialize(final JFrame frame) {
+    protected void postInitialize(final JFrame frame) {
         frame.pack();
         Components.center(frame);
         frame.setVisible(true);
