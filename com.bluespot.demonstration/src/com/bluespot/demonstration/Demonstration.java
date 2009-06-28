@@ -1,6 +1,7 @@
 package com.bluespot.demonstration;
 
 import java.awt.BorderLayout;
+import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -8,6 +9,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import com.bluespot.reflection.Reflection;
 import com.bluespot.swing.Components;
 
 /**
@@ -21,9 +23,8 @@ public abstract class Demonstration {
     private final void bootstrap() {
         final JFrame frame = new JFrame(this.getTitle());
         this.preInitialize(frame);
-        if (this.initialize(frame)) {
-            this.postInitialize(frame);
-        }
+        this.initialize(frame);
+        this.postInitialize(frame);
     }
 
     /**
@@ -46,14 +47,13 @@ public abstract class Demonstration {
      * 
      * @param frame
      *            the target frame that is initialized with this demonstration
-     * @return {@code true} if {@link #postInitialize(JFrame)} should be invoked
      */
-    protected final boolean initialize(final JFrame frame) {
+    protected final void initialize(final JFrame frame) {
         final JPanel panel = new JPanel(new BorderLayout(5, 5));
         panel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
         frame.setContentPane(panel);
+        // getContentPane() will invoke newContentPane() if necessary.
         panel.add(this.getContentPane());
-        return true;
     }
 
     /**
@@ -73,7 +73,9 @@ public abstract class Demonstration {
     }
 
     /**
-     * Returns the title used for this demonstration
+     * Returns the title used for this demonstration. By default, this will use
+     * the string returned by {@link Class#getSimpleName()}, but feel free to
+     * override this if you have a better name for your demonstration.
      * 
      * @return the title used for this demonstration
      */
@@ -111,18 +113,13 @@ public abstract class Demonstration {
     }
 
     /**
-     * Create a new content pane that contains your demonstration. If you're
-     * using the new style of demonstrations, you must override this method. If,
-     * instead, you're using the legacy form, then you must override
-     * {@link #initialize(JFrame)}.
+     * Create a new content pane that contains your demonstration.
      * 
      * @return the created content pane
      * @throws UnsupportedOperationException
      *             if this method is not overridden
      */
-    protected JComponent newContentPane() {
-        throw new UnsupportedOperationException("Not implemented");
-    }
+    protected abstract JComponent newContentPane();
 
     /**
      * Runs the specified runnable on the EDT. The class provided must have a
@@ -141,19 +138,20 @@ public abstract class Demonstration {
         }
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                Demonstration demonstration = null;
+                Demonstration demonstration;
                 try {
-                    demonstration = klass.newInstance();
-                } catch (final InstantiationException e) {
+                    demonstration = Reflection.invokeZeroArgConstructor(klass);
+                } catch (final InvocationTargetException e) {
                     /*
-                     * Creating a new demonstration should never fail, and any
-                     * occurrence always indicates programming errors. At any
-                     * rate, this seems smarter than printing the stack trace.
+                     * We can't really do anything here: if invocation failed,
+                     * then we can only wrap and propagate. Ideally, we'd wrap
+                     * this exception in something a bit more specific, but we
+                     * almost always just invoke this during a 'main' call, so
+                     * it's not a problem. If we ever start launching
+                     * demonstrations later on using this method, this will need
+                     * more attention.
                      */
-                    throw new AssertionError(e);
-                } catch (final IllegalAccessException e) {
-                    // See above message.
-                    throw new AssertionError(e);
+                    throw new RuntimeException(e);
                 }
                 demonstration.bootstrap();
             }
