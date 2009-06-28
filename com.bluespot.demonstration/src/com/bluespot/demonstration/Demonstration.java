@@ -121,6 +121,56 @@ public abstract class Demonstration {
      */
     protected abstract JComponent newContentPane();
 
+    private static void initialize() {
+        if (!Components.LookAndFeel.NIMBUS.activate()) {
+            /*
+             * Activate system look-and-feel if Nimbus is unavailable. If this
+             * one fails, then we just give up and use the default.
+             */
+            Components.LookAndFeel.SYSTEM.activate();
+        }
+    }
+
+    /**
+     * Wraps a class that specifies a {@link JComponent} and creates a
+     * demonstration around it.
+     * 
+     * @param klass
+     *            the {@link JComponent} subclass that is contained by the
+     *            demonstration
+     */
+    public static void launchWrapped(final Class<? extends JComponent> klass) {
+        Demonstration.initialize();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    final JComponent component = Reflection.invokeZeroArgConstructor(klass);
+                    new Demonstration() {
+                        @Override
+                        protected JComponent newContentPane() {
+                            return component;
+                        }
+
+                        public void bootstrap() {
+                            super.bootstrap();
+                        }
+                    }.bootstrap();
+                } catch (final InvocationTargetException e) {
+                    /*
+                     * We can't really do anything here: if invocation failed,
+                     * then we can only wrap and propagate. Ideally, we'd wrap
+                     * this exception in something a bit more specific, but we
+                     * almost always just invoke this during a 'main' call, so
+                     * it's not a problem. If we ever start launching
+                     * demonstrations later on using this method, this will need
+                     * more attention.
+                     */
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+    }
+
     /**
      * Runs the specified runnable on the EDT. The class provided must have a
      * zero-argument constructor.
@@ -129,13 +179,7 @@ public abstract class Demonstration {
      *            the class from which a runnable is created
      */
     public static void launch(final Class<? extends Demonstration> klass) {
-        if (!Components.LookAndFeel.NIMBUS.activate()) {
-            /*
-             * Activate system look-and-feel if Nimbus is unavailable. If this
-             * one fails, then we just give up and use the default.
-             */
-            Components.LookAndFeel.SYSTEM.activate();
-        }
+        Demonstration.initialize();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 Demonstration demonstration;
