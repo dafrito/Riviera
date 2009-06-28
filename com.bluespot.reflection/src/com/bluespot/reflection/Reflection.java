@@ -5,6 +5,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 
+/**
+ * A collection of methods designed to make common reflection tasks easier.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public final class Reflection {
 
     private Reflection() {
