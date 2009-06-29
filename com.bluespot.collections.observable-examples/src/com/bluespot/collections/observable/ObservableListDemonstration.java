@@ -27,9 +27,9 @@ public final class ObservableListDemonstration extends SingleFrameApplication {
 
     private final JList list = new JList(this.strings);
 
-    private final JButton addButton = new JButton("Add");
+    private final JButton addButton = new JButton();
 
-    private final JButton removeButton = new JButton("Remove");
+    private final JButton removeButton = new JButton();
 
     public ObservableListDemonstration(final ApplicationContext context) {
         super(context);
@@ -57,12 +57,15 @@ public final class ObservableListDemonstration extends SingleFrameApplication {
 
         final JPanel buttons = new JPanel();
         panel.add(buttons, BorderLayout.SOUTH);
-        buttons.add(this.addButton);
-        buttons.add(this.removeButton);
 
         this.addButton.setAction(this.getContext().getActionMap().get("addElement"));
+        this.addButton.setText("Add");
+        buttons.add(this.addButton);
+
         this.removeButton.setAction(this.getContext().getActionMap().get("removeElement"));
+        this.removeButton.setText("Remove");
         this.removeButton.setEnabled(false);
+        buttons.add(this.removeButton);
 
         this.show(panel);
     }
