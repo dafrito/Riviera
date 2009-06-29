@@ -11,30 +11,11 @@ import javax.swing.JPanel;
  * {@link BorderLayout}. This provides hooks for each area of the border layout.
  * hook is expected to create a new {@link JComponent} for that area (north,
  * west, etc.).
- * <p>
- * It is not required to override all hook methods, but if a method is
- * overrided, it must return a non-null {@link JComponent}. Null values will
- * immediately result in {@link NullPointerException} objects being thrown.
  * 
  * @author Aaron Faanes
  * @see BorderLayout
  */
 public abstract class BorderLayoutDemonstration extends Demonstration {
-
-    /**
-     * This component represents an empty area. We use it instead of null to
-     * indicate that areas should not be added to the container.
-     * {@link JComponent#equals(Object)}
-     */
-    private static final JComponent EMPTY = new JComponent() {
-        // Empty by design
-    };
-
-    private void checkNullComponent(final String name, final JComponent component) {
-        if (component == null) {
-            throw new NullPointerException(name + " is null");
-        }
-    }
 
     @Override
     protected final JComponent newContentPane() {
@@ -44,32 +25,27 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
             throw new ConcurrentModificationException("Panel's layout has been modified");
         }
         final JComponent centerPanel = this.newCenterPane();
-        if (centerPanel != EMPTY) {
-            this.checkNullComponent("centerPanel", centerPanel);
+        if (centerPanel != null) {
             panel.add(centerPanel, BorderLayout.CENTER);
         }
 
         final JComponent northPane = this.newNorthPane();
-        if (northPane != EMPTY) {
-            this.checkNullComponent("northPane", northPane);
+        if (northPane != null) {
             panel.add(northPane, BorderLayout.NORTH);
         }
 
         final JComponent southPane = this.newSouthPane();
-        if (southPane != EMPTY) {
-            this.checkNullComponent("southPane", southPane);
+        if (southPane != null) {
             panel.add(southPane, BorderLayout.SOUTH);
         }
 
         final JComponent westPane = this.newWestPane();
-        if (westPane != EMPTY) {
-            this.checkNullComponent("westPane", westPane);
+        if (westPane != null) {
             panel.add(westPane, BorderLayout.WEST);
         }
 
         final JComponent eastPane = this.newEastPane();
-        if (eastPane != EMPTY) {
-            this.checkNullComponent("eastPane", eastPane);
+        if (eastPane != null) {
             panel.add(eastPane, BorderLayout.EAST);
         }
 
@@ -86,7 +62,7 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
      *         demonstration's container.
      */
     protected JComponent newCenterPane() {
-        return EMPTY;
+        return null;
     }
 
     /**
@@ -99,7 +75,7 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
      *         this demonstration's container.
      */
     protected JComponent newNorthPane() {
-        return EMPTY;
+        return null;
     }
 
     /**
@@ -112,7 +88,7 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
      *         bottom portion of this demonstration's container.
      */
     protected JComponent newSouthPane() {
-        return EMPTY;
+        return null;
     }
 
     /**
@@ -125,7 +101,7 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
      *         left-hand portion of this demonstration's container.
      */
     protected JComponent newWestPane() {
-        return EMPTY;
+        return null;
     }
 
     /**
@@ -138,7 +114,7 @@ public abstract class BorderLayoutDemonstration extends Demonstration {
      *         right-hand portion of this demonstration's container.
      */
     protected JComponent newEastPane() {
-        return EMPTY;
+        return null;
     }
 
 }
