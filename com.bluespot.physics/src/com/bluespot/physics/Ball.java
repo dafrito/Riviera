@@ -1,3 +1,4 @@
+package com.bluespot.physics;
 /**
  * Represents a physical object.
  * 

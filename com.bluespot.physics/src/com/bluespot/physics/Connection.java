@@ -1,3 +1,4 @@
+package com.bluespot.physics;
 /**
  * Represents an attraction or connection between some objects.
  * 
