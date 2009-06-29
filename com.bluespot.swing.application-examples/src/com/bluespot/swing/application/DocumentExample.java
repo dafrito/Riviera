@@ -61,7 +61,7 @@ import org.jdesktop.application.View;
  * <dt><strong>File {@link #getFile file}</strong>
  * <dt>
  * <dd>The current text File being edited.</dd>
- * <dt><strong>boolean {@link modified #isModified}</strong>
+ * <dt><strong>boolean {@link #isModified modified}</strong>
  * <dt>
  * <dd>True if the current file needs to be saved.</dd>
  * </dl>
@@ -71,7 +71,7 @@ import org.jdesktop.application.View;
  * <p>
  * The application is {@link Application#launch launched} in the main method on
  * the "main" thread. All the work of actually constructing, {@link #initialize
- * intializing}, and {@link #startup starting} the application actually happens
+ * initializing}, and {@link #startup starting} the application actually happens
  * on the EDT.
  * 
  * <p>
@@ -164,7 +164,7 @@ public class DocumentExample extends SingleFrameApplication {
 
     private JFileChooser createFileChooser(final String name) {
         final JFileChooser fc = new JFileChooser();
-        fc.setName("saveAsFileChooser");
+        fc.setName(name);
         fc.setFileFilter(this.fileFilter);
         this.appResourceMap.injectComponents(fc);
         return fc;
@@ -231,10 +231,10 @@ public class DocumentExample extends SingleFrameApplication {
      * @return a new LoadFileTask or null
      */
     @Action
-    public Task open() {
+    public Task<?, ?> open() {
         final JFileChooser fc = this.createFileChooser("openFileChooser");
         final int option = fc.showOpenDialog(this.getMainFrame());
-        Task task = null;
+        Task<?, ?> task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
             task = new LoadFileTask(fc.getSelectedFile());
         }
@@ -281,7 +281,7 @@ public class DocumentExample extends SingleFrameApplication {
      * @see #getFile
      */
     @Action(enabledProperty = "modified")
-    public Task save() {
+    public Task<?, ?> save() {
         return new SaveFileTask(this.getFile());
     }
 
@@ -292,13 +292,15 @@ public class DocumentExample extends SingleFrameApplication {
      * the user chooses a file, a {@code SaveFileTask} is returned. Note that
      * the selected file only becomes the value of the {@code file} property if
      * the file is saved successfully.
+     * 
+     * @return the task that represents the save operation
      */
     @Action
-    public Task saveAs() {
+    public Task<?, ?> saveAs() {
         final JFileChooser fc = this.createFileChooser("saveAsFileChooser");
         this.appResourceMap.injectComponents(fc);
         final int option = fc.showSaveDialog(this.getMainFrame());
-        Task task = null;
+        Task<?, ?> task = null;
         if (JFileChooser.APPROVE_OPTION == option) {
             task = new SaveFileTask(fc.getSelectedFile());
         }
@@ -360,7 +362,7 @@ public class DocumentExample extends SingleFrameApplication {
     private JDialog createAboutBox() {
         final JPanel panel = new JPanel(new GridBagLayout());
         panel.setBorder(new EmptyBorder(0, 28, 16, 28)); // top, left, bottom,
-                                                         // right
+        // right
         final JLabel titleLabel = new JLabel();
         titleLabel.setName("aboutTitleLabel");
         final GridBagConstraints c = new GridBagConstraints();
@@ -447,7 +449,7 @@ public class DocumentExample extends SingleFrameApplication {
         final JToolBar toolBar = new JToolBar();
         toolBar.setFloatable(false);
         final Border border = new EmptyBorder(2, 9, 2, 9); // top, left, bottom,
-                                                           // right
+        // right
         for (final String actionName : toolbarActionNames) {
             final JButton button = new JButton();
             button.setName(actionName + "ToolBarButton");
@@ -689,9 +691,8 @@ public class DocumentExample extends SingleFrameApplication {
             }
             if (!this.isCancelled()) {
                 return contents.toString();
-            } else {
-                return null;
             }
+            return null;
         }
     }
 
@@ -735,9 +736,8 @@ public class DocumentExample extends SingleFrameApplication {
                         DocumentExample.this.getFile());
                 final int option = JOptionPane.showConfirmDialog(DocumentExample.this.getMainFrame(), confirmExitText);
                 return option == JOptionPane.YES_OPTION;
-            } else {
-                return true;
             }
+            return true;
         }
 
         public void willExit(final EventObject e) {

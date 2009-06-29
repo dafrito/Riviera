@@ -337,10 +337,9 @@ public class ActionMapExample extends SingleFrameApplication {
         public final Rectangle getLastNodeBounds() {
             if (this.nodes.size() == 0) {
                 return new Rectangle(0, 0, 0, 0);
-            } else {
-                final Node lastNode = this.nodes.get(this.nodes.size() - 1);
-                return lastNode.getBounds();
             }
+            final Node lastNode = this.nodes.get(this.nodes.size() - 1);
+            return lastNode.getBounds();
         }
 
         public final Node nodeAt(final int x, final int y) {
