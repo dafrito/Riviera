@@ -468,11 +468,10 @@ public class LocalStorage extends AbstractBean {
                         fc = this.ps.get(fileURL);
                     }
                 }
-                if ((fc != null) && (fc.canWrite())) {
-                    return new BufferedOutputStream(fc.getOutputStream(true));
-                } else {
+                if (fc == null || !fc.canWrite()) {
                     throw new IOException("unable to create FileContents object");
                 }
+                return new BufferedOutputStream(fc.getOutputStream(true));
             } catch (final Exception e) {
                 throw new LSException("openOutputFile \"" + fileName + "\" failed", e);
             }

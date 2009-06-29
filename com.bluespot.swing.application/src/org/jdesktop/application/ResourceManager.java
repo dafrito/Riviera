@@ -122,23 +122,22 @@ public class ResourceManager extends AbstractBean {
             final ListIterator<String> names) {
         if (!names.hasNext()) {
             return root;
-        } else {
-            final String bundleName0 = names.next();
-            final String rmBundlePackage = this.bundlePackageName(bundleName0);
-            final List<String> rmNames = new ArrayList<String>();
-            rmNames.add(bundleName0);
-            while (names.hasNext()) {
-                final String bundleName = names.next();
-                if (rmBundlePackage.equals(this.bundlePackageName(bundleName))) {
-                    rmNames.add(bundleName);
-                } else {
-                    names.previous();
-                    break;
-                }
-            }
-            final ResourceMap parent = this.createResourceMapChain(cl, root, names);
-            return this.createResourceMap(cl, parent, rmNames);
         }
+        final String bundleName0 = names.next();
+        final String rmBundlePackage = this.bundlePackageName(bundleName0);
+        final List<String> rmNames = new ArrayList<String>();
+        rmNames.add(bundleName0);
+        while (names.hasNext()) {
+            final String bundleName = names.next();
+            if (rmBundlePackage.equals(this.bundlePackageName(bundleName))) {
+                rmNames.add(bundleName);
+            } else {
+                names.previous();
+                break;
+            }
+        }
+        final ResourceMap parent = this.createResourceMapChain(cl, root, names);
+        return this.createResourceMap(cl, parent, rmNames);
     }
 
     /*
@@ -329,9 +328,8 @@ public class ResourceManager extends AbstractBean {
             final Class appClass = this.getContext().getApplicationClass();
             if (appClass == null) {
                 return this.allBundleNames(Application.class, Application.class); // placeholder
-            } else {
-                this.applicationBundleNames = this.allBundleNames(appClass, Application.class);
             }
+            this.applicationBundleNames = this.allBundleNames(appClass, Application.class);
         }
         return this.applicationBundleNames;
     }
