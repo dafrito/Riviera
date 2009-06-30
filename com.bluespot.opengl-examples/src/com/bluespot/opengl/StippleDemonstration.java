@@ -13,6 +13,10 @@ import com.bluespot.demonstration.Demonstration;
  * <p>
  * In this demonstration, the factor is increased, causing the pattern to become
  * larger and more pronounced.
+ * <p>
+ * It's important to note the ordering of these calls. Stippling must be enabled
+ * and the stipple must be set through {@link GL#glLineStipple(int, short)}
+ * before vertices are added,
  * 
  * @author Aaron Faanes
  * 
@@ -40,6 +44,8 @@ public class StippleDemonstration extends AbstractGLDemonstration {
             gl.glLineStipple(factor, (short) 0x5555); // 5 in binary is a 1001
             // pattern.
             gl.glBegin(GL.GL_LINES);
+            final float percentComplete = (y + 90) / 180;
+            gl.glColor3f(.3f + percentComplete / 3.0f, 1.0f - percentComplete, percentComplete);
             gl.glVertex2f(-80.0f, y);
             gl.glVertex2f(80.0f, y);
             gl.glEnd();

@@ -35,6 +35,7 @@ public class RandomStippleDemonstration extends AbstractGLDemonstration {
     private final Random random = new Random();
 
     private final List<Short> stipples = new ArrayList<Short>();
+    private final List<Float> colors = new ArrayList<Float>();
 
     @Override
     public void init(final GLAutoDrawable drawable) {
@@ -45,6 +46,13 @@ public class RandomStippleDemonstration extends AbstractGLDemonstration {
              * random values
              */
             this.stipples.add((short) this.random.nextInt());
+            // This is a dirty hack-filled way to generate random lines.
+            this.colors.add(this.random.nextFloat());
+            this.colors.add(this.random.nextFloat());
+            this.colors.add(this.random.nextFloat());
+            this.colors.add(this.random.nextFloat());
+            this.colors.add(this.random.nextFloat());
+            this.colors.add(this.random.nextFloat());
         }
     }
 
@@ -53,13 +61,16 @@ public class RandomStippleDemonstration extends AbstractGLDemonstration {
         gl.glEnable(GL.GL_LINE_STIPPLE);
 
         final Iterator<Short> iter = this.stipples.iterator();
+        final Iterator<Float> colorIter = this.colors.iterator();
         for (float y = -90.0f; y < 90.0f; y += 20.0f) {
             assert iter.hasNext();
             gl.glLineWidth(2);
             gl.glLineStipple(5, iter.next());
             // pattern.
             gl.glBegin(GL.GL_LINES);
+            gl.glColor3f(colorIter.next(), colorIter.next(), colorIter.next());
             gl.glVertex2f(-80.0f, y);
+            gl.glColor3f(colorIter.next(), colorIter.next(), colorIter.next());
             gl.glVertex2f(80.0f, y);
             gl.glEnd();
         }
