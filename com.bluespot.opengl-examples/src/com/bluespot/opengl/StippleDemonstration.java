@@ -6,8 +6,13 @@ import com.bluespot.demonstration.Demonstration;
 
 /**
  * Draws a series of horizontal lines on the screen. The lines vary by the
- * amount of "stippling" used on them. Stippling is apparently a term used for
- * making dotted and dashed lines.
+ * amount of <em>stippling</em> used on them. Line stippling is what creates
+ * dotted and dashed lines. In OpenGL, stippling is implemented by using a
+ * factor and a pattern. The pattern is a {@code short} that describes when the
+ * line is shown. The factor defines the scale of the pattern.
+ * <p>
+ * In this demonstration, the factor is increased, causing the pattern to become
+ * larger and more pronounced.
  * 
  * @author Aaron Faanes
  * 
