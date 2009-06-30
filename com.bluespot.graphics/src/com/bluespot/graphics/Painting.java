@@ -6,7 +6,12 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
 
 /**
  * A suite of utility methods dealing with painting and images.
@@ -19,6 +24,32 @@ public final class Painting {
     private Painting() {
         // Suppress default construct to ensure non-instantiability.
         throw new AssertionError("Instantiation not allowed");
+    }
+
+    /**
+     * Creates and returns a {@link Timer} that calls
+     * {@link JComponent#repaint()} periodically. The timer is <em>not</em>
+     * started.
+     * <p>
+     * This is useful for animation but the consistency of calls is only as
+     * reliable as {@link Timer}. Therefore, any time-sensitive animation should
+     * keep track of elapsed time between calls to repaint.
+     * 
+     * @param component
+     *            the component that is repainted
+     * @param framesPerSecond
+     *            the ideal frames per second. The timer makes a best-effort to
+     *            meet this frame rate, but no guarantees or adjustments are
+     *            made.
+     * @return the created {@code Timer} object. It must be manually started.
+     */
+    public static Timer repaintPeriodically(final JComponent component, final int framesPerSecond) {
+        final Timer timer = new Timer(1000 / framesPerSecond, new ActionListener() {
+            public void actionPerformed(final ActionEvent e) {
+                component.repaint();
+            }
+        });
+        return timer;
     }
 
     /**
