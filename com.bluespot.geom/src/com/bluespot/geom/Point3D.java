@@ -1,5 +1,12 @@
 package com.bluespot.geom;
 
+/**
+ * Represents a single point in space. This interface provides {@code Point3D}
+ * classes using {@link Double}, {@link Float}, or {@link Integer} precision.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public interface Point3D {
 
     /**
@@ -11,7 +18,7 @@ public interface Point3D {
      * @author Aaron Faanes
      * 
      */
-    public class Double implements Point3D {
+    public final static class Double implements Point3D {
         private final double z;
         private final double y;
         private final double x;
@@ -121,7 +128,7 @@ public interface Point3D {
      * @author Aaron Faanes
      * 
      */
-    public class Float implements Point3D {
+    public final static class Float implements Point3D {
         private final float z;
         private final float y;
         private final float x;
@@ -225,7 +232,7 @@ public interface Point3D {
      * @author Aaron Faanes
      * 
      */
-    public class Integer implements Point3D {
+    public final static class Integer implements Point3D {
         private final int z;
         private final int y;
         private final int x;

@@ -1,7 +1,9 @@
 package com.bluespot.geom;
 
 /**
- * Represents an immutable, three-dimensional volume of space.
+ * Represents an immutable, three-dimensional volume of space. This interface
+ * provides three varying levels of precision: {@link Double}, {@link Float},
+ * and {@link Integer}.
  * 
  * @author Aaron Faanes
  * 
@@ -17,10 +19,15 @@ public interface Dimension3D {
      * 
      * @author Aaron Faanes
      */
-    public class Double implements Dimension3D {
+    public final static class Double implements Dimension3D {
         private final double width;
         private final double height;
         private final double depth;
+
+        /**
+         * Represents a empty dimension. Specifically, all dimensions are zero.
+         */
+        public static final Double EMPTY = new Double(0);
 
         /**
          * Constructs a new three-dimensional volume using the specified values.
@@ -50,6 +57,27 @@ public interface Dimension3D {
             this.width = width;
             this.height = height;
             this.depth = depth;
+        }
+
+        /**
+         * Creates a copy of the specified dimension
+         * 
+         * @param dim
+         *            the copied dimension
+         */
+        public Double(final Double dim) {
+            this(dim.getWidth(), dim.getHeight(), dim.getDepth());
+        }
+
+        /**
+         * Creates a cube using the specified size.
+         * 
+         * @param size
+         *            the value of the width, height, and depth of the created
+         *            dimension
+         */
+        public Double(final double size) {
+            this(size, size, size);
         }
 
         /**
@@ -148,10 +176,15 @@ public interface Dimension3D {
      * 
      * @author Aaron Faanes
      */
-    public class Float implements Dimension3D {
+    public final static class Float implements Dimension3D {
         private final float width;
         private final float height;
         private final float depth;
+
+        /**
+         * Represents a empty dimension. Specifically, all dimensions are zero.
+         */
+        public static final Float EMPTY = new Float(0);
 
         /**
          * Constructs a new three-dimensional volume using the specified values.
@@ -180,6 +213,27 @@ public interface Dimension3D {
             this.width = width;
             this.height = height;
             this.depth = depth;
+        }
+
+        /**
+         * Creates a copy of the specified dimension
+         * 
+         * @param dim
+         *            the copied dimension
+         */
+        public Float(final Float dim) {
+            this(dim.getWidth(), dim.getHeight(), dim.getDepth());
+        }
+
+        /**
+         * Creates a cube using the specified size.
+         * 
+         * @param size
+         *            the value of the width, height, and depth of the created
+         *            dimension
+         */
+        public Float(final float size) {
+            this(size, size, size);
         }
 
         /**
@@ -271,10 +325,15 @@ public interface Dimension3D {
      * 
      * @author Aaron Faanes
      */
-    public class Integer implements Dimension3D {
+    public final static class Integer implements Dimension3D {
         private final int width;
         private final int height;
         private final int depth;
+
+        /**
+         * Represents a empty dimension. Specifically, all dimensions are zero.
+         */
+        public static final Integer EMPTY = new Integer(0);
 
         /**
          * Constructs a new three-dimensional volume using the specified values.
@@ -292,6 +351,27 @@ public interface Dimension3D {
             this.width = width;
             this.height = height;
             this.depth = depth;
+        }
+
+        /**
+         * Creates a copy of the specified dimension
+         * 
+         * @param dim
+         *            the copied dimension
+         */
+        public Integer(final Integer dim) {
+            this(dim.getWidth(), dim.getHeight(), dim.getDepth());
+        }
+
+        /**
+         * Creates a cube using the specified size.
+         * 
+         * @param size
+         *            the value of the width, height, and depth of the created
+         *            dimension
+         */
+        public Integer(final int size) {
+            this(size, size, size);
         }
 
         /**
