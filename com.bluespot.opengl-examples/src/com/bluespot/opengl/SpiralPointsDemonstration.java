@@ -4,8 +4,22 @@ import javax.media.opengl.GL;
 
 import com.bluespot.demonstration.Demonstration;
 
+/**
+ * Creates a series of points aligned along a vertical spiral.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class SpiralPointsDemonstration extends AbstractGLDemonstration {
 
+    private static final long serialVersionUID = 5936974640074960409L;
+
+    /**
+     * Launches this demonstration.
+     * 
+     * @param args
+     *            unused
+     */
     public static void main(final String[] args) {
         Demonstration.launchWrapped(SpiralPointsDemonstration.class);
     }
