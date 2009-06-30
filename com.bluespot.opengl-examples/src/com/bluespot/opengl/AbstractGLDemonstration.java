@@ -13,10 +13,24 @@ import javax.media.opengl.GLJPanel;
 
 import com.bluespot.graphics.Painting;
 
+/**
+ * A skeletal OpenGL application. This sets up an orthogonal view that
+ * automatically manages rotation by mouse. I imagine the current way of doing
+ * rotation is sub-optimal, but I haven't figured out a cleaner way of handling
+ * camera movement.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public abstract class AbstractGLDemonstration extends GLJPanel implements GLEventListener {
+
+    private static final long serialVersionUID = 107706882711513973L;
 
     private Point lastPoint = null;
 
+    /**
+     * Constructs a new {@link AbstractGLDemonstration}.
+     */
     public AbstractGLDemonstration() {
         this.setPreferredSize(new Dimension(800, 600));
         this.addGLEventListener(this);
@@ -68,6 +82,12 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
         gl.glPopMatrix();
     }
 
+    /**
+     * Performs any rendering necessary by this demonstration.
+     * 
+     * @param gl
+     *            the rendering context
+     */
     protected abstract void render(GL gl);
 
     @Override
