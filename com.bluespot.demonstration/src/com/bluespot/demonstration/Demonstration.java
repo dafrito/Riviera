@@ -1,6 +1,7 @@
 package com.bluespot.demonstration;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
@@ -83,7 +84,7 @@ public abstract class Demonstration {
         return this.getClass().getSimpleName();
     }
 
-    private JComponent component;
+    private Component component;
 
     /**
      * Returns the content pane used with this demonstration. This will cache a
@@ -99,7 +100,7 @@ public abstract class Demonstration {
      * @throws UnsupportedOperationException
      *             if {@link #newContentPane()} is not overridden
      */
-    public final JComponent getContentPane() {
+    public final Component getContentPane() {
         if (!SwingUtilities.isEventDispatchThread()) {
             throw new IllegalStateException("Method must be invoked within the EDT");
         }
@@ -119,7 +120,7 @@ public abstract class Demonstration {
      * @throws UnsupportedOperationException
      *             if this method is not overridden
      */
-    protected abstract JComponent newContentPane();
+    protected abstract Component newContentPane();
 
     private static void initialize() {
         if (!Components.LookAndFeel.NIMBUS.activate()) {
@@ -139,15 +140,15 @@ public abstract class Demonstration {
      *            the {@link JComponent} subclass that is contained by the
      *            demonstration
      */
-    public static void launchWrapped(final Class<? extends JComponent> klass) {
+    public static void launchWrapped(final Class<? extends Component> klass) {
         Demonstration.initialize();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    final JComponent component = Reflection.invokeZeroArgConstructor(klass);
+                    final Component component = Reflection.invokeZeroArgConstructor(klass);
                     new Demonstration() {
                         @Override
-                        protected JComponent newContentPane() {
+                        protected Component newContentPane() {
                             return component;
                         }
 
