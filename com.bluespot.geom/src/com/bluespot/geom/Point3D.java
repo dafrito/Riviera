@@ -129,6 +129,12 @@ public interface Point3D {
      * 
      */
     public final static class Float implements Point3D {
+
+        /**
+         * Represents a point at {@code (0, 0, 0)}.
+         */
+        public static final Float ORIGIN = new Float(0, 0, 0);
+
         private final float z;
         private final float y;
         private final float x;
@@ -222,6 +228,20 @@ public interface Point3D {
         @Override
         public String toString() {
             return String.format("Point3D.Float[%f, %f, %f]", this.getX(), this.getY(), this.getZ());
+        }
+
+        /**
+         * Creates and returns a new {@link Float Point3D.Float} that is this
+         * point translated by the specified {@link Vector}.
+         * 
+         * @param vector
+         *            the vector used to create the new point
+         * @return a new point that is this point translated by the specified
+         *         vector
+         */
+        public Float add(final Vector vector) {
+            return new Point3D.Float(this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
+                    this.getZ() + (float) vector.getZ());
         }
 
     }
