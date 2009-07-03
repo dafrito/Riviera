@@ -110,9 +110,9 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 
         final double range = 100.0;
         if (width <= height) {
-            gl.glOrtho(-range, range, -range * aspectRatio, range * aspectRatio, range, -range);
+            gl.glOrtho(-range, range, -range * aspectRatio, range * aspectRatio, 2 * range, 2 * -range);
         } else {
-            gl.glOrtho(-range / aspectRatio, range / aspectRatio, -range, range, range, -range);
+            gl.glOrtho(-range / aspectRatio, range / aspectRatio, -range, range, 2 * range, 2 * -range);
         }
         gl.glMatrixMode(GL.GL_MODELVIEW);
         gl.glLoadIdentity();
