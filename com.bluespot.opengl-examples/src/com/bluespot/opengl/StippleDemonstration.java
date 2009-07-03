@@ -23,7 +23,7 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class StippleDemonstration extends AbstractGLDemonstration {
 
-    private static final long serialVersionUID = 7130271739537605351L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * Launches this demonstration.
