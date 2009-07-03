@@ -6,5 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.opengl"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.graphics"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.geom"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
