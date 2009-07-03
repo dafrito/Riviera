@@ -14,6 +14,23 @@ public final class RandomUtil {
     }
 
     /**
+     * Returns some {@code char} element, chosen at random, from the specified
+     * array.
+     * 
+     * @param choices
+     *            the array that provides the options
+     * @return a randomly chosen {@code char} from the specified array
+     * @throws IllegalArgumentException
+     *             if {@code choices} is empty
+     */
+    public static char choice(final char[] choices) {
+        if (choices.length == 0) {
+            throw new IllegalArgumentException("choices is empty");
+        }
+        return choices[(int) (Math.random() * choices.length)];
+    }
+
+    /**
      * Returns some element, chosen at random, from the specified array.
      * 
      * @param <T>
@@ -21,10 +38,12 @@ public final class RandomUtil {
      * @param choices
      *            the array that provides the options
      * @return a randomly chosen element
+     * @throws IllegalArgumentException
+     *             if {@code choices} is empty
      */
     public static <T> T choice(final T[] choices) {
         if (choices.length == 0) {
-            return null;
+            throw new IllegalArgumentException("choices is empty");
         }
         return choices[(int) (Math.random() * choices.length)];
     }
