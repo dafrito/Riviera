@@ -44,7 +44,14 @@ public final class Painting {
      * @return the created {@code Timer} object. It must be manually started.
      */
     public static Timer repaintPeriodically(final JComponent component, final int framesPerSecond) {
-        final Timer timer = new Timer(1000 / framesPerSecond, new ActionListener() {
+
+        int delay;
+        if (framesPerSecond <= 0) {
+            delay = 0;
+        } else {
+            delay = 1000 / framesPerSecond;
+        }
+        final Timer timer = new Timer(delay, new ActionListener() {
             public void actionPerformed(final ActionEvent e) {
                 component.repaint();
             }
