@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 
 /**
  * Collection of useful methods relating to geometry.
@@ -51,6 +52,17 @@ public final class Geometry {
             return (int) Math.ceil(value);
         }
     };
+
+    /**
+     * Creates a copy of the specified rectangle.
+     * 
+     * @param source
+     *            the source rectangle that is copied
+     * @return a new rectangle that is equal to the original source rectangle
+     */
+    public static Rectangle2D.Double copy(final Rectangle2D.Double source) {
+        return new Rectangle2D.Double(source.x, source.y, source.width, source.height);
+    }
 
     /**
      * Vertically and horizontally centers the given {@link Rectangle} over the
