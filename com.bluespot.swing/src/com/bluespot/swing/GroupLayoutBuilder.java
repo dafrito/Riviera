@@ -112,6 +112,10 @@ public class GroupLayoutBuilder {
         return textField;
     }
 
+    private boolean labelHasTrailingColon(final String label) {
+        return label.matches("^.+:\\s*$");
+    }
+
     /**
      * Adds a form field to this builder. This will lay out the specified
      * component and a label in a new row. The specified component will be to
@@ -125,7 +129,7 @@ public class GroupLayoutBuilder {
      */
     public GroupLayoutBuilder field(final String labelName, final JComponent child) {
         String modifiedLabelText = labelName;
-        if (!labelName.matches("^.+:\\s*$")) {
+        if (!this.labelHasTrailingColon(modifiedLabelText)) {
             modifiedLabelText += ":";
         }
         final JLabel label = new JLabel(modifiedLabelText);
