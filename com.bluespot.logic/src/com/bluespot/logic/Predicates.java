@@ -1,23 +1,41 @@
 package com.bluespot.logic;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.bluespot.logic.predicates.EndsWithPredicate;
 import com.bluespot.logic.predicates.EqualityPredicate;
+import com.bluespot.logic.predicates.GreaterThanPredicate;
 import com.bluespot.logic.predicates.IdentityPredicate;
 import com.bluespot.logic.predicates.InversePredicate;
+import com.bluespot.logic.predicates.LessThanPredicate;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.predicates.RegexPredicate;
 import com.bluespot.logic.predicates.StartsWithPredicate;
 import com.bluespot.logic.predicates.UnanimousPredicate;
-import com.bluespot.logic.predicates.builder.PredicateBuilder;
+import com.bluespot.logic.predicates.UnilateralPredicate;
 
 /**
- * A set of factory methods for semantically constructing {@link Predicate}
- * objects.
+ * A set of factory methods for constructing {@link Predicate} objects. Many
+ * methods in this library are named so as to encourage chaining.
+ * <p>
+ * Unless otherwise noted, null values are never allowed as parameters to any
+ * methods in this library. Also, tested values that are {@code null} will
+ * always evaluate to {@code false}.
+ * <p>
+ * We intentionally return {@link Predicate} interfaces only, instead of
+ * concrete implementations. This seems like good programming practice since it
+ * doesn't commit us to a single implementation. Clients may instantiate
+ * specific {@code Predicate} implementations if they prefer to do so.
+ * <p>
+ * These methods are not guaranteed to return unique instances of predicates.
+ * For some methods, only one predicate is ever returned. Since all predicates
+ * are immutable and implement {@link #equals(Object)} appropriately, this
+ * should not be a problem and potentially yield performance gains.
  * 
  * @author Aaron Faanes
  * @see Predicate
@@ -27,6 +45,85 @@ public final class Predicates {
     private Predicates() {
         // Suppress default constructor to ensure non-instantiability
         throw new AssertionError("Instantiation not allowed");
+    }
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * tested value is strictly greater than the specified constant.
+     * 
+     * @param <T>
+     *            the type of the tested value
+     * @param constant
+     *            the non-null constant value. The returned predicate will
+     *            evaluate to {@code true} for all values that are strictly
+     *            greater than this value.
+     * @return a predicate that evaluates against the specified constant
+     * @see #greaterThanOrEqualTo(Comparable)
+     * @see GreaterThanPredicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> greaterThan(final T constant) {
+        return new GreaterThanPredicate<T>(constant);
+    }
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * tested value is equal to or greater than the specified constant. Tested
+     * values that are null evaluate to {@code false}.
+     * 
+     * @param <T>
+     *            the type of the tested value
+     * @param constant
+     *            the non-null constant value. The returned predicate will
+     *            evaluate to {@code true} for all values that are equal to or
+     *            greater than this value.
+     * @return a predicate that evaluates against the specified constant
+     * @see #greaterThan(Comparable)
+     * @see GreaterThanPredicate
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> greaterThanOrEqualTo(final T constant) {
+        final List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
+        predicates.add(Predicates.is(constant));
+        predicates.add(Predicates.greaterThan(constant));
+        return new UnilateralPredicate<T>(predicates);
+    }
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * tested value is strictly less than the specified constant.
+     * 
+     * @param <T>
+     *            the type of the tested value
+     * @param constant
+     *            the non-null constant value. The returned predicate will
+     *            evaluate to {@code true} for all values that are strictly less
+     *            than this value.
+     * @return a predicate that evaluates against the specified constant
+     * @see LessThanPredicate
+     * @see #lessThanOrEqualTo(Comparable)
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> lessThan(final T constant) {
+        return new LessThanPredicate<T>(constant);
+    }
+
+    /**
+     * Returns a predicate that evaluates to {@code true} if and only if the
+     * tested value is equal to or less than the specified constant.
+     * 
+     * @param <T>
+     *            the type of the tested value
+     * @param constant
+     *            the non-null constant value. The returned predicate will
+     *            evaluate to {@code true} for all values that are equal to or
+     *            less than this value.
+     * @return a predicate that evaluates against the specified constant
+     * @see LessThanPredicate
+     * @see #lessThan(Comparable)
+     */
+    public static <T extends Comparable<? super T>> Predicate<T> lessThanOrEqualTo(final T constant) {
+        final List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
+        predicates.add(Predicates.is(constant));
+        predicates.add(Predicates.greaterThan(constant));
+        return new UnilateralPredicate<T>(predicates);
     }
 
     /**
@@ -51,8 +148,7 @@ public final class Predicates {
 
     /**
      * Returns a predicate that evaluates to {@code true} if and only if the
-     * given {@link File} exists and is a directory. Null values evaluate to
-     * {@code false}.
+     * given {@link File} exists and is a directory.
      * 
      * @return a predicate that tests whether a given {@code File} is a
      *         directory
@@ -63,7 +159,7 @@ public final class Predicates {
     }
 
     /**
-     * A predicate that tests whether a given file exists and is a file
+     * A predicate that tests whether a given file exists and is a file.
      * 
      * @see #isFile()
      */
@@ -84,38 +180,13 @@ public final class Predicates {
 
     /**
      * Returns a predicate that evaluates to {@code true} if and only if the
-     * given {@link File} exists and is a file. Null values evaluate to {@code
-     * false}.
+     * given {@link File} exists and is a file.
      * 
      * @return a predicate that tests whether a given {@code File} is a file
      * @see File#isFile()
      */
     public static Predicate<File> isFile() {
         return PREDICATE_IS_FILE;
-    }
-
-    /**
-     * Returns a new {@link PredicateBuilder} for composite predicates.
-     * 
-     * @param <T>
-     *            the type of the tested value
-     * @return a builder for composite predicates
-     * @see PredicateBuilder
-     */
-    public static <T> PredicateBuilder<T> group() {
-        return new PredicateBuilder<T>();
-    }
-
-    /**
-     * Returns a new {@link PredicateBuilder} for composite predicates.
-     * 
-     * @param <T>
-     *            the type of the tested value
-     * @return a builder for composite predicates
-     * @see PredicateBuilder
-     */
-    public static <T> PredicateBuilder<T> value() {
-        return new PredicateBuilder<T>();
     }
 
     /**
@@ -137,10 +208,10 @@ public final class Predicates {
 
     /**
      * Returns a predicate that evaluates to {@code true} if and only if the
-     * tested value is null.
+     * tested value is {@code null}.
      * 
-     * @return a predicate that evaluates based on the nullity of the specified
-     *         value
+     * @return a predicate that evaluates to {@code true} for only the {@code
+     *         null} value
      */
     public static Predicate<Object> nullValue() {
         return Predicates.PREDICATE_NULL;
@@ -165,10 +236,10 @@ public final class Predicates {
 
     /**
      * Returns a predicate that evaluates to {@code true} if and only if the
-     * tested value is not null.
+     * tested value is not {@code null}.
      * 
-     * @return a predicate that evaluates based on the non-nullity of the
-     *         specified value
+     * @return a predicate that evaluates to {@code true} for all values that
+     *         are not {@code null}
      */
     public static Predicate<Object> notNullValue() {
         return Predicates.PREDICATE_NOT_NULL;
@@ -194,7 +265,7 @@ public final class Predicates {
     /**
      * Returns a predicate that always evaluates to {@code true}.
      * 
-     * @return a predicate that always evaluates to {@code true}
+     * @return a predicate that evaluates to {@code true} for all values
      */
     public static Predicate<Object> truth() {
         return Predicates.PREDICATE_TRUTH;
@@ -220,167 +291,178 @@ public final class Predicates {
     /**
      * Returns a predicate that always evaluates to {@code false}.
      * 
-     * @return a predicate that always evaluates to {@code false}
+     * @return a predicate that evaluates to {@code false} for all values
      */
     public static Predicate<Object> never() {
         return Predicates.PREDICATE_NEVER;
     }
 
     /**
-     * Returns an {@link IdentityPredicate} that tests values for identity. It
-     * will evaluate to {@code true} only for the specified value.
+     * Returns a predicate that tests values for identity. It will evaluate to
+     * {@code true} if and only if the tested value is a reference to the
+     * specified constant.
      * 
      * @param <T>
      *            the type of value used in the predicate
      * @param constant
-     *            the one {@code true} value to this predicate
-     * @return an identity predicate for the specified value
-     * @throws NullPointerException
-     *             if {@code constant} is null
+     *            the constant used in evaluation. The predicate will evaluate
+     *            to {@code true} for values that refer to this constant.
+     * @return a new predicate that evaluates against the specified constant
      */
-    public static <T> IdentityPredicate<T> exact(final T constant) {
+    public static <T> Predicate<T> exact(final T constant) {
         return new IdentityPredicate<T>(constant);
     }
 
     /**
-     * Returns a {@link RegexPredicate} that tests values against the specified
-     * value. Null values are automatically {@code false}.
-     * <p>
-     * This method merely defers to {@link Predicates#matches(Pattern)} after
-     * compiling the specified pattern.
+     * Returns a predicate that tests values against a regular expression that
+     * is compiled from the specified string. The returned predicate will
+     * evaluate to {@code true} if and only if the regular expression evaluates
+     * to true for the tested value.
      * 
-     * @param <T>
-     *            the type of the tested value
      * @param regexPattern
-     *            the pattern used as this predicate's test
-     * @return a predicate using the specified pattern
+     *            the string value of the regular expression used by the
+     *            returned predicate. The predicate will evaluate to {@code
+     *            true} for all values that evaluate to {@code true} according
+     *            to this pattern.
+     * @return a predicate that uses the specified pattern
      * @see Pattern#matcher(CharSequence)
      * @see Matcher#matches()
      */
-    public static <T> RegexPredicate<T> matches(final String regexPattern) {
+    public static Predicate<String> matches(final String regexPattern) {
         return Predicates.matches(Pattern.compile(regexPattern));
     }
 
     /**
-     * Returns a {@link RegexPredicate} that tests values against the specified
-     * value. Null values are automatically {@code false}.
+     * Returns a predicate that tests values against the specified value.
      * 
-     * @param <T>
-     *            the type of the tested value
-     * @param pattern
-     *            the pattern used as this predicate's test
-     * @return a predicate using the specified pattern
+     * @param regexPattern
+     *            the regular expression used by the returned predicate. The
+     *            predicate will evaluate to {@code true} for all values that
+     *            evaluate to {@code true} according to this pattern.
+     * @return a predicate that uses the specified pattern
      * @see Pattern#matcher(CharSequence)
      * @see Matcher#matches()
      */
-    public static <T> RegexPredicate<T> matches(final Pattern pattern) {
-        return new RegexPredicate<T>(pattern);
+    public static Predicate<String> matches(final Pattern regexPattern) {
+        return new RegexPredicate(regexPattern);
     }
 
     /**
-     * Returns a {@link EqualityPredicate} that tests for equality with the
-     * specified value.
+     * Returns a predicate that tests for equality with the specified constant.
+     * The returned predicate will evaluate to {@code true} if, and only if, the
+     * tested value is equivalent to {@code constant} according to
+     * {@link #equals(Object)}.
      * 
      * @param <T>
      *            the type of the specified value
-     * @param value
-     *            the value used in the returned predicate
-     * @return an equality predicate using the specified value
-     * @throws NullPointerException
-     *             if {@code value} is null
+     * @param constant
+     *            the constant used in the returned predicate. The returned
+     *            predicate evaluates to {@code true} for all values that are
+     *            "equal" to this constant.
+     * @return a predicate that uses the specified constant during evaluation
      */
-    public static <T> EqualityPredicate<T> is(final T value) {
-        return new EqualityPredicate<T>(value);
+    public static <T> EqualityPredicate<T> is(final T constant) {
+        return new EqualityPredicate<T>(constant);
     }
 
     /**
-     * Returns a predicate that is logically equivalent to the specified
-     * predicate.
+     * Returns a predicate that evaluates to {@code true} for a given value if,
+     * and only if, the specified predicate evaluates to {@code true} for that
+     * value.
      * 
      * @param <T>
      *            the type of the specified predicate
      * @param predicate
-     *            the predicate to use
-     * @return an equal predicate
+     *            the wrapped predicate.
+     * @return a predicate that mirrors the evaluation of the specified
+     *         predicate.
      */
     public static <T> Predicate<T> is(final Predicate<T> predicate) {
         return predicate;
     }
 
     /**
-     * Returns an {@link InversePredicate} that is the inverse of the specified
-     * predicate.
+     * Returns a predicate that is the inverse of the specified predicate. The
+     * returned predicate will evaluate to {@code true} for a given value if,
+     * and only if, the specified predicate evaluates to {@code false} for that
+     * value.
      * 
      * @param <T>
      *            the type of tested value
      * @param predicate
-     *            the predicate to invert
+     *            the predicate that is inverted. The returned predicate will
+     *            evaluate to {@code true} for all values that evaluate to
+     *            {@code false} according to this specified predicate.
      * @return a predicate that is the inverse of the specified predicate
      */
-    public static <T> InversePredicate<T> not(final Predicate<T> predicate) {
+    public static <T> Predicate<T> not(final Predicate<T> predicate) {
         return new InversePredicate<T>(predicate);
     }
 
     /**
-     * Returns an {@link InversePredicate} that is {@code true} if and only if
-     * the tested value is not equal to the specified value.
+     * Returns a predicate that is {@code true} if, and only if, the tested
+     * value is not equal to the specified value.
+     * <p>
+     * This is a helper method for {@code
+     * Predicates.not(Predicates.is(constant))}.
      * 
      * @param <T>
      *            the type of the tested values
-     * @param value
-     *            the reference value
+     * @param constant
+     *            the constant value
      * @return a predicate that tests for inequality
-     * @throws NullPointerException
-     *             if {@code value} is null
+     * @see #is(Predicate)
+     * @see #not(Predicate)
      */
-    public static <T> InversePredicate<T> not(final T value) {
-        return new InversePredicate<T>(Predicates.is(value));
+    public static <T> Predicate<T> not(final T constant) {
+        return Predicates.not(Predicates.is(constant));
     }
 
     /**
-     * Creates a {@link UnanimousPredicate} that evaluates to {@code true} if
-     * and only if all specified predicates evaluate to {@code true}.
+     * Returns a predicate that evaluates to {@code true} for a given value if,
+     * and only if, all specified predicates evaluate to {@code true} for that
+     * value. This represents a boolean AND operation.
      * 
      * @param <T>
      *            the type of value common to all predicates
      * @param predicates
-     *            the child predicates
-     * @return a unanimous predicate
+     *            the child predicates. No predicate may be {@code null}. The
+     *            order of predicates is preserved.
+     * @return a predicate that evaluates to {@code true} only if its child
+     *         predicates evaluate to {@code true}.
      */
-    public static <T> UnanimousPredicate<T> all(final Predicate<? super T>[] predicates) {
+    public static <T> Predicate<T> all(final Predicate<? super T>[] predicates) {
         return new UnanimousPredicate<T>(Arrays.asList(predicates));
     }
 
     /**
-     * Creates a {@link RegexPredicate} that evaluates to {@code true} if and
-     * only if the tested string value starts with the specified string.
+     * Returns a predicate that evaluates to {@code true} if, and only if, the
+     * tested string value starts with the specified string.
      * 
-     * @param <T>
-     *            the tested value. Tested values will be converted to strings
-     *            using {@link Object#toString()}
      * @param startingValue
-     *            the value that the tested string should start with
+     *            the string value used in the predicate's evaluation. The
+     *            predicate will evaluate to {@code true} for all non-null
+     *            strings that start with this value.
      * @return a predicate that tests for the specified string
      * @see #endsWith(String)
      */
-    public static <T> Predicate<T> startsWith(final String startingValue) {
-        return new StartsWithPredicate<T>(startingValue);
+    public static Predicate<String> startsWith(final String startingValue) {
+        return new StartsWithPredicate(startingValue);
     }
 
     /**
-     * Creates a {@link RegexPredicate} that evaluates to {@code true} if and
-     * only if the tested string value ends with the specified string.
+     * Returns a predicate that evaluates to {@code true} if, and only if, the
+     * tested string value ends with the specified string.
      * 
-     * @param <T>
-     *            the tested value. Tested values will be converted to strings
-     *            using {@link Object#toString()}
      * @param endingValue
-     *            the value that the tested string should end with
+     *            the string value used in the predicate's evaluation. The
+     *            predicate will evaluate to {@code true} for all non-null
+     *            strings that end with this value.
      * @return a regex predicate that tests for the specified string
      * @see #startsWith(String)
      */
-    public static <T> Predicate<T> endsWith(final String endingValue) {
-        return new EndsWithPredicate<T>(endingValue);
+    public static Predicate<String> endsWith(final String endingValue) {
+        return new EndsWithPredicate(endingValue);
     }
 
     /**
@@ -414,7 +496,8 @@ public final class Predicates {
      * Since this method relies on {@link String#toLowerCase()}, results will be
      * locale-dependent.
      * 
-     * @return a new {@code Predicate} that tests whether a string is lower-case
+     * @return a predicate that evaluates to {@code true} for all strings that
+     *         are lower-case.
      * @see #upperCase()
      */
     public static Predicate<String> lowerCase() {
@@ -452,7 +535,8 @@ public final class Predicates {
      * Since this method relies on {@link String#toLowerCase()}, results will be
      * locale-dependent.
      * 
-     * @return a new {@code Predicate} that tests whether a string is lower-case
+     * @return a predicate that evaluates to {@code true} for all strings that
+     *         are upper-case.
      * @see #lowerCase()
      */
     public static Predicate<String> upperCase() {
@@ -480,9 +564,8 @@ public final class Predicates {
 
     /**
      * Returns a predicate that tests whether a given file exists. The returned
-     * predicate will evaluate to {@code true} if and only if
-     * {@link File#exists()} returns {@code true} for the given file. Null
-     * values always evaluate to {@code false}.
+     * predicate will evaluate to {@code true} if, and only if,
+     * {@link File#exists()} returns {@code true} for the given file.
      * 
      * @return a predicate that tests whether a given file exists using
      *         {@link File#exists()}
