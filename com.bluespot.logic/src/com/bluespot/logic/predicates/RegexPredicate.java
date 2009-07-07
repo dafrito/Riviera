@@ -2,17 +2,29 @@ package com.bluespot.logic.predicates;
 
 import java.util.regex.Pattern;
 
+import com.bluespot.logic.Adapters;
+
 /**
- * Creates a predicate that evaluates the string version of some value. It will
- * return {@code true} if and only if the specified pattern matches its string
- * value.
+ * A {@link Predicate} that evaluates strings against a specified regular
+ * expression. It will evaluate to {@code true} for a tested value if, and only
+ * if, the regular expression evaluates to {@code true} for that tested value.
+ * Null values evaluate to {@code false}.
+ * <p>
+ * This class does not implicitly convert non-{@code String} objects to strings.
+ * This is intentional: It is preferred that clients explicitly convert their
+ * values to strings instead of relying on this to perform arbitrary behavior on
+ * objects. Using {@link #toString()} would be a viable option, but that would
+ * imply that {@code toString()} represents a significant and
+ * contractually-binding description of the object. Since this is not the
+ * intended spirit of that method, we do not use it. Clients are encouraged to
+ * use the {@link Adapters} library for making string conversions easier, and
+ * {@link Adapters#stringValue()} specifically if you wish to use
+ * {@link #toString()} for conversion.
  * 
  * @author Aaron Faanes
  * 
- * @param <T>
- *            the value tested in this predicate
  */
-public final class RegexPredicate<T> implements Predicate<T> {
+public final class RegexPredicate implements Predicate<String> {
 
     private final Pattern pattern;
 
@@ -41,11 +53,11 @@ public final class RegexPredicate<T> implements Predicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
+    public boolean test(final String value) {
         if (value == null) {
             return false;
         }
-        return this.getPattern().matcher(value.toString()).matches();
+        return this.getPattern().matcher(value).matches();
     }
 
     @Override
@@ -53,10 +65,10 @@ public final class RegexPredicate<T> implements Predicate<T> {
         if (obj == this) {
             return true;
         }
-        if (!(obj instanceof RegexPredicate<?>)) {
+        if (!(obj instanceof RegexPredicate)) {
             return false;
         }
-        final RegexPredicate<?> other = (RegexPredicate<?>) obj;
+        final RegexPredicate other = (RegexPredicate) obj;
         return this.getPattern().equals(other.getPattern());
     }
 
