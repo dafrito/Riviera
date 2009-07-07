@@ -1,5 +1,7 @@
 package com.bluespot.logic.predicates;
 
+import com.bluespot.logic.Predicates;
+
 /**
  * A predicate that evaluates to {@code true} if and only if the tested value is
  * equal to the specified value.
@@ -20,6 +22,10 @@ public final class IdentityPredicate<T> implements Predicate<T> {
      * @param constant
      *            the value used in evaluation. Only values identical to this
      *            value will evaluate to {@code true}.
+     * @throws NullPointerException
+     *             if {@code constant} is null. Use
+     *             {@link Predicates#nullValue()} if you wish to compare with a
+     *             null value.
      */
     public IdentityPredicate(final T constant) {
         if (constant == null) {
