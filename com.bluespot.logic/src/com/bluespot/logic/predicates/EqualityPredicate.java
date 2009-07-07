@@ -1,7 +1,11 @@
 package com.bluespot.logic.predicates;
 
+import com.bluespot.logic.Predicates;
+
 /**
- * A predicate that tests for equality.
+ * A predicate that tests for equality against a provided constant. The constant
+ * is not allowed to be null. This predicate essentially wraps
+ * {@link Object#equals(Object)}.
  * 
  * @author Aaron Faanes
  * 
@@ -10,33 +14,38 @@ package com.bluespot.logic.predicates;
  */
 public final class EqualityPredicate<T> implements Predicate<T> {
 
-    private final T referenceValue;
+    private final T constant;
 
     /**
-     * Constructs a predicate that equates to the specified value
+     * Constructs a new {@link EqualityPredicate} using the specified constant.
      * 
-     * @param referenceValue
-     *            the value to test against.
+     * @param constant
+     *            the constant value that determines the result of this
+     *            predicate's evaluation
      * @throws NullPointerException
-     *             if the specified value is {@code null}
+     *             if the specified constant is {@code null}. Use
+     *             {@link Predicates#nullValue()} if you need to test for null
+     *             values.
      */
-    public EqualityPredicate(final T referenceValue) {
-        if (referenceValue == null) {
-            throw new NullPointerException("referenceValue is null");
+    public EqualityPredicate(final T constant) {
+        if (constant == null) {
+            throw new NullPointerException("constant is null");
         }
-        this.referenceValue = referenceValue;
+        this.constant = constant;
     }
 
     /**
-     * @return the value that this predicate uses in its evaluation
+     * Returns the constant used by this predicate.
+     * 
+     * @return the constant used by this predicate during evaluation
      */
-    public T getReferenceValue() {
-        return this.referenceValue;
+    public T getConstant() {
+        return this.constant;
     }
 
     @Override
     public boolean test(final T value) {
-        return this.referenceValue.equals(value);
+        return this.constant.equals(value);
     }
 
     @Override
@@ -48,18 +57,21 @@ public final class EqualityPredicate<T> implements Predicate<T> {
             return false;
         }
         final EqualityPredicate<?> predicate = (EqualityPredicate<?>) obj;
-        return this.getReferenceValue().equals(predicate.getReferenceValue());
+        if (!this.getConstant().equals(predicate.getConstant())) {
+            return false;
+        }
+        return true;
     }
 
     @Override
     public int hashCode() {
         int result = 17;
-        result = 31 * result + this.getReferenceValue().hashCode();
+        result = 31 * result + this.getConstant().hashCode();
         return result;
     }
 
     @Override
     public String toString() {
-        return String.format("is %s", this.getReferenceValue());
+        return String.format("is %s", this.getConstant());
     }
 }
