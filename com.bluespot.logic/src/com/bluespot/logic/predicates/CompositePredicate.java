@@ -30,11 +30,15 @@ public abstract class CompositePredicate<T> implements Predicate<T> {
      *             if predicates contains no elements. Degenerate composites do
      *             not have a predictable return type, and thus are not allowed.
      * @throws NullPointerException
-     *             if any predicate in the specified collection is null
+     *             if {@code predicates} or any predicate in {@code predicates}
+     *             is null
      */
     public CompositePredicate(final Collection<Predicate<? super T>> predicates) {
+        if (predicates == null) {
+            throw new NullPointerException("predicates is null");
+        }
         if (predicates.isEmpty()) {
-            throw new IllegalArgumentException("predicates is null");
+            throw new IllegalArgumentException("predicates is empty");
         }
         this.predicates = new ArrayList<Predicate<? super T>>(predicates);
         for (final Predicate<? super T> predicate : this.predicates) {
