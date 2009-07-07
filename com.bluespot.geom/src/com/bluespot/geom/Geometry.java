@@ -59,8 +59,13 @@ public final class Geometry {
      * @param source
      *            the source rectangle that is copied
      * @return a new rectangle that is equal to the original source rectangle
+     * @throws NullPointerException
+     *             if (@code source) is null
      */
     public static Rectangle2D.Double copy(final Rectangle2D.Double source) {
+        if (source == null) {
+            throw new NullPointerException("source is null");
+        }
         return new Rectangle2D.Double(source.x, source.y, source.width, source.height);
     }
 
