@@ -9,14 +9,23 @@ import com.bluespot.logic.predicates.Predicate;
  * from the static factory methods in {@link Adapters}. Adapters are also widely
  * used by {@link Predicate} objects and their builders.
  * <p>
- * Adapters are usually midpoints in some chain of logic. They follow the
- * "garbage in, garbage out" principle. They accept the widest possible range of
- * values, and return valid values on a best-effort basis. They should not
- * misconstrue the data they receive: values that are clearly errors should
- * cause exceptions. One notable exception to this rule are null values: by
- * convention, an adapter that receives a null value should return a null value.
- * 
- * 
+ * Adapters follow a small set of guidelines, similar in spirit to the
+ * {@link #equals(Object)} and {@link Predicate} contracts:
+ * <ul>
+ * <li><em>Adapters are consistent.</em> Adapters convert a given value the same
+ * way consistently. This implies that adapters are immutable.
+ * <li><em>Adapters have no side-effects.</em> Adapters should convert values
+ * without modifying the given value.
+ * <li><em>Adapters throw exceptions in exceptional circumstances.</em>
+ * Adapters, when given a value that is invalid or unexpected, should throw an
+ * appropriate exception.
+ * <li><em>Adapters gracefully handle null values</em>. Adapters should silently
+ * return {@code null} unless they're explicitly expecting that value.
+ * <li><em>Adapters should not guess.</em> Adapters do not attempt to guess the
+ * intentions of a ill-formed value. If it is convertible in its current state,
+ * it should be converted. If it cannot be converted, an exception should be
+ * raised.
+ * </ul>
  * 
  * @author Aaron Faanes
  * 
