@@ -50,6 +50,8 @@ import javax.swing.border.EmptyBorder;
 
 import org.jdesktop.application.ResourceConverter.ResourceConverterException;
 
+import com.bluespot.reflection.Primitive;
+
 /**
  * A read-only encapsulation of one or more ResourceBundles that adds automatic
  * string conversion, support for field and Swing component property injection,
@@ -517,7 +519,7 @@ public class ResourceMap {
      * 
      * @param key
      *            resource name
-     * @param type
+     * @param providedType
      *            resource type
      * @see #getParent
      * @see ResourceConverter#forType
@@ -527,29 +529,17 @@ public class ResourceMap {
      * @throws IllegalArgumentException
      *             if <tt>key</tt> or <tt>type</tt> are null
      */
-    public Object getObject(final String key, Class type) {
-        this.checkNullKey(key);
-        if (type == null) {
-            throw new IllegalArgumentException("null type");
+    public Object getObject(final String key, final Class<?> providedType) {
+        if (key == null) {
+            throw new NullPointerException("key is null");
         }
+        if (providedType == null) {
+            throw new NullPointerException("providedType is null");
+        }
+        Class<?> type = providedType;
         if (type.isPrimitive()) {
-            if (type == Boolean.TYPE) {
-                type = Boolean.class;
-            } else if (type == Character.TYPE) {
-                type = Character.class;
-            } else if (type == Byte.TYPE) {
-                type = Byte.class;
-            } else if (type == Short.TYPE) {
-                type = Short.class;
-            } else if (type == Integer.TYPE) {
-                type = Integer.class;
-            } else if (type == Long.TYPE) {
-                type = Long.class;
-            } else if (type == Float.TYPE) {
-                type = Float.class;
-            } else if (type == Double.TYPE) {
-                type = Double.class;
-            }
+            type = Primitive.asBoxed(type);
+            assert type != null : "type was null after conversion from " + providedType;
         }
         Object value = null;
         ResourceMap resourceMapNode = this;
@@ -563,6 +553,9 @@ public class ResourceMap {
                 break;
             }
             resourceMapNode = resourceMapNode.getParent();
+        }
+        if (resourceMapNode == null) {
+            throw new AssertionError("resourceMapNode is null");
         }
         /*
          * If we've found a String expression then replace any ${key} variables,
@@ -581,10 +574,10 @@ public class ResourceMap {
          * resourceMapNode entry, otherwise return null.
          */
         if (value != null) {
-            final Class valueClass = value.getClass();
-            if (!type.isAssignableFrom(valueClass)) {
+            final Class<?> valueClass = value.getClass();
+            if (!providedType.isAssignableFrom(valueClass)) {
                 if (value instanceof String) {
-                    final ResourceConverter stringConverter = ResourceConverter.forType(type);
+                    final ResourceConverter stringConverter = ResourceConverter.forType(providedType);
                     if (stringConverter != null) {
                         final String sValue = (String) value;
                         try {
@@ -592,17 +585,17 @@ public class ResourceMap {
                             resourceMapNode.putResource(key, value);
                         } catch (final ResourceConverterException e) {
                             final String msg = "string conversion failed";
-                            final LookupException lfe = new LookupException(msg, key, type);
+                            final LookupException lfe = new LookupException(msg, key, providedType);
                             lfe.initCause(e);
                             throw lfe;
                         }
                     } else {
                         final String msg = "no StringConverter for required type";
-                        throw new LookupException(msg, key, type);
+                        throw new LookupException(msg, key, providedType);
                     }
                 } else {
                     final String msg = "named resource has wrong type";
-                    throw new LookupException(msg, key, type);
+                    throw new LookupException(msg, key, providedType);
                 }
             }
         }
@@ -888,8 +881,6 @@ public class ResourceMap {
      * @see Font#decode
      * @throws LookupException
      *             if an error occurs during lookup or string conversion
-     * @throws IllegalResourceConverteron
-     *             if <tt>key</tt> is null
      */
     public final Font getFont(final String key) {
         return (Font) this.getObject(key, Font.class);
@@ -1041,7 +1032,7 @@ public class ResourceMap {
 
     private void injectComponentProperty(final Component component, final PropertyDescriptor pd, final String key) {
         final Method setter = pd.getWriteMethod();
-        final Class type = pd.getPropertyType();
+        final Class<?> type = pd.getPropertyType();
         if ((setter != null) && (type != null) && this.containsKey(key)) {
             final Object value = this.getObject(key, type);
             final String propertyName = pd.getName();
@@ -1292,12 +1283,11 @@ public class ResourceMap {
     }
 
     private void injectField(final Field field, final Object target, final String key) {
-        Class type = field.getType();
+        Class<?> type = field.getType();
         if (type.isArray()) {
             type = type.getComponentType();
             final Pattern p = Pattern.compile(key + "\\[([\\d]+)\\]"); // matches
             // key[12]
-            final List<String> arrayKeys = new ArrayList<String>();
             for (final String arrayElementKey : this.keySet()) {
                 final Matcher m = p.matcher(arrayElementKey);
                 if (m.matches()) {
@@ -1403,7 +1393,7 @@ public class ResourceMap {
         if (target == null) {
             throw new IllegalArgumentException("null target");
         }
-        final Class targetType = target.getClass();
+        final Class<?> targetType = target.getClass();
         if (targetType.isArray()) {
             throw new IllegalArgumentException("array target");
         }
@@ -1458,10 +1448,9 @@ public class ResourceMap {
         final URL url = resourceMap.getClassLoader().getResource(rPath);
         if (url != null) {
             return new ImageIcon(url);
-        } else {
-            final String msg = String.format("couldn't find Icon resource \"%s\"", s);
-            throw new ResourceConverterException(msg, s);
         }
+        final String msg = String.format("couldn't find Icon resource \"%s\"", s);
+        throw new ResourceConverterException(msg, s);
     }
 
     private static class FontStringConverter extends ResourceConverter {
