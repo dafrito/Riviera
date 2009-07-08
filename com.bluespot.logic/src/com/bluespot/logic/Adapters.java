@@ -7,7 +7,15 @@ import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.ChildFileAdapter;
 
 /**
- * A suite of common adapters.
+ * A library of common {@link Adapter} factory methods. These methods are not
+ * guaranteed to return unique instances; in fact, many return only one instance
+ * for all invocations. Unless otherwise specified, {@code null} arguments will
+ * cause {@link NullPointerException}'s to be thrown.
+ * <p>
+ * Like {@link Predicates}, we intentionally omit the concrete implementation of
+ * these classes. If you need to work with concrete classes, instantiate them
+ * directly. Not having them in the signatures here frees this library class to
+ * use different adapters in the future.
  * 
  * @author Aaron Faanes
  * 
@@ -19,6 +27,45 @@ public final class Adapters {
         throw new AssertionError("Instantiation not allowed");
     }
 
+    /**
+     * An {@link Adapter} that blindly returns the given value. This is a no-op
+     * or null adapter in that it performs no work whatsoever on the given
+     * object.
+     * 
+     * @see #noop()
+     */
+    private static final Adapter<Object, Object> ADAPTER_NOOP = new Adapter<Object, Object>() {
+
+        public Object adapt(final Object source) {
+            return source;
+        }
+
+    };
+
+    /**
+     * Returns an adapter that does no adaptation. All values are returned
+     * as-is. Useful when you're required to have an adapter.
+     * 
+     * @param <T>
+     *            the type of value
+     * @return an adapter that does nothing but return the given value
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> Adapter<T, T> noop() {
+        /*
+         * This cast is safe since our adapter doesn't actually use the type
+         * provided, nor does it perform any work or casting on the given
+         * object.
+         */
+        return (Adapter<T, T>) ADAPTER_NOOP;
+    }
+
+    /**
+     * An {@link Adapter} that converts an object to a string using
+     * {@link Object#toString()}.
+     * 
+     * @see #stringValue()
+     */
     private static final Adapter<Object, String> ADAPTER_TO_STRING = new Adapter<Object, String>() {
 
         public String adapt(final Object source) {
@@ -101,15 +148,14 @@ public final class Adapters {
     }
 
     /**
-     * Returns a {@link ChildFileAdapter} that will return a child file of the
-     * given file. If the given file is null, null is returned as the converted
-     * value.
+     * Returns an adapter that will return a child file of the given file. If
+     * the given file is null, null is returned as the converted value.
      * 
      * @param childFileName
      *            the name of the child, relative to the given file
-     * @return a new {@code ChildFileAdapter} object
+     * @return an adapter that retrieves a child file
      */
-    public static ChildFileAdapter childFile(final String childFileName) {
+    public static Adapter<File, File> childFile(final String childFileName) {
         return new ChildFileAdapter(childFileName);
     }
 }
