@@ -151,10 +151,8 @@ public class PredicateBuilder<T> {
 
     /**
      * Constructs a predicate that represents the predicates in this builder.
-     * This builder may optimize the returned predicate, so the order or format
-     * may be modified. The meaning of the constructed predicate is not
-     * affected,but ensure that the predicates used do not depend on the order
-     * of invocation; all predicates should be self-contained and atomic.
+     * This builder may optimize the returned predicate, so redundant or
+     * unnecessary predicates may be removed.
      * 
      * @return a predicate that represents the predicates in this builder
      */
