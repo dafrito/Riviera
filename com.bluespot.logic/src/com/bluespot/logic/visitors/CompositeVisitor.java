@@ -96,7 +96,7 @@ public final class CompositeVisitor<T> implements Visitor<T> {
 
     @Override
     public String toString() {
-        return String.format("CompositeVisitor[visitors: %s]", this.getVisitors());
+        return String.format("CompositeVisitor[%d visitors]", this.getVisitors().size());
     }
 
 }
