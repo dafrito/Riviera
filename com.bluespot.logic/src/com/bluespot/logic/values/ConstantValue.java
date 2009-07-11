@@ -9,9 +9,9 @@ package com.bluespot.logic.values;
  * @param <T>
  *            the type of the constant value
  */
-public class ConstantValue<T> implements Value<T> {
+public final class ConstantValue<T> implements Value<T> {
 
-    private final T value;
+    private final T constant;
 
     /**
      * Constructs a new {@link ConstantValue} that uses the specified constant.
@@ -28,12 +28,11 @@ public class ConstantValue<T> implements Value<T> {
         if (constant == null) {
             throw new NullPointerException("value is null");
         }
-        this.value = constant;
+        this.constant = constant;
     }
 
-    @Override
     public T get() {
-        return this.value;
+        return this.constant;
     }
 
     @Override
