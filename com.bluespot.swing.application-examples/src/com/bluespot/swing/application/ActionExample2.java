@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 
 import org.jdesktop.application.Action;
 import org.jdesktop.application.Application;
+import org.jdesktop.application.ApplicationAction;
 import org.jdesktop.application.ApplicationContext;
 
 /**
@@ -39,10 +40,9 @@ import org.jdesktop.application.ApplicationContext;
  * case that's just the <code>Application</code> subclass, {@code
  * ActionExample2}.
  * <p>
- * The {@code Action} objects are instances of
- * {@link application.ApplicationAction ApplicationAction}. See the javadoc for
- * that class for the complete list of Action properties that are automatically
- * initialized by resources.
+ * The {@code Action} objects are instances of {@link ApplicationAction
+ * ApplicationAction}. See the javadoc for that class for the complete list of
+ * Action properties that are automatically initialized by resources.
  * 
  * @author Hans Muller (Hans.Muller@Sun.COM)
  */
