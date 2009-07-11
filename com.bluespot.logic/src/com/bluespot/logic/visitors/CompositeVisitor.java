@@ -56,15 +56,17 @@ public final class CompositeVisitor<T> implements Visitor<T> {
      * @return a view of this sentinel's visitors
      */
     public Collection<? extends Visitor<? super T>> getVisitors() {
+        // It's safe to return our list directly since it's already
+        // unmodifiable.
         return this.visitors;
     }
 
     /**
-     * Accepts the specified value. The specified value is forwarded to all of
-     * this composite's visitors.
-     * 
-     * @param value
-     *            the accepted value
+     * Forwards the specified value to all of the child visitor's of this
+     * composite. Since this class makes no effort to recover from exceptions,
+     * <em>this operation is not guaranteed to be atomic</em>. This is
+     * unfortunate, but I believe it's safer than attempting to handle
+     * exceptions or ignoring them until all visitors have been called.
      */
     public void accept(final T value) {
         for (final Visitor<? super T> visitor : this.visitors) {
