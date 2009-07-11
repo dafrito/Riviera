@@ -58,10 +58,13 @@ public final class PruningVisitor<T> implements Visitor<T> {
         }
         final PopulatingVisitor<?> visitor = (PopulatingVisitor<?>) obj;
         /*
-         * Intentionally use identity here; we don't want false positives for
+         * We intentionally use identity here; we don't want false positives for
          * lists that contain the same items
          */
-        return visitor.getCollection() == this.getCollection();
+        if (visitor.getCollection() != this.getCollection()) {
+            return false;
+        }
+        return true;
     }
 
     @Override
