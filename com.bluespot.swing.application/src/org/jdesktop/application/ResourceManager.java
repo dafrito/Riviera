@@ -91,14 +91,15 @@ public class ResourceManager extends AbstractBean {
         return this.context;
     }
 
-    /*
+    // TODO This could be bounded better.
+    /**
      * Returns a read-only list of the ResourceBundle names for all of the
      * classes from startClass to (including) stopClass. The bundle names for
      * each class are #getClassBundleNames(Class). The list is in priority
      * order: resources defined in bundles earlier in the list shadow resources
      * with the same name that appear bundles that come later.
      */
-    private List<String> allBundleNames(final Class startClass, final Class stopClass) {
+    private List<String> allBundleNames(final Class<?> startClass, final Class<?> stopClass) {
         final List<String> bundleNames = new ArrayList<String>();
         final Class limitClass = stopClass.getSuperclass(); // could be null
         for (Class c = startClass; c != limitClass; c = c.getSuperclass()) {
@@ -112,7 +113,7 @@ public class ResourceManager extends AbstractBean {
         return (i == -1) ? "" : bundleName.substring(0, i);
     }
 
-    /*
+    /**
      * Creates a parent chain of ResourceMaps for the specfied ResourceBundle
      * names. One ResourceMap is created for each subsequence of ResourceBundle
      * names with a common bundle package name, i.e. with a common resourcesDir.
@@ -140,7 +141,7 @@ public class ResourceManager extends AbstractBean {
         return this.createResourceMap(cl, parent, rmNames);
     }
 
-    /*
+    /**
      * Lazily creates the Application ResourceMap chain, appResourceMap. If the
      * Application hasn't been launched yet, i.e. if the ApplicationContext
      * applicationClass property hasn't been set yet, then the ResourceMap just
@@ -160,7 +161,7 @@ public class ResourceManager extends AbstractBean {
         return this.appResourceMap;
     }
 
-    /*
+    /**
      * Lazily creates the ResourceMap chain for the the class from startClass to
      * stopClass.
      */
@@ -351,7 +352,7 @@ public class ResourceManager extends AbstractBean {
         }
         final Object oldValue = this.applicationBundleNames;
         if (bundleNames != null) {
-            this.applicationBundleNames = Collections.unmodifiableList(new ArrayList(bundleNames));
+            this.applicationBundleNames = Collections.unmodifiableList(new ArrayList<String>(bundleNames));
         } else {
             this.applicationBundleNames = null;
         }
@@ -369,7 +370,7 @@ public class ResourceManager extends AbstractBean {
      * result in a collision, creating more complex rules for inner classes
      * would be a burden for developers.
      */
-    private String classBundleBaseName(final Class cls) {
+    private String classBundleBaseName(final Class<?> cls) {
         final String className = cls.getName();
         final StringBuffer sb = new StringBuffer();
         final int i = className.lastIndexOf('.');
@@ -410,7 +411,7 @@ public class ResourceManager extends AbstractBean {
      * @see #getResourceMap
      * @see #getApplicationBundleNames
      */
-    protected List<String> getClassBundleNames(final Class cls) {
+    protected List<String> getClassBundleNames(final Class<?> cls) {
         final String bundleName = this.classBundleBaseName(cls);
         return Collections.singletonList(bundleName);
     }
