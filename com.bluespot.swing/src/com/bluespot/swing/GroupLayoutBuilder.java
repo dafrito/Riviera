@@ -83,6 +83,19 @@ public class GroupLayoutBuilder {
     }
 
     /**
+     * Adds a {@link JLabel} that contains the specified text. It will be
+     * wrapped using a {@code <html>} block. See {@link #label(String)} for more
+     * information on how the resulting {@code JLabel} will be laid out.
+     * 
+     * @param labelText
+     *            the label text. Do not include {@code <html>} blocks.
+     * @return the created {@code JLabel} object
+     */
+    public JLabel wrappedLabel(final String labelText) {
+        return this.label(String.format("<html>%s</html>", labelText));
+    }
+
+    /**
      * Adds the specified component that is laid out directly beneath the
      * previous component. Repeated calls to this method would yield behavior
      * similar to {@link BoxLayout}.
