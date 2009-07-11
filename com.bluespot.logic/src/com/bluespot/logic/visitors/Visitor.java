@@ -1,7 +1,7 @@
 package com.bluespot.logic.visitors;
 
 /**
- * A visitor of some elements {@code T}.
+ * Represents a passive listener or actor on given values.
  * 
  * @author Aaron Faanes
  * 
