@@ -1,5 +1,7 @@
 package com.bluespot.logic.values;
 
+import com.bluespot.logic.Values;
+
 /**
  * A {@link Value} implementation that simply returns the value given at
  * construction. This is the simplest of {@code Value} implementations.
@@ -22,7 +24,8 @@ public final class ConstantValue<T> implements Value<T> {
      *            {@link #equals(Object)} appropriately. Null values are not
      *            allowed.
      * @throws NullPointerException
-     *             if {@code constant} is null
+     *             if {@code constant} is null. Use {@link Values#nullValue()}
+     *             if you want a {@link Value} that returns null.
      */
     public ConstantValue(final T constant) {
         if (constant == null) {
