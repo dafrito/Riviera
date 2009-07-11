@@ -5,8 +5,8 @@ import java.util.Collection;
 /**
  * A {@link Visitor} that prunes a specified collection. For every element that
  * is accepted by this visitor, a call to {@link Collection#remove(Object)} will
- * be made. It is up to that collection whether it will actually remove the
- * given element.
+ * be made. The actual action taken by the specified collection is, of course,
+ * implementation-dependent.
  * 
  * @author Aaron Faanes
  * 
@@ -43,7 +43,9 @@ public final class PruningVisitor<T> implements Visitor<T> {
         return this.collection;
     }
 
-    @Override
+    /**
+     * Removes the specified value from this visitor's collection.
+     */
     public void accept(final T value) {
         this.getCollection().remove(value);
     }
