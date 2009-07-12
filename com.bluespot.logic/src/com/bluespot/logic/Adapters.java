@@ -3,8 +3,11 @@ package com.bluespot.logic;
 import java.awt.Component;
 import java.io.File;
 
+import javax.swing.text.JTextComponent;
+
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.ChildFileAdapter;
+import com.bluespot.logic.adapters.HandledAdapter;
 
 /**
  * A library of common {@link Adapter} factory methods. These methods are not
@@ -158,4 +161,46 @@ public final class Adapters {
     public static Adapter<File, File> childFile(final String childFileName) {
         return new ChildFileAdapter(childFileName);
     }
+
+    /**
+     * Returns any text contained inside the specified {@link JTextComponent}.
+     * 
+     * @author Aaron Faanes
+     * 
+     * @see #componentText()
+     * 
+     */
+    private static final Adapter<JTextComponent, String> ADAPTER_TEXT_COMPONENT_TO_STRING = new Adapter<JTextComponent, String>() {
+
+        public final String adapt(final JTextComponent source) {
+            if (source == null) {
+                return null;
+            }
+            if (source.getDocument() == null) {
+                return null;
+            }
+            return source.getText();
+        }
+
+    };
+
+    /**
+     * Returns an {@link Adapter} that returns any text contained inside a given
+     * {@link JTextComponent}, according to {@link JTextComponent#getText()}. If
+     * a {@code JTextComponent} has no document, {@code null} is returned. This
+     * differs from the {@code getText()} implementation which throws a {@code
+     * NullPointerException} if no document is present. At some point, we may
+     * return a {@link HandledAdapter} here to manage null documents, but it
+     * seems more of a programming error than a recoverable condition, so it is
+     * omitted.
+     * 
+     * @author Aaron Faanes
+     * @return an {@code Adapter} that converts {@link JTextComponent} objects
+     *         to {@code String} values using {@link JTextComponent#getText()}.
+     * 
+     */
+    public static final Adapter<JTextComponent, String> componentText() {
+        return ADAPTER_TEXT_COMPONENT_TO_STRING;
+    }
+
 }
