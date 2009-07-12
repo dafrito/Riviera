@@ -1,5 +1,7 @@
 package com.bluespot.logic.adapters;
 
+import com.bluespot.logic.visitors.Visitor;
+
 /**
  * An {@link HandledAdapter} implementation that parses and converts string
  * values to integers.
@@ -11,6 +13,28 @@ package com.bluespot.logic.adapters;
  * @see HandledAdapter
  */
 public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer, NumberFormatException> {
+
+    /**
+     * Constructs a {@link ParsedIntegerAdapter} that uses the default no-op
+     * {@link Visitor} for its handler.
+     */
+    public ParsedIntegerAdapter() {
+        super();
+    }
+
+    /**
+     * Constructs a {@link ParsedIntegerAdapter} that uses the specified
+     * {@link Visitor} for its handler.
+     * 
+     * @param handler
+     *            the handler that is notified of {@link NumberFormatException}
+     *            that occur during adapting. It may not be null
+     * @throws NullPointerException
+     *             if {@code handler} is null
+     */
+    public ParsedIntegerAdapter(final Visitor<? super NumberFormatException> handler) {
+        super(handler);
+    }
 
     @Override
     public Integer adapt(final String source) {
