@@ -3,6 +3,7 @@ package com.bluespot.logic;
 import java.util.Collection;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.visitors.AdaptingVisitor;
 import com.bluespot.logic.visitors.PopulatingVisitor;
@@ -36,8 +37,31 @@ public final class Visitors {
     }
 
     /**
-     * Returns a new {@link Sentinel} that guards the specified visitor
-     * with the specified predicate.
+     * A {@link Visitor} implementation that does nothing.
+     * 
+     * @see Visitors#noop()
+     */
+    private static final Visitor<Object> VISITOR_NOOP = new Visitor<Object>() {
+        public void accept(final Object value) {
+            // We intentionally do nothing with the specified value.
+        }
+    };
+
+    /**
+     * Returns a {@link Visitor} object that does nothing. The returned {@code
+     * Visitor} is functionally equivalent to {@code /dev/null}. This visitor is
+     * useful for objects, such as {@link HandledAdapter} that require a
+     * non-null visitor.
+     * 
+     * @return a {@link Visitor} object that does nothing.
+     */
+    public static Visitor<Object> noop() {
+        return VISITOR_NOOP;
+    }
+
+    /**
+     * Returns a new {@link Sentinel} that guards the specified visitor with the
+     * specified predicate.
      * 
      * @param <T>
      *            the type of the expected element
