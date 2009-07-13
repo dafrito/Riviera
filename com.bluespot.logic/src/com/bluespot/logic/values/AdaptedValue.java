@@ -23,7 +23,7 @@ import com.bluespot.logic.adapters.Adapter;
  * @param <D>
  *            the type of the converted value
  */
-public class AdaptedValue<S, D> implements Value<D> {
+public final class AdaptedValue<S, D> implements Value<D> {
 
     private final Value<? extends S> source;
     private final Adapter<? super S, ? extends D> adapter;
