@@ -31,6 +31,27 @@ public final class Adapters {
     }
 
     /**
+     * An {@link Adapter} implementation that returns the length of a string.
+     */
+    private static final Adapter<String, Integer> ADAPTER_STRING_LENGTH = new Adapter<String, Integer>() {
+        public Integer adapt(final String source) {
+            if (source == null) {
+                return null;
+            }
+            return source.length();
+        }
+    };
+
+    /**
+     * Returns an {@link Adapter} object that returns the length of a string.
+     * 
+     * @return an {@link Adapter} object that returns the length of a string.
+     */
+    public static Adapter<String, Integer> stringLength() {
+        return ADAPTER_STRING_LENGTH;
+    }
+
+    /**
      * An {@link Adapter} that blindly returns the given value. This is a no-op
      * or null adapter in that it performs no work whatsoever on the given
      * object.
