@@ -31,9 +31,9 @@ public final class UnanimousPredicate<T> extends CompositePredicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
+    public boolean test(final T candidate) {
         for (final Predicate<? super T> predicate : this.getPredicates()) {
-            if (!predicate.test(value)) {
+            if (!predicate.test(candidate)) {
                 return false;
             }
         }

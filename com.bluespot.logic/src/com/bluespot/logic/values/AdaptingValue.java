@@ -23,13 +23,13 @@ import com.bluespot.logic.adapters.Adapter;
  * @param <D>
  *            the type of the converted value
  */
-public final class AdaptedValue<S, D> implements Value<D> {
+public final class AdaptingValue<S, D> implements Value<D> {
 
     private final Value<? extends S> source;
     private final Adapter<? super S, ? extends D> adapter;
 
     /**
-     * Constructs a {@link AdaptedValue} object using the specified
+     * Constructs a {@link AdaptingValue} object using the specified
      * {@link Value} object as its source. It will be converted to the
      * destination type using the specified {@link Adapter}.
      * 
@@ -42,7 +42,7 @@ public final class AdaptedValue<S, D> implements Value<D> {
      * @throws NullPointerException
      *             if either argument is null
      */
-    public AdaptedValue(final Value<? extends S> source, final Adapter<? super S, ? extends D> adapter) {
+    public AdaptingValue(final Value<? extends S> source, final Adapter<? super S, ? extends D> adapter) {
         if (source == null) {
             throw new NullPointerException("source is null");
         }
@@ -81,10 +81,10 @@ public final class AdaptedValue<S, D> implements Value<D> {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof AdaptedValue<?, ?>)) {
+        if (!(obj instanceof AdaptingValue<?, ?>)) {
             return false;
         }
-        final AdaptedValue<?, ?> other = (AdaptedValue<?, ?>) obj;
+        final AdaptingValue<?, ?> other = (AdaptingValue<?, ?>) obj;
         if (!this.getSource().equals(other.getSource())) {
             return false;
         }

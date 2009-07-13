@@ -62,8 +62,8 @@ public final class AdaptingPredicate<S, D> implements Predicate<S> {
     }
 
     @Override
-    public boolean test(final S value) {
-        final D adaptedValue = this.adapter.adapt(value);
+    public boolean test(final S candidate) {
+        final D adaptedValue = this.adapter.adapt(candidate);
         return this.predicate.test(adaptedValue);
     }
 

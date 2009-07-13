@@ -104,9 +104,9 @@ public interface Predicate<T> {
      * requirements for a well-written {@link Object#equals(Object)}
      * implementation.
      * 
-     * @param value
+     * @param candidate
      *            the value to evaluate
      * @return some boolean value that is a response to the specified value
      */
-    public boolean test(final T value);
+    public boolean test(final T candidate);
 }

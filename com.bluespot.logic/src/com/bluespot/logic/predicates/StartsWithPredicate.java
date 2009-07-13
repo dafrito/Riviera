@@ -38,11 +38,11 @@ public final class StartsWithPredicate implements Predicate<String> {
     }
 
     @Override
-    public boolean test(final String value) {
-        if (value == null) {
+    public boolean test(final String candidate) {
+        if (candidate == null) {
             return false;
         }
-        return value.startsWith(this.getStartingString());
+        return candidate.startsWith(this.getStartingString());
     }
 
     @Override

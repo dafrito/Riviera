@@ -53,11 +53,11 @@ public final class RegexPredicate implements Predicate<String> {
     }
 
     @Override
-    public boolean test(final String value) {
-        if (value == null) {
+    public boolean test(final String candidate) {
+        if (candidate == null) {
             return false;
         }
-        return this.getPattern().matcher(value).matches();
+        return this.getPattern().matcher(candidate).matches();
     }
 
     @Override

@@ -44,8 +44,8 @@ public final class IdentityPredicate<T> implements Predicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
-        return this.constant == value;
+    public boolean test(final T candidate) {
+        return this.constant == candidate;
     }
 
     @Override

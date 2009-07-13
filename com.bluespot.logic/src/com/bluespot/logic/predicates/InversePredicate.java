@@ -38,8 +38,8 @@ public final class InversePredicate<T> implements Predicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
-        return !this.getPredicate().test(value);
+    public boolean test(final T candidate) {
+        return !this.getPredicate().test(candidate);
     }
 
     @Override

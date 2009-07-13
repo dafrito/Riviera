@@ -38,11 +38,11 @@ public final class EndsWithPredicate implements Predicate<String> {
     }
 
     @Override
-    public boolean test(final String value) {
-        if (value == null) {
+    public boolean test(final String candidate) {
+        if (candidate == null) {
             return false;
         }
-        return value.endsWith(this.getEndingString());
+        return candidate.endsWith(this.getEndingString());
     }
 
     @Override

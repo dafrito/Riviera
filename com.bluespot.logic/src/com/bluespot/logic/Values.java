@@ -1,7 +1,7 @@
 package com.bluespot.logic;
 
 import com.bluespot.logic.adapters.Adapter;
-import com.bluespot.logic.values.AdaptedValue;
+import com.bluespot.logic.values.AdaptingValue;
 import com.bluespot.logic.values.ConstantValue;
 import com.bluespot.logic.values.MutableValue;
 import com.bluespot.logic.values.Value;
@@ -106,7 +106,7 @@ public final class Values {
         if (adapter == null) {
             throw new NullPointerException("adapter is null");
         }
-        return new AdaptedValue<S, D>(source, adapter);
+        return new AdaptingValue<S, D>(source, adapter);
     }
 
     /**

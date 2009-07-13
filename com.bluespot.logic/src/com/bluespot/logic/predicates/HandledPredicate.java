@@ -107,10 +107,10 @@ public final class HandledPredicate<T> implements Predicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
-        final boolean result = this.getPredicate().test(value);
+    public boolean test(final T candidate) {
+        final boolean result = this.getPredicate().test(candidate);
         if (!result) {
-            this.getHandler().accept(value);
+            this.getHandler().accept(candidate);
         }
         return result;
     }

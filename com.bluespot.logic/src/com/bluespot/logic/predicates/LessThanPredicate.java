@@ -40,11 +40,11 @@ public class LessThanPredicate<T extends Comparable<? super T>> implements Predi
     }
 
     @Override
-    public boolean test(final T value) {
-        if (value == null) {
+    public boolean test(final T candidate) {
+        if (candidate == null) {
             return false;
         }
-        return value.compareTo(this.getConstant()) < 0;
+        return candidate.compareTo(this.getConstant()) < 0;
     }
 
     @Override

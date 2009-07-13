@@ -44,8 +44,8 @@ public final class EqualityPredicate<T> implements Predicate<T> {
     }
 
     @Override
-    public boolean test(final T value) {
-        return this.constant.equals(value);
+    public boolean test(final T candidate) {
+        return this.constant.equals(candidate);
     }
 
     @Override
