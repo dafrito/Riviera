@@ -22,10 +22,10 @@ import com.bluespot.logic.visitors.Visitor;
  * HandledPredicated} interface instead, is because {@link Predicate} are not
  * allowed to effect any real change, only test a value.
  * <p>
- * This similar, but not equal behavior, is a result of the fact that a
- * {@link Predicate} is, at its most fundamental, a {@code Adapter<?, Boolean>}.
- * Predicates enforce a stricter contract, so this class must enforce a stricter
- * contract as well.
+ * This similar but not equivalent behavior is a result of the fact that a
+ * {@link Predicate} is, at its most fundamental level, a {@code Adapter<?,
+ * Boolean>}; predicates enforce a stricter contract, so this class must enforce
+ * a stricter contract as well.
  * 
  * @author Aaron Faanes
  * 
