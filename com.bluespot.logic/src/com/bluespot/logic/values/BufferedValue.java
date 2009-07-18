@@ -2,17 +2,19 @@ package com.bluespot.logic.values;
 
 /**
  * A {@link Value} implementation that stores a value retrieved from some other
- * specified {@code Value}. This allows efficient and safe access to unreliable
- * {@link Value}.
+ * specified {@code Value}. This allows efficient and safe access to other
+ * unreliable {@link Value} implementations.
  * <p>
- * The value will be fetched on the first call to {@link #get()}. Subsequent
- * calls to {@code get()} will return the cached value. You may use
- * {@link #flush()} to clear the cached value, or explicitly refresh the cached
- * value through {@link #refresh()}.
+ * {@code BufferedValue} holds two responsibilities: It represents a cached
+ * version of some value, and it also ensures to clients that it will maximize
+ * the time of valid returned results. It does this by forcing clients to call
+ * {@link #retrieve()} explicitly before calling {@link #get()}; not doing so
+ * will result in a {@link IllegalStateException}. It also does not allow null
+ * values, since these represent a failed retrieval. If a subsequent retrieval
+ * returns null, it will not override a previous legitimate retrieval.
  * <p>
- * The source value should not return {@code null}, as this class uses that
- * value to determine whether a value should be retrieved. As a consequence,
- * this may cause unnecessary inefficiency.
+ * The {@link #clear()} method is provided if you wish to remove any cached
+ * value, but not immediately retrieve a new value.
  * 
  * @author Aaron Faanes
  * 
@@ -42,9 +44,9 @@ public final class BufferedValue<T> implements Value<T> {
     }
 
     /**
-     * Flushes any stored values for this {@link BufferedValue}.
+     * Removes the stored value, if any, for this {@link BufferedValue}.
      */
-    public void flush() {
+    public void clear() {
         this.bufferedValue = null;
     }
 
@@ -58,22 +60,36 @@ public final class BufferedValue<T> implements Value<T> {
     }
 
     /**
-     * Refreshes this value by retrieving the latest value from
-     * {@link #getSource source}.
+     * Retrieves the newest value from the {@link #getSource source}. If the
+     * returned value is non-null, it becomes the new buffered value. If, on the
+     * other hand, it is null, then the old buffered value is retained. In this
+     * way, buffered value maximizes the time it spends in a legitimate state.
+     * This is at the expense of not allowing null values, and not necessarily
+     * staying in "sync" with its source value.
+     * 
+     * @return the result from the source. It is the actual result from the
+     *         source, and not necessarily the value returned from a call to
+     *         {@link #get()}.
      */
-    public void refresh() {
-        this.bufferedValue = this.source.get();
+    public T retrieve() {
+        final T newValue = this.source.get();
+        if (newValue != null) {
+            this.bufferedValue = newValue;
+        }
+        return newValue;
     }
 
     /**
      * {@inheritDoc}
      * 
-     * @return the buffered value, if any. If the value has not yet been
-     *         retrieved, it will be automatically retrieved.
+     * @return the buffered value, if any. {@link #retrieve()} must be
+     *         explicitly called in order for this method to return a legitimate
+     *         value. If {@code retrieve()} has not yet been called, {@code
+     *         null} is returned.
      */
     public T get() {
         if (this.bufferedValue == null) {
-            this.refresh();
+            throw new IllegalStateException("bufferedValue is not set");
         }
         return this.bufferedValue;
     }
