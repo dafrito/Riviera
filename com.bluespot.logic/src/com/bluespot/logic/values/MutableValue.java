@@ -35,8 +35,13 @@ public final class MutableValue<T> implements Value<T> {
      * @param value
      *            the new value
      * @return the previous value
+     * @throws NullPointerException
+     *             if {@code value} is null
      */
     public T set(final T value) {
+        if (value == null) {
+            throw new NullPointerException("value is null");
+        }
         final T oldValue = this.value;
         this.value = value;
         return oldValue;
