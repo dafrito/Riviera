@@ -2,6 +2,7 @@ package com.bluespot.logic;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.values.AdaptingValue;
+import com.bluespot.logic.values.BufferedValue;
 import com.bluespot.logic.values.ConstantValue;
 import com.bluespot.logic.values.MutableValue;
 import com.bluespot.logic.values.Value;
@@ -38,6 +39,28 @@ public final class Values {
             throw new NullPointerException("initialValue is null");
         }
         return new MutableValue<T>(initialValue);
+    }
+
+    /**
+     * Returns a {@link BufferedValue} that wraps the specified {@code source}
+     * value. See the {@code BufferedValue} class' documentation for information
+     * on how this class operates.
+     * 
+     * @param <T>
+     *            the type of the specified source value, and the returned
+     *            buffered value
+     * @param source
+     *            the source value. It must not be null.
+     * @return a new {@code BufferedValue} that uses the specified {@code
+     *         source} value
+     * @throws NullPointerException
+     *             if {@code source} is null
+     */
+    public static <T> BufferedValue<T> buffered(final Value<? extends T> source) {
+        if (source == null) {
+            throw new NullPointerException("source is null");
+        }
+        return new BufferedValue<T>(source);
     }
 
     /**
