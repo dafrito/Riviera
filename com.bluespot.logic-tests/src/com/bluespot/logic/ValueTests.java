@@ -2,6 +2,7 @@ package com.bluespot.logic;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 import javax.swing.JTextField;
 
@@ -34,14 +35,22 @@ public class ValueTests {
         assertThat(num.get(), is(42));
     }
 
+    @Test(expected = IllegalStateException.class)
+    public void testISEOnUnexpectedGet() {
+        final BufferedValue<String> buffered = new BufferedValue<String>(Values.value("No time"));
+        buffered.get();
+        fail("Get should have thrown an IllegalStateException");
+    }
+
     @Test
     public void testBufferedValue() {
         final MutableValue<String> value = Values.value("No time");
         final BufferedValue<String> buffered = new BufferedValue<String>(value);
-        assertThat(buffered.get(), is(value.get()));
+        buffered.retrieve();
+        assertThat("BufferedValue now holds latest value", buffered.get(), is("No time"));
         value.set("Base");
-        assertThat(buffered.get(), is("No time"));
-        buffered.refresh();
-        assertThat(buffered.get(), is("Base"));
+        assertThat("BufferedValue not refreshed, so it still holds old value", buffered.get(), is("No time"));
+        buffered.retrieve();
+        assertThat("BufferedValue refreshed, so it now holds the newest value again", buffered.get(), is("Base"));
     }
 }
