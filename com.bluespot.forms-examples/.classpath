@@ -5,5 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.demonstration"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.forms"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.logic"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
