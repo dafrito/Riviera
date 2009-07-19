@@ -139,4 +139,26 @@ public final class Visitors {
     public static <T> Visitor<T> removeFrom(final Collection<? super T> collection) {
         return new PruningVisitor<T>(collection);
     }
+
+    /**
+     * A {@link Visitor} implementation that throws all exceptions it is given.
+     * 
+     * @see #throwException()
+     */
+    private static final Visitor<RuntimeException> VISITOR_THROWER = new Visitor<RuntimeException>() {
+        public void accept(final RuntimeException value) {
+            throw value;
+        }
+    };
+
+    /**
+     * Returns a {@link Visitor} that throws any {@link RuntimeException} that
+     * it is given.
+     * 
+     * @return a {@link Visitor} that throws any {@link RuntimeException}
+     *         objects passed to it
+     */
+    public static Visitor<RuntimeException> throwException() {
+        return VISITOR_THROWER;
+    }
 }
