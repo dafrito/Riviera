@@ -1,12 +1,10 @@
 package com.bluespot.opengl;
 
 import java.awt.Color;
+import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-
-import com.bluespot.geom.Dimension3D;
-import com.bluespot.geom.Point3D;
 
 /**
  * A collection of utility methods simplifying common OpenGL operations.
@@ -136,26 +134,45 @@ public final class Rendering {
         return Rendering.glu;
     }
 
+    /**
+     * Helper method that uses
+     * {@link GLU#gluLookAt(double, double, double, double, double, double, double, double, double)
+     * GLU.gluLookAt(...)} in combination with a {@link Frame}.
+     * 
+     * @param frame
+     *            the frame that will be used to transform the view matrix
+     */
     public static void applyCameraTransform(final Frame frame) {
         Rendering.getGLU().gluLookAt(frame.getLocation().getX(), frame.getLocation().getY(),
                 frame.getLocation().getZ(), frame.getForward().getX(), frame.getForward().getY(),
                 frame.getForward().getZ(), frame.getUp().getX(), frame.getUp().getY(), frame.getUp().getZ());
     }
 
+    /**
+     * Sets GL's clear color to the specified {@link Color}.
+     * 
+     * @param gl
+     *            the {@link GL} context used to set the clear color
+     * @param color
+     *            the color that will become the new clear color
+     */
     public static void setClearColor(final GL gl, final Color color) {
         gl.glClearColor(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f,
                 color.getAlpha() / 255.0f);
     }
 
     /**
+     * Sets the specified OpenGL context to use an orthogonal matrix. The size
+     * of the projection is determined by the specified rectangle.
      * 
      * @param gl
-     * @param point
+     *            the OpenGL context that is modified by this operation
      * @param view
+     *            the rectangle that encompasses the new orthogonal view
      */
-    public static void setOrthogonalMatrix(final GL gl, final Point3D.Double point, final Dimension3D.Double view) {
+    public static void setOrthogonalMatrix(final GL gl, final Rectangle2D.Double view) {
         gl.glMatrixMode(GL.GL_PROJECTION);
         gl.glLoadIdentity();
-
+        getGLU().gluOrtho2D(view.x, view.x + view.width, view.y, view.y + view.height);
     }
 }
