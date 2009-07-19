@@ -168,6 +168,8 @@ public final class Schema<K> {
 
     public static final class SubmissionClassCastException extends ClassCastException {
 
+        private static final long serialVersionUID = 3724801437060534108L;
+
         private final Class<?> actualType;
         private final Class<?> expectedType;
         private final Object key;
