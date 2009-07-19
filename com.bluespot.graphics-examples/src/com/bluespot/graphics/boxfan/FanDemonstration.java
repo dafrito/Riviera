@@ -16,6 +16,15 @@ import javax.swing.JPanel;
 
 import com.bluespot.demonstration.Demonstration;
 
+/**
+ * Demonstrates a simple animation integrated with toggle buttons that affect
+ * the animation. Specifically, a fan is drawn, with three available speeds.
+ * <p>
+ * Currently, this demonstration does not work.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class FanDemonstration extends Demonstration {
     enum Speed {
         OFF("Off", 0), LOW("Low", 1), MEDIUM("Medium", 15), HIGH("High", 35);
@@ -42,6 +51,8 @@ public class FanDemonstration extends Demonstration {
 
         public Action newAction(final Rotation model) {
             return new AbstractAction(this.getPrettyName()) {
+                private static final long serialVersionUID = 1L;
+
                 public void actionPerformed(final ActionEvent e) {
                     Speed.this.activate(model);
                 }
@@ -76,6 +87,12 @@ public class FanDemonstration extends Demonstration {
         return panel;
     }
 
+    /**
+     * Launches the {@link FanDemonstration} demonstration.
+     * 
+     * @param args
+     *            unused
+     */
     public static void main(final String[] args) {
         Demonstration.launch(FanDemonstration.class);
     }

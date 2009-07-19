@@ -1,4 +1,5 @@
 package com.bluespot.graphics.lines;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,11 +13,24 @@ import javax.swing.Timer;
 
 import com.bluespot.demonstration.Demonstration;
 
+/**
+ * Draws a number of lines that produce a visually interesting pattern. A timer
+ * is used to gradually change the colors of the drawn lines, leading to a neat
+ * effect.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class LinesDemonstration extends JComponent {
+
+    private static final long serialVersionUID = -5490817193642041892L;
 
     private static final int ITERATIONS = 40;
     private static float OFFSET = .1f;
 
+    /**
+     * Constructs a {@link LinesDemonstration}.
+     */
     public LinesDemonstration() {
         this.setPreferredSize(new Dimension(300, 300));
         new Timer(1000 / 30, new ActionListener() {
@@ -67,6 +81,13 @@ public class LinesDemonstration extends JComponent {
 
     }
 
+    /**
+     * Launches a {@link Demonstration} using a constructed
+     * {@link LinesDemonstration}.
+     * 
+     * @param args
+     *            unused
+     */
     public static void main(final String args[]) {
         Demonstration.launchWrapped(LinesDemonstration.class);
     }

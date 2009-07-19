@@ -1,4 +1,5 @@
 package com.bluespot.graphics.clock;
+
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,18 +16,29 @@ import javax.swing.Timer;
 import com.bluespot.demonstration.Demonstration;
 
 /**
- * This program displays a clock face with a time the the user specified.
+ * Displays an animated clock. The user is able to set the time, and the
+ * animation immediately changes to reflect the new starting time.
+ * <p>
+ * There are no numbers, nor are the fields themselves updated. The minute and
+ * hour hands do gradually move according to the number of seconds, and
+ * antialiasing is used to make the clock appear less rigid.
  */
 public final class ClockDemonstration extends Demonstration {
 
-    public static final int FIELD_WIDTH = 10;
+    /**
+     * The width, in characters, of the time-specifying fields.
+     */
+    private static final int FIELD_WIDTH = 10;
 
     private final JLabel hourLabel = new JLabel("Hour:");
-    private final JLabel minuteLabel = new JLabel("Minute:");
-    private final JLabel secondLabel = new JLabel("Second:");
     private final JTextField hourField = new JTextField(FIELD_WIDTH);
+
+    private final JLabel minuteLabel = new JLabel("Minute:");
     private final JTextField minuteField = new JTextField(FIELD_WIDTH);
+
+    private final JLabel secondLabel = new JLabel("Second:");
     private final JTextField secondField = new JTextField(FIELD_WIDTH);
+
     private final JButton button = new JButton("Draw");
     private final ClockViewerComponent component = new ClockViewerComponent();
 
@@ -89,6 +101,12 @@ public final class ClockDemonstration extends Demonstration {
 
     }
 
+    /**
+     * Launches a {@link ClockDemonstration}.
+     * 
+     * @param args
+     *            unused
+     */
     public static void main(final String[] args) {
         Demonstration.launch(ClockDemonstration.class);
     }

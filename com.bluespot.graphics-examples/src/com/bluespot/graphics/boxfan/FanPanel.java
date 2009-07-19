@@ -1,7 +1,6 @@
 package com.bluespot.graphics.boxfan;
 
 import java.awt.Color;
-import java.awt.Composite;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,6 +19,8 @@ import com.bluespot.geom.Geometry;
 import com.bluespot.swing.Components;
 
 public class FanPanel extends JPanel {
+
+    private static final long serialVersionUID = -740545880409083777L;
 
     private static final int FPS = 50;
 
@@ -92,7 +93,6 @@ public class FanPanel extends JPanel {
         Geometry.alignCenter(box, new Point(0, 0));
 
         g.rotate(Math.toRadians(this.degreeOffset));
-        final Composite composite = g.getComposite();
         g.setPaint(Color.white);
         g.rotate((-Math.PI / 2) + (Math.PI / this.numArcs / 2));
 

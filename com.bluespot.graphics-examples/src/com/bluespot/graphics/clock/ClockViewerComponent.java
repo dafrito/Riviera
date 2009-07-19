@@ -1,4 +1,5 @@
 package com.bluespot.graphics.clock;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -12,25 +13,63 @@ import javax.swing.JComponent;
 import com.bluespot.geom.Geometry;
 import com.bluespot.swing.Components;
 
+/**
+ * A {@link JComponent} that draws a clock, offering an interface to adjust the
+ * time. The drawn clock will gradually adjust the minute and hour hands to show
+ * the progression of time, as opposed to rigidly updating them on new minute
+ * and hour arguments. The second hand is not fluidly moved, as this seems to
+ * detract from the illusion of a real clock.
+ * 
+ * @author Aaron Faanes
+ * 
+ */
 public class ClockViewerComponent extends JComponent {
+
+    private static final long serialVersionUID = -4595803338525110331L;
 
     private int second;
     private int minute;
     private int hour;
 
+    /**
+     * Constructs a {@link ClockViewerComponent}.
+     */
     public ClockViewerComponent() {
         super();
         this.setPreferredSize(new Dimension(500, 500));
     }
 
+    /**
+     * Sets the time manually using the specified arguments to determine the new
+     * time. They will be clamped to valid arguments.
+     * 
+     * @param hours
+     *            the new hour
+     * @param minutes
+     *            the new minute
+     * @param seconds
+     *            the new second
+     */
     public void setTime(final int hours, final int minutes, final int seconds) {
-        this.hour = (hours + (minutes / 60)) % 12;
-        this.minute = minutes % 60;
-        this.second = seconds % 60;
+        this.hour = Math.max(0, hours % 12);
+        this.minute = Math.max(0, minutes % 60);
+        this.second = Math.max(0, seconds % 60);
         this.repaint();
     }
 
+    /**
+     * Sets the time, according to the time represented by the specified
+     * calendar.
+     * 
+     * @param calendar
+     *            the calendar that represents the new time
+     * @throws NullPointerException
+     *             if {@code calendar} is null
+     */
     public void setTime(final Calendar calendar) {
+        if (calendar == null) {
+            throw new NullPointerException("calendar is null");
+        }
         this.setTime(calendar.get(Calendar.HOUR), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND));
     }
 
