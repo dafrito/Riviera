@@ -7,11 +7,28 @@ import java.util.Map.Entry;
 
 import com.bluespot.logic.Visitors;
 import com.bluespot.logic.adapters.AbstractHandledAdapter;
+import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.AdaptingPredicate;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.visitors.Sentinel;
 import com.bluespot.logic.visitors.Visitor;
 
+/**
+ * A schema is a type-safe bridge between arbitrary forms of submission and the
+ * visitors that expect and act on them.
+ * 
+ * @author Aaron Faanes
+ * 
+ * @param <K>
+ *            the type of key used by this schema. This allows clients to use
+ *            enumerations or other limited objects to define keys, making it
+ *            easier to produce valid submission objects. Of course, you are
+ *            free to use any type, like a string or simply different objects.
+ *            The only requirement is that, since they act as keys in a map,
+ *            they should implement {@link #equals(Object)} appropriately.
+ * 
+ * @see Submission
+ */
 public final class Schema<K> {
 
     private final Map<K, Class<?>> types;
@@ -19,6 +36,34 @@ public final class Schema<K> {
 
     private final Predicate<Submission<? super K>> typePredicate = new SchemaTypePredicate<K>(this);
 
+    /**
+     * Constructs a {@link Schema}. The specified type map defines the fields
+     * that are potentially used by this schema's predicate. The map also
+     * specifies the expected supertype of the field.
+     * <p>
+     * The specified predicate
+     * 
+     * @param types
+     *            a map that defines the fields that are potentially accessed by
+     *            this schema's predicate. Specifically, it will relate a given
+     *            key value to its expected supertype. It may not contain null
+     *            as a key, and may not contain null as a value for any key.
+     * 
+     * @param predicate
+     *            the predicate that specifies the rules of this schema. It
+     *            should only access fields that are specified in {@code types}.
+     *            Beyond this, no restrictions are given: this predicate may be
+     *            as complex as is necessary.
+     * @throws NullPointerException
+     *             if either {@code types} or {@code predicate} is null, if
+     *             {@code types} contains null as a key, or if a value for a
+     *             given key in {@code types} is null.
+     * @throws IllegalArgumentException
+     *             if {@code types} contains no keys. Since the specified
+     *             predicate should only use fields that are specified by
+     *             {@code types}, this means that the schema performs no real
+     *             validation. Such degenerate schemas are not allowed.
+     */
     public Schema(final Map<K, Class<?>> types, final Predicate<Submission<? super K>> predicate) {
         if (types == null) {
             throw new NullPointerException("types is null");
@@ -41,20 +86,61 @@ public final class Schema<K> {
         this.predicate = predicate;
     }
 
+    /**
+     * Returns a unmodifiable map that describes the classes expected for the
+     * fields used by this schema.
+     * 
+     * @return a map that describes the types expected by this schema. It may
+     *         not be modified.
+     */
     public Map<K, Class<?>> getTypes() {
         // Types is already unmodifiable, so there's no need to wrap it again
         // here.
         return this.types;
     }
 
+    /**
+     * Returns a {@link Predicate} that checks for type safety a given
+     * {@link Submission}. It will evaluate to {@code true} if, and only if, the
+     * {@code Submission}'s fields' types are compatible with the types expected
+     * by this schema.
+     * 
+     * @return a {@code Predicate} that validates a given {@link Submission}. It
+     *         returns {@code true} for all {@code Submission} objects that are
+     *         type-safe for this schema.
+     */
     public Predicate<? super Submission<? super K>> getTypePredicate() {
         return this.typePredicate;
     }
 
+    /**
+     * Returns a {@link Predicate} that represents the rules of this schema. A
+     * given {@link Submission} will evaluate to {@code true} if, and only if,
+     * the {@code Submission}'s fields validate according to this predicate.
+     * <p>
+     * The only rule for this predicate is that it must use fields that are
+     * specified by this schema's {@link #getTypePredicate() type predicate};
+     * it, however, does not need to use all the fields provided by that type
+     * predicate. Beyond this, the predicate is intentionally undefined.
+     * 
+     * @return a {@code Predicate} that represents the rules of this schema. The
+     *         conditions in which it evaluates to {@code true} are not
+     *         specified.
+     */
     public Predicate<? super Submission<? super K>> getPredicate() {
         return this.predicate;
     }
 
+    /**
+     * Constructs a {@link Sentinel} that is guarded by {@link #getPredicate()
+     * this schema's predicate}. If the predicate evaluates to {@code true}, the
+     * specified visitor will be invoked.
+     * 
+     * @param visitor
+     *            the invoked visitor for all validated submissions
+     * @return a new {@code Sentinel} that guards the specified visitor with
+     *         this schema's predicate
+     */
     public Sentinel<? super Submission<? super K>> newSentinel(final Visitor<Submission<? super K>> visitor) {
         return new Sentinel<Submission<? super K>>(this.getPredicate(), visitor);
     }
@@ -103,6 +189,15 @@ public final class Schema<K> {
         return String.format("Schema[%s]", this.getPredicate());
     }
 
+    /**
+     * A {@link HandledAdapter} implementation that ensures a given submission
+     * is compatible for the specified {@link Schema}.
+     * 
+     * @author Aaron Faanes
+     * 
+     * @param <T>
+     *            the type of key used in the submission
+     */
     private static final class SubmissionTypeChecker<T> extends
             AbstractHandledAdapter<Submission<? super T>, Submission<? super T>, SubmissionClassCastException> {
 
@@ -166,6 +261,15 @@ public final class Schema<K> {
 
     }
 
+    /**
+     * An {@link ClassCastException} that is used whenever a {@link Submission}
+     * returns a value that is not of the expected type. This exception
+     * subclasses {@code ClassCastException} to provide useful information for
+     * handlers.
+     * 
+     * @author Aaron Faanes
+     * 
+     */
     public static final class SubmissionClassCastException extends ClassCastException {
 
         private static final long serialVersionUID = 3724801437060534108L;
@@ -174,6 +278,21 @@ public final class Schema<K> {
         private final Class<?> expectedType;
         private final Object key;
 
+        /**
+         * Constructs a {@link SubmissionClassCastException} using the given
+         * arguments.
+         * 
+         * @param key
+         *            the key that caused the exception
+         * @param expectedType
+         *            the expected type for the given key
+         * @param actualType
+         *            the actual type that was received. This may be null.
+         * @throws NullPointerException
+         *             if {@code key} or {@code expectedType}. {@code
+         *             actualType} is allowed to be null. This can occur if null
+         *             was returned as a value.
+         */
         public SubmissionClassCastException(final Object key, final Class<?> expectedType, final Class<?> actualType) {
             if (key == null) {
                 throw new NullPointerException("key is null");
@@ -184,16 +303,38 @@ public final class Schema<K> {
             this.key = key;
             this.expectedType = expectedType;
             this.actualType = actualType;
+            if (this.actualType != null) {
+                if (this.expectedType.isAssignableFrom(this.actualType)) {
+                    throw new IllegalStateException("Cast is safe");
+                }
+            }
         }
 
+        /**
+         * Returns the key that was the site of an illegal cast.
+         * 
+         * @return the key that was the site of an illegal cast
+         */
         public Object getKey() {
             return this.key;
         }
 
+        /**
+         * Returns the expected type for the schema's key.
+         * 
+         * @return the expected supertype for the schema's key
+         */
         public Class<?> getExpectedType() {
             return this.expectedType;
         }
 
+        /**
+         * Returns the actual type received for the specified key. This may be
+         * null and would indicate null was either directly returned, or there
+         * was no corresponding value in the {@link Submission}.
+         * 
+         * @return the actual type received for the specified key.
+         */
         public Class<?> getActualType() {
             return this.actualType;
         }
