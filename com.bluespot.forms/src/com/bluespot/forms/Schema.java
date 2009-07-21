@@ -145,12 +145,57 @@ public final class Schema<K> {
         return new Sentinel<Submission<? super K>>(this.getPredicate(), visitor);
     }
 
+    /**
+     * Helper method that calls {@link #newCheckedSentinel(Visitor, Visitor)}
+     * using {@link Visitors#throwException()} as the handler.
+     * <p>
+     * See {@link #newCheckedSentinel(Visitor, Visitor)} for full information on
+     * the requirements of this class.
+     * 
+     * @param visitor
+     *            the visitor that is guarded by the returned sentinel
+     * @return a sentinel that guards the specified visitor.
+     */
     public Sentinel<? super Submission<? super K>> newCheckedSentinel(final Visitor<Submission<? super K>> visitor) {
         return this.newCheckedSentinel(visitor, Visitors.throwException());
     }
 
+    /**
+     * Returns a {@link Sentinel} that guards the specified visitor. This is
+     * similar to {@link #newSentinel(Visitor)}, but is a two-step process. Each
+     * step must succeed before the next begins:
+     * <ul>
+     * <li><em>Type validation</em>: A given {@link Submission} will be checked
+     * for type-safety. Specifically, each field will be queried to ensure that
+     * its type is a subtype of this schema's expected type for that field.
+     * <li><em>Validation</em>: The {@code Submission} will be checked by this
+     * schema's predicate, exactly like {@link #newSentinel(Visitor)}.
+     * </ul>
+     * If both steps of validation are successful, the submission is passed to
+     * the specified {@code visitor}.
+     * 
+     * @param visitor
+     *            the visitor that will receive all {@code Submission} objects
+     *            that pass validation, as described above
+     * @param handler
+     *            the handler that will receive
+     *            {@link SubmissionClassCastException} objects for every field
+     *            in the submission that is not type-safe with this schema
+     * @return a {@code Sentinel} that performs the process described above
+     * @throws NullPointerException
+     *             if either argument is null. Use {@link Visitors#noop()} if
+     *             you don't wish to respond to fields that are not type-safe.
+     *             Of course, a no-op visitor does not affect the rules of
+     *             validation.
+     */
     public Sentinel<? super Submission<? super K>> newCheckedSentinel(final Visitor<Submission<? super K>> visitor,
             final Visitor<? super SubmissionClassCastException> handler) {
+        if (visitor == null) {
+            throw new NullPointerException("visitor is null");
+        }
+        if (handler == null) {
+            throw new NullPointerException("handler is null");
+        }
         final SubmissionTypeChecker<K> checker = new SubmissionTypeChecker<K>(this);
         checker.setHandler(handler);
         final Predicate<Submission<? super K>> checkedPredicate = new AdaptingPredicate<Submission<? super K>, Submission<? super K>>(
