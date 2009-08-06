@@ -37,6 +37,9 @@ public class Dictionary implements Iterable<String> {
      *            Dictionary}
      */
     public Dictionary(final Set<String> words) {
+        if (words == null) {
+            throw new NullPointerException("words is null");
+        }
         this.words = Collections.unmodifiableSet(new HashSet<String>(words));
     }
 
