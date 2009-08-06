@@ -24,7 +24,54 @@ package com.bluespot.forms;
  */
 public interface Submission<K> {
 
-    public Class<?> getType(final K keyValue);
+    /**
+     * Returns whether this submission contains a mapping for the specified key.
+     * 
+     * @param key
+     *            the key that is used in this search. It cannot be null.
+     * @return {@code true} if this submission contains a mapping for the
+     *         specified key
+     * @throws NullPointerException
+     *             if {@code key} is null
+     */
+    public boolean containsKey(final K key);
 
-    public <T> T get(final K keyValue, final Class<T> type);
+    /**
+     * Returns the type that will be returned for the specified key. It is
+     * guaranteed that, for the specified key, a value returned by
+     * {@link #get(Object, Class)} will be a type or subtype of the returned
+     * class.
+     * 
+     * @param key
+     *            the non-null key that is used to retrieve the related type. It
+     *            must not be null.
+     * @return the type that relates to the specified key
+     * @throws NullPointerException
+     *             if {@code key} is null
+     * @throws IllegalArgumentException
+     *             if there is no type that relates to the specified key
+     */
+    public Class<?> getType(final K key);
+
+    /**
+     * Returns the value that is mapped to the specified key.
+     * 
+     * @param <T>
+     *            the type of value that will be returned
+     * @param key
+     *            the key that corresponds to the requested value
+     * @param type
+     *            the expected type or supertype of the returned value.
+     * @return the value that is mapped to the specified key. It is guaranteed
+     *         to be a type or subtype of the specified {@code type}
+     * @throws ClassCastException
+     *             if the retrieved value is not compatible with the provided
+     *             type
+     * @throws NullPointerException
+     *             if either argument is null
+     * @throws IllegalArgumentException
+     *             if {@code key} does not correspond to a valid key in this
+     *             submission
+     */
+    public <T> T get(final K key, final Class<T> type);
 }
