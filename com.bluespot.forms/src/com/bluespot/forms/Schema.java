@@ -31,10 +31,10 @@ import com.bluespot.logic.visitors.Visitor;
  */
 public final class Schema<K> {
 
-    private final Map<K, Class<?>> types;
-    private final Predicate<Submission<? super K>> predicate;
+    private final Map<? extends K, Class<?>> types;
+    private final Predicate<? super Submission<? super K>> predicate;
 
-    private final Predicate<Submission<? super K>> typePredicate = new SchemaTypePredicate<K>(this);
+    private final Predicate<? super Submission<? super K>> typePredicate = new SchemaTypePredicate<K>(this);
 
     /**
      * Constructs a {@link Schema}. The specified type map defines the fields
@@ -64,7 +64,7 @@ public final class Schema<K> {
      *             {@code types}, this means that the schema performs no real
      *             validation. Such degenerate schemas are not allowed.
      */
-    public Schema(final Map<K, Class<?>> types, final Predicate<Submission<? super K>> predicate) {
+    public Schema(final Map<? extends K, Class<?>> types, final Predicate<? super Submission<? super K>> predicate) {
         if (types == null) {
             throw new NullPointerException("types is null");
         }
@@ -78,7 +78,7 @@ public final class Schema<K> {
         if (this.types.containsKey(null)) {
             throw new NullPointerException("types contains null key");
         }
-        for (final Entry<K, Class<?>> entry : this.types.entrySet()) {
+        for (final Entry<? extends K, Class<?>> entry : this.types.entrySet()) {
             if (entry.getValue() == null) {
                 throw new NullPointerException("types contains null value for key '" + entry.getKey() + "'");
             }
@@ -93,9 +93,9 @@ public final class Schema<K> {
      * @return a map that describes the types expected by this schema. It may
      *         not be modified.
      */
-    public Map<K, Class<?>> getTypes() {
-        // Types is already unmodifiable, so there's no need to wrap it again
-        // here.
+    public Map<? extends K, Class<?>> getTypes() {
+        // Types is already unmodifiable, so there's no need to use
+        // Collections#unmodifiableMap.
         return this.types;
     }
 
@@ -263,7 +263,7 @@ public final class Schema<K> {
                 return null;
             }
             boolean acceptable = true;
-            for (final Entry<T, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
+            for (final Entry<? extends T, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
                 final Class<?> requiredType = entry.getValue();
                 final Class<?> candidate = submission.getType(entry.getKey());
                 if (candidate == null || !requiredType.isAssignableFrom(candidate)) {
@@ -419,7 +419,7 @@ public final class Schema<K> {
             if (submission == null) {
                 return false;
             }
-            for (final Entry<T, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
+            for (final Entry<? extends T, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
                 final Class<?> requiredType = entry.getValue();
                 final Class<?> candidate = submission.getType(entry.getKey());
                 if (candidate == null) {
