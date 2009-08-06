@@ -1,9 +1,16 @@
 package com.bluespot.logic.values;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  * A {@link Value} implementation that stores a value retrieved from some other
  * specified {@code Value}. This allows efficient and safe access to other
- * unreliable {@link Value} implementations.
+ * unreliable {@link Value} implementations. It has many similarities to an
+ * {@link Iterator}: It is a mediates the exchange of data between some source
+ * and clients. It offers a {@link #get()} method that will throw an unchecked
+ * exception if a value hasn't been retrieved, and a {@link #hasValue()} method
+ * to check whether an exception would be thrown.
  * <p>
  * {@code BufferedValue} holds two responsibilities: It represents a cached
  * version of some value, and it also ensures to clients that it will maximize
@@ -15,6 +22,8 @@ package com.bluespot.logic.values;
  * <p>
  * The {@link #clear()} method is provided if you wish to remove any cached
  * value, but not immediately retrieve a new value.
+ * <p>
+ * This class is safe for concurrent access
  * 
  * @author Aaron Faanes
  * 
@@ -25,7 +34,7 @@ public final class BufferedValue<T> implements Value<T> {
 
     private final Value<? extends T> source;
 
-    private T bufferedValue;
+    private volatile T bufferedValue;
 
     /**
      * Constructs a {@link BufferedValue} that uses the specified source value
@@ -46,7 +55,7 @@ public final class BufferedValue<T> implements Value<T> {
     /**
      * Removes the stored value, if any, for this {@link BufferedValue}.
      */
-    public void clear() {
+    public synchronized void clear() {
         this.bufferedValue = null;
     }
 
@@ -57,6 +66,18 @@ public final class BufferedValue<T> implements Value<T> {
      */
     public Value<? extends T> getSource() {
         return this.source;
+    }
+
+    /**
+     * Returns whether this {@link BufferedValue} has a value it can
+     * successfully return. If this is {@code true}, then
+     * {@link BufferedValue#get()} is guaranteed to succeed.
+     * 
+     * @return {@code true} if this {@code BufferedValue} has successfully
+     *         retrieved a value.
+     */
+    public boolean hasValue() {
+        return this.bufferedValue != null;
     }
 
     /**
@@ -71,7 +92,7 @@ public final class BufferedValue<T> implements Value<T> {
      *         source, and not necessarily the value returned from a call to
      *         {@link #get()}.
      */
-    public T retrieve() {
+    public synchronized T retrieve() {
         final T newValue = this.source.get();
         if (newValue != null) {
             this.bufferedValue = newValue;
@@ -82,16 +103,56 @@ public final class BufferedValue<T> implements Value<T> {
     /**
      * {@inheritDoc}
      * 
-     * @return the buffered value, if any. {@link #retrieve()} must be
-     *         explicitly called in order for this method to return a legitimate
-     *         value. If {@code retrieve()} has not yet been called, {@code
-     *         null} is returned.
+     * @return the buffered value. {@link #retrieve()} must be explicitly called
+     *         in order for this method to return a legitimate value.
+     * @throws NoSuchValueException
+     *             if there is no non-null value currently saved by this {@code
+     *             BufferedValue} object. This would occur if
+     *             {@link #retrieve()} was not called, or if the invocation did
+     *             not successfully retrieve a value. Reasons for this failure
+     *             are dependent on the source {@link Value} implementation.
      */
     public T get() {
         if (this.bufferedValue == null) {
-            throw new IllegalStateException("bufferedValue is not set");
+            throw new NoSuchValueException(this);
         }
         return this.bufferedValue;
+    }
+
+    /**
+     * A {@link NoSuchElementException} indicating that a buffered value was
+     * unavailable. This occurs whenever {@link BufferedValue#retrieve()} has
+     * either not been called before {@link BufferedValue#get()}, or if a call
+     * to {@code retrieve()} did not successfully return a value.
+     * 
+     * @author Aaron Faanes
+     * 
+     */
+    public static class NoSuchValueException extends NoSuchElementException {
+        private static final long serialVersionUID = -6500918133163478011L;
+
+        private final BufferedValue<?> source;
+
+        /**
+         * Constructs a {@link NoSuchValueException} with the specified source.
+         * 
+         * @param source
+         *            the source that is the origin of this exception
+         */
+        private NoSuchValueException(final BufferedValue<?> source) {
+            super("bufferedValue is not set");
+            this.source = source;
+        }
+
+        /**
+         * Returns the source {@link BufferedValue} that caused this exception.
+         * 
+         * @return the source {@code BufferedValue}
+         */
+        public BufferedValue<?> getSource() {
+            return this.source;
+        }
+
     }
 
     @Override
