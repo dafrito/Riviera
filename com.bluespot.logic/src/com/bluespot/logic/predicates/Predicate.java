@@ -2,6 +2,7 @@ package com.bluespot.logic.predicates;
 
 import com.bluespot.logic.Predicates;
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 
 /**
@@ -13,7 +14,11 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * change. Many classes depend on the immutability of predicates to function
  * properly. This means that all predicates only have one state. An example of a
  * violating predicate would be one that provides a {@code switch()} method that
- * inverts its result.
+ * inverts its result. Such a predicate actually violates many of these
+ * principles, and such a thing should be avoided. If you find yourself wanting
+ * one, you should instead create a predicate that accepts some value and
+ * generates a boolean result, rather than relying on a dumb predicate that is
+ * manually updated by the client.
  * <li><em>Predicates evaluate consistently.</em> Predicates test values
  * independent of the context or ordering of the values. If a predicate
  * evaluates to {@code true} for some value, it will always evaluate to {@code
@@ -58,14 +63,25 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * unreliable systems and those systems fail during testing. This is because the
  * test cannot be completed due to a condition external to the state of the
  * predicate and the tested value.
- * <li><em>Predicates are atomic.</em> Predicates should fully test for only one
- * condition. A predicate should not normally test for multiple conditions since
- * doing so would lead to ambiguous results. Predicates should test for one
- * whole condition. However, implicit conditions are a necessary part of testing
- * for the condition, and failing an implicit condition implies a failure of the
- * final condition.
+ * <li><em>Predicates are atomic.</em> Predicates should fully test for one, and
+ * exactly one, condition. Failure to comply with this principle leads to
+ * ambiguous results when a predicate fails: Typically, the cause of the failure
+ * should be implied by the nature of the predicate: For example, a
+ * "Test for even number" predicate failing has clear implications over what
+ * went wrong. This rule has some exceptions, though, for brevity: For example,
+ * null values are typically assumed to be failing conditions for a predicate,
+ * and this can lead to ambiguity. However, null values are special cases and
+ * are well-understood and expected. In practice, you should ensure that your
+ * predicate tests for as little as possible, or that there exists many
+ * predicates that can be combined to isolate the source of a failure.
  * <p>
- * In practice, it would be ideal to not have implicit conditions, and
+ * If you find a predicate has many implicit conditions and sources of failure,
+ * it may be better to use a {@link HandledAdapter} since there seems to be
+ * non-trivial steps being taken. This type of adapter lets you have essentially
+ * one atomic step, but is capable of handling failure at multiple points in the
+ * procedure.
+ * <p>
+ * In practice, it would be ideal to not have implicit conditions and
  * well-designed predicates minimize these dependencies. Most simple predicates
  * only have the implicit condition of the target value being non-null.
  * </ul>
