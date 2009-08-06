@@ -1,4 +1,5 @@
 package com.bluespot.physics;
+
 public class Main {
     public static void main(final String[] args) {
         final Ball ball = new MasslessObject();
@@ -38,4 +39,4 @@ class UnbreakableConnection implements Connection {
     public Ball getObject() {
         return this.object;
     }
-};
+}
