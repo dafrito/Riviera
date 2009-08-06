@@ -10,7 +10,7 @@ import com.bluespot.logic.predicates.Predicate;
  * used by {@link Predicate} objects and their builders.
  * <p>
  * Adapters follow a small set of guidelines, similar in spirit to the
- * {@link #equals(Object)} and {@link Predicate} contracts:
+ * {@link Object#equals(Object)} and {@link Predicate} contracts:
  * <ul>
  * <li><em>Adapters are consistent.</em> Adapters convert a given value the same
  * way consistently. This implies that adapters are immutable.
