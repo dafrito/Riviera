@@ -132,16 +132,16 @@ public final class Schema<K> {
     }
 
     /**
-     * Constructs a {@link Sentinel} that is guarded by {@link #getPredicate()
-     * this schema's predicate}. If the predicate evaluates to {@code true}, the
-     * specified visitor will be invoked.
+     * Constructs a {@link Sentinel} that is guarded by this schema's predicate.
+     * If the predicate evaluates to {@code true}, the specified visitor will be
+     * invoked.
      * 
      * @param visitor
      *            the invoked visitor for all validated submissions
      * @return a new {@code Sentinel} that guards the specified visitor with
      *         this schema's predicate
      */
-    public Sentinel<? super Submission<? super K>> newSentinel(final Visitor<Submission<? super K>> visitor) {
+    public Sentinel<? super Submission<? super K>> newSentinel(final Visitor<? super Submission<? super K>> visitor) {
         return new Sentinel<Submission<? super K>>(this.getPredicate(), visitor);
     }
 
