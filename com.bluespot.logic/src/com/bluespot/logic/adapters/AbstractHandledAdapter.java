@@ -47,11 +47,14 @@ public abstract class AbstractHandledAdapter<S, D, E> implements HandledAdapter<
 
     /**
      * Dispatches the specified value to this adapter's handler.
+     * <p>
+     * This is merely a convenience method for {@link Visitor#accept(Object)
+     * this.getHandler().accept(value)}.
      * 
      * @param value
      *            the specified value that is dispatched. It may be null.
      */
-    protected void dispatch(final E value) {
+    protected final void dispatch(final E value) {
         this.getHandler().accept(value);
     }
 
