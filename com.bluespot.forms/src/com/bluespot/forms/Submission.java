@@ -1,5 +1,7 @@
 package com.bluespot.forms;
 
+import java.util.Map;
+
 /**
  * Represents a form of submission. These may be mutable but should not be
  * concurrently accessed. Specifically, the values they return during a period
@@ -23,6 +25,24 @@ package com.bluespot.forms;
  *            keys must implement {@link #equals(Object)} appropriately.
  */
 public interface Submission<K> {
+
+    /**
+     * Returns the unmodifiable map that contains the mappings between keys and
+     * their types.
+     * 
+     * @return the unmodifiable map that contains the mappings between keys and
+     *         their types
+     */
+    public Map<? extends K, Class<?>> getTypes();
+
+    /**
+     * Returns a map that represents the state of this submission. The returned
+     * map may be freely modified, but changes to that map will not be reflected
+     * in this submission object.
+     * 
+     * @return a map that represents the state of this submission.
+     */
+    public Map<? extends K, Object> asMap();
 
     /**
      * Returns whether this submission contains a mapping for the specified key.
