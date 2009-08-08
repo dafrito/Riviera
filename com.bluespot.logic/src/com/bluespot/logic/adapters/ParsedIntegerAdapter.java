@@ -44,7 +44,7 @@ public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer
         try {
             return Integer.parseInt(source);
         } catch (final NumberFormatException nfe) {
-            this.getHandler().accept(nfe);
+            this.dispatch(nfe);
             return null;
         }
     }
