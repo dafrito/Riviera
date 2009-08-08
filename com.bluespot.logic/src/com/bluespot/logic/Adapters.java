@@ -6,6 +6,7 @@ import java.io.File;
 import javax.swing.text.JTextComponent;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.adapters.CastingAdapter;
 import com.bluespot.logic.adapters.ChildFileAdapter;
 import com.bluespot.logic.adapters.HandledAdapter;
 
@@ -222,6 +223,26 @@ public final class Adapters {
      */
     public static final Adapter<JTextComponent, String> componentText() {
         return ADAPTER_TEXT_COMPONENT_TO_STRING;
+    }
+
+    /**
+     * Returns a {@link CastingAdapter} that attempts to cast given values.
+     * 
+     * @param <S>
+     *            the source type
+     * @param <D>
+     *            the destination type that will result from the cast
+     * @param sourceType
+     *            the source type. The class is explicitly provided since it's
+     *            not reified in the adapter.
+     * @param destinationType
+     *            the destination type that will result from the cast. The class
+     *            is explicitly provided since it's not reified in the adapter.
+     * @return a new {@link CastingAdapter} object
+     */
+    public static final <S, D extends S> CastingAdapter<S, D> cast(final Class<S> sourceType,
+            final Class<D> destinationType) {
+        return new CastingAdapter<S, D>(sourceType, destinationType);
     }
 
 }
