@@ -32,7 +32,7 @@ import com.bluespot.logic.visitors.Visitor;
 public final class Schema<K> {
 
     private final Map<? extends K, Class<?>> types;
-    private final Predicate<? super Submission<? super K>> predicate;
+    private final Predicate<? super Submission<K>> predicate;
 
     private final Predicate<? super Submission<? super K>> typePredicate = new SchemaTypePredicate<K>(this);
 
@@ -64,7 +64,7 @@ public final class Schema<K> {
      *             {@code types}, this means that the schema performs no real
      *             validation. Such degenerate schemas are not allowed.
      */
-    public Schema(final Map<? extends K, Class<?>> types, final Predicate<? super Submission<? super K>> predicate) {
+    public Schema(final Map<? extends K, Class<?>> types, final Predicate<? super Submission<K>> predicate) {
         if (types == null) {
             throw new NullPointerException("types is null");
         }
@@ -127,7 +127,7 @@ public final class Schema<K> {
      *         conditions in which it evaluates to {@code true} are not
      *         specified.
      */
-    public Predicate<? super Submission<? super K>> getPredicate() {
+    public Predicate<? super Submission<K>> getPredicate() {
         return this.predicate;
     }
 
@@ -141,8 +141,8 @@ public final class Schema<K> {
      * @return a new {@code Sentinel} that guards the specified visitor with
      *         this schema's predicate
      */
-    public Sentinel<? super Submission<? super K>> newSentinel(final Visitor<? super Submission<? super K>> visitor) {
-        return new Sentinel<Submission<? super K>>(this.getPredicate(), visitor);
+    public Sentinel<Submission<K>> newSentinel(final Visitor<? super Submission<? extends K>> visitor) {
+        return new Sentinel<Submission<K>>(this.getPredicate(), visitor);
     }
 
     /**
@@ -156,7 +156,7 @@ public final class Schema<K> {
      *            the visitor that is guarded by the returned sentinel
      * @return a sentinel that guards the specified visitor.
      */
-    public Sentinel<? super Submission<? super K>> newCheckedSentinel(final Visitor<Submission<? super K>> visitor) {
+    public Sentinel<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor) {
         return this.newCheckedSentinel(visitor, Visitors.throwException());
     }
 
@@ -188,7 +188,7 @@ public final class Schema<K> {
      *             Of course, a no-op visitor does not affect the rules of
      *             validation.
      */
-    public Sentinel<? super Submission<? super K>> newCheckedSentinel(final Visitor<Submission<? super K>> visitor,
+    public Sentinel<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor,
             final Visitor<? super SubmissionClassCastException> handler) {
         if (visitor == null) {
             throw new NullPointerException("visitor is null");
@@ -198,9 +198,9 @@ public final class Schema<K> {
         }
         final SubmissionTypeChecker<K> checker = new SubmissionTypeChecker<K>(this);
         checker.setHandler(handler);
-        final Predicate<Submission<? super K>> checkedPredicate = new AdaptingPredicate<Submission<? super K>, Submission<? super K>>(
-                checker, this.getPredicate());
-        return new Sentinel<Submission<? super K>>(checkedPredicate, visitor);
+        final Predicate<Submission<K>> checkedPredicate = new AdaptingPredicate<Submission<K>, Submission<K>>(checker,
+                this.getPredicate());
+        return new Sentinel<Submission<K>>(checkedPredicate, visitor);
     }
 
     @Override
@@ -240,35 +240,35 @@ public final class Schema<K> {
      * 
      * @author Aaron Faanes
      * 
-     * @param <T>
+     * @param <K>
      *            the type of key used in the submission
      */
-    private static final class SubmissionTypeChecker<T> extends
-            AbstractHandledAdapter<Submission<? super T>, Submission<? super T>, SubmissionClassCastException> {
+    private static final class SubmissionTypeChecker<K> extends
+            AbstractHandledAdapter<Submission<K>, Submission<K>, SubmissionClassCastException> {
 
-        private final Schema<T> schema;
+        private final Schema<? extends K> schema;
 
-        public SubmissionTypeChecker(final Schema<T> schema) {
+        public SubmissionTypeChecker(final Schema<? extends K> schema) {
             assert schema != null : "schema is null";
             this.schema = schema;
         }
 
-        public Schema<T> getSchema() {
+        public Schema<? extends K> getSchema() {
             return this.schema;
         }
 
         @Override
-        public Submission<? super T> adapt(final Submission<? super T> submission) {
+        public Submission<K> adapt(final Submission<K> submission) {
             if (submission == null) {
                 return null;
             }
             boolean acceptable = true;
-            for (final Entry<? extends T, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
+            for (final Entry<? extends K, Class<?>> entry : this.getSchema().getTypes().entrySet()) {
                 final Class<?> requiredType = entry.getValue();
                 final Class<?> candidate = submission.getType(entry.getKey());
                 if (candidate == null || !requiredType.isAssignableFrom(candidate)) {
                     acceptable = false;
-                    this.getHandler().accept(new SubmissionClassCastException(entry.getKey(), requiredType, candidate));
+                    this.dispatch(new SubmissionClassCastException(entry.getKey(), requiredType, candidate));
                 }
             }
             /*
