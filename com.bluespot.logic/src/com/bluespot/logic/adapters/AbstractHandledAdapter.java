@@ -45,6 +45,16 @@ public abstract class AbstractHandledAdapter<S, D, E> implements HandledAdapter<
         this.setHandler(handler);
     }
 
+    /**
+     * Dispatches the specified value to this adapter's handler.
+     * 
+     * @param value
+     *            the specified value that is dispatched. It may be null.
+     */
+    protected void dispatch(final E value) {
+        this.getHandler().accept(value);
+    }
+
     @Override
     public final void setHandler(final Visitor<? super E> handler) {
         if (handler == null) {
