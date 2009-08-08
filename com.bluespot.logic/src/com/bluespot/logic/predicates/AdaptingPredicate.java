@@ -13,6 +13,7 @@ import com.bluespot.logic.adapters.Adapter;
  *            the type of the source value
  * @param <D>
  *            the type of the converted value
+ * 
  */
 public final class AdaptingPredicate<S, D> implements Predicate<S> {
 
