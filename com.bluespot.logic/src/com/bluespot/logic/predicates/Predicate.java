@@ -106,6 +106,7 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * 
  * @param <T>
  *            the type of value this predicate should expect
+ * @see Predicates
  */
 public interface Predicate<T> {
 
