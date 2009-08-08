@@ -9,6 +9,8 @@ import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.CastingAdapter;
 import com.bluespot.logic.adapters.ChildFileAdapter;
 import com.bluespot.logic.adapters.HandledAdapter;
+import com.bluespot.logic.adapters.MapEntryAdapter;
+import com.bluespot.logic.adapters.ParsedIntegerAdapter;
 
 /**
  * A library of common {@link Adapter} factory methods. These methods are not
@@ -221,12 +223,12 @@ public final class Adapters {
      *         to {@code String} values using {@link JTextComponent#getText()}.
      * 
      */
-    public static final Adapter<JTextComponent, String> componentText() {
+    public static Adapter<JTextComponent, String> componentText() {
         return ADAPTER_TEXT_COMPONENT_TO_STRING;
     }
 
     /**
-     * Returns a {@link CastingAdapter} that attempts to cast given values.
+     * Returns a {@link CastingAdapter} that casts given values.
      * 
      * @param <S>
      *            the source type
@@ -240,9 +242,33 @@ public final class Adapters {
      *            is explicitly provided since it's not reified in the adapter.
      * @return a new {@link CastingAdapter} object
      */
-    public static final <S, D extends S> CastingAdapter<S, D> cast(final Class<S> sourceType,
-            final Class<D> destinationType) {
+    public static <S, D extends S> CastingAdapter<S, D> cast(final Class<S> sourceType, final Class<D> destinationType) {
         return new CastingAdapter<S, D>(sourceType, destinationType);
     }
 
+    /**
+     * Returns a {@link MapEntryAdapter} that retrieves a value for the
+     * specified key from a given map.
+     * 
+     * @param <K>
+     *            the type of key in a given map
+     * @param <V>
+     *            the type of value stored in a given map
+     * @param key
+     *            the key used to retrieve a value from a given map
+     * @return a new {@link MapEntryAdapter} object
+     */
+    public static <K, V> MapEntryAdapter<K, V> entryFor(final K key) {
+        return new MapEntryAdapter<K, V>(key);
+    }
+
+    /**
+     * Returns a {@link ParsedIntegerAdapter} that parses a string for an
+     * integer value.
+     * 
+     * @return a new {@link ParsedIntegerAdapter} object
+     */
+    public static ParsedIntegerAdapter parseInt() {
+        return new ParsedIntegerAdapter();
+    }
 }
