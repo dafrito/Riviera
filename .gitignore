@@ -1,0 +1,7 @@
+*~
+*.swp
+*.class
+*.log
+bin
+.metadata
+.settings
