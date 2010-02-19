@@ -167,7 +167,7 @@ public abstract class TileMap<T> implements Paintable {
                 g.translate(this.tileWidth, 0);
             }
             g.translate(-this.tileWidth * renderedTable.getWidth(), this.tileHeight);
-            final Dimension offset = this.newRow(location);
+            final Dimension offset = this.newRow();
             g.translate(offset.width, offset.height);
         }
     }
@@ -176,11 +176,9 @@ public abstract class TileMap<T> implements Paintable {
      * A (poorly-named) method that is called whenever a new row is entered. The
      * dimension returned will be used to adjust the graphics context.
      * 
-     * @param location
-     *            the new row
      * @return the offset of the graphics context for the specified row
      */
-    protected Dimension newRow(final Point location) {
+    protected Dimension newRow() {
         return new Dimension(0, 0);
     }
 
