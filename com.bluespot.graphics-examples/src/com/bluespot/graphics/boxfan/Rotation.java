@@ -8,6 +8,7 @@ package com.bluespot.graphics.boxfan;
  */
 public final class Rotation {
 
+    @SuppressWarnings("unused")
     private int speedDegrees;
 
     /**

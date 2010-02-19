@@ -24,6 +24,7 @@ public class FanPanel extends JPanel {
 
     private static final int FPS = 50;
 
+    @SuppressWarnings("unused")
     private final Timer timer = new Timer(1000 / FPS, new ActionListener() {
         public void actionPerformed(final ActionEvent e) {
             FanPanel.this.repaint();
@@ -98,6 +99,7 @@ public class FanPanel extends JPanel {
 
     }
 
+    @SuppressWarnings("unused")
     private void renderFan(final BufferedImage image, final int size) {
         final Graphics2D g = image.createGraphics();
         for (int i = 0; i < this.numArcs; i++) {
