@@ -9,9 +9,6 @@ import java.awt.Rectangle;
 
 import org.junit.Test;
 
-import com.bluespot.geom.Geometry;
-import com.bluespot.geom.Operations;
-
 public class GeometryTest {
 
     /**

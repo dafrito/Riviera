@@ -168,7 +168,7 @@ public class ApplicationActionMap extends ActionMap {
             for (final String actionName : proxyActionsAnnotation.value()) {
                 final ApplicationAction appAction = new ApplicationAction(this, resourceMap, actionName);
                 appAction.setEnabled(false); // will track the enabled property
-                                             // of the Action it's bound to
+                // of the Action it's bound to
                 this.putAction(actionName, appAction);
                 this.proxyActions.add(appAction);
             }

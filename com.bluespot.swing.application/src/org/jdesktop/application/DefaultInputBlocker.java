@@ -181,7 +181,7 @@ final class DefaultInputBlocker extends Task.InputBlocker {
             textArea.setFont(font);
             final int lh = textArea.getFontMetrics(font).getHeight();
             final Insets margin = new Insets(0, 0, lh, 24); // top left bottom
-                                                            // right
+            // right
             textArea.setMargin(margin);
             textArea.setEditable(false);
             textArea.setWrapStyleWord(true);
@@ -345,7 +345,7 @@ final class DefaultInputBlocker extends Task.InputBlocker {
             final ActionListener showModalDialog = new ActionListener() {
                 public void actionPerformed(final ActionEvent e) {
                     if (DefaultInputBlocker.this.modalDialog != null) { // already
-                                                                        // dismissed
+                        // dismissed
                         DefaultInputBlocker.this.modalDialog.setVisible(true);
                     }
                 }

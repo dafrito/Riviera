@@ -1648,8 +1648,8 @@ public class ResourceMap {
         @Override
         public Object parseString(final String s, final ResourceMap ignore) throws ResourceConverterException {
             final List<Double> tlbr = ResourceMap.parseDoubles(s, 4, "invalid top,left,bottom,right Insets string");
-            return new Insets(tlbr.get(0).intValue(), tlbr.get(1).intValue(), tlbr.get(2).intValue(), tlbr.get(3)
-                    .intValue());
+            return new Insets(tlbr.get(0).intValue(), tlbr.get(1).intValue(), tlbr.get(2).intValue(),
+                    tlbr.get(3).intValue());
         }
     }
 
@@ -1661,8 +1661,8 @@ public class ResourceMap {
         @Override
         public Object parseString(final String s, final ResourceMap ignore) throws ResourceConverterException {
             final List<Double> tlbr = ResourceMap.parseDoubles(s, 4, "invalid top,left,bottom,right EmptyBorder string");
-            return new EmptyBorder(tlbr.get(0).intValue(), tlbr.get(1).intValue(), tlbr.get(2).intValue(), tlbr.get(3)
-                    .intValue());
+            return new EmptyBorder(tlbr.get(0).intValue(), tlbr.get(1).intValue(), tlbr.get(2).intValue(),
+                    tlbr.get(3).intValue());
         }
     }
 }

@@ -53,6 +53,7 @@ import javax.swing.table.TableColumn;
  *     &#064;Override protected void shutdown() {
  *         getContext().getSessionStorage().&lt;b&gt;save&lt;/b&gt;(mainFrame, &quot;session.xml&quot;);
  *     }
+ * 
  *     &#064;Override protected void startup() {
  *         ApplicationContext appContext = getContext();
  *         appContext.setVendorId(&quot;Sun&quot;);
@@ -81,7 +82,7 @@ import javax.swing.table.TableColumn;
  * ${userHome}\Application Data\${vendorId}\${applicationId}\session.xml
  * </pre>
  * 
- * Where the value of {@code $ userHome}} is the the value of the Java System
+ * Where the value of {@code $ userHome} is the the value of the Java System
  * property {@code "user.home"}. On Solaris or Linux the file is:
  * 
  * <pre>
