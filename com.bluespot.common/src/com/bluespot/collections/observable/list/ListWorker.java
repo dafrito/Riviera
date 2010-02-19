@@ -8,6 +8,9 @@ import javax.swing.event.ListDataListener;
  * Represents a simple listener for lists. This is useful for when you're
  * interesting in adapting some list events, but don't want to write a
  * full-fledged {@link ListDataListener}.
+ * <p>
+ * {@link ListWorkerBridge} allows classes to use {@code ListWorker}
+ * implementations where {@link ListDataListener} implementations are expected.
  * 
  * @author Aaron Faanes
  * 
