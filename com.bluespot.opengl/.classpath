@@ -2,10 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.demonstration"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.graphics"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.swing"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.geom"/>
 	<classpathentry exported="true" kind="lib" path="/meta/lib/jogl/gluegen-rt.jar">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="meta/lib/jogl"/>
@@ -16,5 +13,6 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="meta/lib/jogl"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/com.bluespot.common"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
