@@ -5,16 +5,16 @@ import java.util.Deque;
 import java.util.Iterator;
 
 /**
- * A collection of methods that deal with collections.
+ * A collection of methods that deal with deques.
  * <p>
  * None of the methods here are thread-safe without external synchronization.
  * 
  * @author Aaron Faanes
  * 
  */
-public class CollectionUtil {
+public class DequeUtil {
 
-    private CollectionUtil() {
+    private DequeUtil() {
         // Suppresses default constructor, ensuring non-instantiability.
         throw new AssertionError("Instantiation not allowed");
     }
@@ -45,7 +45,7 @@ public class CollectionUtil {
      */
     public static <E> void synchronizeDeques(final Deque<? extends E> referenceCollection,
             final Deque<E> targetCollection) {
-        CollectionUtil.removeDifferingTail(referenceCollection, targetCollection);
+        DequeUtil.removeDifferingTail(referenceCollection, targetCollection);
         final int equalElements = targetCollection.size();
         int i = 0;
         for (final Iterator<? extends E> iterator = referenceCollection.iterator(); iterator.hasNext(); i++) {
@@ -103,7 +103,7 @@ public class CollectionUtil {
          * of equal size, no elements are removed.
          */
         final int removedElements = targetCollection.size() - equalElements;
-        CollectionUtil.removeFromTail(targetCollection, removedElements);
+        DequeUtil.removeFromTail(targetCollection, removedElements);
         return removedElements;
     }
 
