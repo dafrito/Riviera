@@ -401,6 +401,7 @@ public final class Schema<K> {
      * @author Aaron Faanes
      * 
      * @param <T>
+     *            the type used by the given submission
      */
     private static final class SchemaTypePredicate<T> implements Predicate<Submission<? super T>> {
 
