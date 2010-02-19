@@ -447,11 +447,14 @@ class ComponentListWorker implements ListWorker<JComponent> {
     }
 
     /**
+     * Retrieves the necessary UI constraints for the specified value. By
+     * default, no constraints are returned for any object.
+     * 
      * @param newValue
      *            the value that will have the returned constraints
      * @return the layout constraints for the specified component
      */
-    protected Object getConstraints(final JComponent newValue) {
+    protected Object getConstraints(@SuppressWarnings("unused") final JComponent newValue) {
         return null;
     }
 
