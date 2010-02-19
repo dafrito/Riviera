@@ -11,6 +11,7 @@
 
     <!-- The directory that will store all compiled classes -->
     <property name="build.classes.dir" location="${build.dir}/classes" />
+
     <!-- The root of all projects, used to find buildable classes -->
     <property name="build.root.dir" location=".." />
 
@@ -79,6 +80,7 @@
         <mkdir dir="${test.reports.dir}" />
         <mkdir dir="${test.classes.dir}" />
     </target>
+
     <target name="clean" description="Removes any intermediate files.">
         <delete dir="${build.dir}" />
         <delete dir="${dist.dir}" />
@@ -90,6 +92,7 @@
             <classpath refid="compile.classpath" />
         </javac>
     </target>
+
     <target name="dist" depends="compile" description="Creates redistributables of this project.">
         <jar destfile="${dist.dir}/${dist.jar.name}" basedir="${build.classes.dir}" />
     </target>
@@ -112,6 +115,7 @@
             <fileset dir="${dist.dir}" />
         </ftp>
     </target>
+
     <target name="test" depends="test-compile" description="Runs all tests.">
         <junit printsummary="false" haltonfailure="false" errorproperty="test.failed" failureproperty="test.failed">
             <formatter type="xml" />
@@ -133,12 +137,15 @@
                 <include name="TEST-*.xml" />
             </fileset>
             <report format="frames" todir="${test.reports.dir}" />
-        </junitreport>        <fail if="test.failed" message="Tests failed. Check ${test.reports.dir}" />
+        </junitreport>
+        <fail if="test.failed" message="Tests failed. Check ${test.reports.dir}" />
     </target>
+
     <target name="test-compile" depends="dist, test-init" description="Compiles all tests.">
         <javac destdir="${test.classes.dir}" debug="on">
             <src refid="test.compile.srcdir" />
             <classpath refid="test.compile.classpath" />
         </javac>
     </target>
+
 </project>
