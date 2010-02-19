@@ -34,7 +34,7 @@ public class ObservableListStateModel<T> extends AbstractStateModel<T> {
     private final ListDataListener listDataListener = new ListDataListener() {
 
         public void contentsChanged(final ListDataEvent e) {
-            ObservableListStateModel.this.contentsChanged(e);
+            ObservableListStateModel.this.contentsChanged();
         }
 
         public void intervalAdded(final ListDataEvent e) {
@@ -48,13 +48,15 @@ public class ObservableListStateModel<T> extends AbstractStateModel<T> {
     };
 
     /**
-     * Fired whenever this model's list changes
+     * Fired whenever this model's list changes dramatically enough that an
+     * interval cannot sufficiently describe the change.
+     * <p>
+     * In this case, the state remains at the same index, but this isn't
+     * guaranteed to be the same element.
      * 
-     * @param e
-     *            the event
      * @see ListDataListener#contentsChanged(ListDataEvent)
      */
-    protected void contentsChanged(final ListDataEvent e) {
+    protected void contentsChanged() {
         if (!this.isSelected()) {
             return;
         }
