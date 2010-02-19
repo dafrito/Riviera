@@ -2,15 +2,14 @@ package com.bluespot.physics;
 
 public class Main {
     public static void main(final String[] args) {
-        final Ball ball = new MasslessObject();
-        final Ball otherBall = new MasslessObject();
-        final Connection connection = new UnbreakableConnection(ball, otherBall);
-
+        final Physical ball = new MasslessObject();
+        final Physical otherBall = new MasslessObject();
+        new UnbreakableConnection(ball, otherBall);
     }
 }
 
-class MasslessObject implements Ball {
-
+class MasslessObject implements Physical {
+    // Experimental.
 }
 
 /**
@@ -24,19 +23,19 @@ class MasslessObject implements Ball {
  */
 class UnbreakableConnection implements Connection {
 
-    private final Ball object;
-    private final Ball otherObject;
+    private final Physical object;
+    private final Physical otherObject;
 
-    public UnbreakableConnection(final Ball ball, final Ball otherBall) {
+    public UnbreakableConnection(final Physical ball, final Physical otherBall) {
         this.object = ball;
         this.otherObject = otherBall;
     }
 
-    public Ball getOtherObject() {
+    public Physical getOtherObject() {
         return this.otherObject;
     }
 
-    public Ball getObject() {
+    public Physical getObject() {
         return this.object;
     }
 }
