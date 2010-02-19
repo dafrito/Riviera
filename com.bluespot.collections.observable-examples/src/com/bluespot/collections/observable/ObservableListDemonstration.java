@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.jdesktop.application.Action;
-import org.jdesktop.application.ApplicationContext;
 import org.jdesktop.application.SingleFrameApplication;
 
 import com.bluespot.collections.observable.list.ObservableList;
@@ -30,10 +29,6 @@ public final class ObservableListDemonstration extends SingleFrameApplication {
     private final JButton addButton = new JButton();
 
     private final JButton removeButton = new JButton();
-
-    public ObservableListDemonstration(final ApplicationContext context) {
-        super(context);
-    }
 
     @Action
     protected void addElement() {
