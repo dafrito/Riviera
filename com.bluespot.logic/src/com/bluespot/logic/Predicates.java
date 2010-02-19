@@ -468,7 +468,7 @@ public final class Predicates {
     /**
      * A predicate that tests for lower-case strings.
      * 
-     * @see #isLowerCase()
+     * @see #lowerCase()
      */
     private static final Predicate<String> PREDICATE_LOWER_CASE = new Predicate<String>() {
         public boolean test(final String candidate) {
@@ -507,7 +507,7 @@ public final class Predicates {
     /**
      * A predicate that tests for upper-case strings.
      * 
-     * @see #isLowerCase()
+     * @see #lowerCase()
      */
     private static final Predicate<String> PREDICATE_UPPER_CASE = new Predicate<String>() {
         public boolean test(final String candidate) {
