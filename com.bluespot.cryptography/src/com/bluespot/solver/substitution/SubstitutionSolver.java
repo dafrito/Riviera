@@ -1,72 +1,28 @@
-package com.bluespot.encryption;
+package com.bluespot.solver.substitution;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
-import java.util.regex.Pattern;
 
 import com.bluespot.dictionary.Dictionary;
+import com.bluespot.solver.Solver;
+import com.bluespot.solver.Solvers;
+import com.bluespot.solver.WordCombo;
 
-public class Solver implements Encryption<String, String> {
+public class SubstitutionSolver implements Solver<Set<String>, String> {
 
     private final Dictionary dictionary;
-    private static final String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    public Solver() {
+    public SubstitutionSolver() {
         this(Dictionary.getDictionary());
     }
 
-    public Solver(final Dictionary dictionary) {
+    public SubstitutionSolver(final Dictionary dictionary) {
         this.dictionary = dictionary;
-    }
-
-    public Map<Character, Integer> getFrequency(final String string) {
-        final Map<Character, Integer> letterCount = new HashMap<Character, Integer>();
-        for (int i = 0; i < string.length(); i++) {
-            final char letter = string.charAt(i);
-            if (!Character.isLetter(letter)) {
-                continue;
-            }
-            if (!letterCount.containsKey(letter)) {
-                letterCount.put(letter, 0);
-            }
-            letterCount.put(letter, letterCount.get(letter) + 1);
-        }
-        return letterCount;
-    }
-
-    public Set<String> rotate(final String string) {
-        final Set<String> strings = new HashSet<String>();
-        for (int rotation = 0; rotation < 26; rotation++) {
-            final StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < string.length(); i++) {
-                final char letter = string.charAt(i);
-                if (Character.isLetter(letter)) {
-                    final int offset = 'A' + ((letter - 'A' + rotation) % 26);
-                    builder.append((char) offset);
-                } else {
-                    builder.append(letter);
-                }
-            }
-            strings.add(builder.toString());
-        }
-        return strings;
-    }
-
-    public Set<String> getMiddleLetters() {
-        final Set<String> middleLetters = new HashSet<String>();
-        for (final String word : this.dictionary.subDictionary(Pattern.compile("^([a-z])([a-z])\\2([a-z])$"))) {
-            middleLetters.add(word.substring(1, 2));
-        }
-        return middleLetters;
     }
 
     public static int[] getConversionTable(final String word) {
@@ -107,38 +63,19 @@ public class Solver implements Encryption<String, String> {
     public static Set<String> getCombinations(final Dictionary dictionary, final String encryptedWord,
             final Set<Character> solvedLetters) {
         final Dictionary sameLengthWords = dictionary.wordsOfLength(encryptedWord);
-        final int[] conversionTable = Solver.getConversionTable(encryptedWord);
+        final int[] conversionTable = SubstitutionSolver.getConversionTable(encryptedWord);
 
         final Set<String> matches = new HashSet<String>();
         for (final String candidate : sameLengthWords) {
-            if (!Solver.potentialMatch(encryptedWord, candidate, solvedLetters)) {
+            if (!SubstitutionSolver.potentialMatch(encryptedWord, candidate, solvedLetters)) {
                 continue;
             }
-            final int[] candidateConversionTable = Solver.getConversionTable(candidate);
+            final int[] candidateConversionTable = SubstitutionSolver.getConversionTable(candidate);
             if (Arrays.equals(conversionTable, candidateConversionTable)) {
                 matches.add(candidate);
             }
         }
         return matches;
-    }
-
-    public List<Character> getEnglishFrequencies() {
-        final List<Character> frequencies = new ArrayList<Character>();
-        for (final char letter : "ETAOINSHRDLCUMWFGYPBVKJXQZ".toCharArray()) {
-            frequencies.add(letter);
-        }
-        return frequencies;
-    }
-
-    public List<Character> getLetterFrequencies(final String string) {
-        final Map<Character, Integer> encryptedFrequencies = this.getFrequency(string);
-        final List<Character> orderedByFrequency = new ArrayList<Character>(encryptedFrequencies.keySet());
-        Collections.sort(orderedByFrequency, new Comparator<Character>() {
-            public int compare(final Character o1, final Character o2) {
-                return encryptedFrequencies.get(o2) - encryptedFrequencies.get(o1);
-            }
-        });
-        return orderedByFrequency;
     }
 
     public static boolean testWord(final String encryptedWord, final Map<Character, Character> conversions,
@@ -170,7 +107,7 @@ public class Solver implements Encryption<String, String> {
             return solutions;
         }
         for (final String candidate : combo.getCandidates()) {
-            if (!Solver.testWord(combo.getWord(), conversions, candidate)) {
+            if (!SubstitutionSolver.testWord(combo.getWord(), conversions, candidate)) {
                 continue;
             }
             final Map<Character, Character> workingConversions = Solvers.asMap(Solvers.asList(combo.getWord()),
@@ -181,7 +118,7 @@ public class Solver implements Encryption<String, String> {
                 solutions.add(converted);
                 continue;
             }
-            final WordCombo nextCombo = Solver.getCheapestWordCombo(this.dictionary, converted);
+            final WordCombo nextCombo = SubstitutionSolver.getCheapestWordCombo(this.dictionary, converted);
             if (nextCombo.isEmpty()) {
                 continue;
             }
@@ -202,7 +139,7 @@ public class Solver implements Encryption<String, String> {
             if (word.toLowerCase().equals(word)) {
                 continue;
             }
-            combos.add(new WordCombo(word, Solver.getCombinations(dictionary, word, omitted)));
+            combos.add(new WordCombo(word, SubstitutionSolver.getCombinations(dictionary, word, omitted)));
 
         }
         return combos;
@@ -220,7 +157,7 @@ public class Solver implements Encryption<String, String> {
             if (word.toLowerCase().equals(word)) {
                 continue;
             }
-            final WordCombo combo = new WordCombo(word, Solver.getCombinations(dictionary, word, omitted));
+            final WordCombo combo = new WordCombo(word, SubstitutionSolver.getCombinations(dictionary, word, omitted));
             if ((candidate == null) || (combo.getCandidates().size() < candidate.getCandidates().size())) {
                 candidate = combo;
             }
@@ -230,14 +167,9 @@ public class Solver implements Encryption<String, String> {
 
     public Set<String> decrypt(String encrypted) {
         encrypted = encrypted.toUpperCase();
-        return this.churn(encrypted, Solver.getCheapestWordCombo(this.dictionary, encrypted),
+        return this.churn(encrypted,
+                SubstitutionSolver.getCheapestWordCombo(this.dictionary, encrypted),
                 new HashMap<Character, Character>());
-    }
-
-    public String encrypt(final String unencrypted) {
-        final List<Character> letters = Solvers.asList(ALPHABET);
-        Collections.shuffle(letters);
-        return Solvers.convert(unencrypted.toUpperCase(), Solvers.asMap(ALPHABET, letters));
     }
 
 }

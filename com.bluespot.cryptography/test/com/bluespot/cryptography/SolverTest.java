@@ -5,10 +5,11 @@ import static org.junit.Assert.*;
 
 import java.util.Set;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bluespot.dictionary.Dictionary;
-import com.bluespot.encryption.Solver;
+import com.bluespot.solver.substitution.SubstitutionSolver;
 
 public class SolverTest {
 
@@ -25,7 +26,7 @@ public class SolverTest {
     @Test
     public void testSimplestMatch() {
         final Dictionary dict = new Dictionary("word");
-        final Set<String> matches = new Solver(dict).decrypt("word");
+        final Set<String> matches = new SubstitutionSolver(dict).decrypt("word");
         assertThat(matches.size(), is(1));
         assertTrue(matches.contains("word"));
     }
@@ -33,7 +34,7 @@ public class SolverTest {
     @Test
     public void testFourWords() {
         Dictionary dict = new Dictionary("jobs are for losers".split(" "));
-        Set<String> matches = new Solver(dict).decrypt("jobs are for losers");
+        Set<String> matches = new SubstitutionSolver(dict).decrypt("jobs are for losers");
         assertThat(matches.size(), is(1));
         assertTrue(matches.contains("jobs are for losers"));
     }
@@ -41,15 +42,22 @@ public class SolverTest {
     @Test
     public void testFourWordsWithPunctuation() {
         Dictionary dict = new Dictionary("jobs are for losers".split(" "));
-        Set<String> matches = new Solver(dict).decrypt("jobs are for losers.");
+        Set<String> matches = new SubstitutionSolver(dict).decrypt("jobs are for losers.");
         assertThat(matches.size(), is(1));
         assertTrue(matches.contains("jobs are for losers."));
+    }
+
+    @Ignore
+    @Test
+    public void testFourWordsWithDifficultEncryption() {
+        Set<String> matches = new SubstitutionSolver().decrypt("Mphz hz ice mrr oksp jkq.");
+        assertTrue(matches.contains("this is way more fun."));
     }
 
     @Test
     public void testSimplestEncryptedWord() {
         Dictionary dict = new Dictionary("jobs");
-        Set<String> matches = new Solver(dict).decrypt("abcd");
+        Set<String> matches = new SubstitutionSolver(dict).decrypt("abcd");
         assertThat(matches.size(), is(1));
         assertTrue(matches.contains("jobs"));
     }

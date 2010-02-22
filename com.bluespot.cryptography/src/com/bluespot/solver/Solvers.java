@@ -1,4 +1,4 @@
-package com.bluespot.encryption;
+package com.bluespot.solver;
 
 import java.util.ArrayList;
 import java.util.HashMap;

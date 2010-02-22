@@ -1,8 +1,8 @@
-package com.bluespot.encryption;
+package com.bluespot.solver;
 
 import java.util.Set;
 
-class WordCombo {
+public class WordCombo {
 
     private final String word;
     private final Set<String> candidates;
