@@ -24,7 +24,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         this.dictionary = dictionary;
     }
 
-    public static int[] getConversionTable(final String word) {
+    private int[] getConversionTable(final String word) {
         final LinkedHashSet<Character> chars = new LinkedHashSet<Character>();
         for (final char letter : word.toCharArray()) {
             chars.add(letter);
@@ -40,7 +40,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return conversion;
     }
 
-    public static boolean potentialMatch(final String encryptedWord, final String candidate,
+    private boolean potentialMatch(final String encryptedWord, final String candidate,
             final Set<Character> solvedLetters) {
         for (int i = 0; i < encryptedWord.length(); i++) {
             final char letter = encryptedWord.charAt(i);
@@ -59,17 +59,16 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return true;
     }
 
-    public static Set<String> getCombinations(final Dictionary dictionary, final String encryptedWord,
-            final Set<Character> solvedLetters) {
-        final Dictionary sameLengthWords = dictionary.wordsOfLength(encryptedWord);
-        final int[] conversionTable = SubstitutionSolver.getConversionTable(encryptedWord);
+    private Set<String> getCombinations(String encryptedWord, Set<Character> solvedLetters) {
+        final Dictionary sameLengthWords = this.dictionary.wordsOfLength(encryptedWord);
+        final int[] conversionTable = this.getConversionTable(encryptedWord);
 
         final Set<String> matches = new HashSet<String>();
         for (final String candidate : sameLengthWords) {
-            if (!SubstitutionSolver.potentialMatch(encryptedWord, candidate, solvedLetters)) {
+            if (!this.potentialMatch(encryptedWord, candidate, solvedLetters)) {
                 continue;
             }
-            final int[] candidateConversionTable = SubstitutionSolver.getConversionTable(candidate);
+            final int[] candidateConversionTable = this.getConversionTable(candidate);
             if (Arrays.equals(conversionTable, candidateConversionTable)) {
                 matches.add(candidate);
             }
@@ -77,7 +76,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return matches;
     }
 
-    public static boolean testWord(final String encryptedWord, final Map<Character, Character> conversions,
+    private boolean testWord(final String encryptedWord, final Map<Character, Character> conversions,
             final String candidate) {
         final String workingWord = Solvers.convert(encryptedWord, conversions);
         for (int i = 0; i < workingWord.length(); i++) {
@@ -89,14 +88,14 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return true;
     }
 
-    public Set<String> churn(final String originalEncrypted, final WordCombo combo,
+    private Set<String> churn(final String originalEncrypted, final WordCombo combo,
             final Map<Character, Character> conversions) {
         final Set<String> solutions = new HashSet<String>();
         if ((combo == null) || combo.getCandidates().isEmpty()) {
             return solutions;
         }
         for (final String candidate : combo.getCandidates()) {
-            if (!SubstitutionSolver.testWord(combo.getWord(), conversions, candidate)) {
+            if (!this.testWord(combo.getWord(), conversions, candidate)) {
                 continue;
             }
             final Map<Character, Character> workingConversions = Solvers.asMap(Solvers.asList(combo.getWord()),
@@ -107,7 +106,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
                 solutions.add(converted);
                 continue;
             }
-            final WordCombo nextCombo = SubstitutionSolver.getCheapestWordCombo(this.dictionary, converted);
+            final WordCombo nextCombo = this.getCheapestWordCombo(converted);
             if (nextCombo.isEmpty()) {
                 continue;
             }
@@ -116,7 +115,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return solutions;
     }
 
-    public static WordCombo getCheapestWordCombo(final Dictionary dictionary, final String encrypted) {
+    private WordCombo getCheapestWordCombo(final String encrypted) {
         WordCombo candidate = null;
         final Set<Character> omitted = new HashSet<Character>();
         for (final char letter : encrypted.toCharArray()) {
@@ -128,7 +127,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
             if (word.toLowerCase().equals(word)) {
                 continue;
             }
-            final WordCombo combo = new WordCombo(word, SubstitutionSolver.getCombinations(dictionary, word, omitted));
+            final WordCombo combo = new WordCombo(word, this.getCombinations(word, omitted));
             if ((candidate == null) || (combo.getCandidates().size() < candidate.getCandidates().size())) {
                 candidate = combo;
             }
@@ -138,9 +137,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
 
     public Set<String> solve(String encrypted) {
         encrypted = encrypted.toUpperCase();
-        return this.churn(encrypted,
-                SubstitutionSolver.getCheapestWordCombo(this.dictionary, encrypted),
-                new HashMap<Character, Character>());
+        return this.churn(encrypted, this.getCheapestWordCombo(encrypted), new HashMap<Character, Character>());
     }
 
 }
