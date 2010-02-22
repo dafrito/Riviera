@@ -116,24 +116,6 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return solutions;
     }
 
-    public static Set<WordCombo> getAllWordCombos(final Dictionary dictionary, final String encrypted) {
-        final Set<WordCombo> combos = new HashSet<WordCombo>();
-        final Set<Character> omitted = new HashSet<Character>();
-        for (final char letter : encrypted.toCharArray()) {
-            if (Character.isLowerCase(letter)) {
-                omitted.add(letter);
-            }
-        }
-        for (final String word : encrypted.split("[ .,]+")) {
-            if (word.toLowerCase().equals(word)) {
-                continue;
-            }
-            combos.add(new WordCombo(word, SubstitutionSolver.getCombinations(dictionary, word, omitted)));
-
-        }
-        return combos;
-    }
-
     public static WordCombo getCheapestWordCombo(final Dictionary dictionary, final String encrypted) {
         WordCombo candidate = null;
         final Set<Character> omitted = new HashSet<Character>();
