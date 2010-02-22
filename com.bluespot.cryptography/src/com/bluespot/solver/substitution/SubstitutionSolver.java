@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
 
 import com.bluespot.dictionary.Dictionary;
 import com.bluespot.solver.Solver;
@@ -88,16 +87,6 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
             }
         }
         return true;
-    }
-
-    public static void dump(final Map<Character, Character> conversions) {
-        for (final Entry<Character, Character> entry : conversions.entrySet()) {
-            if (Character.isLowerCase(entry.getKey())) {
-                continue;
-            }
-            System.out.printf("(%s)%d=(%s)%d%n", entry.getKey(), (entry.getKey().charValue()) - 'A', entry.getValue(),
-                    (entry.getValue().charValue()) - 'a');
-        }
     }
 
     public Set<String> churn(final String originalEncrypted, final WordCombo combo,
