@@ -165,7 +165,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
         return candidate;
     }
 
-    public Set<String> decrypt(String encrypted) {
+    public Set<String> solve(String encrypted) {
         encrypted = encrypted.toUpperCase();
         return this.churn(encrypted,
                 SubstitutionSolver.getCheapestWordCombo(this.dictionary, encrypted),

@@ -1,7 +1,7 @@
 package com.bluespot.solver;
 
 /**
- * A strategy to decrypt messages.
+ * A strategy to decrypt data.
  * 
  * @author Aaron Faanes
  * 
@@ -11,5 +11,5 @@ package com.bluespot.solver;
  *            the type of the encrypted data
  */
 public interface Solver<D, E> {
-    public D decrypt(E encrypted);
+    public D solve(E encrypted);
 }
