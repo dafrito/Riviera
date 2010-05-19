@@ -55,9 +55,9 @@ public class Frequencies {
         return middleLetters;
     }
 
-    public List<Character> getEnglishFrequencies() {
+    public static List<Character> getEnglishFrequencies() {
         final List<Character> frequencies = new ArrayList<Character>();
-        for (final char letter : "ETAOINSHRDLCUMWFGYPBVKJXQZ".toCharArray()) {
+        for (final char letter : " ETAOINSHRDLCUMWFGYPBVKJXQZ".toCharArray()) {
             frequencies.add(letter);
         }
         return frequencies;

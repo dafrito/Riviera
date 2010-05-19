@@ -1,5 +1,7 @@
 package com.bluespot.solver;
 
+import java.util.Set;
+
 /**
  * A strategy to decrypt data.
  * 
@@ -10,6 +12,9 @@ package com.bluespot.solver;
  * @param <E>
  *            the type of the encrypted data
  */
-public interface Solver<D, E> {
-    public D solve(E encrypted);
+public interface Solver<E, D> {
+
+    public Set<String> solve(E encrypted);
+
+    public void addSolverListener(SolverListener<? super D> listener);
 }

@@ -30,6 +30,14 @@ public class Dictionary implements Iterable<String> {
 
     private final Set<String> words;
 
+    private Set<String> filterEqualWords(Iterable<String> unfilteredWords) {
+        Set<String> wordSet = new HashSet<String>();
+        for (String word : unfilteredWords) {
+            wordSet.add(word.toLowerCase());
+        }
+        return wordSet;
+    }
+
     /**
      * Easy way to make a small dictionary, useful for tests and
      * specially-tailored searches.
@@ -38,7 +46,7 @@ public class Dictionary implements Iterable<String> {
      *            words to go into the dictionary
      */
     public Dictionary(final String... words) {
-        this(new HashSet<String>(Arrays.asList(words)));
+        this(Arrays.asList(words));
     }
 
     /**
@@ -48,11 +56,8 @@ public class Dictionary implements Iterable<String> {
      *            the words that will be contained in the constructed {@code
      *            Dictionary}
      */
-    public Dictionary(final Set<String> words) {
-        if (words == null) {
-            throw new NullPointerException("words is null");
-        }
-        this.words = Collections.unmodifiableSet(new HashSet<String>(words));
+    public Dictionary(final Iterable<String> words) {
+        this.words = Collections.unmodifiableSet(this.filterEqualWords(words));
     }
 
     /**

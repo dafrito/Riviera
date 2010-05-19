@@ -3,12 +3,16 @@ package com.bluespot.cryptography;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
 import com.bluespot.dictionary.Dictionary;
+import com.bluespot.solver.Solver;
+import com.bluespot.solver.SolverListener;
 import com.bluespot.solver.substitution.SubstitutionSolver;
 
 public class SolverTest {
@@ -22,6 +26,39 @@ public class SolverTest {
     public static final String BOSS = "ISS NVVK DIPXYWA PIT AVSUY QIAOP PWZEHVNWIEDZ. CDYT ZVM LOTK HDY AVSMHOVT HV HDOA HYFH, ZVM COSS QY IQSY HV NYH HDY ITACYW, CDOPD OA IKMGQWIHY.";
 
     public static final String AARON = "Trlz cdg jrd xrzgdz. Mphz hz ice mrr oksp jkq.";
+
+    @Test
+    public void testListener() {
+        final Dictionary dict = new Dictionary("word");
+        Solver<String, String> solver = new SubstitutionSolver(dict);
+
+        final Set<String> matches = new HashSet<String>();
+        final AtomicBoolean flag = new AtomicBoolean();
+
+        solver.addSolverListener(new SolverListener<String>() {
+
+            @Override
+            public void finished() {
+                flag.set(true);
+            }
+
+            @Override
+            public void onSolution(String result) {
+                matches.add(result);
+            }
+        });
+        solver.solve("word");
+        assertThat(matches.size(), is(1));
+        assertTrue(matches.contains("word"));
+        assertTrue(flag.get());
+    }
+
+    @Test
+    public void testDictionaryMakesLettersLowercase() {
+        Dictionary dict = new Dictionary("jobs", "JOBS");
+        assertThat(dict.size(), is(1));
+        assertTrue(dict.contains("jobs"));
+    }
 
     @Test
     public void testSimplestMatch() {

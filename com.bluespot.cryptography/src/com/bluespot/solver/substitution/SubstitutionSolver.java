@@ -4,15 +4,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.bluespot.dictionary.Dictionary;
 import com.bluespot.solver.Solver;
+import com.bluespot.solver.SolverListener;
 import com.bluespot.solver.Solvers;
 import com.bluespot.solver.WordCombo;
 
-public class SubstitutionSolver implements Solver<Set<String>, String> {
+public class SubstitutionSolver implements Solver<String, String> {
 
     private final Dictionary dictionary;
 
@@ -103,6 +106,7 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
             workingConversions.putAll(conversions);
             final String converted = Solvers.convert(originalEncrypted, workingConversions);
             if (converted.toLowerCase().equals(converted)) {
+                this.dispatchResult(converted);
                 solutions.add(converted);
                 continue;
             }
@@ -137,7 +141,36 @@ public class SubstitutionSolver implements Solver<Set<String>, String> {
 
     public Set<String> solve(String encrypted) {
         encrypted = encrypted.toUpperCase();
-        return this.churn(encrypted, this.getCheapestWordCombo(encrypted), new HashMap<Character, Character>());
+        Set<String> results = this.churn(encrypted,
+                this.getCheapestWordCombo(encrypted),
+                new HashMap<Character, Character>());
+        this.dispatchFinished();
+        return results;
+    }
+
+    private final List<SolverListener<? super String>> listeners = new CopyOnWriteArrayList<SolverListener<? super String>>();
+
+    protected void dispatchResult(Iterable<String> results) {
+        for (String result : results) {
+            this.dispatchResult(result);
+        }
+    }
+
+    protected void dispatchFinished() {
+        for (SolverListener<? super String> listener : this.listeners) {
+            listener.finished();
+        }
+    }
+
+    protected void dispatchResult(String result) {
+        for (SolverListener<? super String> listener : this.listeners) {
+            listener.onSolution(result);
+        }
+    }
+
+    @Override
+    public void addSolverListener(SolverListener<? super String> listener) {
+        this.listeners.add(listener);
     }
 
 }
