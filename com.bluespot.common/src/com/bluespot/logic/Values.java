@@ -88,7 +88,8 @@ public final class Values {
      * A {@link Value} implementation that only returns null.
      */
     private static final Value<?> VALUE_NULL = new Value<Object>() {
-        public Object get() {
+        @Override
+		public Object get() {
             return null;
         }
     };

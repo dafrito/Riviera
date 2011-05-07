@@ -31,7 +31,8 @@ public class PredicateTests {
 
     final Adapter<String, Integer> adaptLength = new Adapter<String, Integer>() {
 
-        public Integer adapt(final String source) {
+        @Override
+		public Integer adapt(final String source) {
             if (source == null) {
                 return null;
             }
@@ -45,7 +46,8 @@ public class PredicateTests {
     };
 
     final Predicate<Integer> evenPredicate = new Predicate<Integer>() {
-        public boolean test(final Integer value) {
+        @Override
+		public boolean test(final Integer value) {
             if (value == null) {
                 return false;
             }
@@ -55,7 +57,8 @@ public class PredicateTests {
 
     final Predicate<Integer> divisibleByThree = new Predicate<Integer>() {
 
-        public boolean test(final Integer value) {
+        @Override
+		public boolean test(final Integer value) {
             if (value == null) {
                 return false;
             }

@@ -55,7 +55,8 @@ public final class ClockDemonstration extends Demonstration {
 
         this.lastIteration = System.currentTimeMillis();
         final Timer timer = new Timer(200, new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
+            @Override
+			public void actionPerformed(final ActionEvent e) {
                 final long currentTime = System.currentTimeMillis();
                 final long delta = currentTime - ClockDemonstration.this.lastIteration;
                 ClockDemonstration.this.lastIteration = System.currentTimeMillis();
@@ -66,7 +67,8 @@ public final class ClockDemonstration extends Demonstration {
         timer.start();
 
         this.button.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent event) {
+            @Override
+			public void actionPerformed(final ActionEvent event) {
                 try {
                     /*
                      * Parse these first so we don't have an inconsistent

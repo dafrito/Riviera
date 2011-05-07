@@ -41,7 +41,8 @@ public final class ListWorkerBridge<T> implements ListDataListener {
         this.model = model;
     }
 
-    public void contentsChanged(final ListDataEvent e) {
+    @Override
+	public void contentsChanged(final ListDataEvent e) {
         final int startIndex = e.getIndex0();
         final int endIndex = e.getIndex1();
         assert startIndex <= endIndex;
@@ -52,7 +53,8 @@ public final class ListWorkerBridge<T> implements ListDataListener {
         }
     }
 
-    public void intervalAdded(final ListDataEvent e) {
+    @Override
+	public void intervalAdded(final ListDataEvent e) {
         final int startIndex = e.getIndex0();
         final int endIndex = e.getIndex1();
         assert startIndex <= endIndex;
@@ -63,7 +65,8 @@ public final class ListWorkerBridge<T> implements ListDataListener {
         }
     }
 
-    public void intervalRemoved(final ListDataEvent e) {
+    @Override
+	public void intervalRemoved(final ListDataEvent e) {
         final int startIndex = e.getIndex0();
         final int endIndex = e.getIndex1();
         assert startIndex <= endIndex;

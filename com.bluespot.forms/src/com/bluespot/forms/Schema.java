@@ -416,7 +416,8 @@ public final class Schema<K> {
             return this.schema;
         }
 
-        public boolean test(final Submission<? super T> submission) {
+        @Override
+		public boolean test(final Submission<? super T> submission) {
             if (submission == null) {
                 return false;
             }

@@ -25,7 +25,8 @@ public class NaturalTableIteration extends AbstractTableIteration {
      * 
      * @see TableIteration#comparePoints(Table, Point, Point)
      */
-    public int comparePoints(final Table<?> table, final Point unwrappedA, final Point unwrappedB) {
+    @Override
+	public int comparePoints(final Table<?> table, final Point unwrappedA, final Point unwrappedB) {
         final Point a = this.wrap(table, unwrappedA);
         final Point b = this.wrap(table, unwrappedB);
         final int yDifference = a.y - b.y;
@@ -65,11 +66,13 @@ public class NaturalTableIteration extends AbstractTableIteration {
         }
     }
 
-    public void next(final Point point) {
+    @Override
+	public void next(final Point point) {
         point.x++;
     }
 
-    public void previous(final Point point) {
+    @Override
+	public void previous(final Point point) {
         point.x--;
     }
 

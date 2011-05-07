@@ -53,7 +53,8 @@ public class FanDemonstration extends Demonstration {
             return new AbstractAction(this.getPrettyName()) {
                 private static final long serialVersionUID = 1L;
 
-                public void actionPerformed(final ActionEvent e) {
+                @Override
+				public void actionPerformed(final ActionEvent e) {
                     Speed.this.activate(model);
                 }
             };

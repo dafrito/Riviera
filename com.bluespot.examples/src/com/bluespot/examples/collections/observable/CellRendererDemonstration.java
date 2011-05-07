@@ -32,7 +32,8 @@ public final class CellRendererDemonstration extends BorderLayoutDemonstration {
 
         private static final long serialVersionUID = 5217981785927203654L;
 
-        public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
+        @Override
+		public Component getListCellRendererComponent(final JList sourceList, final Object value, final int index,
                 final boolean isSelected, final boolean cellHasFocus) {
             this.setOpaque(true);
             this.setText(String.valueOf(value.toString().length()));
@@ -71,7 +72,8 @@ public final class CellRendererDemonstration extends BorderLayoutDemonstration {
 
         final JButton removeButton = new JButton("Remove");
         removeButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent arg0) {
+            @Override
+			public void actionPerformed(final ActionEvent arg0) {
                 CellRendererDemonstration.this.strings.remove(0);
                 removeButton.setEnabled(!CellRendererDemonstration.this.strings.isEmpty());
             }
@@ -80,7 +82,8 @@ public final class CellRendererDemonstration extends BorderLayoutDemonstration {
 
         final JButton addButton = new JButton("Add");
         addButton.addActionListener(new ActionListener() {
-            public void actionPerformed(final ActionEvent arg0) {
+            @Override
+			public void actionPerformed(final ActionEvent arg0) {
                 CellRendererDemonstration.this.strings.add("Hello, world! This is element "
                         + CellRendererDemonstration.this.strings.size());
                 removeButton.setEnabled(true);

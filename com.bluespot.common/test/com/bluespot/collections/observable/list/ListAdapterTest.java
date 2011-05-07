@@ -27,7 +27,8 @@ public class ListAdapterTest {
 
     private final Adapter<String, Integer> adapter = new Adapter<String, Integer>() {
 
-        public Integer adapt(final String source) {
+        @Override
+		public Integer adapt(final String source) {
             return source.length();
         }
     };

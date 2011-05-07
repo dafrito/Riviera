@@ -67,7 +67,8 @@ public class Frequencies {
         final Map<Character, Integer> encryptedFrequencies = this.getFrequency(string);
         final List<Character> orderedByFrequency = new ArrayList<Character>(encryptedFrequencies.keySet());
         Collections.sort(orderedByFrequency, new Comparator<Character>() {
-            public int compare(final Character o1, final Character o2) {
+            @Override
+			public int compare(final Character o1, final Character o2) {
                 return encryptedFrequencies.get(o2) - encryptedFrequencies.get(o1);
             }
         });

@@ -50,7 +50,8 @@ public final class MutableValue<T> implements Value<T> {
         return oldValue;
     }
 
-    public T get() {
+    @Override
+	public T get() {
         return this.value;
     }
 

@@ -90,7 +90,8 @@ public abstract class TileMap<T> implements Paintable {
         return new Dimension(this.getTileWidth(), this.getTileHeight());
     }
 
-    public void paint(final Graphics2D originalG, final int width, final int height) {
+    @Override
+	public void paint(final Graphics2D originalG, final int width, final int height) {
         final Graphics2D g = (Graphics2D) originalG.create();
         final Point firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
 

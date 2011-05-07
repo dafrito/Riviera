@@ -164,7 +164,8 @@ public final class Observables {
                     internalListener.intervalRemoved(e);
                 } else {
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             internalListener.intervalRemoved(e);
                         }
                     });
@@ -177,7 +178,8 @@ public final class Observables {
                     internalListener.intervalAdded(e);
                 } else {
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             internalListener.intervalAdded(e);
                         }
                     });
@@ -190,7 +192,8 @@ public final class Observables {
                     internalListener.contentsChanged(e);
                 } else {
                     SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
+                        @Override
+						public void run() {
                             internalListener.contentsChanged(e);
                         }
                     });
@@ -204,7 +207,8 @@ public final class Observables {
             }
         } else {
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+                @Override
+				public void run() {
                     for (int i = 0; i < model.getSize(); i++) {
                         worker.elementAdded(i, model.getElementAt(i));
                     }

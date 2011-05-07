@@ -64,7 +64,8 @@ public final class AdaptingVisitor<S, D> implements Visitor<S> {
         return this.adapter;
     }
 
-    public void accept(final S value) {
+    @Override
+	public void accept(final S value) {
         this.getTargetVisitor().accept(this.getAdapter().adapt(value));
     }
 

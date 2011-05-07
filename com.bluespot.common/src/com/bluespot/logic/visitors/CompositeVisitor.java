@@ -68,7 +68,8 @@ public final class CompositeVisitor<T> implements Visitor<T> {
      * unfortunate, but I believe it's safer than attempting to handle
      * exceptions or ignoring them until all visitors have been called.
      */
-    public void accept(final T value) {
+    @Override
+	public void accept(final T value) {
         for (final Visitor<? super T> visitor : this.visitors) {
             visitor.accept(value);
         }

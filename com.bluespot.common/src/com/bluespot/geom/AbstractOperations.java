@@ -15,23 +15,28 @@ public abstract class AbstractOperations implements Operations {
         this.multiply(rectangle, 2.0d);
     }
 
-    public void doubleSize(final Dimension dimension) {
+    @Override
+	public void doubleSize(final Dimension dimension) {
         this.multiply(dimension, 2.0d);
     }
 
-    public void halfSize(final Dimension dimension) {
+    @Override
+	public void halfSize(final Dimension dimension) {
         this.divide(dimension, 2.0d);
     }
 
-    public void halfSize(final Rectangle rectangle) {
+    @Override
+	public void halfSize(final Rectangle rectangle) {
         this.divide(rectangle, 2.0d);
     }
 
-    public void divide(final Dimension dimension, final double denominator) {
+    @Override
+	public void divide(final Dimension dimension, final double denominator) {
         this.divide(dimension, denominator, denominator);
     }
 
-    public void divide(final Rectangle rectangle, final double denominator) {
+    @Override
+	public void divide(final Rectangle rectangle, final double denominator) {
         this.divide(rectangle, denominator, denominator);
     }
 
@@ -65,11 +70,13 @@ public abstract class AbstractOperations implements Operations {
         rectangle.setSize(dimension);
     }
 
-    public void multiply(final Dimension dimension, final double multiplier) {
+    @Override
+	public void multiply(final Dimension dimension, final double multiplier) {
         this.multiply(dimension, multiplier, multiplier);
     }
 
-    public void multiply(final Rectangle rectangle, final double multiplier) {
+    @Override
+	public void multiply(final Rectangle rectangle, final double multiplier) {
         this.multiply(rectangle, multiplier, multiplier);
     }
 

@@ -80,7 +80,8 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
         return collectionChanged;
     }
 
-    public void addListDataListener(final ListDataListener listener) {
+    @Override
+	public void addListDataListener(final ListDataListener listener) {
         if (listener == null) {
             throw new NullPointerException("listener is null");
         }
@@ -96,11 +97,13 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
         }
     }
 
-    public E getElementAt(final int index) {
+    @Override
+	public E getElementAt(final int index) {
         return this.get(index);
     }
 
-    public int getSize() {
+    @Override
+	public int getSize() {
         return this.size();
     }
 
@@ -158,7 +161,8 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
         return Collections.unmodifiableList(this.listeners);
     }
 
-    public void removeListDataListener(final ListDataListener listener) {
+    @Override
+	public void removeListDataListener(final ListDataListener listener) {
         this.listeners.remove(listener);
     }
 
@@ -207,7 +211,8 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
 
         sublist.addListDataListener(new ListDataListener() {
 
-            public void contentsChanged(final ListDataEvent e) {
+            @Override
+			public void contentsChanged(final ListDataEvent e) {
                 final int lowerBound = offset + e.getIndex0();
                 final int upperBound = offset + e.getIndex1();
                 for (int index = e.getIndex0(); index <= e.getIndex1(); index++) {
@@ -216,14 +221,16 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
                 ObservableList.this.fireContentsChanged(lowerBound, upperBound);
             }
 
-            public void intervalAdded(final ListDataEvent e) {
+            @Override
+			public void intervalAdded(final ListDataEvent e) {
                 final int lowerBound = offset + e.getIndex0();
                 final int upperBound = offset + e.getIndex1();
                 sourceList.addAll(lowerBound, sublist.subList(e.getIndex0(), e.getIndex1() + 1));
                 ObservableList.this.fireIntervalAdded(lowerBound, upperBound);
             }
 
-            public void intervalRemoved(final ListDataEvent e) {
+            @Override
+			public void intervalRemoved(final ListDataEvent e) {
                 final int lowerBound = offset + e.getIndex0();
                 final int upperBound = offset + e.getIndex1();
                 sourceList.subList(lowerBound, upperBound + 1).clear();

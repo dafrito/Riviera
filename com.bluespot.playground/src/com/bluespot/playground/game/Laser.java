@@ -55,7 +55,8 @@ public class Laser extends AbstractActor {
         this.shooting = shooting;
     }
 
-    public void update() {
+    @Override
+	public void update() {
         // By default, we shoot the laser.
         this.setShooting(true);
         for (final Actor neighbor : this.getEnvironment().getNeighbors(this)) {

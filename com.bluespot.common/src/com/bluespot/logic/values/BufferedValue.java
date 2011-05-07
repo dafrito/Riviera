@@ -112,7 +112,8 @@ public final class BufferedValue<T> implements Value<T> {
      *             not successfully retrieve a value. Reasons for this failure
      *             are dependent on the source {@link Value} implementation.
      */
-    public T get() {
+    @Override
+	public T get() {
         if (this.bufferedValue == null) {
             throw new NoSuchValueException(this);
         }

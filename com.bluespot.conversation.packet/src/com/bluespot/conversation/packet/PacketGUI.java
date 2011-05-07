@@ -57,7 +57,8 @@ public final class PacketGUI extends JPanel {
         this.capture.open(device, true);
 
         this.capture.addRawPacketListener(new RawPacketListener() {
-            public void rawPacketArrived(final RawPacket rawPacket) {
+            @Override
+			public void rawPacketArrived(final RawPacket rawPacket) {
                 listModel.add(rawPacket);
             }
         });

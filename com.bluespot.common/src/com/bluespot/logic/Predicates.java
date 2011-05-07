@@ -133,7 +133,8 @@ public final class Predicates {
      */
     private static final Predicate<File> PREDICATE_IS_DIRECTORY = new Predicate<File>() {
 
-        public boolean test(final File candidate) {
+        @Override
+		public boolean test(final File candidate) {
             if (candidate == null) {
                 return false;
             }
@@ -165,7 +166,8 @@ public final class Predicates {
      */
     private static final Predicate<File> PREDICATE_IS_FILE = new Predicate<File>() {
 
-        public boolean test(final File candidate) {
+        @Override
+		public boolean test(final File candidate) {
             if (candidate == null) {
                 return false;
             }
@@ -196,7 +198,8 @@ public final class Predicates {
      */
     private static final Predicate<Object> PREDICATE_NULL = new Predicate<Object>() {
 
-        public boolean test(final Object candidate) {
+        @Override
+		public boolean test(final Object candidate) {
             return candidate == null;
         }
 
@@ -224,7 +227,8 @@ public final class Predicates {
      */
     private static final Predicate<Object> PREDICATE_NOT_NULL = new Predicate<Object>() {
 
-        public boolean test(final Object candidate) {
+        @Override
+		public boolean test(final Object candidate) {
             return candidate != null;
         }
 
@@ -252,7 +256,8 @@ public final class Predicates {
      */
     private static final Predicate<Object> PREDICATE_TRUTH = new Predicate<Object>() {
 
-        public boolean test(final Object candidate) {
+        @Override
+		public boolean test(final Object candidate) {
             return true;
         }
 
@@ -278,7 +283,8 @@ public final class Predicates {
      */
     private static final Predicate<Object> PREDICATE_NEVER = new Predicate<Object>() {
 
-        public boolean test(final Object candidate) {
+        @Override
+		public boolean test(final Object candidate) {
             return false;
         }
 
@@ -471,7 +477,8 @@ public final class Predicates {
      * @see #lowerCase()
      */
     private static final Predicate<String> PREDICATE_LOWER_CASE = new Predicate<String>() {
-        public boolean test(final String candidate) {
+        @Override
+		public boolean test(final String candidate) {
             if (candidate == null) {
                 return false;
             }
@@ -510,7 +517,8 @@ public final class Predicates {
      * @see #lowerCase()
      */
     private static final Predicate<String> PREDICATE_UPPER_CASE = new Predicate<String>() {
-        public boolean test(final String candidate) {
+        @Override
+		public boolean test(final String candidate) {
             if (candidate == null) {
                 return false;
             }
@@ -549,7 +557,8 @@ public final class Predicates {
      * @see #fileExists()
      */
     private static final Predicate<File> PREDICATE_FILE_EXISTS = new Predicate<File>() {
-        public boolean test(final File candidate) {
+        @Override
+		public boolean test(final File candidate) {
             if (candidate == null) {
                 return false;
             }

@@ -66,7 +66,8 @@ public interface TableIterator<T> extends Iterator<T> {
      * @return {@code true} if the next point is contained inside the table,
      *         {@code false} otherwise.
      */
-    public boolean hasNext();
+    @Override
+	public boolean hasNext();
 
     /**
      * Returns whether the location immediately before the current location will

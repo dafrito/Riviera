@@ -34,7 +34,8 @@ public final class ConstantValue<T> implements Value<T> {
         this.constant = constant;
     }
 
-    public T get() {
+    @Override
+	public T get() {
         return this.constant;
     }
 

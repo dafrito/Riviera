@@ -69,7 +69,8 @@ public final class Sentinel<T> implements Visitor<T> {
      * @param value
      *            the value to check
      */
-    public void accept(final T value) {
+    @Override
+	public void accept(final T value) {
         if (!this.predicate.test(value)) {
             return;
         }

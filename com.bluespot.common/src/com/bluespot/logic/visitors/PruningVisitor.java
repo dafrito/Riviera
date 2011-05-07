@@ -46,7 +46,8 @@ public final class PruningVisitor<T> implements Visitor<T> {
     /**
      * Removes the specified value from this visitor's collection.
      */
-    public void accept(final T value) {
+    @Override
+	public void accept(final T value) {
         this.getCollection().remove(value);
     }
 

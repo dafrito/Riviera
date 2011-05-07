@@ -42,7 +42,8 @@ public final class Visitors {
      * @see Visitors#noop()
      */
     private static final Visitor<Object> VISITOR_NOOP = new Visitor<Object>() {
-        public void accept(final Object value) {
+        @Override
+		public void accept(final Object value) {
             // We intentionally do nothing with the specified value.
         }
     };
@@ -146,7 +147,8 @@ public final class Visitors {
      * @see #throwException()
      */
     private static final Visitor<RuntimeException> VISITOR_THROWER = new Visitor<RuntimeException>() {
-        public void accept(final RuntimeException value) {
+        @Override
+		public void accept(final RuntimeException value) {
             throw value;
         }
     };

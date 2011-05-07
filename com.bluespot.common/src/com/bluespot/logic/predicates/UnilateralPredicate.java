@@ -24,7 +24,8 @@ public final class UnilateralPredicate<T> extends CompositePredicate<T> {
         super(predicates);
     }
 
-    public boolean test(final T candidate) {
+    @Override
+	public boolean test(final T candidate) {
         for (final Predicate<? super T> predicate : this.getPredicates()) {
             if (predicate.test(candidate)) {
                 return true;

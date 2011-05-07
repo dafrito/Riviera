@@ -35,7 +35,8 @@ public class LinesDemonstration extends JComponent {
         this.setPreferredSize(new Dimension(300, 300));
         new Timer(1000 / 30, new ActionListener() {
 
-            public void actionPerformed(final ActionEvent e) {
+            @Override
+			public void actionPerformed(final ActionEvent e) {
                 OFFSET += .01f;
                 LinesDemonstration.this.repaint();
             }

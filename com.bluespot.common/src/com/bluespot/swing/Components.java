@@ -274,7 +274,8 @@ public final class Components {
         Components.connectWithConstraints(container, components, adapter);
         final ChangeListener listener = new ChangeListener() {
 
-            public void stateChanged(final ChangeEvent e) {
+            @Override
+			public void stateChanged(final ChangeEvent e) {
                 if (container.getLayout() != layout) {
                     throw new IllegalStateException("Container does not have this card layout");
                 }
@@ -290,7 +291,8 @@ public final class Components {
         };
         model.addChangeListener(listener);
         final Runnable firstTimeRefresh = new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 listener.stateChanged(null);
             }
         };
@@ -425,21 +427,24 @@ class ComponentListWorker implements ListWorker<JComponent> {
         this.container = container;
     }
 
-    public void elementAdded(final int index, final JComponent newValue) {
+    @Override
+	public void elementAdded(final int index, final JComponent newValue) {
         this.checkForComodification();
         this.container.add(newValue, this.getConstraints(newValue), index);
         this.lastSize++;
         this.container.revalidate();
     }
 
-    public void elementRemoved(final int index) {
+    @Override
+	public void elementRemoved(final int index) {
         this.checkForComodification();
         this.container.remove(index);
         this.lastSize--;
         this.container.revalidate();
     }
 
-    public void elementSet(final int index, final JComponent newValue) {
+    @Override
+	public void elementSet(final int index, final JComponent newValue) {
         this.checkForComodification();
         this.container.remove(index);
         this.container.add(newValue, this.getConstraints(newValue), index);

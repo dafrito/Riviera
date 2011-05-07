@@ -32,27 +32,31 @@ public abstract class AbstractTableIterator<T> implements TableIterator<T> {
         this.table = table;
     }
 
-    public T get() {
+    @Override
+	public T get() {
         if (this.currentPoint == null) {
             this.next();
         }
         return this.table.get(this.currentPoint);
     }
 
-    public Point getLocation() {
+    @Override
+	public Point getLocation() {
         final Point targetPoint = new Point();
         this.getLocation(targetPoint);
         return targetPoint;
     }
 
-    public void getLocation(final Point targetPoint) {
+    @Override
+	public void getLocation(final Point targetPoint) {
         if (this.currentPoint == null) {
             this.next();
         }
         targetPoint.setLocation(this.currentPoint);
     }
 
-    public T put(final T value) {
+    @Override
+	public T put(final T value) {
         if (this.currentPoint == null) {
             this.next();
         }

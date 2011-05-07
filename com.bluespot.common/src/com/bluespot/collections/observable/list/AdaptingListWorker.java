@@ -60,7 +60,8 @@ public final class AdaptingListWorker<S, D> implements ListWorker<S> {
      *             method. This exception is thrown on a best-effort basis, and
      *             should only be used to detect bugs.
      */
-    public void elementSet(final int index, final S newValue) {
+    @Override
+	public void elementSet(final int index, final S newValue) {
         this.checkForComodification();
         this.targetList.set(index, this.adapter.adapt(newValue));
     }
@@ -73,7 +74,8 @@ public final class AdaptingListWorker<S, D> implements ListWorker<S> {
      *             method. This exception is thrown on a best-effort basis, and
      *             should only be used to detect bugs.
      */
-    public void elementAdded(final int index, final S newValue) {
+    @Override
+	public void elementAdded(final int index, final S newValue) {
         this.checkForComodification();
         this.targetList.add(index, this.adapter.adapt(newValue));
         this.lastSize++;
@@ -87,7 +89,8 @@ public final class AdaptingListWorker<S, D> implements ListWorker<S> {
      *             method. This exception is thrown on a best-effort basis, and
      *             should only be used to detect bugs.
      */
-    public void elementRemoved(final int index) {
+    @Override
+	public void elementRemoved(final int index) {
         this.checkForComodification();
         this.targetList.remove(index);
         this.lastSize--;

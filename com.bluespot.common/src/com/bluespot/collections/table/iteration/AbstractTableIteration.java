@@ -22,13 +22,15 @@ public abstract class AbstractTableIteration implements TableIteration {
      */
     public abstract void doWrap(Table<?> table, Point targetPoint);
 
-    public Point wrap(final Table<?> table, final Point unwrappedPoint) {
+    @Override
+	public Point wrap(final Table<?> table, final Point unwrappedPoint) {
         final Point targetPoint = new Point();
         this.wrap(table, unwrappedPoint, targetPoint);
         return targetPoint;
     }
 
-    public void wrap(final Table<?> table, final Point unwrappedPoint, final Point targetPoint) {
+    @Override
+	public void wrap(final Table<?> table, final Point unwrappedPoint, final Point targetPoint) {
         targetPoint.setLocation(unwrappedPoint);
         this.doWrap(table, targetPoint);
     }

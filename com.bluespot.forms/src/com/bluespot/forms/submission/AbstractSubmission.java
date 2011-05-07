@@ -37,7 +37,8 @@ public abstract class AbstractSubmission<K> implements Submission<K> {
      */
     protected abstract Object getValue(K key);
 
-    public Map<? extends K, Object> asMap() {
+    @Override
+	public Map<? extends K, Object> asMap() {
         final Map<K, Object> values = new HashMap<K, Object>();
         for (final Entry<? extends K, Class<?>> entry : this.getTypes().entrySet()) {
             values.put(entry.getKey(), this.get(entry.getKey(), entry.getValue()));
@@ -45,11 +46,13 @@ public abstract class AbstractSubmission<K> implements Submission<K> {
         return values;
     }
 
-    public boolean containsKey(final K key) {
+    @Override
+	public boolean containsKey(final K key) {
         return this.getTypes().containsKey(key);
     }
 
-    public final <T> T get(final K key, final Class<T> type) {
+    @Override
+	public final <T> T get(final K key, final Class<T> type) {
         if (key == null) {
             throw new NullPointerException("key is null");
         }

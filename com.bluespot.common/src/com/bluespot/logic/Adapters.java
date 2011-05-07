@@ -37,7 +37,8 @@ public final class Adapters {
      * An {@link Adapter} implementation that returns the length of a string.
      */
     private static final Adapter<String, Integer> ADAPTER_STRING_LENGTH = new Adapter<String, Integer>() {
-        public Integer adapt(final String source) {
+        @Override
+		public Integer adapt(final String source) {
             if (source == null) {
                 return null;
             }
@@ -63,7 +64,8 @@ public final class Adapters {
      */
     private static final Adapter<Object, Object> ADAPTER_NOOP = new Adapter<Object, Object>() {
 
-        public Object adapt(final Object source) {
+        @Override
+		public Object adapt(final Object source) {
             return source;
         }
 
@@ -95,7 +97,8 @@ public final class Adapters {
      */
     private static final Adapter<Object, String> ADAPTER_TO_STRING = new Adapter<Object, String>() {
 
-        public String adapt(final Object source) {
+        @Override
+		public String adapt(final Object source) {
             if (source == null) {
                 return null;
             }
@@ -122,7 +125,8 @@ public final class Adapters {
 
     private static final Adapter<Component, String> ADAPTER_COMPONENT_NAME = new Adapter<Component, String>() {
 
-        public String adapt(final Component source) {
+        @Override
+		public String adapt(final Component source) {
             if (source == null) {
                 return null;
             }
@@ -149,7 +153,8 @@ public final class Adapters {
 
     private static final Adapter<File, String> ADAPTER_FILE_NAME = new Adapter<File, String>() {
 
-        public String adapt(final File source) {
+        @Override
+		public String adapt(final File source) {
             if (source == null) {
                 return null;
             }
@@ -196,7 +201,8 @@ public final class Adapters {
      */
     private static final Adapter<JTextComponent, String> ADAPTER_TEXT_COMPONENT_TO_STRING = new Adapter<JTextComponent, String>() {
 
-        public final String adapt(final JTextComponent source) {
+        @Override
+		public final String adapt(final JTextComponent source) {
             if (source == null) {
                 return null;
             }

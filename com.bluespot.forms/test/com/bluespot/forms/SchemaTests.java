@@ -22,7 +22,8 @@ public class SchemaTests {
     private MutableSubmission<String> submission;
 
     private final Visitor<Object> visitor = new Visitor<Object>() {
-        public void accept(final Object value) {
+        @Override
+		public void accept(final Object value) {
             SchemaTests.this.flag = true;
         }
     };

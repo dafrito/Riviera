@@ -33,15 +33,18 @@ public class ObservableListStateModel<T> extends AbstractStateModel<T> {
 
     private final ListDataListener listDataListener = new ListDataListener() {
 
-        public void contentsChanged(final ListDataEvent e) {
+        @Override
+		public void contentsChanged(final ListDataEvent e) {
             ObservableListStateModel.this.contentsChanged();
         }
 
-        public void intervalAdded(final ListDataEvent e) {
+        @Override
+		public void intervalAdded(final ListDataEvent e) {
             ObservableListStateModel.this.intervalAdded(e);
         }
 
-        public void intervalRemoved(final ListDataEvent e) {
+        @Override
+		public void intervalRemoved(final ListDataEvent e) {
             ObservableListStateModel.this.intervalRemoved(e);
         }
 

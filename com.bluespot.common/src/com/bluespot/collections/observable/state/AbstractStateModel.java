@@ -30,7 +30,8 @@ public abstract class AbstractStateModel<T> implements StateModel<T> {
 
     private final List<StateChangeListener<T>> stateChangeListeners = new CopyOnWriteArrayList<StateChangeListener<T>>();
 
-    public T getState() {
+    @Override
+	public T getState() {
         return this.state;
     }
 
@@ -38,7 +39,8 @@ public abstract class AbstractStateModel<T> implements StateModel<T> {
         return this.getState() != null ? this.getState().equals(otherState) : otherState == null;
     }
 
-    public boolean changeState(final T newState) {
+    @Override
+	public boolean changeState(final T newState) {
         if (this.isEqualState(newState)) {
             // Changing to the same state, so silently return
             return false;
@@ -67,39 +69,47 @@ public abstract class AbstractStateModel<T> implements StateModel<T> {
         this.selectedIndex = stateIndex;
     }
 
-    public void clearSelection() {
+    @Override
+	public void clearSelection() {
         this.changeState(null);
     }
 
-    public int getSelectedIndex() {
+    @Override
+	public int getSelectedIndex() {
         return this.selectedIndex;
     }
 
-    public void setSelectedIndex(final int index) {
+    @Override
+	public void setSelectedIndex(final int index) {
         if (this.selectedIndex == index) {
             return;
         }
         this.doStateChange(this.getStates().get(index), index);
     }
 
-    public boolean isSelected() {
+    @Override
+	public boolean isSelected() {
         return this.getStates().contains(this.getState());
     }
 
-    public void addChangeListener(final ChangeListener listener) {
+    @Override
+	public void addChangeListener(final ChangeListener listener) {
         this.changeListeners.add(listener);
     }
 
-    public void removeChangeListener(final ChangeListener listener) {
+    @Override
+	public void removeChangeListener(final ChangeListener listener) {
         this.changeListeners.remove(listener);
     }
 
-    public void addStateChangeListener(final StateChangeListener<T> listener) {
+    @Override
+	public void addStateChangeListener(final StateChangeListener<T> listener) {
         this.addChangeListener(listener);
         this.stateChangeListeners.add(listener);
     }
 
-    public void removeStateChangeListener(final StateChangeListener<T> listener) {
+    @Override
+	public void removeStateChangeListener(final StateChangeListener<T> listener) {
         this.removeChangeListener(listener);
         this.stateChangeListeners.remove(listener);
     }

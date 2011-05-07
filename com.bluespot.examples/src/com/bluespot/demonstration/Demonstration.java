@@ -143,7 +143,8 @@ public abstract class Demonstration {
     public static void launchWrapped(final Class<? extends Component> klass) {
         Demonstration.initialize();
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 try {
                     final Component component = Reflection.invokeZeroArgConstructor(klass);
                     new Demonstration() {
@@ -182,7 +183,8 @@ public abstract class Demonstration {
     public static void launch(final Class<? extends Demonstration> klass) {
         Demonstration.initialize();
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+            @Override
+			public void run() {
                 Demonstration demonstration;
                 try {
                     demonstration = Reflection.invokeZeroArgConstructor(klass);

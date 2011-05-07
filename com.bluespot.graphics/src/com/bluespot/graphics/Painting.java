@@ -52,7 +52,8 @@ public final class Painting {
             delay = 1000 / framesPerSecond;
         }
         final Timer timer = new Timer(delay, new ActionListener() {
-            public void actionPerformed(final ActionEvent e) {
+            @Override
+			public void actionPerformed(final ActionEvent e) {
                 component.repaint();
             }
         });

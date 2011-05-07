@@ -139,7 +139,8 @@ public class SubstitutionSolver implements Solver<String, String> {
         return candidate;
     }
 
-    public Set<String> solve(String encrypted) {
+    @Override
+	public Set<String> solve(String encrypted) {
         encrypted = encrypted.toUpperCase();
         Set<String> results = this.churn(encrypted,
                 this.getCheapestWordCombo(encrypted),

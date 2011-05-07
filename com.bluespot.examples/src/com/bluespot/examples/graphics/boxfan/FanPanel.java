@@ -26,7 +26,8 @@ public class FanPanel extends JPanel {
 
     @SuppressWarnings("unused")
     private final Timer timer = new Timer(1000 / FPS, new ActionListener() {
-        public void actionPerformed(final ActionEvent e) {
+        @Override
+		public void actionPerformed(final ActionEvent e) {
             FanPanel.this.repaint();
         }
     });
