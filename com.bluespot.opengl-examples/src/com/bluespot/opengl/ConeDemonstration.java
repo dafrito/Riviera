@@ -34,117 +34,117 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class ConeDemonstration extends AbstractGLDemonstration {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Sets whether depth testing is used when rendering pixels. If {@code true}
-     * , the polygon will appear correctly. If {@code false}, polygons that are
-     * drawn later in the rendering process will occlude polygons drawn earlier.
-     * In this demonstration, this means that the bottom of the cone will always
-     * occlude the cone portion.
-     */
-    public final boolean useDepthTesting = true;
+	/**
+	 * Sets whether depth testing is used when rendering pixels. If {@code true}
+	 * , the polygon will appear correctly. If {@code false}, polygons that are
+	 * drawn later in the rendering process will occlude polygons drawn earlier.
+	 * In this demonstration, this means that the bottom of the cone will always
+	 * occlude the cone portion.
+	 */
+	public final boolean useDepthTesting = true;
 
-    /**
-     * Sets whether back-facing polygons are drawn. If this is {@code true} and
-     * {@link #correctWindingOrder} is {@code false}, the cone will appear
-     * incorrectly. This is intentional to demonstrate how occlusion is done.
-     */
-    public final boolean backFaceCulling = true;
+	/**
+	 * Sets whether back-facing polygons are drawn. If this is {@code true} and
+	 * {@link #correctWindingOrder} is {@code false}, the cone will appear
+	 * incorrectly. This is intentional to demonstrate how occlusion is done.
+	 */
+	public final boolean backFaceCulling = true;
 
-    /**
-     * Draws back-facing surfaces as a wireframe. Otherwise, they're drawn as
-     * filled surfaces. This has no effect if {@link #backFaceCulling} is
-     * {@code true}.
-     */
-    public final boolean drawBacksAsWireFrame = true;
+	/**
+	 * Draws back-facing surfaces as a wireframe. Otherwise, they're drawn as
+	 * filled surfaces. This has no effect if {@link #backFaceCulling} is
+	 * {@code true}.
+	 */
+	public final boolean drawBacksAsWireFrame = true;
 
-    /**
-     * Corrects the winding order so that the cone can be drawn properly. If
-     * {@link #backFaceCulling} is {@code true}, this must be also be {@code
-     * true} for the cone to appear correctly.
-     */
-    public final boolean correctWindingOrder = true;
+	/**
+	 * Corrects the winding order so that the cone can be drawn properly. If
+	 * {@link #backFaceCulling} is {@code true}, this must be also be {@code
+	 * true} for the cone to appear correctly.
+	 */
+	public final boolean correctWindingOrder = true;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(ConeDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(ConeDemonstration.class);
+	}
 
-    @Override
-    public void init(final GLAutoDrawable drawable) {
-        super.init(drawable);
-        final GL gl = drawable.getGL();
-        gl.glShadeModel(GL.GL_FLAT);
-    }
+	@Override
+	public void init(final GLAutoDrawable drawable) {
+		super.init(drawable);
+		final GL gl = drawable.getGL();
+		gl.glShadeModel(GL.GL_FLAT);
+	}
 
-    @Override
-    protected void render(final GL gl) {
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+	@Override
+	protected void render(final GL gl) {
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-        gl.glFrontFace(GL.GL_CW);
+		gl.glFrontFace(GL.GL_CW);
 
-        if (this.useDepthTesting) {
-            gl.glEnable(GL.GL_DEPTH_TEST);
-        } else {
-            gl.glDisable(GL.GL_DEPTH_TEST);
-        }
+		if (this.useDepthTesting) {
+			gl.glEnable(GL.GL_DEPTH_TEST);
+		} else {
+			gl.glDisable(GL.GL_DEPTH_TEST);
+		}
 
-        if (this.backFaceCulling) {
-            gl.glEnable(GL.GL_CULL_FACE);
-        } else {
-            gl.glDisable(GL.GL_CULL_FACE);
-            if (this.drawBacksAsWireFrame) {
-                gl.glPolygonMode(GL.GL_BACK, GL.GL_LINE);
-            } else {
-                gl.glPolygonMode(GL.GL_BACK, GL.GL_FILL);
-            }
-        }
+		if (this.backFaceCulling) {
+			gl.glEnable(GL.GL_CULL_FACE);
+		} else {
+			gl.glDisable(GL.GL_CULL_FACE);
+			if (this.drawBacksAsWireFrame) {
+				gl.glPolygonMode(GL.GL_BACK, GL.GL_LINE);
+			} else {
+				gl.glPolygonMode(GL.GL_BACK, GL.GL_FILL);
+			}
+		}
 
-        int pivot = 1;
-        gl.glBegin(GL.GL_TRIANGLE_FAN);
-        gl.glVertex3f(0, 0, 75);
-        for (int i = 0; i <= 16; i++) {
-            final float angle = i * (float) Math.PI / 8.0f;
-            final float x = 50.0f * (float) Math.sin(angle);
-            final float y = 50.0f * (float) Math.cos(angle);
+		int pivot = 1;
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+		gl.glVertex3f(0, 0, 75);
+		for (int i = 0; i <= 16; i++) {
+			final float angle = i * (float) Math.PI / 8.0f;
+			final float x = 50.0f * (float) Math.sin(angle);
+			final float y = 50.0f * (float) Math.cos(angle);
 
-            if (pivot % 2 == 0) {
-                gl.glColor3f(0, 1, 0);
-            } else {
-                gl.glColor3f(1, 0, 0);
-            }
-            pivot++;
+			if (pivot % 2 == 0) {
+				gl.glColor3f(0, 1, 0);
+			} else {
+				gl.glColor3f(1, 0, 0);
+			}
+			pivot++;
 
-            gl.glVertex2f(x, y);
-        }
-        gl.glEnd();
+			gl.glVertex2f(x, y);
+		}
+		gl.glEnd();
 
-        if (this.correctWindingOrder) {
-            gl.glFrontFace(GL.GL_CCW);
-        }
-        gl.glBegin(GL.GL_TRIANGLE_FAN);
-        gl.glVertex2f(0, 0);
-        for (int i = 0; i <= 16; i++) {
-            final float angle = i * (float) Math.PI / 8.0f;
-            final float x = 50.0f * (float) Math.sin(angle);
-            final float y = 50.0f * (float) Math.cos(angle);
+		if (this.correctWindingOrder) {
+			gl.glFrontFace(GL.GL_CCW);
+		}
+		gl.glBegin(GL.GL_TRIANGLE_FAN);
+		gl.glVertex2f(0, 0);
+		for (int i = 0; i <= 16; i++) {
+			final float angle = i * (float) Math.PI / 8.0f;
+			final float x = 50.0f * (float) Math.sin(angle);
+			final float y = 50.0f * (float) Math.cos(angle);
 
-            if (pivot % 2 == 0) {
-                gl.glColor3f(0, 1, 0);
-            } else {
-                gl.glColor3f(1, 0, 0);
-            }
-            pivot++;
+			if (pivot % 2 == 0) {
+				gl.glColor3f(0, 1, 0);
+			} else {
+				gl.glColor3f(1, 0, 0);
+			}
+			pivot++;
 
-            gl.glVertex2f(x, y);
-        }
-        gl.glEnd();
+			gl.glVertex2f(x, y);
+		}
+		gl.glEnd();
 
-    }
+	}
 }

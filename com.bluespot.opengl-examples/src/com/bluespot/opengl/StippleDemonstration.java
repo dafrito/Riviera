@@ -23,33 +23,33 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class StippleDemonstration extends AbstractGLDemonstration {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(StippleDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(StippleDemonstration.class);
+	}
 
-    @Override
-    protected void render(final GL gl) {
-        gl.glEnable(GL.GL_LINE_STIPPLE);
+	@Override
+	protected void render(final GL gl) {
+		gl.glEnable(GL.GL_LINE_STIPPLE);
 
-        int factor = 1;
-        for (float y = -90.0f; y < 90.0f; y += 20.0f) {
-            gl.glLineStipple(factor, (short) 0x5555); // 5 in binary is a 1001
-            // pattern.
-            gl.glBegin(GL.GL_LINES);
-            final float percentComplete = (y + 90) / 180;
-            gl.glColor3f(.3f + percentComplete / 3.0f, 1.0f - percentComplete, percentComplete);
-            gl.glVertex2f(-80.0f, y);
-            gl.glVertex2f(80.0f, y);
-            gl.glEnd();
-            factor += 2;
-        }
-    }
+		int factor = 1;
+		for (float y = -90.0f; y < 90.0f; y += 20.0f) {
+			gl.glLineStipple(factor, (short) 0x5555); // 5 in binary is a 1001
+			// pattern.
+			gl.glBegin(GL.GL_LINES);
+			final float percentComplete = (y + 90) / 180;
+			gl.glColor3f(.3f + percentComplete / 3.0f, 1.0f - percentComplete, percentComplete);
+			gl.glVertex2f(-80.0f, y);
+			gl.glVertex2f(80.0f, y);
+			gl.glEnd();
+			factor += 2;
+		}
+	}
 }

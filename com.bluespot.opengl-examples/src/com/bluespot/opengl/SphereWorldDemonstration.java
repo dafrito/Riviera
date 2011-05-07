@@ -30,143 +30,143 @@ import com.sun.opengl.util.GLUT;
  */
 public class SphereWorldDemonstration extends GLJPanel implements GLEventListener {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Point lastPoint = null;
+	private Point lastPoint = null;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(SphereWorldDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(SphereWorldDemonstration.class);
+	}
 
-    /**
-     * Constructs a new {@link AbstractGLDemonstration}.
-     */
-    public SphereWorldDemonstration() {
-        this.setPreferredSize(new Dimension(800, 600));
-        this.addGLEventListener(this);
+	/**
+	 * Constructs a new {@link AbstractGLDemonstration}.
+	 */
+	public SphereWorldDemonstration() {
+		this.setPreferredSize(new Dimension(800, 600));
+		this.addGLEventListener(this);
 
-        Painting.repaintPeriodically(this, 60).start();
+		Painting.repaintPeriodically(this, 60).start();
 
-        this.addMouseListener(new MouseAdapter() {
+		this.addMouseListener(new MouseAdapter() {
 
-            @Override
-            public void mousePressed(final MouseEvent e) {
-                SphereWorldDemonstration.this.lastPoint = e.getPoint();
-            }
+			@Override
+			public void mousePressed(final MouseEvent e) {
+				SphereWorldDemonstration.this.lastPoint = e.getPoint();
+			}
 
-            @Override
-            public void mouseReleased(final MouseEvent e) {
-                SphereWorldDemonstration.this.lastPoint = null;
-            }
+			@Override
+			public void mouseReleased(final MouseEvent e) {
+				SphereWorldDemonstration.this.lastPoint = null;
+			}
 
-        });
-        this.addMouseMotionListener(new MouseMotionAdapter() {
+		});
+		this.addMouseMotionListener(new MouseMotionAdapter() {
 
-            @Override
-            public void mouseDragged(final MouseEvent e) {
-                final Point last = SphereWorldDemonstration.this.lastPoint;
-                if (last == null) {
-                    return;
-                }
-                // SphereWorld.this.yRot += e.getX() - last.x;
-                // SphereWorld.this.xRot += e.getY() - last.y;
-                SphereWorldDemonstration.this.lastPoint = e.getPoint();
-            }
-        });
-    }
+			@Override
+			public void mouseDragged(final MouseEvent e) {
+				final Point last = SphereWorldDemonstration.this.lastPoint;
+				if (last == null) {
+					return;
+				}
+				// SphereWorld.this.yRot += e.getX() - last.x;
+				// SphereWorld.this.xRot += e.getY() - last.y;
+				SphereWorldDemonstration.this.lastPoint = e.getPoint();
+			}
+		});
+	}
 
-    private final Frame camera = new Frame();
+	private final Frame camera = new Frame();
 
-    private final List<Frame> frames = new ArrayList<Frame>();
+	private final List<Frame> frames = new ArrayList<Frame>();
 
-    @Override
-    public void init(final GLAutoDrawable drawable) {
-        final GL gl = drawable.getGL();
-        gl.glClearColor(0, 0, .5f, 1.0f);
+	@Override
+	public void init(final GLAutoDrawable drawable) {
+		final GL gl = drawable.getGL();
+		gl.glClearColor(0, 0, .5f, 1.0f);
 
-        gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
 
-        for (int i = 0; i < 50; i++) {
-            final float x = ((float) Math.random()) * 40.0f - 20.0f;
-            final float z = ((float) Math.random()) * 40.0f - 20.0f;
-            this.frames.add(new Frame(new Point3D.Float(x, 0.0f, z)));
-        }
+		for (int i = 0; i < 50; i++) {
+			final float x = ((float) Math.random()) * 40.0f - 20.0f;
+			final float z = ((float) Math.random()) * 40.0f - 20.0f;
+			this.frames.add(new Frame(new Point3D.Float(x, 0.0f, z)));
+		}
 
-    }
+	}
 
-    private float zRot = 0;
+	private float zRot = 0;
 
-    @Override
-    public void display(final GLAutoDrawable drawable) {
-        final GL gl = drawable.getGL();
+	@Override
+	public void display(final GLAutoDrawable drawable) {
+		final GL gl = drawable.getGL();
 
-        Rendering.setClearColor(gl, Color.darkGray);
-        Rendering.Buffer.COLOR.clear(gl);
-        gl.glPushMatrix();
-        gl.glRotatef(this.zRot, 0, 1, 0);
-        this.camera.transform(gl);
+		Rendering.setClearColor(gl, Color.darkGray);
+		Rendering.Buffer.COLOR.clear(gl);
+		gl.glPushMatrix();
+		gl.glRotatef(this.zRot, 0, 1, 0);
+		this.camera.transform(gl);
 
-        this.render(gl);
+		this.render(gl);
 
-        gl.glPopMatrix();
-        this.zRot += .1f;
-    }
+		gl.glPopMatrix();
+		this.zRot += .1f;
+	}
 
-    /**
-     * Performs any rendering necessary by this demonstration.
-     * 
-     * @param gl
-     *            the rendering context
-     */
-    protected void render(final GL gl) {
-        this.drawGrid(gl);
-        final GLUT glut = new GLUT();
-        for (final Frame sphere : this.frames) {
-            gl.glPushMatrix();
-            sphere.transform(gl);
-            glut.glutSolidSphere(0.1f, 13, 25);
-            gl.glPopMatrix();
-        }
-    }
+	/**
+	 * Performs any rendering necessary by this demonstration.
+	 * 
+	 * @param gl
+	 *            the rendering context
+	 */
+	protected void render(final GL gl) {
+		this.drawGrid(gl);
+		final GLUT glut = new GLUT();
+		for (final Frame sphere : this.frames) {
+			gl.glPushMatrix();
+			sphere.transform(gl);
+			glut.glutSolidSphere(0.1f, 13, 25);
+			gl.glPopMatrix();
+		}
+	}
 
-    private void drawGrid(final GL gl) {
-        final float extent = 20.0f;
-        gl.glBegin(GL.GL_LINES);
-        final float y = -.4f;
-        for (float line = -extent; line < extent; line += 2.0f) {
-            gl.glVertex3f(line, y, -extent);
-            gl.glVertex3f(line, y, extent);
+	private void drawGrid(final GL gl) {
+		final float extent = 20.0f;
+		gl.glBegin(GL.GL_LINES);
+		final float y = -.4f;
+		for (float line = -extent; line < extent; line += 2.0f) {
+			gl.glVertex3f(line, y, -extent);
+			gl.glVertex3f(line, y, extent);
 
-            gl.glVertex3f(-extent, y, line);
-            gl.glVertex3f(extent, y, line);
-        }
-        gl.glEnd();
-    }
+			gl.glVertex3f(-extent, y, line);
+			gl.glVertex3f(extent, y, line);
+		}
+		gl.glEnd();
+	}
 
-    @Override
-    public void displayChanged(final GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
-        // XXX Do nothing; I'm not currently sure what to do here.
-    }
+	@Override
+	public void displayChanged(final GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
+		// XXX Do nothing; I'm not currently sure what to do here.
+	}
 
-    @Override
-    public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width, final int height) {
-        final GL gl = drawable.getGL();
-        final double aspectRatio = (double) width / (double) height;
+	@Override
+	public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width, final int height) {
+		final GL gl = drawable.getGL();
+		final double aspectRatio = (double) width / (double) height;
 
-        gl.glMatrixMode(GL.GL_PROJECTION);
-        gl.glLoadIdentity();
+		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glLoadIdentity();
 
-        final GLU glu = new GLU();
-        glu.gluPerspective(60.0f, aspectRatio, 0, 400.0);
+		final GLU glu = new GLU();
+		glu.gluPerspective(60.0f, aspectRatio, 0, 400.0);
 
-        gl.glMatrixMode(GL.GL_MODELVIEW);
-        gl.glLoadIdentity();
-    }
+		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glLoadIdentity();
+	}
 
 }

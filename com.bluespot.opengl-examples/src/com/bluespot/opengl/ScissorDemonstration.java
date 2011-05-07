@@ -21,55 +21,55 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class ScissorDemonstration extends AbstractGLDemonstration {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final List<Integer> nums = new ArrayList<Integer>();
-    private final List<Float> colors = new ArrayList<Float>();
+	private final List<Integer> nums = new ArrayList<Integer>();
+	private final List<Float> colors = new ArrayList<Float>();
 
-    /**
-     * The number of cleared scissored rectangles generated and used in this
-     * demonstration. It must be a positive number, and preferably not large
-     * since I don't know how this will work if we "overflow" in scissors.
-     */
-    public static int NUM_SCISSORS = 20;
+	/**
+	 * The number of cleared scissored rectangles generated and used in this
+	 * demonstration. It must be a positive number, and preferably not large
+	 * since I don't know how this will work if we "overflow" in scissors.
+	 */
+	public static int NUM_SCISSORS = 20;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(ScissorDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(ScissorDemonstration.class);
+	}
 
-    @Override
-    public void init(final GLAutoDrawable drawable) {
-        final Random random = new Random();
-        this.colors.add(0.0f);
-        this.colors.add(0.0f);
-        this.colors.add(0.0f);
-        for (int i = 0; i < NUM_SCISSORS; i++) {
-            this.nums.add(random.nextInt(100));
-            this.colors.add(random.nextFloat());
-            this.colors.add(random.nextFloat());
-            this.colors.add(random.nextFloat());
-        }
-    }
+	@Override
+	public void init(final GLAutoDrawable drawable) {
+		final Random random = new Random();
+		this.colors.add(0.0f);
+		this.colors.add(0.0f);
+		this.colors.add(0.0f);
+		for (int i = 0; i < NUM_SCISSORS; i++) {
+			this.nums.add(random.nextInt(100));
+			this.colors.add(random.nextFloat());
+			this.colors.add(random.nextFloat());
+			this.colors.add(random.nextFloat());
+		}
+	}
 
-    @Override
-    protected void render(final GL gl) {
-        final int width = this.getWidth();
-        final int height = this.getHeight();
-        gl.glEnable(GL.GL_SCISSOR_TEST);
-        int encroachment = 0;
-        final Iterator<Integer> iter = this.nums.iterator();
-        final Iterator<Float> colorIter = this.colors.iterator();
-        for (int i = 0; i < NUM_SCISSORS; i++) {
-            gl.glScissor(encroachment, encroachment, width - encroachment, height - encroachment);
-            gl.glClearColor(colorIter.next(), colorIter.next(), colorIter.next(), 1.0f);
-            gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-            encroachment += iter.next();
-        }
-    }
+	@Override
+	protected void render(final GL gl) {
+		final int width = this.getWidth();
+		final int height = this.getHeight();
+		gl.glEnable(GL.GL_SCISSOR_TEST);
+		int encroachment = 0;
+		final Iterator<Integer> iter = this.nums.iterator();
+		final Iterator<Float> colorIter = this.colors.iterator();
+		for (int i = 0; i < NUM_SCISSORS; i++) {
+			gl.glScissor(encroachment, encroachment, width - encroachment, height - encroachment);
+			gl.glClearColor(colorIter.next(), colorIter.next(), colorIter.next(), 1.0f);
+			gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+			encroachment += iter.next();
+		}
+	}
 }

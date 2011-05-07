@@ -11,275 +11,275 @@ import org.junit.Test;
 
 public class DequeUtilTest {
 
-    private boolean testEqualDeques(final Deque<?> a, final Deque<?> b) {
-        final Iterator<?> aIter = a.iterator();
-        final Iterator<?> bIter = b.iterator();
-        while (aIter.hasNext() && bIter.hasNext()) {
-            final Object aValue = aIter.next();
-            final Object bValue = bIter.next();
-            if (aValue == null ? bValue != null : !aValue.equals(bValue)) {
-                // Not equal, so return early.
-                return false;
-            }
-        }
-        return !aIter.hasNext() && !bIter.hasNext();
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testRemoveFromTailThrowsOnWayOffSize() {
-        // Should throw an exception since we're removing too many elements
-        DequeUtil.removeFromTail(new ArrayDeque<Object>(), 10);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testRemoveFromTailThrowsOnOneOffSize() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1);
-
-        // Should throw an exception since we're trying to remove one too many
-        DequeUtil.removeFromTail(reference, 2);
-    }
-
-    @Test
-    public void testRemoveToLastOccurrence() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3, 2, 1);
-
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3);
-
-        DequeUtil.removeToLastOccurrence(deque, 3);
-
-        assertTrue(String.format("%s is [1,2,3]", deque), this.testEqualDeques(deque, reference));
-    }
-
-    @Test
-    public void testRemoveFromStart() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3, 2, 1);
-        DequeUtil.removeFromStart(deque, 2);
-
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 3, 2, 1);
-
-        assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
-    }
-
-    @Test
-    public void testRemoveFromStartWithAllRemoved() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3);
-        DequeUtil.removeFromStart(deque, 3);
-
-        assertTrue("Deque is empty", deque.isEmpty());
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveFromStartThrowsExceptionIfTooManyElementsAreRemoved() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3);
-
-        // Throws an IAE since we're many more than what we should be
-        DequeUtil.removeFromStart(deque, 10);
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveFromStartThrowsExceptionIfJustOneTooManyElementsAreRemoved() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3);
-
-        // Throws an IAE since we're only one more than what we should be
-        DequeUtil.removeFromStart(deque, 4);
-    }
-
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveFromStartThrowsExceptionIfRequestedRemovalsIsNegative() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3);
-
-        // Throws an IAE since we're requesting a negative removal
-        DequeUtil.removeFromStart(deque, -1);
-    }
-
-    @Test
-    public void testRemoveAfter() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0, 1, 2, 3, 4);
-
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 0, 1);
-
-        DequeUtil.removeStartingFrom(deque, 2);
-
-        assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
-    }
+	private boolean testEqualDeques(final Deque<?> a, final Deque<?> b) {
+		final Iterator<?> aIter = a.iterator();
+		final Iterator<?> bIter = b.iterator();
+		while (aIter.hasNext() && bIter.hasNext()) {
+			final Object aValue = aIter.next();
+			final Object bValue = bIter.next();
+			if (aValue == null ? bValue != null : !aValue.equals(bValue)) {
+				// Not equal, so return early.
+				return false;
+			}
+		}
+		return !aIter.hasNext() && !bIter.hasNext();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testRemoveFromTailThrowsOnWayOffSize() {
+		// Should throw an exception since we're removing too many elements
+		DequeUtil.removeFromTail(new ArrayDeque<Object>(), 10);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testRemoveFromTailThrowsOnOneOffSize() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1);
+
+		// Should throw an exception since we're trying to remove one too many
+		DequeUtil.removeFromTail(reference, 2);
+	}
+
+	@Test
+	public void testRemoveToLastOccurrence() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3, 2, 1);
+
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3);
+
+		DequeUtil.removeToLastOccurrence(deque, 3);
+
+		assertTrue(String.format("%s is [1,2,3]", deque), this.testEqualDeques(deque, reference));
+	}
+
+	@Test
+	public void testRemoveFromStart() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3, 2, 1);
+		DequeUtil.removeFromStart(deque, 2);
+
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 3, 2, 1);
+
+		assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
+	}
+
+	@Test
+	public void testRemoveFromStartWithAllRemoved() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3);
+		DequeUtil.removeFromStart(deque, 3);
+
+		assertTrue("Deque is empty", deque.isEmpty());
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveFromStartThrowsExceptionIfTooManyElementsAreRemoved() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3);
+
+		// Throws an IAE since we're many more than what we should be
+		DequeUtil.removeFromStart(deque, 10);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveFromStartThrowsExceptionIfJustOneTooManyElementsAreRemoved() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3);
+
+		// Throws an IAE since we're only one more than what we should be
+		DequeUtil.removeFromStart(deque, 4);
+	}
+
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveFromStartThrowsExceptionIfRequestedRemovalsIsNegative() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3);
+
+		// Throws an IAE since we're requesting a negative removal
+		DequeUtil.removeFromStart(deque, -1);
+	}
+
+	@Test
+	public void testRemoveAfter() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0, 1, 2, 3, 4);
+
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 0, 1);
+
+		DequeUtil.removeStartingFrom(deque, 2);
+
+		assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
+	}
 
-    @Test
-    public void testRemoveAfterWithZero() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0, 1, 2, 3, 4);
+	@Test
+	public void testRemoveAfterWithZero() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0, 1, 2, 3, 4);
 
-        DequeUtil.removeStartingFrom(deque, 0);
+		DequeUtil.removeStartingFrom(deque, 0);
 
-        assertTrue("Resulting deque is empty", deque.isEmpty());
-    }
+		assertTrue("Resulting deque is empty", deque.isEmpty());
+	}
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveAfterThrowsExceptionWithNegative() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0, 1, 2, 3, 4);
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveAfterThrowsExceptionWithNegative() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0, 1, 2, 3, 4);
 
-        // Throws because the starting index is negative
-        DequeUtil.removeStartingFrom(deque, -1);
-    }
+		// Throws because the starting index is negative
+		DequeUtil.removeStartingFrom(deque, -1);
+	}
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveAfterThrowsExceptionWithVeryNegative() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0, 1, 2, 3, 4);
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveAfterThrowsExceptionWithVeryNegative() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0, 1, 2, 3, 4);
 
-        // Throws because the starting index is very negative
-        DequeUtil.removeStartingFrom(deque, -10);
-    }
+		// Throws because the starting index is very negative
+		DequeUtil.removeStartingFrom(deque, -10);
+	}
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveAfterThrowsExceptionWithVeryPositive() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0);
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveAfterThrowsExceptionWithVeryPositive() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0);
 
-        // Throws because the starting index is very positive
-        DequeUtil.removeStartingFrom(deque, 10);
-    }
+		// Throws because the starting index is very positive
+		DequeUtil.removeStartingFrom(deque, 10);
+	}
 
-    @Test(expected = IndexOutOfBoundsException.class)
-    public void testRemoveAfterThrowsExceptionWithOneOffPositive() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 0);
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testRemoveAfterThrowsExceptionWithOneOffPositive() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 0);
 
-        // Throws because the starting index is very positive
-        DequeUtil.removeStartingFrom(deque, 2);
-    }
+		// Throws because the starting index is very positive
+		DequeUtil.removeStartingFrom(deque, 2);
+	}
 
-    @Test
-    public void testRemoveToFirstOccurrenceClearsListWhenGivenNonPresentElement() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 1, 1);
+	@Test
+	public void testRemoveToFirstOccurrenceClearsListWhenGivenNonPresentElement() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 1, 1);
 
-        DequeUtil.removeToFirstOccurrence(deque, 2);
+		DequeUtil.removeToFirstOccurrence(deque, 2);
 
-        assertTrue("deque is empty", deque.isEmpty());
-    }
+		assertTrue("deque is empty", deque.isEmpty());
+	}
 
-    @Test
-    public void testRemoveToLastOccurrenceClearsListWhenGivenNonPresentElement() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 1, 1);
+	@Test
+	public void testRemoveToLastOccurrenceClearsListWhenGivenNonPresentElement() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 1, 1);
 
-        DequeUtil.removeToLastOccurrence(deque, 2);
+		DequeUtil.removeToLastOccurrence(deque, 2);
 
-        assertTrue("deque is empty", deque.isEmpty());
-    }
+		assertTrue("deque is empty", deque.isEmpty());
+	}
 
-    @Test
-    public void testRemoveToFirstOccurrence() {
-        final Deque<Integer> deque = new ArrayDeque<Integer>();
-        Collections.addAll(deque, 1, 2, 3, 2, 1);
+	@Test
+	public void testRemoveToFirstOccurrence() {
+		final Deque<Integer> deque = new ArrayDeque<Integer>();
+		Collections.addAll(deque, 1, 2, 3, 2, 1);
 
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 3, 2, 1);
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 3, 2, 1);
 
-        DequeUtil.removeToFirstOccurrence(deque, 3);
+		DequeUtil.removeToFirstOccurrence(deque, 3);
 
-        assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
-    }
+		assertTrue(String.format("%s is %s", deque, reference), this.testEqualDeques(deque, reference));
+	}
 
-    @Test
-    public void testSynchronizeDequesWithEmptyDeque() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3);
+	@Test
+	public void testSynchronizeDequesWithEmptyDeque() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
+		final Deque<Integer> target = new ArrayDeque<Integer>();
 
-        DequeUtil.synchronizeDeques(reference, target);
+		DequeUtil.synchronizeDeques(reference, target);
 
-        assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
-    }
+		assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
+	}
 
-    @Test
-    public void testSynchronizeDequesWithPartialDeque() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3, 4, 5);
+	@Test
+	public void testSynchronizeDequesWithPartialDeque() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3, 4, 5);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
-        Collections.addAll(target, 1, 2, 3, 7, 8);
+		final Deque<Integer> target = new ArrayDeque<Integer>();
+		Collections.addAll(target, 1, 2, 3, 7, 8);
 
-        DequeUtil.synchronizeDeques(reference, target);
+		DequeUtil.synchronizeDeques(reference, target);
 
-        assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
-    }
+		assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
+	}
 
-    @Test
-    public void testSynchronizeDequesWithDisjointDeque() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3, 4, 5);
+	@Test
+	public void testSynchronizeDequesWithDisjointDeque() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3, 4, 5);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
-        Collections.addAll(target, 6, 7, 8, 9);
+		final Deque<Integer> target = new ArrayDeque<Integer>();
+		Collections.addAll(target, 6, 7, 8, 9);
 
-        DequeUtil.synchronizeDeques(reference, target);
+		DequeUtil.synchronizeDeques(reference, target);
 
-        assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
-    }
+		assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
+	}
 
-    @Test
-    public void testSynchronizeDequesWithDifferentStart() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3, 4, 5);
+	@Test
+	public void testSynchronizeDequesWithDifferentStart() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3, 4, 5);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
-        Collections.addAll(target, 2, 2, 3, 4, 5);
+		final Deque<Integer> target = new ArrayDeque<Integer>();
+		Collections.addAll(target, 2, 2, 3, 4, 5);
 
-        DequeUtil.synchronizeDeques(reference, target);
+		DequeUtil.synchronizeDeques(reference, target);
 
-        assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
-    }
+		assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
+	}
 
-    @Test
-    public void testRemoveStartingFrom() {
-        final Deque<String> target = new ArrayDeque<String>();
-        Collections.addAll(target, "A", "B", "C");
-        DequeUtil.removeStartingFrom(target, "B");
+	@Test
+	public void testRemoveStartingFrom() {
+		final Deque<String> target = new ArrayDeque<String>();
+		Collections.addAll(target, "A", "B", "C");
+		DequeUtil.removeStartingFrom(target, "B");
 
-        final Deque<String> reference = new ArrayDeque<String>();
-        Collections.addAll(reference, "A");
+		final Deque<String> reference = new ArrayDeque<String>();
+		Collections.addAll(reference, "A");
 
-        assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
-    }
+		assertTrue(String.format("%s is %s", target, reference), this.testEqualDeques(target, reference));
+	}
 
-    @Test
-    public void testDequesAreEqual() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3);
+	@Test
+	public void testDequesAreEqual() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
-        Collections.addAll(target, 1, 2, 3);
+		final Deque<Integer> target = new ArrayDeque<Integer>();
+		Collections.addAll(target, 1, 2, 3);
 
-        assertTrue("Equal deques are equal", this.testEqualDeques(reference, target));
-    }
+		assertTrue("Equal deques are equal", this.testEqualDeques(reference, target));
+	}
 
-    @Test
-    public void testRemoveDifferingTail() {
-        final Deque<Integer> reference = new ArrayDeque<Integer>();
-        Collections.addAll(reference, 1, 2, 3);
+	@Test
+	public void testRemoveDifferingTail() {
+		final Deque<Integer> reference = new ArrayDeque<Integer>();
+		Collections.addAll(reference, 1, 2, 3);
 
-        final Deque<Integer> target = new ArrayDeque<Integer>();
-        Collections.addAll(target, 1, 2, 4, 5);
+		final Deque<Integer> target = new ArrayDeque<Integer>();
+		Collections.addAll(target, 1, 2, 4, 5);
 
-        DequeUtil.removeDifferingTail(reference, target);
-        assertTrue("Reference is at least as big as target", reference.size() >= target.size());
-        while (reference.size() > target.size()) {
-            reference.removeLast();
-        }
-        assertTrue("Trimmed reference is equal to target", this.testEqualDeques(reference, target));
-    }
+		DequeUtil.removeDifferingTail(reference, target);
+		assertTrue("Reference is at least as big as target", reference.size() >= target.size());
+		while (reference.size() > target.size()) {
+			reference.removeLast();
+		}
+		assertTrue("Trimmed reference is equal to target", this.testEqualDeques(reference, target));
+	}
 }

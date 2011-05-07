@@ -21,8 +21,8 @@ package com.bluespot.physics;
  * </ul>
  */
 public interface Connection {
-    /*
-     * TODO Implement this as necessary. This should likely be Force or
-     * Attraction.
-     */
+	/*
+	 * TODO Implement this as necessary. This should likely be Force or
+	 * Attraction.
+	 */
 }

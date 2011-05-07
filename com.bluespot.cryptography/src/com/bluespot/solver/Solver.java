@@ -14,7 +14,7 @@ import java.util.Set;
  */
 public interface Solver<E, D> {
 
-    public Set<String> solve(E encrypted);
+	public Set<String> solve(E encrypted);
 
-    public void addSolverListener(SolverListener<? super D> listener);
+	public void addSolverListener(SolverListener<? super D> listener);
 }

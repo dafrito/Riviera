@@ -13,39 +13,39 @@ import java.util.Queue;
  */
 public abstract class QueueProxy<E> extends CollectionProxy<E> implements Queue<E> {
 
-    /**
-     * @return the queue that is being proxied
-     */
-    protected abstract Queue<E> getSourceQueue();
+	/**
+	 * @return the queue that is being proxied
+	 */
+	protected abstract Queue<E> getSourceQueue();
 
-    @Override
-    protected Collection<E> getSourceCollection() {
-        return this.getSourceQueue();
-    }
+	@Override
+	protected Collection<E> getSourceCollection() {
+		return this.getSourceQueue();
+	}
 
-    @Override
-    public E element() {
-        return this.getSourceQueue().element();
-    }
+	@Override
+	public E element() {
+		return this.getSourceQueue().element();
+	}
 
-    @Override
-    public boolean offer(final E e) {
-        return this.getSourceQueue().offer(e);
-    }
+	@Override
+	public boolean offer(final E e) {
+		return this.getSourceQueue().offer(e);
+	}
 
-    @Override
-    public E peek() {
-        return this.getSourceQueue().peek();
-    }
+	@Override
+	public E peek() {
+		return this.getSourceQueue().peek();
+	}
 
-    @Override
-    public E poll() {
-        return this.getSourceQueue().poll();
-    }
+	@Override
+	public E poll() {
+		return this.getSourceQueue().poll();
+	}
 
-    @Override
-    public E remove() {
-        return this.getSourceQueue().remove();
-    }
+	@Override
+	public E remove() {
+		return this.getSourceQueue().remove();
+	}
 
 }

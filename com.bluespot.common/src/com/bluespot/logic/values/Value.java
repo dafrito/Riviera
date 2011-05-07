@@ -37,11 +37,11 @@ import com.bluespot.logic.adapters.HandledAdapter;
  */
 public interface Value<T> {
 
-    /**
-     * Returns the value of this {@code Value} object.
-     * 
-     * @return the value of this {@code Value} object.
-     */
-    public T get();
+	/**
+	 * Returns the value of this {@code Value} object.
+	 * 
+	 * @return the value of this {@code Value} object.
+	 */
+	public T get();
 
 }

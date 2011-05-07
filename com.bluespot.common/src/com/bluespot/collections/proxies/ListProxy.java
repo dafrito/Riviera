@@ -14,64 +14,64 @@ import java.util.ListIterator;
  */
 public abstract class ListProxy<E> extends CollectionProxy<E> implements List<E> {
 
-    @Override
+	@Override
 	public void add(final int index, final E element) {
-        this.getSourceList().add(index, element);
-    }
+		this.getSourceList().add(index, element);
+	}
 
-    @Override
+	@Override
 	public boolean addAll(final int index, final Collection<? extends E> c) {
-        return this.getSourceList().addAll(index, c);
-    }
+		return this.getSourceList().addAll(index, c);
+	}
 
-    @Override
+	@Override
 	public E get(final int index) {
-        return this.getSourceList().get(index);
-    }
+		return this.getSourceList().get(index);
+	}
 
-    /**
-     * @return the list that is being proxied
-     */
-    protected abstract List<E> getSourceList();
+	/**
+	 * @return the list that is being proxied
+	 */
+	protected abstract List<E> getSourceList();
 
-    @Override
+	@Override
 	public int indexOf(final Object o) {
-        return this.getSourceList().indexOf(o);
-    }
+		return this.getSourceList().indexOf(o);
+	}
 
-    @Override
+	@Override
 	public int lastIndexOf(final Object o) {
-        return this.getSourceList().lastIndexOf(o);
-    }
+		return this.getSourceList().lastIndexOf(o);
+	}
 
-    @Override
+	@Override
 	public ListIterator<E> listIterator() {
-        return this.getSourceList().listIterator();
-    }
+		return this.getSourceList().listIterator();
+	}
 
-    @Override
+	@Override
 	public ListIterator<E> listIterator(final int index) {
-        return this.getSourceList().listIterator(index);
-    }
+		return this.getSourceList().listIterator(index);
+	}
 
-    @Override
+	@Override
 	public E remove(final int index) {
-        return this.getSourceList().remove(index);
-    }
+		return this.getSourceList().remove(index);
+	}
 
-    @Override
+	@Override
 	public E set(final int index, final E element) {
-        return this.getSourceList().set(index, element);
-    }
+		return this.getSourceList().set(index, element);
+	}
 
-    @Override
+	@Override
 	public List<E> subList(final int fromIndex, final int toIndex) {
-        return this.getSourceList().subList(fromIndex, toIndex);
-    }
+		return this.getSourceList().subList(fromIndex, toIndex);
+	}
 
-    @Override
-    protected Collection<E> getSourceCollection() {
-        return this.getSourceList();
-    }
+	@Override
+	protected Collection<E> getSourceCollection() {
+		return this.getSourceList();
+	}
 
 }

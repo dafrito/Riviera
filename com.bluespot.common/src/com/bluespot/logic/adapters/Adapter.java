@@ -38,18 +38,18 @@ import com.bluespot.logic.predicates.Predicate;
  */
 public interface Adapter<S, D> {
 
-    /**
-     * Adapts the specified value to this adapter's destination type. Adapters
-     * should make a best effort to return appropriate values for the widest
-     * range of inputs; exceptions should rarely be thrown. Forgiving adapters
-     * allow them to be used freely without unexpected results cropping up.
-     * However, null values are commonly preserved in adapters; a null source
-     * value should be converted to a null value unless the adapter explicitly
-     * states otherwise.
-     * 
-     * @param source
-     *            the source value to adapt
-     * @return the adapted value
-     */
-    public D adapt(S source);
+	/**
+	 * Adapts the specified value to this adapter's destination type. Adapters
+	 * should make a best effort to return appropriate values for the widest
+	 * range of inputs; exceptions should rarely be thrown. Forgiving adapters
+	 * allow them to be used freely without unexpected results cropping up.
+	 * However, null values are commonly preserved in adapters; a null source
+	 * value should be converted to a null value unless the adapter explicitly
+	 * states otherwise.
+	 * 
+	 * @param source
+	 *            the source value to adapt
+	 * @return the adapted value
+	 */
+	public D adapt(S source);
 }

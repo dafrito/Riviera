@@ -26,75 +26,75 @@ import com.bluespot.demonstration.Demonstration;
  * 
  */
 public class FanDemonstration extends Demonstration {
-    enum Speed {
-        OFF("Off", 0), LOW("Low", 1), MEDIUM("Medium", 15), HIGH("High", 35);
+	enum Speed {
+		OFF("Off", 0), LOW("Low", 1), MEDIUM("Medium", 15), HIGH("High", 35);
 
-        private final String prettyName;
-        private final int speed;
+		private final String prettyName;
+		private final int speed;
 
-        private Speed(final String prettyName, final int speed) {
-            this.prettyName = prettyName;
-            this.speed = speed;
-        }
+		private Speed(final String prettyName, final int speed) {
+			this.prettyName = prettyName;
+			this.speed = speed;
+		}
 
-        public int getSpeed() {
-            return this.speed;
-        }
+		public int getSpeed() {
+			return this.speed;
+		}
 
-        public String getPrettyName() {
-            return this.prettyName;
-        }
+		public String getPrettyName() {
+			return this.prettyName;
+		}
 
-        public void activate(final Rotation model) {
-            model.setSpeed(this.getSpeed());
-        }
+		public void activate(final Rotation model) {
+			model.setSpeed(this.getSpeed());
+		}
 
-        public Action newAction(final Rotation model) {
-            return new AbstractAction(this.getPrettyName()) {
-                private static final long serialVersionUID = 1L;
+		public Action newAction(final Rotation model) {
+			return new AbstractAction(this.getPrettyName()) {
+				private static final long serialVersionUID = 1L;
 
-                @Override
+				@Override
 				public void actionPerformed(final ActionEvent e) {
-                    Speed.this.activate(model);
-                }
-            };
-        }
-    }
+					Speed.this.activate(model);
+				}
+			};
+		}
+	}
 
-    private final Rotation model = new Rotation();
+	private final Rotation model = new Rotation();
 
-    @Override
-    protected JComponent newContentPane() {
-        final JPanel panel = new JPanel(new BorderLayout());
-        panel.setPreferredSize(new Dimension(300, 300));
+	@Override
+	protected JComponent newContentPane() {
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.setPreferredSize(new Dimension(300, 300));
 
-        final ButtonGroup group = new ButtonGroup();
+		final ButtonGroup group = new ButtonGroup();
 
-        final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
-        panel.add(buttonPanel, BorderLayout.LINE_START);
+		final JPanel buttonPanel = new JPanel(new GridLayout(0, 1));
+		panel.add(buttonPanel, BorderLayout.LINE_START);
 
-        for (final Speed speed : Speed.values()) {
-            final Action speedAction = speed.newAction(this.model);
-            final JButton button = new JButton(speedAction);
-            group.add(button);
-            buttonPanel.add(button);
-        }
+		for (final Speed speed : Speed.values()) {
+			final Action speedAction = speed.newAction(this.model);
+			final JButton button = new JButton(speedAction);
+			group.add(button);
+			buttonPanel.add(button);
+		}
 
-        final FanPanel fan = new FanPanel(.8d, 5);
-        fan.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+		final FanPanel fan = new FanPanel(.8d, 5);
+		fan.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
 
-        panel.add(fan, BorderLayout.CENTER);
+		panel.add(fan, BorderLayout.CENTER);
 
-        return panel;
-    }
+		return panel;
+	}
 
-    /**
-     * Launches the {@link FanDemonstration} demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launch(FanDemonstration.class);
-    }
+	/**
+	 * Launches the {@link FanDemonstration} demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launch(FanDemonstration.class);
+	}
 }

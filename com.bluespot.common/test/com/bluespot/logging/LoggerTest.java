@@ -10,13 +10,13 @@ import com.bluespot.logging.handlers.ListHandler;
 
 public class LoggerTest {
 
-    @Test
-    public void testSomething() {
-        final ListHandler handler = new ListHandler();
-        final Logger parentLogger = Logger.getLogger("com.dafrito.rfe");
-        parentLogger.addHandler(handler);
-        final Logger childLogger = Logger.getLogger("com.dafrito.rfe.gui");
-        childLogger.info("No time");
-        Assert.assertThat(handler.getRecords().size(), CoreMatchers.is(1));
-    }
+	@Test
+	public void testSomething() {
+		final ListHandler handler = new ListHandler();
+		final Logger parentLogger = Logger.getLogger("com.dafrito.rfe");
+		parentLogger.addHandler(handler);
+		final Logger childLogger = Logger.getLogger("com.dafrito.rfe.gui");
+		childLogger.info("No time");
+		Assert.assertThat(handler.getRecords().size(), CoreMatchers.is(1));
+	}
 }

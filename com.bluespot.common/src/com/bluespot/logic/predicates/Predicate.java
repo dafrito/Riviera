@@ -110,20 +110,20 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  */
 public interface Predicate<T> {
 
-    /**
-     * Tests the specified value. This method should accept the widest range of
-     * values as is appropriate. Specifically, null and other degenerate values
-     * should be expected cases for this method.
-     * <p>
-     * Unless otherwise noted, values that are equal should cause this predicate
-     * to evaluate in an equal manner. This method should also evaluate
-     * consistently given consistent inputs. This intentionally resembles the
-     * requirements for a well-written {@link Object#equals(Object)}
-     * implementation.
-     * 
-     * @param candidate
-     *            the value to evaluate
-     * @return some boolean value that is a response to the specified value
-     */
-    public boolean test(final T candidate);
+	/**
+	 * Tests the specified value. This method should accept the widest range of
+	 * values as is appropriate. Specifically, null and other degenerate values
+	 * should be expected cases for this method.
+	 * <p>
+	 * Unless otherwise noted, values that are equal should cause this predicate
+	 * to evaluate in an equal manner. This method should also evaluate
+	 * consistently given consistent inputs. This intentionally resembles the
+	 * requirements for a well-written {@link Object#equals(Object)}
+	 * implementation.
+	 * 
+	 * @param candidate
+	 *            the value to evaluate
+	 * @return some boolean value that is a response to the specified value
+	 */
+	public boolean test(final T candidate);
 }

@@ -14,39 +14,39 @@ import com.bluespot.logic.visitors.Visitor;
  */
 public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer, NumberFormatException> {
 
-    /**
-     * Constructs a {@link ParsedIntegerAdapter} that uses the default no-op
-     * {@link Visitor} for its handler.
-     */
-    public ParsedIntegerAdapter() {
-        super();
-    }
+	/**
+	 * Constructs a {@link ParsedIntegerAdapter} that uses the default no-op
+	 * {@link Visitor} for its handler.
+	 */
+	public ParsedIntegerAdapter() {
+		super();
+	}
 
-    /**
-     * Constructs a {@link ParsedIntegerAdapter} that uses the specified
-     * {@link Visitor} for its handler.
-     * 
-     * @param handler
-     *            the handler that is notified of {@link NumberFormatException}
-     *            that occur during adapting. It may not be null
-     * @throws NullPointerException
-     *             if {@code handler} is null
-     */
-    public ParsedIntegerAdapter(final Visitor<? super NumberFormatException> handler) {
-        super(handler);
-    }
+	/**
+	 * Constructs a {@link ParsedIntegerAdapter} that uses the specified
+	 * {@link Visitor} for its handler.
+	 * 
+	 * @param handler
+	 *            the handler that is notified of {@link NumberFormatException}
+	 *            that occur during adapting. It may not be null
+	 * @throws NullPointerException
+	 *             if {@code handler} is null
+	 */
+	public ParsedIntegerAdapter(final Visitor<? super NumberFormatException> handler) {
+		super(handler);
+	}
 
-    @Override
-    public Integer adapt(final String source) {
-        if (source == null) {
-            return null;
-        }
-        try {
-            return Integer.parseInt(source);
-        } catch (final NumberFormatException nfe) {
-            this.dispatch(nfe);
-            return null;
-        }
-    }
+	@Override
+	public Integer adapt(final String source) {
+		if (source == null) {
+			return null;
+		}
+		try {
+			return Integer.parseInt(source);
+		} catch (final NumberFormatException nfe) {
+			this.dispatch(nfe);
+			return null;
+		}
+	}
 
 }

@@ -15,57 +15,57 @@ import com.bluespot.collections.observable.list.ObservableList;
 
 public final class PacketGUI extends JPanel {
 
-    private static final long serialVersionUID = -4321754111518166903L;
+	private static final long serialVersionUID = -4321754111518166903L;
 
-    private final List<RawPacket> packets;
+	private final List<RawPacket> packets;
 
-    private final PacketCapture capture;
+	private final PacketCapture capture;
 
-    public List<RawPacket> getPackets() {
-        return this.packets;
-    }
+	public List<RawPacket> getPackets() {
+		return this.packets;
+	}
 
-    private class CaptureTask implements Runnable {
+	private class CaptureTask implements Runnable {
 
-        public CaptureTask() {
-            // Do nothing; just ensure construction is allowed
-        }
+		public CaptureTask() {
+			// Do nothing; just ensure construction is allowed
+		}
 
-        @Override
-        public void run() {
-            try {
-                while (!Thread.currentThread().isInterrupted()) {
-                    PacketGUI.this.capture.capture(1);
-                }
-            } catch (final CapturePacketException e) {
-                e.printStackTrace();
-            } finally {
-                PacketGUI.this.capture.close();
-            }
-        }
-    }
+		@Override
+		public void run() {
+			try {
+				while (!Thread.currentThread().isInterrupted()) {
+					PacketGUI.this.capture.capture(1);
+				}
+			} catch (final CapturePacketException e) {
+				e.printStackTrace();
+			} finally {
+				PacketGUI.this.capture.close();
+			}
+		}
+	}
 
-    public PacketGUI(final String device) throws CaptureDeviceOpenException {
-        super();
-        final ObservableList<RawPacket> listModel = new ObservableList<RawPacket>();
-        this.packets = listModel;
+	public PacketGUI(final String device) throws CaptureDeviceOpenException {
+		super();
+		final ObservableList<RawPacket> listModel = new ObservableList<RawPacket>();
+		this.packets = listModel;
 
-        new Thread(new CaptureTask()).start();
+		new Thread(new CaptureTask()).start();
 
-        this.add(new JList(listModel));
-        this.capture = new PacketCapture();
-        this.capture.open(device, true);
+		this.add(new JList(listModel));
+		this.capture = new PacketCapture();
+		this.capture.open(device, true);
 
-        this.capture.addRawPacketListener(new RawPacketListener() {
-            @Override
+		this.capture.addRawPacketListener(new RawPacketListener() {
+			@Override
 			public void rawPacketArrived(final RawPacket rawPacket) {
-                listModel.add(rawPacket);
-            }
-        });
+				listModel.add(rawPacket);
+			}
+		});
 
-    }
+	}
 
-    public void close() {
-        this.capture.close();
-    }
+	public void close() {
+		this.capture.close();
+	}
 }

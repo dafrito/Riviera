@@ -50,24 +50,24 @@ import com.bluespot.logic.visitors.Visitor;
  */
 public interface HandledAdapter<S, D, E> extends Adapter<S, D> {
 
-    /**
-     * Sets the handler for this adapter to the specified, non-null
-     * {@link Visitor}. The {@code Visitor} will be notified for events that
-     * occur during the adapting process.
-     * <p>
-     * This method is not optional: {@link HandledAdapter} implementations are
-     * required to accept changing handlers at all times. Because of this, do
-     * not include the current handler when performing equality or hashing
-     * operations.
-     * 
-     * @param handler
-     *            the handler that will accept events from this adapter. It must
-     *            not be null.
-     * @throws NullPointerException
-     *             if {@code handler} is null. Use {@link Visitors#noop()} to
-     *             represent an empty or null handler.
-     * @see Visitors#noop()
-     */
-    public void setHandler(Visitor<? super E> handler);
+	/**
+	 * Sets the handler for this adapter to the specified, non-null
+	 * {@link Visitor}. The {@code Visitor} will be notified for events that
+	 * occur during the adapting process.
+	 * <p>
+	 * This method is not optional: {@link HandledAdapter} implementations are
+	 * required to accept changing handlers at all times. Because of this, do
+	 * not include the current handler when performing equality or hashing
+	 * operations.
+	 * 
+	 * @param handler
+	 *            the handler that will accept events from this adapter. It must
+	 *            not be null.
+	 * @throws NullPointerException
+	 *             if {@code handler} is null. Use {@link Visitors#noop()} to
+	 *             represent an empty or null handler.
+	 * @see Visitors#noop()
+	 */
+	public void setHandler(Visitor<? super E> handler);
 
 }

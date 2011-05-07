@@ -19,30 +19,30 @@ import java.util.Set;
  */
 public interface Conversation<E extends Message<E>> {
 
-    /**
-     * Adds a listener to this conversation.
-     * 
-     * @param listener
-     *            the listener to add
-     */
-    public void addConversationListener(ConversationListener<? super E> listener);
+	/**
+	 * Adds a listener to this conversation.
+	 * 
+	 * @param listener
+	 *            the listener to add
+	 */
+	public void addConversationListener(ConversationListener<? super E> listener);
 
-    /**
-     * Removes a listener from this conversation.
-     * 
-     * @param listener
-     *            the listener to remove
-     */
-    public void removeConversationListener(ConversationListener<? super E> listener);
+	/**
+	 * Removes a listener from this conversation.
+	 * 
+	 * @param listener
+	 *            the listener to remove
+	 */
+	public void removeConversationListener(ConversationListener<? super E> listener);
 
-    /**
-     * Returns all speakers that are currently involved in this conversation.
-     * <p>
-     * What defines being "involved" depends on the implementation. Network
-     * conversations may simply use timeouts to periodically delete inactive
-     * speakers.
-     * 
-     * @return the group of active speakers
-     */
-    public Set<Speaker<? extends E>> getSpeakers();
+	/**
+	 * Returns all speakers that are currently involved in this conversation.
+	 * <p>
+	 * What defines being "involved" depends on the implementation. Network
+	 * conversations may simply use timeouts to periodically delete inactive
+	 * speakers.
+	 * 
+	 * @return the group of active speakers
+	 */
+	public Set<Speaker<? extends E>> getSpeakers();
 }

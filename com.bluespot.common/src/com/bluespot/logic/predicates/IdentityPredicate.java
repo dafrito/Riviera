@@ -14,55 +14,55 @@ import com.bluespot.logic.Predicates;
  */
 public final class IdentityPredicate<T> implements Predicate<T> {
 
-    private final T constant;
+	private final T constant;
 
-    /**
-     * Constructs an identity predicate using the specified value.
-     * 
-     * @param constant
-     *            the value used in evaluation. Only values identical to this
-     *            value will evaluate to {@code true}.
-     * @throws NullPointerException
-     *             if {@code constant} is null. Use
-     *             {@link Predicates#nullValue()} if you wish to compare with a
-     *             null value.
-     */
-    public IdentityPredicate(final T constant) {
-        if (constant == null) {
-            throw new NullPointerException("constant is null");
-        }
-        this.constant = constant;
-    }
+	/**
+	 * Constructs an identity predicate using the specified value.
+	 * 
+	 * @param constant
+	 *            the value used in evaluation. Only values identical to this
+	 *            value will evaluate to {@code true}.
+	 * @throws NullPointerException
+	 *             if {@code constant} is null. Use
+	 *             {@link Predicates#nullValue()} if you wish to compare with a
+	 *             null value.
+	 */
+	public IdentityPredicate(final T constant) {
+		if (constant == null) {
+			throw new NullPointerException("constant is null");
+		}
+		this.constant = constant;
+	}
 
-    /**
-     * Returns the constant value of this predicate.
-     * 
-     * @return the constant value of this predicate
-     */
-    public T getConstant() {
-        return this.constant;
-    }
+	/**
+	 * Returns the constant value of this predicate.
+	 * 
+	 * @return the constant value of this predicate
+	 */
+	public T getConstant() {
+		return this.constant;
+	}
 
-    @Override
-    public boolean test(final T candidate) {
-        return this.constant == candidate;
-    }
+	@Override
+	public boolean test(final T candidate) {
+		return this.constant == candidate;
+	}
 
-    @Override
-    public boolean equals(final Object obj) {
-        return obj == this;
-    }
+	@Override
+	public boolean equals(final Object obj) {
+		return obj == this;
+	}
 
-    @Override
-    public int hashCode() {
-        int result = 17;
-        result = 31 * result + this.getConstant().hashCode();
-        return result;
-    }
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + this.getConstant().hashCode();
+		return result;
+	}
 
-    @Override
-    public String toString() {
-        return String.format("is exactly %s", this.getConstant());
-    }
+	@Override
+	public String toString() {
+		return String.format("is exactly %s", this.getConstant());
+	}
 
 }

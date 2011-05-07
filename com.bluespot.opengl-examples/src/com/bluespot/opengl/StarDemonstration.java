@@ -15,66 +15,66 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class StarDemonstration extends AbstractGLDemonstration {
 
-    /**
-     * Whether to draw the lines in insignificant edges. There's no real magic
-     * here; edges that are insignificant are explicitly set to {@code false}
-     * with this flag.
-     */
-    public final boolean drawInsignificantEdges = false;
+	/**
+	 * Whether to draw the lines in insignificant edges. There's no real magic
+	 * here; edges that are insignificant are explicitly set to {@code false}
+	 * with this flag.
+	 */
+	public final boolean drawInsignificantEdges = false;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(StarDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(StarDemonstration.class);
+	}
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    @Override
-    protected void render(final GL gl) {
+	@Override
+	protected void render(final GL gl) {
 
-        gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
-        gl.glBegin(GL.GL_TRIANGLES);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glBegin(GL.GL_TRIANGLES);
 
-        gl.glEdgeFlag(this.drawInsignificantEdges);
-        gl.glVertex2f(-20, 0);
-        gl.glEdgeFlag(true);
-        gl.glVertex2f(20, 0);
-        gl.glVertex2f(0, 40);
+		gl.glEdgeFlag(this.drawInsignificantEdges);
+		gl.glVertex2f(-20, 0);
+		gl.glEdgeFlag(true);
+		gl.glVertex2f(20, 0);
+		gl.glVertex2f(0, 40);
 
-        gl.glVertex2f(-20, 0);
-        gl.glVertex2f(-60, -20);
-        gl.glEdgeFlag(this.drawInsignificantEdges);
-        gl.glVertex2f(-20, -40);
-        gl.glEdgeFlag(true);
+		gl.glVertex2f(-20, 0);
+		gl.glVertex2f(-60, -20);
+		gl.glEdgeFlag(this.drawInsignificantEdges);
+		gl.glVertex2f(-20, -40);
+		gl.glEdgeFlag(true);
 
-        gl.glVertex2f(-20, -40);
-        gl.glVertex2f(0, -80);
-        gl.glEdgeFlag(this.drawInsignificantEdges);
-        gl.glVertex2f(20, -40);
-        gl.glEdgeFlag(true);
+		gl.glVertex2f(-20, -40);
+		gl.glVertex2f(0, -80);
+		gl.glEdgeFlag(this.drawInsignificantEdges);
+		gl.glVertex2f(20, -40);
+		gl.glEdgeFlag(true);
 
-        gl.glVertex2f(20, -40);
-        gl.glVertex2f(60, -20);
-        gl.glEdgeFlag(this.drawInsignificantEdges);
-        gl.glVertex2f(20, 0);
-        gl.glEdgeFlag(true);
+		gl.glVertex2f(20, -40);
+		gl.glVertex2f(60, -20);
+		gl.glEdgeFlag(this.drawInsignificantEdges);
+		gl.glVertex2f(20, 0);
+		gl.glEdgeFlag(true);
 
-        gl.glEdgeFlag(this.drawInsignificantEdges);
-        gl.glVertex2f(-20, 0);
-        gl.glVertex2f(-20, -40);
-        gl.glVertex2f(20, 0);
+		gl.glEdgeFlag(this.drawInsignificantEdges);
+		gl.glVertex2f(-20, 0);
+		gl.glVertex2f(-20, -40);
+		gl.glVertex2f(20, 0);
 
-        gl.glVertex2f(-20, -40);
-        gl.glVertex2f(20, -40);
-        gl.glVertex2f(20, 0);
-        gl.glEdgeFlag(true);
+		gl.glVertex2f(-20, -40);
+		gl.glVertex2f(20, -40);
+		gl.glVertex2f(20, 0);
+		gl.glEdgeFlag(true);
 
-        gl.glEnd();
+		gl.glEnd();
 
-    }
+	}
 }

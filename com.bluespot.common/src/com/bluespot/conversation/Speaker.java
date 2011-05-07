@@ -12,13 +12,13 @@ package com.bluespot.conversation;
  */
 public interface Speaker<E extends Message<E>> {
 
-    /**
-     * Returns the logical name of this speaker.
-     * <p>
-     * This is required to be unique for a given {@code Conversation}, but the
-     * format is unique to that type of conversation.
-     * 
-     * @return the unique identifier for this {@code Speaker} object
-     */
-    public String getId();
+	/**
+	 * Returns the logical name of this speaker.
+	 * <p>
+	 * This is required to be unique for a given {@code Conversation}, but the
+	 * format is unique to that type of conversation.
+	 * 
+	 * @return the unique identifier for this {@code Speaker} object
+	 */
+	public String getId();
 }

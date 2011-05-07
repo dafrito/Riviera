@@ -10,29 +10,29 @@ package com.bluespot.collections.observable.deque;
  */
 public class DequeAdapter<E> implements DequeListener<E> {
 
-    @Override
+	@Override
 	public void dequeChanged() {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void firstElementAdded(final E oldFirstElement) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void firstElementRemoved(final E oldFirstElement) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void lastElementAdded(final E oldLastElement) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void lastElementRemoved(final E oldLastElement) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
 }

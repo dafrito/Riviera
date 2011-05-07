@@ -12,14 +12,14 @@ import javax.swing.event.ChangeEvent;
  */
 public class StateChangeAdapter<T> implements StateChangeListener<T> {
 
-    @Override
+	@Override
 	public void stateChanged(final ChangeEvent e) {
-        // No-op implementation
-    }
+		// No-op implementation
+	}
 
-    @Override
+	@Override
 	public void stateChanging(final StateChangeEvent<T> e) {
-        // No-op implementation
-    }
+		// No-op implementation
+	}
 
 }

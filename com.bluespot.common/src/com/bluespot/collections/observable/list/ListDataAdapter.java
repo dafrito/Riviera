@@ -11,19 +11,19 @@ import javax.swing.event.ListDataListener;
  */
 public class ListDataAdapter implements ListDataListener {
 
-    @Override
+	@Override
 	public void contentsChanged(final ListDataEvent arg0) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void intervalAdded(final ListDataEvent arg0) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
-    @Override
+	@Override
 	public void intervalRemoved(final ListDataEvent arg0) {
-        // Do nothing
-    }
+		// Do nothing
+	}
 
 }

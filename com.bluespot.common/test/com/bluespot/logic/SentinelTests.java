@@ -13,16 +13,16 @@ import com.bluespot.logic.visitors.Sentinel;
 
 public class SentinelTests {
 
-    @Test
-    public void testSentinel() {
+	@Test
+	public void testSentinel() {
 
-        final List<String> strings = new ArrayList<String>();
+		final List<String> strings = new ArrayList<String>();
 
-        final Sentinel<String> sentinel = new Sentinel<String>(Predicates.lowerCase(), Visitors.addTo(strings));
+		final Sentinel<String> sentinel = new Sentinel<String>(Predicates.lowerCase(), Visitors.addTo(strings));
 
-        sentinel.accept("no time");
-        sentinel.accept("NO TIME");
+		sentinel.accept("no time");
+		sentinel.accept("NO TIME");
 
-        assertThat(strings, is(Arrays.asList("no time")));
-    }
+		assertThat(strings, is(Arrays.asList("no time")));
+	}
 }

@@ -24,31 +24,31 @@ import com.bluespot.demonstration.Demonstration;
  */
 public class TrivialTriangleDemonstration extends AbstractGLDemonstration {
 
-    private static final long serialVersionUID = 1627266097175449717L;
+	private static final long serialVersionUID = 1627266097175449717L;
 
-    /**
-     * Launches this demonstration.
-     * 
-     * @param args
-     *            unused
-     */
-    public static void main(final String[] args) {
-        Demonstration.launchWrapped(TrivialTriangleDemonstration.class);
-    }
+	/**
+	 * Launches this demonstration.
+	 * 
+	 * @param args
+	 *            unused
+	 */
+	public static void main(final String[] args) {
+		Demonstration.launchWrapped(TrivialTriangleDemonstration.class);
+	}
 
-    @Override
-    protected void render(final GL gl) {
-        gl.glBegin(GL.GL_TRIANGLES);
+	@Override
+	protected void render(final GL gl) {
+		gl.glBegin(GL.GL_TRIANGLES);
 
-        gl.glVertex2f(0, 0);
-        gl.glVertex2f(25, 25);
-        gl.glVertex2f(50, 0);
+		gl.glVertex2f(0, 0);
+		gl.glVertex2f(25, 25);
+		gl.glVertex2f(50, 0);
 
-        gl.glVertex2f(-50, 0);
-        gl.glVertex2f(-75, 50);
-        gl.glVertex2f(-25, 0);
+		gl.glVertex2f(-50, 0);
+		gl.glVertex2f(-75, 50);
+		gl.glVertex2f(-25, 0);
 
-        gl.glEnd();
-    }
+		gl.glEnd();
+	}
 
 }
