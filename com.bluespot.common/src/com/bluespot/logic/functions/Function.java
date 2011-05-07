@@ -46,7 +46,7 @@ public interface Function<I, R> {
 	 * @throws IllegalStateException
 	 *             if accessing the input failed, such as an IO failure. Note
 	 *             that an exception should be thrown only if the result could
-	 *             not have been unanticipated from the input alone.
+	 *             not have been anticipated from the input alone.
 	 */
 	R apply(I input);
 }
