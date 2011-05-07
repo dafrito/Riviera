@@ -454,7 +454,7 @@ class ComponentListWorker implements ListWorker<JComponent> {
      *            the value that will have the returned constraints
      * @return the layout constraints for the specified component
      */
-    protected Object getConstraints(@SuppressWarnings("unused") final JComponent newValue) {
+    protected Object getConstraints(final JComponent newValue) {
         return null;
     }
 
