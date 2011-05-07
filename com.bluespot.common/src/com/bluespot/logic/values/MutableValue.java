@@ -2,6 +2,9 @@ package com.bluespot.logic.values;
 
 /**
  * A {@link Value} implementation that represents a value that can be changed.
+ * <p>
+ * {@code Value} objects are assumed to be immutable, so changes to any instance
+ * must never be visible to objects that expect a well-behaved value.
  * 
  * @author Aaron Faanes
  * 
