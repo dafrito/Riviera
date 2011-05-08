@@ -14,14 +14,14 @@ import com.bluespot.logic.predicates.Predicate;
  */
 public class GuardedFunction<I, R> implements Function<I, R> {
 
-	private final Predicate<? super I> predicate;
+	private final Predicate<? super I> guard;
 	private final Function<? super I, ? extends R> function;
 
-	public GuardedFunction(Predicate<? super I> predicate, Function<? super I, ? extends R> function) {
-		if (predicate == null) {
+	public GuardedFunction(Predicate<? super I> guard, Function<? super I, ? extends R> function) {
+		if (guard == null) {
 			throw new NullPointerException("predicate must not be null");
 		}
-		this.predicate = predicate;
+		this.guard = guard;
 		if (function == null) {
 			throw new NullPointerException("function must not be null");
 		}
@@ -30,14 +30,14 @@ public class GuardedFunction<I, R> implements Function<I, R> {
 
 	@Override
 	public R apply(I input) {
-		if (this.getPredicate().test(input)) {
+		if (this.getGuard().test(input)) {
 			return this.getFunction().apply(input);
 		}
 		return null;
 	}
 
-	public Predicate<? super I> getPredicate() {
-		return this.predicate;
+	public Predicate<? super I> getGuard() {
+		return this.guard;
 	}
 
 	public Function<? super I, ? extends R> getFunction() {
@@ -53,21 +53,21 @@ public class GuardedFunction<I, R> implements Function<I, R> {
 			return false;
 		}
 		final GuardedFunction<?, ?> other = (GuardedFunction<?, ?>) obj;
-		return this.getPredicate().equals(other.getPredicate()) &&
+		return this.getGuard().equals(other.getGuard()) &&
 				this.getFunction().equals(other.getFunction());
 	}
 
 	@Override
 	public int hashCode() {
 		int result = 43;
-		result *= 31 * result + getPredicate().hashCode();
+		result *= 31 * result + getGuard().hashCode();
 		result *= 31 * result + getFunction().hashCode();
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("GuardedFunction[%s](%s)", predicate, function);
+		return String.format("GuardedFunction[%s](%s)", guard, function);
 	}
 
 }
