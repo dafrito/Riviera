@@ -11,7 +11,7 @@ import com.bluespot.logic.values.Value;
  * @param <V>
  *            the type of the returned value
  */
-public class ValueFunction<V> implements Function<Object, V> {
+public class ValueFunction<V> implements SafeFunction<V> {
 
 	private final Value<? extends V> value;
 

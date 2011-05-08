@@ -33,19 +33,19 @@ public class Functions {
 	 *            the underlying function
 	 * @return a new {@link Function} object
 	 */
-	public static <I, V> Function<Object, ? extends V> cast(Class<I> guardType, Function<? super I, ? extends V> function) {
-		return new AdaptingFunction<Object, I, V>(Adapters.cast(guardType), function);
+	public static <I, V> SafeFunction<? extends V> cast(Class<I> guardType, Function<? super I, ? extends V> function) {
+		return new AdaptingSafeFunction<I, V>(Adapters.cast(guardType), function);
 	}
 
 	public static <I, V> Function<? super I, ? extends V> guard(Predicate<? super I> guard, Function<? super I, ? extends V> function) {
 		return new GuardedFunction<I, V>(guard, function);
 	}
 
-	public static <V> Function<?, ? extends V> value(V constant) {
+	public static <V> SafeFunction<? extends V> value(V constant) {
 		return new ValueFunction<V>(Values.constant(constant));
 	}
 
-	public static <V> Function<?, ? extends V> value(Value<? extends V> constant) {
+	public static <V> SafeFunction<? extends V> value(Value<? extends V> constant) {
 		return new ValueFunction<V>(constant);
 	}
 
