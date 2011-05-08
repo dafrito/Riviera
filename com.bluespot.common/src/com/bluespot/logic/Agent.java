@@ -27,20 +27,20 @@ import com.bluespot.logic.functions.UnanimousFunction;
  */
 public class Agent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
 
-	protected Iterable<? extends I> getInputs(Function<? super I, ? extends V> input) {
+	protected Iterable<? extends I> searchInputs(Function<? super I, ? extends V> input) {
 		return null;
 	}
 
-	protected Collection<? extends Function<? super I, ? extends V>> getFunctions(I input, V output) {
+	protected Collection<? extends Function<? super I, ? extends V>> computeFunctions(I input, V output) {
 		return null;
 	}
 
 	@Override
 	public Function<? super I, ? extends V> apply(Function<? super I, ? extends V> function) {
 		Collection<? extends Function<? super I, ? extends V>> candidates = null;
-		for (I input : this.getInputs(function)) {
+		for (I input : this.searchInputs(function)) {
 			V output = function.apply(input);
-			Collection<? extends Function<? super I, ? extends V>> myCandidates = this.getFunctions(input, output);
+			Collection<? extends Function<? super I, ? extends V>> myCandidates = this.computeFunctions(input, output);
 			if (candidates != null) {
 				// We run into the problem of equality here. Consider these two functions:
 				// y = x + 2
