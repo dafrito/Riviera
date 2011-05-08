@@ -36,6 +36,10 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 		this.guardType = guardType;
 	}
 
+	public Class<I> getGuardType() {
+		return this.guardType;
+	}
+
 	protected Iterable<? extends I> searchInputs(Function<? super I, ? extends V> input) {
 		return null;
 	}
@@ -80,4 +84,5 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 		}
 		return new UnanimousFunction<I, V>(candidates);
 	}
+
 }
