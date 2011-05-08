@@ -231,8 +231,6 @@ public final class Adapters {
 	/**
 	 * Returns a {@link CastingAdapter} that casts given values.
 	 * 
-	 * @param <S>
-	 *            the source type
 	 * @param <D>
 	 *            the destination type that will result from the cast
 	 * @param sourceType
@@ -243,8 +241,8 @@ public final class Adapters {
 	 *            is explicitly provided since it's not reified in the adapter.
 	 * @return a new {@link CastingAdapter} object
 	 */
-	public static <S, D extends S> CastingAdapter<S, D> cast(final Class<S> sourceType, final Class<D> destinationType) {
-		return new CastingAdapter<S, D>(sourceType, destinationType);
+	public static <D> Adapter<Object, D> cast(final Class<D> destinationType) {
+		return new CastingAdapter<D>(destinationType);
 	}
 
 	/**

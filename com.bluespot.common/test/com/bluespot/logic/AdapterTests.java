@@ -26,12 +26,12 @@ public class AdapterTests {
 
 	@Test
 	public void testCastingAdapter() {
-		assertThat(Adapters.cast(Object.class, String.class).adapt("No time"), is("No time"));
+		assertThat(Adapters.cast(String.class).adapt("No time"), is("No time"));
 	}
 
 	@Test
 	public void testBadCast() {
-		assertThat(Adapters.cast(Object.class, Integer.class).adapt("No time"), is(nullValue()));
+		assertThat(Adapters.cast(Integer.class).adapt("No time"), is(nullValue()));
 	}
 
 	@Test

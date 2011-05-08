@@ -11,7 +11,7 @@ public final class CastingAdapterException extends ClassCastException {
 
 	private static final long serialVersionUID = 3287225814118519929L;
 
-	private final CastingAdapter<?, ?> adapter;
+	private final CastingAdapter<?> adapter;
 	private final Object value;
 
 	/**
@@ -27,7 +27,7 @@ public final class CastingAdapterException extends ClassCastException {
 	 *             if the value is actually valid for the specified adapter; if
 	 *             the cast is successful.
 	 */
-	CastingAdapterException(final CastingAdapter<?, ?> adapter, final Object value) {
+	CastingAdapterException(final CastingAdapter<?> adapter, final Object value) {
 		if (adapter == null) {
 			throw new NullPointerException("adapter is null");
 		}
@@ -75,7 +75,7 @@ public final class CastingAdapterException extends ClassCastException {
 	 * 
 	 * @return the {@code CastingAdapter} that was the source of this exception
 	 */
-	public CastingAdapter<?, ?> getAdapter() {
+	public CastingAdapter<?> getAdapter() {
 		return this.adapter;
 	}
 
