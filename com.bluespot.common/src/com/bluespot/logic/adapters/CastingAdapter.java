@@ -64,8 +64,13 @@ public class CastingAdapter<S, D extends S> extends AbstractHandledAdapter<S, D,
 			this.dispatch(new CastingAdapterException(this, source));
 			return null;
 		}
-		// This cast is guaranteed to succeed.
-		return this.getCastType().cast(source);
+		try {
+			return this.getCastType().cast(source);
+		} catch (ClassCastException e) {
+			// The cast should have been guaranteed to succeed, so this error
+			// should never fire.
+			throw new AssertionError(e);
+		}
 	}
 
 	@Override
