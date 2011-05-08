@@ -19,7 +19,7 @@ import java.util.List;
  */
 public abstract class AbstractCompositeFunction<I, V> implements Function<I, V> {
 
-	private final List<Function<? super I, ? extends V>> functions;
+	private final List<? extends Function<? super I, ? extends V>> functions;
 
 	/**
 	 * Creates a composite predicate from the specified predicates.
@@ -34,7 +34,7 @@ public abstract class AbstractCompositeFunction<I, V> implements Function<I, V> 
 	 *             if {@code functions} or any function in {@code functions} is
 	 *             null
 	 */
-	public AbstractCompositeFunction(final Collection<Function<? super I, ? extends V>> functions) {
+	public AbstractCompositeFunction(final Collection<? extends Function<? super I, ? extends V>> functions) {
 		if (functions == null) {
 			throw new NullPointerException("functions must not be null");
 		}
@@ -52,7 +52,7 @@ public abstract class AbstractCompositeFunction<I, V> implements Function<I, V> 
 	/**
 	 * @return a unmodifiable list of functions used by this object
 	 */
-	public List<Function<? super I, ? extends V>> getFunctions() {
+	public List<? extends Function<? super I, ? extends V>> getFunctions() {
 		return this.functions;
 	}
 

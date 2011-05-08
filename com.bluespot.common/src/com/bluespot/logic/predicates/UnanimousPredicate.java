@@ -62,7 +62,7 @@ public final class UnanimousPredicate<T> extends AbstractCompositePredicate<T> {
 	@Override
 	public String toString() {
 		final StringBuilder builder = new StringBuilder();
-		final List<Predicate<? super T>> predicates = this.getPredicates();
+		final List<? extends Predicate<? super T>> predicates = this.getPredicates();
 		for (int i = 0; i < predicates.size(); i++) {
 			if (i > 0) {
 				if (i < predicates.size() - 1) {

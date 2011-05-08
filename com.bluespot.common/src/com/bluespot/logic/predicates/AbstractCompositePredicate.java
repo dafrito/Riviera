@@ -19,7 +19,7 @@ public abstract class AbstractCompositePredicate<T> implements Predicate<T> {
 	/**
 	 * The list of predicates used with this composite
 	 */
-	private final List<Predicate<? super T>> predicates;
+	private final List<? extends Predicate<? super T>> predicates;
 
 	/**
 	 * Creates a composite predicate from the specified predicates.
@@ -33,7 +33,7 @@ public abstract class AbstractCompositePredicate<T> implements Predicate<T> {
 	 *             if {@code predicates} or any predicate in {@code predicates}
 	 *             is null
 	 */
-	public AbstractCompositePredicate(final Collection<Predicate<? super T>> predicates) {
+	public AbstractCompositePredicate(final Collection<? extends Predicate<? super T>> predicates) {
 		if (predicates == null) {
 			throw new NullPointerException("predicates is null");
 		}
@@ -53,7 +53,7 @@ public abstract class AbstractCompositePredicate<T> implements Predicate<T> {
 	 * 
 	 * @return the array of predicates used in this predicate
 	 */
-	public List<Predicate<? super T>> getPredicates() {
+	public List<? extends Predicate<? super T>> getPredicates() {
 		return Collections.unmodifiableList(this.predicates);
 	}
 
