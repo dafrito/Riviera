@@ -43,17 +43,13 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	}
 
 	/**
-	 * Searching the provided function for inputs that return non-null results.
-	 * <p>
-	 * Be warned that this iterator may be of a very large or infinite size, so
-	 * don't expect loops to end that are solely dependent on
-	 * {@link Iterator#hasNext()}.
+	 * Searching the provided function for possible input values. This iterator
+	 * will likely iterate forever.
 	 * 
-	 * @param input
-	 * @return
+	 * @return an iterator that generates values of the required input type
 	 */
-	protected Iterator<? extends I> searchInputs(Function<? super I, ? extends V> input) {
-		return new InputIterator<I>(this.world, input, this.guardType);
+	protected Iterator<? extends I> searchInputs() {
+		return new InputGenerator<I>(this.getFunctions(), this.getGuardType());
 	}
 
 	protected Collection<? extends Function<? super I, ? extends V>> computeFunctions(I input, V output) {
@@ -63,10 +59,13 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	@Override
 	public Function<? super I, ? extends V> apply(Function<? super I, ? extends V> function) {
 		Collection<? extends Function<? super I, ? extends V>> candidates = null;
-		Iterator<? extends I> iter = this.searchInputs(function);
+		Iterator<? extends I> iter = this.searchInputs();
 		while (iter.hasNext()) {
 			I input = iter.next();
 			V output = function.apply(input);
+			if (output == null) {
+				continue;
+			}
 			Collection<? extends Function<? super I, ? extends V>> myCandidates = this.computeFunctions(input, output);
 			if (candidates != null) {
 				// We run into the problem of equality here. Consider these two functions:
@@ -100,4 +99,8 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	}
 
 	final Set<? extends Function<Object, ?>> world = new HashSet<Function<Object, ?>>();
+
+	public Collection<? extends Function<Object, ?>> getFunctions() {
+		return this.world;
+	}
 }
