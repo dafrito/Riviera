@@ -9,16 +9,16 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.bluespot.logic.visitors.Sentinel;
+import com.bluespot.logic.visitors.GuardedVisitor;
 
-public class SentinelTests {
+public class GuardedVisitorTests {
 
 	@Test
 	public void testSentinel() {
 
 		final List<String> strings = new ArrayList<String>();
 
-		final Sentinel<String> sentinel = new Sentinel<String>(Predicates.lowerCase(), Visitors.addTo(strings));
+		final GuardedVisitor<String> sentinel = new GuardedVisitor<String>(Predicates.lowerCase(), Visitors.addTo(strings));
 
 		sentinel.accept("no time");
 		sentinel.accept("NO TIME");

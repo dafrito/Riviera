@@ -8,7 +8,7 @@ import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.visitors.AdaptingVisitor;
 import com.bluespot.logic.visitors.PopulatingVisitor;
 import com.bluespot.logic.visitors.PruningVisitor;
-import com.bluespot.logic.visitors.Sentinel;
+import com.bluespot.logic.visitors.GuardedVisitor;
 import com.bluespot.logic.visitors.Visitor;
 
 /**
@@ -61,7 +61,7 @@ public final class Visitors {
 	}
 
 	/**
-	 * Returns a new {@link Sentinel} that guards the specified visitor with the
+	 * Returns a new {@link GuardedVisitor} that guards the specified visitor with the
 	 * specified predicate.
 	 * 
 	 * @param <T>
@@ -75,10 +75,10 @@ public final class Visitors {
 	 *            {@code true} according to the specified predicate
 	 * @return a new {@code SingleSentinel} that guards the specified visitor
 	 *         with the specified predicate.
-	 * @see Sentinel
+	 * @see GuardedVisitor
 	 */
-	public static <T> Sentinel<T> when(final Predicate<? super T> predicate, final Visitor<? super T> visitor) {
-		return new Sentinel<T>(predicate, visitor);
+	public static <T> GuardedVisitor<T> when(final Predicate<? super T> predicate, final Visitor<? super T> visitor) {
+		return new GuardedVisitor<T>(predicate, visitor);
 	}
 
 	/**

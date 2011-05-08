@@ -12,7 +12,7 @@ import com.bluespot.forms.submission.MutableSubmission;
 import com.bluespot.logic.Predicates;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
-import com.bluespot.logic.visitors.Sentinel;
+import com.bluespot.logic.visitors.GuardedVisitor;
 import com.bluespot.logic.visitors.Visitor;
 
 public class SchemaTests {
@@ -76,14 +76,14 @@ public class SchemaTests {
 
 	@Test
 	public void testInvalidSubmission() {
-		final Sentinel<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
+		final GuardedVisitor<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
 		sentinel.accept(this.submission);
 		assertTrue("Submission is invalid", !this.flag);
 	}
 
 	@Test
 	public void testValidSubmission() {
-		final Sentinel<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
+		final GuardedVisitor<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
 		this.submission.put("String", "No time");
 		sentinel.accept(this.submission);
 		assertTrue("Submission is valid", this.flag);

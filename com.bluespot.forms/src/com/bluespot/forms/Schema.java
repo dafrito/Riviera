@@ -10,7 +10,7 @@ import com.bluespot.logic.adapters.AbstractHandledAdapter;
 import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.AdaptingPredicate;
 import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.visitors.Sentinel;
+import com.bluespot.logic.visitors.GuardedVisitor;
 import com.bluespot.logic.visitors.Visitor;
 
 /**
@@ -132,7 +132,7 @@ public final class Schema<K> {
 	}
 
 	/**
-	 * Constructs a {@link Sentinel} that is guarded by this schema's predicate.
+	 * Constructs a {@link GuardedVisitor} that is guarded by this schema's predicate.
 	 * If the predicate evaluates to {@code true}, the specified visitor will be
 	 * invoked.
 	 * 
@@ -141,8 +141,8 @@ public final class Schema<K> {
 	 * @return a new {@code Sentinel} that guards the specified visitor with
 	 *         this schema's predicate
 	 */
-	public Sentinel<Submission<K>> newSentinel(final Visitor<? super Submission<? extends K>> visitor) {
-		return new Sentinel<Submission<K>>(this.getPredicate(), visitor);
+	public GuardedVisitor<Submission<K>> newSentinel(final Visitor<? super Submission<? extends K>> visitor) {
+		return new GuardedVisitor<Submission<K>>(this.getPredicate(), visitor);
 	}
 
 	/**
@@ -156,12 +156,12 @@ public final class Schema<K> {
 	 *            the visitor that is guarded by the returned sentinel
 	 * @return a sentinel that guards the specified visitor.
 	 */
-	public Sentinel<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor) {
+	public GuardedVisitor<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor) {
 		return this.newCheckedSentinel(visitor, Visitors.throwException());
 	}
 
 	/**
-	 * Returns a {@link Sentinel} that guards the specified visitor. This is
+	 * Returns a {@link GuardedVisitor} that guards the specified visitor. This is
 	 * similar to {@link #newSentinel(Visitor)}, but is a two-step process. Each
 	 * step must succeed before the next begins:
 	 * <ul>
@@ -188,7 +188,7 @@ public final class Schema<K> {
 	 *             Of course, a no-op visitor does not affect the rules of
 	 *             validation.
 	 */
-	public Sentinel<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor,
+	public GuardedVisitor<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor,
 			final Visitor<? super SubmissionClassCastException> handler) {
 		if (visitor == null) {
 			throw new NullPointerException("visitor is null");
@@ -200,7 +200,7 @@ public final class Schema<K> {
 		checker.setHandler(handler);
 		final Predicate<Submission<K>> checkedPredicate = new AdaptingPredicate<Submission<K>, Submission<K>>(checker,
 				this.getPredicate());
-		return new Sentinel<Submission<K>>(checkedPredicate, visitor);
+		return new GuardedVisitor<Submission<K>>(checkedPredicate, visitor);
 	}
 
 	@Override
