@@ -1,6 +1,7 @@
 package com.bluespot.logic.values;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.functions.Function;
 
 /**
  * A collection of factory methods for common {@link Value} idioms.
@@ -34,6 +35,24 @@ public final class Values {
 			throw new NullPointerException("initialValue is null");
 		}
 		return new MutableValue<T>(initialValue);
+	}
+
+	/**
+	 * Return a {@link FunctionValue} evaluated at the specified constant value.
+	 * 
+	 * @param <T>
+	 *            the type of input value for the specified function
+	 * @param <V>
+	 *            the type of return value for the specified function
+	 * @param func
+	 *            the underlying function that is evaluated
+	 * @param constant
+	 *            the constant value that is provided to the specified function
+	 * @return a {@link FunctionValue} evaluated at the specified constant
+	 *         value.
+	 */
+	public static <T, V> Value<? extends V> value(Function<? super T, ? extends V> func, T constant) {
+		return new FunctionValue<T, V>(func, constant);
 	}
 
 	/**
