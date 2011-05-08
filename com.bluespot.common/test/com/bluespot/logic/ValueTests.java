@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.adapters.ParsedIntegerAdapter;
 import com.bluespot.logic.values.BufferedValue;
+import com.bluespot.logic.values.BufferedValue.NoSuchValueException;
 import com.bluespot.logic.values.MutableValue;
 import com.bluespot.logic.values.Value;
 import com.bluespot.logic.values.Values;
@@ -37,11 +38,11 @@ public class ValueTests {
 		assertThat(num.get(), is(42));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test(expected = NoSuchValueException.class)
 	public void testISEOnUnexpectedGet() {
 		final BufferedValue<String> buffered = new BufferedValue<String>(Values.value("No time"));
 		buffered.get();
-		fail("Get should have thrown an IllegalStateException");
+		fail("Get should have thrown an NoSuchValueException");
 	}
 
 	@Test
