@@ -28,6 +28,7 @@ package com.bluespot.logic.functions;
  *            type of the result value
  */
 public interface Function<I, R> {
+
 	/**
 	 * Applies the specified input to the function, returning some result.
 	 * 
