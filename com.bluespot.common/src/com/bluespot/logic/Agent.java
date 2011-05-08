@@ -27,6 +27,15 @@ import com.bluespot.logic.functions.UnanimousFunction;
  */
 public class Agent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
 
+	private final Class<I> guardType;
+
+	public Agent(Class<I> guardType) {
+		if (guardType == null) {
+			throw new NullPointerException("guardType must not be null");
+		}
+		this.guardType = guardType;
+	}
+
 	protected Iterable<? extends I> searchInputs(Function<? super I, ? extends V> input) {
 		return null;
 	}
