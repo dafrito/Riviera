@@ -14,7 +14,7 @@ import java.util.List;
  * @param <T>
  *            the type of value tested by this predicate
  */
-public abstract class CompositePredicate<T> implements Predicate<T> {
+public abstract class AbstractCompositePredicate<T> implements Predicate<T> {
 
 	/**
 	 * The list of predicates used with this composite
@@ -33,7 +33,7 @@ public abstract class CompositePredicate<T> implements Predicate<T> {
 	 *             if {@code predicates} or any predicate in {@code predicates}
 	 *             is null
 	 */
-	public CompositePredicate(final Collection<Predicate<? super T>> predicates) {
+	public AbstractCompositePredicate(final Collection<Predicate<? super T>> predicates) {
 		if (predicates == null) {
 			throw new NullPointerException("predicates is null");
 		}

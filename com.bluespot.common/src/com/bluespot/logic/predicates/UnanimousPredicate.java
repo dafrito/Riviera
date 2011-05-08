@@ -14,7 +14,7 @@ import java.util.List;
  * @param <T>
  *            the type of value evaluated by this predicate
  */
-public final class UnanimousPredicate<T> extends CompositePredicate<T> {
+public final class UnanimousPredicate<T> extends AbstractCompositePredicate<T> {
 
 	/**
 	 * Constructs a predicate that uses the specified child predicates

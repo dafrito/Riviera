@@ -12,7 +12,7 @@ import java.util.List;
  * @param <T>
  *            the type of the tested value
  */
-public final class UnilateralPredicate<T> extends CompositePredicate<T> {
+public final class UnilateralPredicate<T> extends AbstractCompositePredicate<T> {
 
 	/**
 	 * Constructs a unilateral predicate using the specified predicates.
