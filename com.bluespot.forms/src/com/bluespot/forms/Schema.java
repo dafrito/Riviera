@@ -5,13 +5,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import com.bluespot.logic.Visitors;
 import com.bluespot.logic.adapters.AbstractHandledAdapter;
 import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.AdaptingPredicate;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.visitors.GuardedVisitor;
 import com.bluespot.logic.visitors.Visitor;
+import com.bluespot.logic.visitors.Visitors;
 
 /**
  * A schema is a type-safe bridge between arbitrary forms of submission and the

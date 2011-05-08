@@ -1,16 +1,11 @@
-package com.bluespot.logic;
+package com.bluespot.logic.adapters;
 
 import java.awt.Component;
 import java.io.File;
 
 import javax.swing.text.JTextComponent;
 
-import com.bluespot.logic.adapters.Adapter;
-import com.bluespot.logic.adapters.CastingAdapter;
-import com.bluespot.logic.adapters.ChildFileAdapter;
-import com.bluespot.logic.adapters.HandledAdapter;
-import com.bluespot.logic.adapters.MapEntryAdapter;
-import com.bluespot.logic.adapters.ParsedIntegerAdapter;
+import com.bluespot.logic.predicates.Predicates;
 
 /**
  * A library of common {@link Adapter} factory methods. These methods are not

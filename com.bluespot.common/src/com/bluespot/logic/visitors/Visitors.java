@@ -1,15 +1,10 @@
-package com.bluespot.logic;
+package com.bluespot.logic.visitors;
 
 import java.util.Collection;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.visitors.AdaptingVisitor;
-import com.bluespot.logic.visitors.PopulatingVisitor;
-import com.bluespot.logic.visitors.PruningVisitor;
-import com.bluespot.logic.visitors.GuardedVisitor;
-import com.bluespot.logic.visitors.Visitor;
 
 /**
  * A collection of factory methods for common {@link Visitor} idioms. The names

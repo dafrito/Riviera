@@ -1,6 +1,5 @@
 package com.bluespot.logic.adapters;
 
-import com.bluespot.logic.Adapters;
 import com.bluespot.logic.predicates.AdaptingPredicate;
 import com.bluespot.logic.predicates.Predicate;
 

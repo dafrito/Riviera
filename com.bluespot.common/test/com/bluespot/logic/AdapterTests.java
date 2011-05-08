@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.adapters.MapEntryAdapter;
 
 public class AdapterTests {

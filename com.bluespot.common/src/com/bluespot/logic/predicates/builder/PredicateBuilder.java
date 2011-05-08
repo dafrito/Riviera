@@ -3,9 +3,9 @@ package com.bluespot.logic.predicates.builder;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.bluespot.logic.Predicates;
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.predicates.Predicates;
 import com.bluespot.logic.predicates.UnanimousPredicate;
 
 /**

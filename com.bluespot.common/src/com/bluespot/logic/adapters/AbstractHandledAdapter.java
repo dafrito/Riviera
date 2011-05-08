@@ -1,7 +1,7 @@
 package com.bluespot.logic.adapters;
 
-import com.bluespot.logic.Visitors;
 import com.bluespot.logic.visitors.Visitor;
+import com.bluespot.logic.visitors.Visitors;
 
 /**
  * A skeletal {@link HandledAdapter} implementation. This manages storing the

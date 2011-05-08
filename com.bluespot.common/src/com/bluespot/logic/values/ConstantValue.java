@@ -1,6 +1,5 @@
 package com.bluespot.logic.values;
 
-import com.bluespot.logic.Values;
 
 /**
  * A {@link Value} implementation that simply returns the value given at

@@ -1,4 +1,4 @@
-package com.bluespot.logic;
+package com.bluespot.logic.predicates;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -7,17 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.bluespot.logic.predicates.EndsWithPredicate;
-import com.bluespot.logic.predicates.EqualityPredicate;
-import com.bluespot.logic.predicates.GreaterThanPredicate;
-import com.bluespot.logic.predicates.IdentityPredicate;
-import com.bluespot.logic.predicates.InversePredicate;
-import com.bluespot.logic.predicates.LessThanPredicate;
-import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.predicates.RegexPredicate;
-import com.bluespot.logic.predicates.StartsWithPredicate;
-import com.bluespot.logic.predicates.UnanimousPredicate;
-import com.bluespot.logic.predicates.UnilateralPredicate;
 
 /**
  * A set of factory methods for constructing {@link Predicate} objects. Many

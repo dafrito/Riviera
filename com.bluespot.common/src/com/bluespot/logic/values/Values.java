@@ -1,11 +1,6 @@
-package com.bluespot.logic;
+package com.bluespot.logic.values;
 
 import com.bluespot.logic.adapters.Adapter;
-import com.bluespot.logic.values.AdaptingValue;
-import com.bluespot.logic.values.BufferedValue;
-import com.bluespot.logic.values.ConstantValue;
-import com.bluespot.logic.values.MutableValue;
-import com.bluespot.logic.values.Value;
 
 /**
  * A collection of factory methods for common {@link Value} idioms.

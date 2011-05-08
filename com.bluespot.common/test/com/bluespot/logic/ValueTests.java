@@ -8,10 +8,12 @@ import javax.swing.JTextField;
 
 import org.junit.Test;
 
+import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.adapters.ParsedIntegerAdapter;
 import com.bluespot.logic.values.BufferedValue;
 import com.bluespot.logic.values.MutableValue;
 import com.bluespot.logic.values.Value;
+import com.bluespot.logic.values.Values;
 
 public class ValueTests {
 

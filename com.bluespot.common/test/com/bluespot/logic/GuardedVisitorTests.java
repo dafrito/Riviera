@@ -9,7 +9,9 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.bluespot.logic.predicates.Predicates;
 import com.bluespot.logic.visitors.GuardedVisitor;
+import com.bluespot.logic.visitors.Visitors;
 
 public class GuardedVisitorTests {
 

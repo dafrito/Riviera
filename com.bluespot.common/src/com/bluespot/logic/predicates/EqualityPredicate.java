@@ -1,6 +1,5 @@
 package com.bluespot.logic.predicates;
 
-import com.bluespot.logic.Predicates;
 
 /**
  * A predicate that tests for equality against a provided constant. The constant

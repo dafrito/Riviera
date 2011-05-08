@@ -9,8 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.forms.submission.MutableSubmission;
-import com.bluespot.logic.Predicates;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.predicates.Predicates;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 import com.bluespot.logic.visitors.GuardedVisitor;
 import com.bluespot.logic.visitors.Visitor;

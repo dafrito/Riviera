@@ -1,6 +1,5 @@
 package com.bluespot.logic.predicates;
 
-import com.bluespot.logic.Predicates;
 
 /**
  * A predicate that evaluates to {@code true} if and only if the tested value is

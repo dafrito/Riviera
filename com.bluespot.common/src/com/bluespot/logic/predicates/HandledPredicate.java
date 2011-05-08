@@ -1,8 +1,8 @@
 package com.bluespot.logic.predicates;
 
-import com.bluespot.logic.Visitors;
 import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.visitors.Visitor;
+import com.bluespot.logic.visitors.Visitors;
 
 /**
  * A {@link Predicate} that notifies a given {@link Visitor} for failed

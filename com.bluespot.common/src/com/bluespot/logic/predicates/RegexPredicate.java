@@ -2,7 +2,7 @@ package com.bluespot.logic.predicates;
 
 import java.util.regex.Pattern;
 
-import com.bluespot.logic.Adapters;
+import com.bluespot.logic.adapters.Adapters;
 
 /**
  * A {@link Predicate} that evaluates strings against a specified regular

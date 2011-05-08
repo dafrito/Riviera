@@ -1,9 +1,9 @@
 package com.bluespot.logic;
 
-import static com.bluespot.logic.Adapters.childFile;
-import static com.bluespot.logic.Adapters.fileName;
-import static com.bluespot.logic.Predicates.not;
-import static com.bluespot.logic.Predicates.startsWith;
+import static com.bluespot.logic.adapters.Adapters.childFile;
+import static com.bluespot.logic.adapters.Adapters.fileName;
+import static com.bluespot.logic.predicates.Predicates.not;
+import static com.bluespot.logic.predicates.Predicates.startsWith;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +24,7 @@ import com.bluespot.logic.predicates.EqualityPredicate;
 import com.bluespot.logic.predicates.IdentityPredicate;
 import com.bluespot.logic.predicates.InversePredicate;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.predicates.Predicates;
 import com.bluespot.logic.predicates.UnanimousPredicate;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
 
