@@ -29,17 +29,17 @@ import com.bluespot.logic.functions.UnanimousFunction;
  */
 public class Agent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
 
-	private final Class<I> guardType;
+	private final Class<I> inputType;
 
-	public Agent(Class<I> guardType) {
-		if (guardType == null) {
-			throw new NullPointerException("guardType must not be null");
+	public Agent(Class<I> inputType) {
+		if (inputType == null) {
+			throw new NullPointerException("inputType must not be null");
 		}
-		this.guardType = guardType;
+		this.inputType = inputType;
 	}
 
-	public Class<I> getGuardType() {
-		return this.guardType;
+	public Class<I> getInputType() {
+		return this.inputType;
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	 * @return an iterator that generates values of the required input type
 	 */
 	protected Iterator<? extends I> searchInputs() {
-		return new InputGenerator<I>(this.getFunctions(), this.getGuardType());
+		return new InputGenerator<I>(this.getFunctions(), this.getInputType());
 	}
 
 	protected Collection<? extends Function<? super I, ? extends V>> computeFunctions(I input, V output) {
