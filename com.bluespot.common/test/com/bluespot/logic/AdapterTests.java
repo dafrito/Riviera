@@ -47,5 +47,7 @@ public class AdapterTests {
 		final Map<String, Integer> nums = new HashMap<String, Integer>();
 		final MapEntryAdapter<String, Integer> adapter = Adapters.entryFor("Foo");
 		assertThat(adapter.adapt(nums), is(nullValue()));
+		nums.put("Foo", 42);
+		assertThat(adapter.adapt(nums), is(42));
 	}
 }
