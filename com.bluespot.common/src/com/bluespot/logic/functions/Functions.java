@@ -18,6 +18,21 @@ public class Functions {
 		throw new AssertionError("Instantiation not allowed");
 	}
 
+	private static final SafeFunction<Object> FUNCTION_IDENTITY = new SafeFunction<Object>() {
+		@Override
+		public Object apply(Object input) {
+			return input;
+		}
+	};
+
+	/**
+	 * @return a {@link Function} implementation that returns any value it is
+	 *         given.
+	 */
+	public static SafeFunction<Object> identity() {
+		return FUNCTION_IDENTITY;
+	}
+
 	/**
 	 * A {@link Function} that safely casts to a specified value before
 	 * proceeding. Casts that fail will be passed to the underlying function as
