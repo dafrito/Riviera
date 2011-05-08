@@ -1,7 +1,9 @@
-package com.bluespot.logic;
+package com.bluespot.logic.agents;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.UnanimousFunction;
@@ -40,8 +42,18 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 		return this.guardType;
 	}
 
-	protected Iterable<? extends I> searchInputs(Function<? super I, ? extends V> input) {
-		return null;
+	/**
+	 * Searching the provided function for inputs that return non-null results.
+	 * <p>
+	 * Be warned that this iterator may be of a very large or infinite size, so
+	 * don't expect loops to end that are solely dependent on
+	 * {@link Iterator#hasNext()}.
+	 * 
+	 * @param input
+	 * @return
+	 */
+	protected Iterator<? extends I> searchInputs(Function<? super I, ? extends V> input) {
+		return new InputIterator<I>(this.world, input, this.guardType);
 	}
 
 	protected Collection<? extends Function<? super I, ? extends V>> computeFunctions(I input, V output) {
@@ -51,7 +63,9 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	@Override
 	public Function<? super I, ? extends V> apply(Function<? super I, ? extends V> function) {
 		Collection<? extends Function<? super I, ? extends V>> candidates = null;
-		for (I input : this.searchInputs(function)) {
+		Iterator<? extends I> iter = this.searchInputs(function);
+		while (iter.hasNext()) {
+			I input = iter.next();
 			V output = function.apply(input);
 			Collection<? extends Function<? super I, ? extends V>> myCandidates = this.computeFunctions(input, output);
 			if (candidates != null) {
@@ -85,4 +99,5 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 		return new UnanimousFunction<I, V>(candidates);
 	}
 
+	final Set<? extends Function<Object, ?>> world = new HashSet<Function<Object, ?>>();
 }
