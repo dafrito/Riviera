@@ -1,8 +1,9 @@
 package com.bluespot.logic.values;
 
 import com.bluespot.logic.functions.Function;
+import com.bluespot.logic.functions.SafeFunction;
 
-public class FunctionValue<I, T> implements Value<T> {
+public class FunctionValue<I, T> implements Value<T>, SafeFunction<T> {
 
 	private final Function<? super I, ? extends T> function;
 	private final I constant;
@@ -26,6 +27,11 @@ public class FunctionValue<I, T> implements Value<T> {
 	@Override
 	public T get() {
 		return this.getFunction().apply(this.constant);
+	}
+
+	@Override
+	public T apply(Object input) {
+		return this.get();
 	}
 
 	@Override
