@@ -7,7 +7,8 @@ package com.bluespot.logic.functions;
  * @author Aaron Faanes
  * 
  * @param <C>
- *            the type of the curried value
+ *            the type of the curried value. {@link Curryable} input values will
+ *            be passed an object of this type.
  * @param <R>
  *            the function that is returned as a result of the currying
  */
