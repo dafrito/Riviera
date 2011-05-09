@@ -35,6 +35,40 @@ public class Functions {
 	}
 
 	/**
+	 * Return {@link CurryFunction} objects that use provided values.
+	 * <p>
+	 * This singleton would be an anonymous class, but I couldn't get the
+	 * casting to work with the generic type. A singleton was the next best
+	 * thing.
+	 * 
+	 * @author Aaron Faanes
+	 * 
+	 * @param <I>
+	 *            the type of the provided value
+	 */
+	private static class CreateCurryFunction<I> implements Function<I, CurryFunction<? super I, Function<?, ?>>> {
+
+		private CreateCurryFunction() {
+			// Hide this constructor, since we're a singleton
+		}
+
+		@Override
+		public CurryFunction<? super I, Function<?, ?>> apply(I input) {
+			return new CurryFunction<I, Function<?, ?>>(input);
+		}
+
+		public static final CreateCurryFunction<?> INSTANCE = new CreateCurryFunction<Object>();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <I> Function<I, CurryFunction<? super I, Function<?, ?>>> curry() {
+		// This unchecked cast is always safe, since we're only restricting the allowable values here.
+		// Uses of this function would be restricted by the returned type anyway, and thus fail at
+		// compile-time.
+		return (CreateCurryFunction<I>) CreateCurryFunction.INSTANCE;
+	}
+
+	/**
 	 * A {@link Function} that safely casts to a specified value before
 	 * proceeding. Casts that fail will be passed to the underlying function as
 	 * {@code null}.
