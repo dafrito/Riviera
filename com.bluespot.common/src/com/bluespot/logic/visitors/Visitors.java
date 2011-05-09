@@ -51,8 +51,10 @@ public final class Visitors {
 	 * 
 	 * @return a {@link Visitor} object that does nothing.
 	 */
-	public static Visitor<Object> noop() {
-		return VISITOR_NOOP;
+	@SuppressWarnings("unchecked")
+	public static <T> Visitor<T> noop() {
+		// This cast is safe because we never use the provided value anyway.
+		return (Visitor<T>) VISITOR_NOOP;
 	}
 
 	/**
