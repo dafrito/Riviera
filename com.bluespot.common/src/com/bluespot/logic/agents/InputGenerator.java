@@ -11,6 +11,14 @@ import com.bluespot.logic.functions.SafeFunction;
 
 /**
  * A producer of values of a specified type.
+ * <p>
+ * Generation is done in separate rounds. Each round applies every provided
+ * input value to every provided function. A round ends when no more
+ * permutations are available. However, a new round is made available which
+ * contains the accumulated input values and functions from all previous rounds.
+ * <p>
+ * This generator will never return equal values, regardless of the state of
+ * current round.
  * 
  * @author Aaron Faanes
  * 
