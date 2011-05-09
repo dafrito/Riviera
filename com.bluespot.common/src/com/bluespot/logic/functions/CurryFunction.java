@@ -26,6 +26,9 @@ public class CurryFunction<C, R extends Function<?, ?>> implements Function<Curr
 
 	@Override
 	public R apply(Curryable<? super C, ? extends R> input) {
+		if (input == null) {
+			return null;
+		}
 		return input.curry(this.getCurriedValue());
 	}
 
