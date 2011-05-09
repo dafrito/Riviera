@@ -14,9 +14,12 @@ public class AgentTests {
 
 	public Collection<? extends Function<Object, ?>> getFunctions() {
 		Collection<Function<Object, ?>> functions = new ArrayList<Function<Object, ?>>();
-		functions.add(Functions.cast(Number.class, Functions.value(0)));
+		functions.add(Functions.identity());
+		functions.add(Functions.value(0.0d));
 		functions.add(Functions.cast(Number.class, Functions.add(1)));
 		functions.add(Functions.cast(Number.class, Functions.subtract(1)));
+		functions.add(Functions.cast(Number.class, Functions.divide(2)));
+		functions.add(Functions.cast(Number.class, Functions.multiply(2)));
 		return functions;
 	}
 
