@@ -1,5 +1,6 @@
 package com.bluespot.logic.functions;
 
+import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.values.FunctionValue;
@@ -66,6 +67,12 @@ public class Functions {
 		// Uses of this function would be restricted by the returned type anyway, and thus fail at
 		// compile-time.
 		return (CreateCurryFunction<I>) CreateCurryFunction.INSTANCE;
+	}
+
+	private static class AdaptingSafeFunction<I, V> extends AdaptingFunction<Object, I, V> implements SafeFunction<V> {
+		public AdaptingSafeFunction(Adapter<Object, ? extends I> adapter, Function<? super I, ? extends V> function) {
+			super(adapter, function);
+		}
 	}
 
 	/**
