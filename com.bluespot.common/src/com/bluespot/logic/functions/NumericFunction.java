@@ -1,6 +1,6 @@
 package com.bluespot.logic.functions;
 
-public class NumericFunction implements Function<Number, Double> {
+public class NumericFunction implements Function<Number, Number>, Curryable<Number, Function<? super Number, ? extends Number>> {
 
 	private final NumericOperations operation;
 	private final double constant;
@@ -20,11 +20,19 @@ public class NumericFunction implements Function<Number, Double> {
 	}
 
 	@Override
-	public Double apply(Number input) {
+	public Number apply(Number input) {
 		if (input == null) {
 			return null;
 		}
 		return operation.operate(input.doubleValue(), constant);
+	}
+
+	@Override
+	public NumericFunction curry(Number value) {
+		if (value == null) {
+			return null;
+		}
+		return new NumericFunction(this.operation, this.operation.operate(value.doubleValue(), this.constant));
 	}
 
 	public NumericOperations getOperation() {

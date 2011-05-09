@@ -45,6 +45,17 @@ public enum NumericOperations implements NumericOperation {
 	}
 
 	@Override
+	public Function<? super Number, ? extends Number> curry(Number value) {
+		if (value == null) {
+			return null;
+		}
+		if (!this.allowOperationByZero() && value.doubleValue() == 0.0d) {
+			return null;
+		}
+		return new NumericFunction(this, value);
+	}
+
+	@Override
 	public abstract double operate(double a, double b);
 
 	@Override
