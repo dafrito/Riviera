@@ -12,4 +12,9 @@ public class FunctionTests {
 	public void testCurrying() throws Exception {
 		Assert.assertTrue(Functions.curry(NumericOperations.ADD, 2).apply(3).equals(5.0d));
 	}
+
+	@Test
+	public void testCurryingTypes() throws Exception {
+		Functions.curry(2).apply(NumericOperations.ADD);
+	}
 }

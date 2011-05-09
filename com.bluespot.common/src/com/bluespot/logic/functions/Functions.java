@@ -46,14 +46,14 @@ public class Functions {
 	 * @param <I>
 	 *            the type of the provided value
 	 */
-	private static class CreateCurryFunction<I> implements Function<I, CurryFunction<? super I, Function<?, ?>>> {
+	private static class CreateCurryFunction<I> implements Function<I, CurryFunction<I, Function<?, ?>>> {
 
 		private CreateCurryFunction() {
 			// Hide this constructor, since we're a singleton
 		}
 
 		@Override
-		public CurryFunction<? super I, Function<?, ?>> apply(I input) {
+		public CurryFunction<I, Function<?, ?>> apply(I input) {
 			return new CurryFunction<I, Function<?, ?>>(input);
 		}
 
@@ -61,7 +61,7 @@ public class Functions {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <I> Function<I, CurryFunction<? super I, Function<?, ?>>> curry() {
+	public static <I> Function<I, CurryFunction<I, Function<?, ?>>> curry() {
 		// This unchecked cast is always safe, since we're only restricting the allowable values here.
 		// Uses of this function would be restricted by the returned type anyway, and thus fail at
 		// compile-time.
@@ -93,6 +93,10 @@ public class Functions {
 
 	public static <C, R> SafeFunction<? extends R> curry(Function<? super C, ? extends R> function, C value) {
 		return new FunctionValue<C, R>(function, value);
+	}
+
+	public static <C, R extends Function<?, ?>> CurryFunction<C, R> curry(C value) {
+		return new CurryFunction<C, R>(value);
 	}
 
 	public static <I, V> Function<? super I, ? extends V> guard(Predicate<? super I> guard, Function<? super I, ? extends V> function) {

@@ -45,7 +45,7 @@ public enum NumericOperations implements NumericOperation {
 	}
 
 	@Override
-	public Function<? super Number, ? extends Number> curry(Number value) {
+	public Function<Number, ? extends Number> curry(Number value) {
 		if (value == null) {
 			return null;
 		}
