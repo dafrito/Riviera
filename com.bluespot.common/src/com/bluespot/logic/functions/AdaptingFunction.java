@@ -3,39 +3,41 @@ package com.bluespot.logic.functions;
 import com.bluespot.logic.adapters.Adapter;
 
 /**
- * A {@link Function} that adapts a value before passing it to another
+ * A {@link Function} that adapts a value before passing it to an underlying
  * {@link Function}.
  * 
  * @author Aaron Faanes
  * 
- * @param <I>
- *            the type of the initial value received by this function
- * @param <A>
- *            the common type of the adapted value and the input to the
- *            specified function
- * @param <V>
- *            the type that is returned by this function
+ * @param <S>
+ *            the type of the initial value received by this function. It is
+ *            also the type accepted by the adapter.
+ * @param <D>
+ *            the type that is accepted by the underlying function. It is also
+ *            the type that is produced by the specified adapter.
+ * @param <R>
+ *            the type that is returned by this function. It is not modified by
+ *            this object.
  */
-public class AdaptingFunction<I, A, V> implements Function<I, V> {
+public class AdaptingFunction<S, D, R> implements Function<S, R> {
 
-	private final Adapter<? super I, ? extends A> adapter;
-	private final Function<? super A, ? extends V> function;
+	private final Adapter<? super S, ? extends D> adapter;
+	private final Function<? super D, ? extends R> function;
 
-	public AdaptingFunction(Adapter<? super I, ? extends A> adapter, Function<? super A, ? extends V> function) {
+	public AdaptingFunction(Adapter<? super S, ? extends D> adapter, Function<? super D, ? extends R> function) {
 		this.adapter = adapter;
 		this.function = function;
 	}
 
-	public Adapter<? super I, ? extends A> getAdapter() {
+	public Adapter<? super S, ? extends D> getAdapter() {
 		return adapter;
 	}
 
-	public Function<? super A, ? extends V> getFunction() {
+	public Function<? super D, ? extends R> getFunction() {
 		return function;
 	}
 
 	@Override
-	public V apply(I input) {
+	public R apply(S input) {
 		return this.function.apply(this.adapter.adapt(input));
 	}
 

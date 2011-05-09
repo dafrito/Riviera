@@ -69,8 +69,8 @@ public class Functions {
 		return (CreateCurryFunction<I>) CreateCurryFunction.INSTANCE;
 	}
 
-	private static class AdaptingSafeFunction<I, V> extends AdaptingFunction<Object, I, V> implements SafeFunction<V> {
-		public AdaptingSafeFunction(Adapter<Object, ? extends I> adapter, Function<? super I, ? extends V> function) {
+	private static class AdaptingSafeFunction<D, R> extends AdaptingFunction<Object, D, R> implements SafeFunction<R> {
+		public AdaptingSafeFunction(Adapter<Object, ? extends D> adapter, Function<? super D, ? extends R> function) {
 			super(adapter, function);
 		}
 	}
