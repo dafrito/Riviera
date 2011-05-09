@@ -190,11 +190,9 @@ public class InputGenerator<I> implements Iterator<I> {
 				return null;
 			}
 			this.blacklist.add(generated);
+			this.nextRound.addValue(generated);
 			if (SafeFunction.class.isInstance(generated)) {
 				this.nextRound.addFunction((SafeFunction<?>) generated);
-			} else {
-				// Any other non-null value is used as a input value for the next round
-				this.nextRound.addValue(generated);
 			}
 			if (this.generatedType.isInstance(generated)) {
 				I candidate = this.generatedType.cast(generated);
