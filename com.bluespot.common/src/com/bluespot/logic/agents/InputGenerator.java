@@ -31,8 +31,8 @@ public class InputGenerator<I> implements Iterator<I> {
 
 	private Round<I> round;
 
-	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<I> guardType) {
-		this(functions, guardType, Collections.<Object> emptySet());
+	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<? extends I> generatedType) {
+		this(functions, generatedType, Collections.<Object> emptySet());
 	}
 
 	/**
@@ -42,18 +42,18 @@ public class InputGenerator<I> implements Iterator<I> {
 	 * @param functions
 	 *            a collection of {@link Function} objects that will be used to
 	 *            generate input values
-	 * @param inputType
+	 * @param generatedType
 	 *            the required type of generated input values
 	 * @param values
 	 *            a collection of values that will be passed to each
 	 *            {@link Function} in {@code functions}. {@code null} will
 	 *            always be passed along with other values.
 	 */
-	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<I> inputType, Collection<? extends Object> values) {
+	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<? extends I> generatedType, Collection<? extends Object> values) {
 		if (functions == null) {
 			throw new NullPointerException("functions must not be null");
 		}
-		this.round = new Round<I>(inputType, functions, values);
+		this.round = new Round<I>(generatedType, functions, values);
 		next = this.round.search();
 	}
 
@@ -73,7 +73,7 @@ public class InputGenerator<I> implements Iterator<I> {
 
 	private static class Round<I> {
 
-		private final Class<I> generatedType;
+		private final Class<? extends I> generatedType;
 		private Set<Object> blacklist;
 
 		private Function<Object, ?> currentFunc;
@@ -85,7 +85,7 @@ public class InputGenerator<I> implements Iterator<I> {
 
 		private Round<I> nextRound;
 
-		private Round(Class<I> inputType, Collection<? extends Function<Object, ?>> functions, Collection<? extends Object> values) {
+		private Round(Class<? extends I> inputType, Collection<? extends Function<Object, ?>> functions, Collection<? extends Object> values) {
 			this.generatedType = inputType;
 			this.functions = new HashSet<Function<Object, ?>>(functions);
 			if (this.functions.isEmpty()) {
@@ -109,7 +109,7 @@ public class InputGenerator<I> implements Iterator<I> {
 			return Collections.unmodifiableSet(this.functions);
 		}
 
-		private Class<I> getGeneratedType() {
+		private Class<? extends I> getGeneratedType() {
 			return this.generatedType;
 		}
 
