@@ -26,7 +26,7 @@ public class AgentTests {
 	@Test
 	public void testInputIterator() {
 		InputGenerator<Number> iter = new InputGenerator<Number>(getFunctions(), Number.class);
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 			if (!iter.hasNext()) {
 				break;
 			}
