@@ -57,7 +57,8 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 
 	/**
 	 * Searching the provided function for possible input values. This iterator
-	 * will likely iterate forever.
+	 * will likely iterate forever, so code that uses it must rely on some other
+	 * condition to break out of loops.
 	 * 
 	 * @return an iterator that generates values of the required input type
 	 */
