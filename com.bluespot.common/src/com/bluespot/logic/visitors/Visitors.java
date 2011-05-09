@@ -49,6 +49,9 @@ public final class Visitors {
 	 * visitor is useful for objects, such as {@link HandledAdapter} that
 	 * require a non-null visitor.
 	 * 
+	 * @param <T>
+	 *            the type of visited value
+	 * 
 	 * @return a {@link Visitor} object that does nothing.
 	 */
 	@SuppressWarnings("unchecked")
