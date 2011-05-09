@@ -18,9 +18,9 @@ import com.bluespot.logic.visitors.Visitors;
  * It differs from {@link HandledAdapter} in that the handler is invoked once
  * and only once for every value that evaluates to {@code false}. This behavior
  * is essentially a subset of the behavior that a {@link HandledAdapter} could
- * perform. The reason for this restriction, and why there is not a {@code
- * HandledPredicated} interface instead, is because {@link Predicate} are not
- * allowed to effect any real change, only test a value.
+ * perform. The reason for this restriction, and why there is not a
+ * {@code HandledPredicated} interface instead, is because {@link Predicate} are
+ * not allowed to effect any real change, only test a value.
  * <p>
  * This similar but not equivalent behavior is a result of the fact that a
  * {@link Predicate} is, at its most fundamental level, a {@code Adapter<?,
@@ -88,8 +88,8 @@ public final class HandledPredicate<T> implements Predicate<T> {
 
 	/**
 	 * Sets the handler for failed tests to the specified handler. It will be
-	 * invoked for all values that cause this predicate to evaluate to {@code
-	 * false}, including null values.
+	 * invoked for all values that cause this predicate to evaluate to
+	 * {@code false}, including null values.
 	 * 
 	 * @param handler
 	 *            the handler that is notified of {@code false} evaluations. It

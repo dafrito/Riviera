@@ -105,107 +105,107 @@ public abstract class DequeProxy<E> extends QueueProxy<E> implements Deque<E> {
 	 * <p>
 	 * {@inheritDoc}
 	 */
-	 @Override
-	 public E pop() {
-		 return this.removeFirst();
-	 }
+	@Override
+	public E pop() {
+		return this.removeFirst();
+	}
 
-	 /**
-	  * This method defers to {@link #addFirst(Object)}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public void push(final E e) {
-		 this.addFirst(e);
-	 }
+	/**
+	 * This method defers to {@link #addFirst(Object)}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void push(final E e) {
+		this.addFirst(e);
+	}
 
-	 /**
-	  * This method defers to {@link #addLast(Object)}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public boolean add(final E e) {
-		 this.addLast(e);
-		 return true;
-	 }
+	/**
+	 * This method defers to {@link #addLast(Object)}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean add(final E e) {
+		this.addLast(e);
+		return true;
+	}
 
-	 /**
-	  * This method defers to {@link #getFirst()}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public E element() {
-		 return this.getFirst();
-	 }
+	/**
+	 * This method defers to {@link #getFirst()}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public E element() {
+		return this.getFirst();
+	}
 
-	 /**
-	  * This method defers to {@link #offerLast(Object)}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public boolean offer(final E e) {
-		 return this.offerLast(e);
-	 }
+	/**
+	 * This method defers to {@link #offerLast(Object)}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean offer(final E e) {
+		return this.offerLast(e);
+	}
 
-	 /**
-	  * This method defers to {@link #peekFirst()}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public E peek() {
-		 return this.peekFirst();
-	 }
+	/**
+	 * This method defers to {@link #peekFirst()}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public E peek() {
+		return this.peekFirst();
+	}
 
-	 /**
-	  * This method defers to {@link #pollFirst()}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public E poll() {
-		 return this.pollFirst();
-	 }
+	/**
+	 * This method defers to {@link #pollFirst()}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public E poll() {
+		return this.pollFirst();
+	}
 
-	 /**
-	  * This method defers to {@link #removeFirst()}
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public E remove() {
-		 return this.removeFirst();
-	 }
+	/**
+	 * This method defers to {@link #removeFirst()}
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public E remove() {
+		return this.removeFirst();
+	}
 
-	 /**
-	  * This method defers to {@link #removeFirstOccurrence(Object)}.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public boolean remove(final Object o) {
-		 return this.removeFirstOccurrence(o);
-	 }
+	/**
+	 * This method defers to {@link #removeFirstOccurrence(Object)}.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean remove(final Object o) {
+		return this.removeFirstOccurrence(o);
+	}
 
-	 /**
-	  * This method defers to {@link #add(Object)} for every element in the
-	  * specified collection.
-	  * <p>
-	  * {@inheritDoc}
-	  */
-	 @Override
-	 public boolean addAll(final Collection<? extends E> c) {
-		 boolean modified = false;
-		 for (final E value : c) {
-			 if (this.add(value)) {
-				 modified = true;
-			 }
-		 }
-		 return modified;
-	 }
+	/**
+	 * This method defers to {@link #add(Object)} for every element in the
+	 * specified collection.
+	 * <p>
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean addAll(final Collection<? extends E> c) {
+		boolean modified = false;
+		for (final E value : c) {
+			if (this.add(value)) {
+				modified = true;
+			}
+		}
+		return modified;
+	}
 
 }

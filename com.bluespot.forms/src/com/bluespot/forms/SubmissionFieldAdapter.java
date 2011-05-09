@@ -26,7 +26,7 @@ import com.bluespot.logic.adapters.HandledAdapter;
  *            the type of object contained in the field
  */
 public final class SubmissionFieldAdapter<K, T> extends
-AbstractHandledAdapter<Submission<K>, T, SubmissionFieldAdapterException> {
+		AbstractHandledAdapter<Submission<K>, T, SubmissionFieldAdapterException> {
 
 	private final Class<T> type;
 	private final K key;

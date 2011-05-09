@@ -65,8 +65,8 @@ public final class Values {
 	 *            buffered value
 	 * @param source
 	 *            the source value. It must not be null.
-	 * @return a new {@code BufferedValue} that uses the specified {@code
-	 *         source} value
+	 * @return a new {@code BufferedValue} that uses the specified
+	 *         {@code source} value
 	 * @throws NullPointerException
 	 *             if {@code source} is null
 	 */

@@ -61,8 +61,8 @@ public class ConeDemonstration extends AbstractGLDemonstration {
 
 	/**
 	 * Corrects the winding order so that the cone can be drawn properly. If
-	 * {@link #backFaceCulling} is {@code true}, this must be also be {@code
-	 * true} for the cone to appear correctly.
+	 * {@link #backFaceCulling} is {@code true}, this must be also be
+	 * {@code true} for the cone to appear correctly.
 	 */
 	public final boolean correctWindingOrder = true;
 

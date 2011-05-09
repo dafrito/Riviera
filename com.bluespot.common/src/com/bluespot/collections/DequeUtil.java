@@ -40,8 +40,8 @@ public class DequeUtil {
 	 * @param <E>
 	 *            the common supertype of the collections
 	 * @throws IllegalStateException
-	 *             if the values are not allowed to be added to the {@code
-	 *             targetCollection}
+	 *             if the values are not allowed to be added to the
+	 *             {@code targetCollection}
 	 */
 	public static <E> void synchronizeDeques(final Deque<? extends E> referenceCollection,
 			final Deque<E> targetCollection) {

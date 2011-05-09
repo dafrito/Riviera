@@ -87,8 +87,8 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 				// y = x + 2 + 1 - 1
 				// These are logically equivalent, so at least one of them should be
 				// retained. However, they're not equal according to Object#equals, so
-				// we'd lose this result. 
-				// 
+				// we'd lose this result.
+				//
 				// To resolve this, we either need some simplifying process, or we need to
 				// ensure that functions are always produced in their simplest form.
 				//

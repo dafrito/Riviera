@@ -42,8 +42,8 @@ public interface Message<E extends Message<E>> {
 	 * the same level as the conversation, also have no explicit destination.
 	 * 
 	 * @return whether this message has a destination. If {@code true}, then
-	 *         {@link #getDestination()} has no meaningful value. If {@code
-	 *         false}, then the message was explicitly directed at that
+	 *         {@link #getDestination()} has no meaningful value. If
+	 *         {@code false}, then the message was explicitly directed at that
 	 *         destination.
 	 */
 	public boolean hasExplicitDestination();

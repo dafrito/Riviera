@@ -115,89 +115,89 @@ public abstract class AbstractTableIterationTest<T> {
 	 * 
 	 * @return the value of the wrapped point that is equivalent to (2, 0)
 	 */
-	 protected abstract Point getExtraColumn();
+	protected abstract Point getExtraColumn();
 
 	/**
 	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
 	 * 
 	 * @return the value of the wrapped point that is equivalent to (0, 2)
 	 */
-	 protected abstract Point getExtraRow();
+	protected abstract Point getExtraRow();
 
-	 /**
-	  * Returns the last point according to this iteration strategy.
-	  * 
-	  * @return the value of the last iterated point
-	  */
-	 protected Point getLastPoint() {
-		 return new Point(1, 1);
-	 }
+	/**
+	 * Returns the last point according to this iteration strategy.
+	 * 
+	 * @return the value of the last iterated point
+	 */
+	protected Point getLastPoint() {
+		return new Point(1, 1);
+	}
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (-1, 0)
-	  */
-	 protected abstract Point getOneColumnBeforeOrigin();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (-1, 0)
+	 */
+	protected abstract Point getOneColumnBeforeOrigin();
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (0, -1)
-	  */
-	 protected abstract Point getOneRowBeforeOrigin();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (0, -1)
+	 */
+	protected abstract Point getOneRowBeforeOrigin();
 
-	 /**
-	  * Returns the origin according to this iteration strategy.
-	  * 
-	  * @return the value of the origin
-	  */
-	 protected Point getOrigin() {
-		 return new Point(0, 0);
-	 }
+	/**
+	 * Returns the origin according to this iteration strategy.
+	 * 
+	 * @return the value of the origin
+	 */
+	protected Point getOrigin() {
+		return new Point(0, 0);
+	}
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (-3, 0)
-	  */
-	 protected abstract Point getThreeColumnsBeforeOrigin();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (-3, 0)
+	 */
+	protected abstract Point getThreeColumnsBeforeOrigin();
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (0, -3)
-	  */
-	 protected abstract Point getThreeRowsBeforeOrigin();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (0, -3)
+	 */
+	protected abstract Point getThreeRowsBeforeOrigin();
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (3, 0)
-	  */
-	 protected abstract Point getTwoColumnsAfterEnd();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (3, 0)
+	 */
+	protected abstract Point getTwoColumnsAfterEnd();
 
-	 /**
-	  * Returns a wrapped point. The point will be wrapped on a 2x2 table.
-	  * 
-	  * @return the value of the wrapped point that is equivalent to (0, 3)
-	  */
-	 protected abstract Point getTwoRowsAfterEnd();
+	/**
+	 * Returns a wrapped point. The point will be wrapped on a 2x2 table.
+	 * 
+	 * @return the value of the wrapped point that is equivalent to (0, 3)
+	 */
+	protected abstract Point getTwoRowsAfterEnd();
 
-	 /**
-	  * Returns a wrapped point that should never be wrapped.
-	  * <p>
-	  * The point will be wrapped using a 2x2 table.
-	  * 
-	  * @return the value of a point that is never wrapped
-	  */
-	 protected Point getUnwrappedPoint() {
-		 return new Point(0, 1);
-	 }
+	/**
+	 * Returns a wrapped point that should never be wrapped.
+	 * <p>
+	 * The point will be wrapped using a 2x2 table.
+	 * 
+	 * @return the value of a point that is never wrapped
+	 */
+	protected Point getUnwrappedPoint() {
+		return new Point(0, 1);
+	}
 
-	 protected Table<T> newTable(final int width, final int height) {
-		 return new ArrayTable<T>(width, height);
-	 }
+	protected Table<T> newTable(final int width, final int height) {
+		return new ArrayTable<T>(width, height);
+	}
 
-	 protected abstract TableIteration newTableIteration();
+	protected abstract TableIteration newTableIteration();
 }

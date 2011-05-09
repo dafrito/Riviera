@@ -21,8 +21,8 @@ public final class AndPredicateBuilder<T> {
 	private final List<Predicate<? super T>> predicates = new ArrayList<Predicate<? super T>>();
 
 	/**
-	 * Adds the specified predicate to this builder. It must evaluate to {@code
-	 * true} for the built predicate to evaluate to {@code true}.
+	 * Adds the specified predicate to this builder. It must evaluate to
+	 * {@code true} for the built predicate to evaluate to {@code true}.
 	 * 
 	 * @param predicate
 	 *            the predicated to add

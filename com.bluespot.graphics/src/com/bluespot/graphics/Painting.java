@@ -65,8 +65,8 @@ public final class Painting {
 	 * {@link Graphics2D} context.
 	 * 
 	 * @param g
-	 *            {@code Graphics2D} object to use to create the {@code
-	 *            BufferedImage}
+	 *            {@code Graphics2D} object to use to create the
+	 *            {@code BufferedImage}
 	 * @param width
 	 *            the width of the created image
 	 * @param height

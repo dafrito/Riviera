@@ -53,8 +53,8 @@ public class Dictionary implements Iterable<String> {
 	 * Constructs a {@link Dictionary} containing the specified words.
 	 * 
 	 * @param words
-	 *            the words that will be contained in the constructed {@code
-	 *            Dictionary}
+	 *            the words that will be contained in the constructed
+	 *            {@code Dictionary}
 	 */
 	public Dictionary(final Iterable<String> words) {
 		this.words = Collections.unmodifiableSet(this.filterEqualWords(words));

@@ -104,9 +104,9 @@ public final class Geometry {
 	 * the given {@link Point} objects.
 	 * <p>
 	 * Note that the signs of the dimension's values are dependent on the order
-	 * of the points provided; if {@code destination} is lower than {@code
-	 * destination} on either axis, its value in the returned {@code Dimension}
-	 * will be negative.
+	 * of the points provided; if {@code destination} is lower than
+	 * {@code destination} on either axis, its value in the returned
+	 * {@code Dimension} will be negative.
 	 * 
 	 * @param source
 	 *            the starting {@code Point}
@@ -315,10 +315,10 @@ public final class Geometry {
 	 *            the percent that the created point should use to interpolate.
 	 *            For example:
 	 *            <ul>
-	 *            <li>{@code 0.0} will make the created point equal to {@code
-	 *            source}
-	 *            <li>{@code 1.0} will make the created point equal to {@code
-	 *            destination}
+	 *            <li>{@code 0.0} will make the created point equal to
+	 *            {@code source}
+	 *            <li>{@code 1.0} will make the created point equal to
+	 *            {@code destination}
 	 *            <li>{@code 2.0} will make the created point be on the line
 	 *            made by the two specified points, but twice as far away from
 	 *            {@code source} as {@code destination} currently is.
@@ -372,8 +372,8 @@ public final class Geometry {
 	 *            operation. Negative values for width and height are supported.
 	 * @param insets
 	 *            the {@code Insets} to trim with. Negative values for the
-	 *            {@code Insets} are allowed, but will grow the {@code
-	 *            Dimension} instead of trimming it.
+	 *            {@code Insets} are allowed, but will grow the
+	 *            {@code Dimension} instead of trimming it.
 	 */
 	public static void subtractInsets(final Dimension dimension, final Insets insets) {
 		final Dimension insetDim = Geometry.bounds(insets);
@@ -401,8 +401,8 @@ public final class Geometry {
 	 *            operation. Negative values for width and height are supported.
 	 * @param insets
 	 *            the {@code Insets} to trim with. Negative values for the
-	 *            {@code Insets} are allowed, but will grow the {@code
-	 *            Dimension} instead of trimming it.
+	 *            {@code Insets} are allowed, but will grow the
+	 *            {@code Dimension} instead of trimming it.
 	 */
 	public static void subtractInsets(final Rectangle rectangle, final Insets insets) {
 		final Dimension insetDim = Geometry.bounds(insets);

@@ -58,10 +58,10 @@ public interface TableIterator<T> extends Iterator<T> {
 	 * Returns whether the location immediately after the current location will
 	 * be contained inside the table.
 	 * <p>
-	 * This method is used to implement wrapping, as it would return {@code
-	 * false} if the next location would be after the end of the table. Looping
-	 * iterators, on the other hand, would always return {@code true} from this
-	 * method.
+	 * This method is used to implement wrapping, as it would return
+	 * {@code false} if the next location would be after the end of the table.
+	 * Looping iterators, on the other hand, would always return {@code true}
+	 * from this method.
 	 * 
 	 * @return {@code true} if the next point is contained inside the table,
 	 *         {@code false} otherwise.
@@ -73,10 +73,10 @@ public interface TableIterator<T> extends Iterator<T> {
 	 * Returns whether the location immediately before the current location will
 	 * be contained inside the table.
 	 * <p>
-	 * This method is used to implement wrapping, as it would return {@code
-	 * false} if the previous location would be before the origin of the table.
-	 * Looping iterators, on the other hand, would always return {@code true}
-	 * from this method.
+	 * This method is used to implement wrapping, as it would return
+	 * {@code false} if the previous location would be before the origin of the
+	 * table. Looping iterators, on the other hand, would always return
+	 * {@code true} from this method.
 	 * 
 	 * @return {@code true} if the previous point is contained inside the table,
 	 *         {@code false} otherwise.

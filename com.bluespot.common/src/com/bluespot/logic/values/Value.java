@@ -21,14 +21,14 @@ import com.bluespot.logic.adapters.HandledAdapter;
  * immutable values, but they do represent constant, immutable procedures to
  * generate values.
  * <p>
- * Since this interface does not specify that exceptions are thrown, {@code
- * Value} implementations should return {@code null} when the value cannot not
- * be retrieved. Recovery from failed retrievals depends on the {@code Value}
- * implementation: common examples would be IO exceptions or missing input from
- * the user. {@link HandledAdapter} implementations assist in handling these
- * errors gracefully. Consequently, a {@code HandledValue} interface may be
- * written for {@code Value} implementations that perform work on unreliable
- * inputs, but the need hasn't yet arisen.
+ * Since this interface does not specify that exceptions are thrown,
+ * {@code Value} implementations should return {@code null} when the value
+ * cannot not be retrieved. Recovery from failed retrievals depends on the
+ * {@code Value} implementation: common examples would be IO exceptions or
+ * missing input from the user. {@link HandledAdapter} implementations assist in
+ * handling these errors gracefully. Consequently, a {@code HandledValue}
+ * interface may be written for {@code Value} implementations that perform work
+ * on unreliable inputs, but the need hasn't yet arisen.
  * 
  * @author Aaron Faanes
  * 

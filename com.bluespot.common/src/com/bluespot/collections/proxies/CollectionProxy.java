@@ -71,7 +71,7 @@ public abstract class CollectionProxy<E> implements Collection<E> {
 	/**
 	 * @return the collection that is being proxied
 	 */
-	 protected abstract Collection<E> getSourceCollection();
+	protected abstract Collection<E> getSourceCollection();
 
 	@Override
 	public int size() {

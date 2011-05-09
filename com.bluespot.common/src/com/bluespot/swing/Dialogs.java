@@ -122,7 +122,7 @@ public final class Dialogs {
 	 *             if the user explicitly closed the dialog
 	 */
 	public static <T> T getSelection(final String message, final List<T> options, final String title)
-	throws CancelledException {
+			throws CancelledException {
 		final int selection = JOptionPane.showOptionDialog(null, message, title, JOptionPane.DEFAULT_OPTION,
 				JOptionPane.INFORMATION_MESSAGE, null, options.toArray(), null);
 		if (selection < 0) {

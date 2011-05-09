@@ -1,6 +1,5 @@
 package com.bluespot.logic.predicates;
 
-
 /**
  * A predicate that tests for equality against a provided constant. The constant
  * is not allowed to be null. This predicate essentially wraps

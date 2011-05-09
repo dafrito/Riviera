@@ -87,6 +87,6 @@ public abstract class AbstractOperations implements Operations {
 	 *            the value that is converted by this method
 	 * @return a integer representation of the specified value
 	 */
-	 protected abstract int asInteger(double value);
+	protected abstract int asInteger(double value);
 
 }

@@ -74,14 +74,14 @@ public final class ClockDemonstration extends Demonstration {
 					 * Parse these first so we don't have an inconsistent
 					 * calendar if one of them fails
 					 */
-					 final int hour = Integer.parseInt(ClockDemonstration.this.hourField.getText());
-					 final int minute = Integer.parseInt(ClockDemonstration.this.minuteField.getText());
-					 final int second = Integer.parseInt(ClockDemonstration.this.secondField.getText());
+					final int hour = Integer.parseInt(ClockDemonstration.this.hourField.getText());
+					final int minute = Integer.parseInt(ClockDemonstration.this.minuteField.getText());
+					final int second = Integer.parseInt(ClockDemonstration.this.secondField.getText());
 
-					 calendar.set(Calendar.HOUR, hour);
-					 calendar.set(Calendar.MINUTE, minute);
-					 calendar.set(Calendar.SECOND, second);
-					 ClockDemonstration.this.component.setTime(hour, minute, second);
+					calendar.set(Calendar.HOUR, hour);
+					calendar.set(Calendar.MINUTE, minute);
+					calendar.set(Calendar.SECOND, second);
+					ClockDemonstration.this.component.setTime(hour, minute, second);
 				} catch (final NumberFormatException e) {
 					JOptionPane.showMessageDialog(panel, "Couldn't parse time!");
 				}

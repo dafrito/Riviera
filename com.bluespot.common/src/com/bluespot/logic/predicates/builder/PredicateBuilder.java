@@ -63,8 +63,8 @@ public class PredicateBuilder<T> {
 
 	/**
 	 * Returns a {@link OrPredicateBuilder} that includes the specified
-	 * predicate. This builder's constructed predicate will evaluate to {@code
-	 * true} if and only if at least one of the returned builder's child
+	 * predicate. This builder's constructed predicate will evaluate to
+	 * {@code true} if and only if at least one of the returned builder's child
 	 * predicates evaluate to {@code true}.
 	 * 
 	 * @param predicate

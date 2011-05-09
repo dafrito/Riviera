@@ -20,9 +20,9 @@ import com.bluespot.logic.predicates.builder.PredicateBuilder;
  * manually updated by the client.
  * <li><em>Predicates evaluate consistently.</em> Predicates test values
  * independent of the context or ordering of the values. If a predicate
- * evaluates to {@code true} for some value, it will always evaluate to {@code
- * true} for that value. A predicate that tests whether some date is in the
- * future violates this principle because the current date varies, and the
+ * evaluates to {@code true} for some value, it will always evaluate to
+ * {@code true} for that value. A predicate that tests whether some date is in
+ * the future violates this principle because the current date varies, and the
  * predicate could not be guaranteed to return consistent results.
  * <p>
  * Since tests are independent, predicates cannot test whether any specified

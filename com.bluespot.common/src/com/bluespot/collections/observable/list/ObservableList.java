@@ -272,49 +272,49 @@ public final class ObservableList<E> extends ListProxy<E> implements ListModel {
 	 * @param endIndex
 	 *            the index of the last changed element
 	 */
-	 protected void fireContentsChanged(final int startIndex, final int endIndex) {
+	protected void fireContentsChanged(final int startIndex, final int endIndex) {
 		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.CONTENTS_CHANGED, startIndex, endIndex);
 		for (final ListDataListener listener : this.listeners) {
 			listener.contentsChanged(event);
 		}
-	 }
+	}
 
-	 /**
-	  * Subclasses must invoke this method after elements are added to this list
-	  * model.
-	  * 
-	  * @param startIndex
-	  *            the index of the first added element
-	  * @param endIndex
-	  *            the index of the last added element
-	  */
-	 protected void fireIntervalAdded(final int startIndex, final int endIndex) {
-		 final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, startIndex, endIndex);
-		 for (final ListDataListener listener : this.listeners) {
-			 listener.intervalAdded(event);
-		 }
-	 }
+	/**
+	 * Subclasses must invoke this method after elements are added to this list
+	 * model.
+	 * 
+	 * @param startIndex
+	 *            the index of the first added element
+	 * @param endIndex
+	 *            the index of the last added element
+	 */
+	protected void fireIntervalAdded(final int startIndex, final int endIndex) {
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_ADDED, startIndex, endIndex);
+		for (final ListDataListener listener : this.listeners) {
+			listener.intervalAdded(event);
+		}
+	}
 
-	 /**
-	  * Subclasses must invoke this method after elements are removed from this
-	  * list model.
-	  * 
-	  * @param startIndex
-	  *            the index of the first removed element
-	  * @param endIndex
-	  *            the index of the last removed element
-	  * @see ListDataListener#intervalRemoved(ListDataEvent)
-	  */
-	 protected void fireIntervalRemoved(final int startIndex, final int endIndex) {
-		 final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, startIndex, endIndex);
-		 for (final ListDataListener listener : this.listeners) {
-			 listener.intervalRemoved(event);
-		 }
-	 }
+	/**
+	 * Subclasses must invoke this method after elements are removed from this
+	 * list model.
+	 * 
+	 * @param startIndex
+	 *            the index of the first removed element
+	 * @param endIndex
+	 *            the index of the last removed element
+	 * @see ListDataListener#intervalRemoved(ListDataEvent)
+	 */
+	protected void fireIntervalRemoved(final int startIndex, final int endIndex) {
+		final ListDataEvent event = new ListDataEvent(this, ListDataEvent.INTERVAL_REMOVED, startIndex, endIndex);
+		for (final ListDataListener listener : this.listeners) {
+			listener.intervalRemoved(event);
+		}
+	}
 
-	 @Override
-	 protected List<E> getSourceList() {
-		 return this.targetList;
-	 }
+	@Override
+	protected List<E> getSourceList() {
+		return this.targetList;
+	}
 
 }

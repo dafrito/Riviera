@@ -44,10 +44,10 @@ public final class Visitors {
 	};
 
 	/**
-	 * Returns a {@link Visitor} object that does nothing. The returned {@code
-	 * Visitor} is functionally equivalent to {@code /dev/null}. This visitor is
-	 * useful for objects, such as {@link HandledAdapter} that require a
-	 * non-null visitor.
+	 * Returns a {@link Visitor} object that does nothing. The returned
+	 * {@code Visitor} is functionally equivalent to {@code /dev/null}. This
+	 * visitor is useful for objects, such as {@link HandledAdapter} that
+	 * require a non-null visitor.
 	 * 
 	 * @return a {@link Visitor} object that does nothing.
 	 */
@@ -58,8 +58,8 @@ public final class Visitors {
 	}
 
 	/**
-	 * Returns a new {@link GuardedVisitor} that guards the specified visitor with the
-	 * specified predicate.
+	 * Returns a new {@link GuardedVisitor} that guards the specified visitor
+	 * with the specified predicate.
 	 * 
 	 * @param <T>
 	 *            the type of the expected element
@@ -79,9 +79,9 @@ public final class Visitors {
 	}
 
 	/**
-	 * Returns a new {@link AdaptingVisitor} that accepts values of type {@code
-	 * S}, converts them with the specified adapter, and passes the converted
-	 * value to the specified visitor.
+	 * Returns a new {@link AdaptingVisitor} that accepts values of type
+	 * {@code S}, converts them with the specified adapter, and passes the
+	 * converted value to the specified visitor.
 	 * 
 	 * @param <S>
 	 *            the type that is initially accepted by the returned visitor

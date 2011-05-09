@@ -213,9 +213,9 @@ public final class Adapters {
 	 * Returns an {@link Adapter} that returns any text contained inside a given
 	 * {@link JTextComponent}, according to {@link JTextComponent#getText()}. If
 	 * a {@code JTextComponent} has no document, {@code null} is returned. This
-	 * differs from the {@code getText()} implementation which throws a {@code
-	 * NullPointerException} if no document is present. At some point, we may
-	 * return a {@link HandledAdapter} here to manage null documents, but it
+	 * differs from the {@code getText()} implementation which throws a
+	 * {@code NullPointerException} if no document is present. At some point, we
+	 * may return a {@link HandledAdapter} here to manage null documents, but it
 	 * seems more of a programming error than a recoverable condition, so it is
 	 * omitted.
 	 * 

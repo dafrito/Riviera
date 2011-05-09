@@ -41,11 +41,11 @@ public interface TableIteration {
 	 *            the point to compare. It does not need to be wrapped. It is
 	 *            unaffected by this method.
 	 * @return <ul>
-	 *         <li>{@code -1} if {@code a} is smaller in magnitude than {@code
-	 *         b}. <li>{@code 0} if {@code a} is equivalent in magnitude to
-	 *         {@code b}. Since this method only compares in one direction, this
-	 *         means they refer to the same location in the table. They may not
-	 *         necessarily be equivalent points though, due to wrapping.<li>
+	 *         <li>{@code -1} if {@code a} is smaller in magnitude than
+	 *         {@code b}. <li>{@code 0} if {@code a} is equivalent in magnitude
+	 *         to {@code b}. Since this method only compares in one direction,
+	 *         this means they refer to the same location in the table. They may
+	 *         not necessarily be equivalent points though, due to wrapping.<li>
 	 *         {@code 1} if {@code a} is larger in magnitude to {@code b}.
 	 *         </ul>
 	 */
@@ -86,8 +86,8 @@ public interface TableIteration {
 
 	/**
 	 * Wraps the specified {@code unwrappedPoint}, so that it is a location
-	 * contained in the specified table. This method replaces the given {@code
-	 * targetPoint}'s values with the wrapped values.
+	 * contained in the specified table. This method replaces the given
+	 * {@code targetPoint}'s values with the wrapped values.
 	 * 
 	 * @param table
 	 *            the table that is used to wrap {@code unwrappedPoint}

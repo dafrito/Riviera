@@ -63,50 +63,50 @@ public class FanPanel extends JPanel {
 	/**
 	 * Percentage of the component's available area filled with the fan.
 	 */
-	 private final double percentageFilled;
-	 private final int numArcs;
+	private final double percentageFilled;
+	private final int numArcs;
 
-	 @Override
-	 protected void paintComponent(final Graphics g) {
-		 super.paintComponent(g);
+	@Override
+	protected void paintComponent(final Graphics g) {
+		super.paintComponent(g);
 
-		 g.setColor(Color.blue);
-		 g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		 g.setColor(Color.white);
+		g.setColor(Color.blue);
+		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		g.setColor(Color.white);
 
-		 this.drawFan((Graphics2D) g.create());
+		this.drawFan((Graphics2D) g.create());
 
-		 this.degreeOffset += this.getModel().getAngle();
-		 this.degreeOffset %= 360;
-	 }
+		this.degreeOffset += this.getModel().getAngle();
+		this.degreeOffset %= 360;
+	}
 
-	 private void drawFan(final Graphics2D g) {
+	private void drawFan(final Graphics2D g) {
 
-		 // Antialiasing makes our fan look alot better.
-		 Components.setAntialias(g, true);
+		// Antialiasing makes our fan look alot better.
+		Components.setAntialias(g, true);
 
-		 final Dimension halfBounds = this.getSize();
-		 Geometry.Round.halfSize(halfBounds);
-		 g.translate(halfBounds.width, halfBounds.height);
+		final Dimension halfBounds = this.getSize();
+		Geometry.Round.halfSize(halfBounds);
+		g.translate(halfBounds.width, halfBounds.height);
 
-		 final Rectangle box = Components.getDrawableArea(this);
-		 Geometry.trimToSquare(box);
-		 Geometry.Round.multiply(box, this.percentageFilled);
-		 Geometry.alignCenter(box, new Point(0, 0));
+		final Rectangle box = Components.getDrawableArea(this);
+		Geometry.trimToSquare(box);
+		Geometry.Round.multiply(box, this.percentageFilled);
+		Geometry.alignCenter(box, new Point(0, 0));
 
-		 g.rotate(Math.toRadians(this.degreeOffset));
-		 g.setPaint(Color.white);
-		 g.rotate((-Math.PI / 2) + (Math.PI / this.numArcs / 2));
+		g.rotate(Math.toRadians(this.degreeOffset));
+		g.setPaint(Color.white);
+		g.rotate((-Math.PI / 2) + (Math.PI / this.numArcs / 2));
 
-	 }
+	}
 
-	 @SuppressWarnings("unused")
-	 private void renderFan(final BufferedImage image, final int size) {
-		 final Graphics2D g = image.createGraphics();
-		 for (int i = 0; i < this.numArcs; i++) {
-			 g.fillArc(0, 0, size, size, 0, 360 / (this.numArcs * 2));
-			 g.rotate(2 * Math.PI / this.numArcs);
-		 }
-		 g.dispose();
-	 }
+	@SuppressWarnings("unused")
+	private void renderFan(final BufferedImage image, final int size) {
+		final Graphics2D g = image.createGraphics();
+		for (int i = 0; i < this.numArcs; i++) {
+			g.fillArc(0, 0, size, size, 0, 360 / (this.numArcs * 2));
+			g.rotate(2 * Math.PI / this.numArcs);
+		}
+		g.dispose();
+	}
 }

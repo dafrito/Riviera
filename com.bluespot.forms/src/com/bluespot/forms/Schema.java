@@ -132,9 +132,9 @@ public final class Schema<K> {
 	}
 
 	/**
-	 * Constructs a {@link GuardedVisitor} that is guarded by this schema's predicate.
-	 * If the predicate evaluates to {@code true}, the specified visitor will be
-	 * invoked.
+	 * Constructs a {@link GuardedVisitor} that is guarded by this schema's
+	 * predicate. If the predicate evaluates to {@code true}, the specified
+	 * visitor will be invoked.
 	 * 
 	 * @param visitor
 	 *            the invoked visitor for all validated submissions
@@ -161,9 +161,9 @@ public final class Schema<K> {
 	}
 
 	/**
-	 * Returns a {@link GuardedVisitor} that guards the specified visitor. This is
-	 * similar to {@link #newSentinel(Visitor)}, but is a two-step process. Each
-	 * step must succeed before the next begins:
+	 * Returns a {@link GuardedVisitor} that guards the specified visitor. This
+	 * is similar to {@link #newSentinel(Visitor)}, but is a two-step process.
+	 * Each step must succeed before the next begins:
 	 * <ul>
 	 * <li><em>Type validation</em>: A given {@link Submission} will be checked
 	 * for type-safety. Specifically, each field will be queried to ensure that
@@ -244,7 +244,7 @@ public final class Schema<K> {
 	 *            the type of key used in the submission
 	 */
 	private static final class SubmissionTypeChecker<K> extends
-	AbstractHandledAdapter<Submission<K>, Submission<K>, SubmissionClassCastException> {
+			AbstractHandledAdapter<Submission<K>, Submission<K>, SubmissionClassCastException> {
 
 		private final Schema<? extends K> schema;
 
@@ -274,7 +274,7 @@ public final class Schema<K> {
 			/*
 			 * If we failed our validation, return null.
 			 */
-			 return acceptable ? submission : null;
+			return acceptable ? submission : null;
 		}
 
 		@Override
@@ -334,9 +334,9 @@ public final class Schema<K> {
 		 * @param actualType
 		 *            the actual type that was received. This may be null.
 		 * @throws NullPointerException
-		 *             if {@code key} or {@code expectedType}. {@code
-		 *             actualType} is allowed to be null. This can occur if null
-		 *             was returned as a value.
+		 *             if {@code key} or {@code expectedType}.
+		 *             {@code actualType} is allowed to be null. This can occur
+		 *             if null was returned as a value.
 		 */
 		public SubmissionClassCastException(final Object key, final Class<?> expectedType, final Class<?> actualType) {
 			if (key == null) {

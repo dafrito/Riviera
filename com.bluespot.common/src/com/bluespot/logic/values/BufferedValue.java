@@ -106,8 +106,8 @@ public final class BufferedValue<T> implements Value<T> {
 	 * @return the buffered value. {@link #retrieve()} must be explicitly called
 	 *         in order for this method to return a legitimate value.
 	 * @throws NoSuchValueException
-	 *             if there is no non-null value currently saved by this {@code
-	 *             BufferedValue} object. This would occur if
+	 *             if there is no non-null value currently saved by this
+	 *             {@code BufferedValue} object. This would occur if
 	 *             {@link #retrieve()} was not called, or if the invocation did
 	 *             not successfully retrieve a value. Reasons for this failure
 	 *             are dependent on the source {@link Value} implementation.

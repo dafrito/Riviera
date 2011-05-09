@@ -64,20 +64,20 @@ public final class RandomUtil {
 	}
 
 	private static final String[] NAME_PREFIXES = { "A", "Aile", "Ar", "Are", "Ara", "As", "Ba", "Be", "Ber", "Bo",
-		"Bra", "Bre", "Bri", "Bru", "Bur", "Ca", "Caie", "Calo", "Cam", "Can", "Car", "Cara", "Care", "Caste",
-		"Casto", "Cele", "Cela", "Cha", "Che", "Co", "Col", "Colo", "Com", "Cor", "Da", "Dar", "Dai", "De", "Den",
-		"Di", "Die", "Dir", "Do", "Du", "Dy", "Er", "En", "Eve", "Et", "Fal", "Fe", "Fel", "Fen", "Fer", "Fre",
-		"Fra", "Fu", "Fy", "Ha", "Hal", "He", "Hele", "Helvese", "Hi", "Hja", "Ho", "Hol", "Hy", "Hyra", "Hydra",
-		"Hype", "Il", "In", "Ka", "Kan", "Kem", "Khry", "Khryle", "Kilo", "La", "Lai", "Lare", "Lau", "Le", "Lei",
-		"Lei", "Li", "Lit", "Liu", "Ly", "Mai", "Mas", "Mega", "Meta", "Mo", "Na", "Nai", "Ne", "Ni", "Nitre",
-		"No", "Pa", "Par", "Pal", "Pasel", "Pra", "Praie", "Pre", "Po", "Pi", "Pri", "Ra", "Ran", "Rann", "Ragase",
-		"Re", "Ri", "Ro", "Roma", "Ru", "Ry", "Sa", "Sar", "Saira", "Se", "Sen", "Sever", "Si", "Ste", "Sy", "Te",
-		"Tem", "Tere", "Vai", "Vaia", "Val", "Van", "Ve", "Ve", "Vy", "Warna", "We", "Win", "Wind", "Wi", "Xy",
-		"Zar", "Ze" };
+			"Bra", "Bre", "Bri", "Bru", "Bur", "Ca", "Caie", "Calo", "Cam", "Can", "Car", "Cara", "Care", "Caste",
+			"Casto", "Cele", "Cela", "Cha", "Che", "Co", "Col", "Colo", "Com", "Cor", "Da", "Dar", "Dai", "De", "Den",
+			"Di", "Die", "Dir", "Do", "Du", "Dy", "Er", "En", "Eve", "Et", "Fal", "Fe", "Fel", "Fen", "Fer", "Fre",
+			"Fra", "Fu", "Fy", "Ha", "Hal", "He", "Hele", "Helvese", "Hi", "Hja", "Ho", "Hol", "Hy", "Hyra", "Hydra",
+			"Hype", "Il", "In", "Ka", "Kan", "Kem", "Khry", "Khryle", "Kilo", "La", "Lai", "Lare", "Lau", "Le", "Lei",
+			"Lei", "Li", "Lit", "Liu", "Ly", "Mai", "Mas", "Mega", "Meta", "Mo", "Na", "Nai", "Ne", "Ni", "Nitre",
+			"No", "Pa", "Par", "Pal", "Pasel", "Pra", "Praie", "Pre", "Po", "Pi", "Pri", "Ra", "Ran", "Rann", "Ragase",
+			"Re", "Ri", "Ro", "Roma", "Ru", "Ry", "Sa", "Sar", "Saira", "Se", "Sen", "Sever", "Si", "Ste", "Sy", "Te",
+			"Tem", "Tere", "Vai", "Vaia", "Val", "Van", "Ve", "Ve", "Vy", "Warna", "We", "Win", "Wind", "Wi", "Xy",
+			"Zar", "Ze" };
 
 	private static final String[] NAME_SUFFIXES = { "", "bor", "cca", "car", "co", "den", "don", "ga", "gen", "go",
-		"gos", "ho", "ha", "ken", "lau", "len", "lia", "lia", "lin", "lis", "lius", "mar", "mark", "me", "men",
-		"mery", "nem", "nia", "nia", "nia", "nis", "num", "ra", "rac", "re", "rec", "ren", "rian", "rion", "ris",
-		"ron", "ros", "sa", "san", "sen", "sor", "sse", "tan", "ten", "tenia", "tania", "tia", "tra", "tera",
-		"tassus", "tria", "tum", "us", "via", "va" };
+			"gos", "ho", "ha", "ken", "lau", "len", "lia", "lia", "lin", "lis", "lius", "mar", "mark", "me", "men",
+			"mery", "nem", "nia", "nia", "nia", "nis", "num", "ra", "rac", "re", "rec", "ren", "rian", "rion", "ris",
+			"ron", "ros", "sa", "san", "sen", "sor", "sse", "tan", "ten", "tenia", "tania", "tia", "tra", "tera",
+			"tassus", "tria", "tum", "us", "via", "va" };
 }

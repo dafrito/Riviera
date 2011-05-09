@@ -1,6 +1,5 @@
 package com.bluespot.logic.values;
 
-
 /**
  * A {@link Value} implementation that simply returns the value given at
  * construction. This is the simplest of {@code Value} implementations.

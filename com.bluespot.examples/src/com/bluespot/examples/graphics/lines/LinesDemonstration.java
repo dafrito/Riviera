@@ -89,8 +89,8 @@ public class LinesDemonstration extends JComponent {
 	 * @param args
 	 *            unused
 	 */
-	 public static void main(final String args[]) {
-		 Demonstration.launchWrapped(LinesDemonstration.class);
-	 }
+	public static void main(final String args[]) {
+		Demonstration.launchWrapped(LinesDemonstration.class);
+	}
 
 }

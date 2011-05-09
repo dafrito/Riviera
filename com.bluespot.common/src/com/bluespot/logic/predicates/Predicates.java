@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 /**
  * A set of factory methods for constructing {@link Predicate} objects. Many
  * methods in this library are named so as to encourage chaining.
@@ -202,8 +201,8 @@ public final class Predicates {
 	 * Returns a predicate that evaluates to {@code true} if and only if the
 	 * tested value is {@code null}.
 	 * 
-	 * @return a predicate that evaluates to {@code true} for only the {@code
-	 *         null} value
+	 * @return a predicate that evaluates to {@code true} for only the
+	 *         {@code null} value
 	 */
 	public static Predicate<Object> nullValue() {
 		return Predicates.PREDICATE_NULL;
@@ -316,9 +315,9 @@ public final class Predicates {
 	 * 
 	 * @param regexPattern
 	 *            the string value of the regular expression used by the
-	 *            returned predicate. The predicate will evaluate to {@code
-	 *            true} for all values that evaluate to {@code true} according
-	 *            to this pattern.
+	 *            returned predicate. The predicate will evaluate to
+	 *            {@code true} for all values that evaluate to {@code true}
+	 *            according to this pattern.
 	 * @return a predicate that uses the specified pattern
 	 * @see Pattern#matcher(CharSequence)
 	 * @see Matcher#matches()
@@ -398,8 +397,8 @@ public final class Predicates {
 	 * Returns a predicate that is {@code true} if, and only if, the tested
 	 * value is not equal to the specified value.
 	 * <p>
-	 * This is a helper method for {@code
-	 * Predicates.not(Predicates.is(constant))}.
+	 * This is a helper method for
+	 * {@code Predicates.not(Predicates.is(constant))}.
 	 * 
 	 * @param <T>
 	 *            the type of the tested values
