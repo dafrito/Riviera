@@ -31,15 +31,28 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 
 	private final Class<I> inputType;
 
-	public Agent(Class<I> inputType) {
+	private final Set<? extends Function<Object, ?>> functions;
+
+	public Agent(Class<I> inputType, Collection<? extends Function<Object, ?>> functions) {
 		if (inputType == null) {
 			throw new NullPointerException("inputType must not be null");
 		}
 		this.inputType = inputType;
+		if (functions == null) {
+			throw new NullPointerException("functions must not be null");
+		}
+		this.functions = new HashSet<Function<Object, ?>>(functions);
+		if (this.functions.isEmpty()) {
+			throw new IllegalArgumentException("functions must contain at least one function");
+		}
 	}
 
 	public Class<I> getInputType() {
 		return this.inputType;
+	}
+
+	public Collection<? extends Function<Object, ?>> getFunctions() {
+		return this.functions;
 	}
 
 	/**
@@ -96,11 +109,5 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 			return null;
 		}
 		return new UnanimousFunction<I, V>(candidates);
-	}
-
-	final Set<? extends Function<Object, ?>> world = new HashSet<Function<Object, ?>>();
-
-	public Collection<? extends Function<Object, ?>> getFunctions() {
-		return this.world;
 	}
 }

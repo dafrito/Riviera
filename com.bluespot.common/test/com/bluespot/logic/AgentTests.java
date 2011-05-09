@@ -33,7 +33,7 @@ public class AgentTests {
 
 	@Test
 	public void testAgent() {
-		Agent<Integer, Number> agent = new Agent<Integer, Number>(Integer.class);
+		Agent<Integer, Number> agent = new Agent<Integer, Number>(Integer.class, getFunctions());
 		agent.apply(Functions.add(4));
 	}
 }
