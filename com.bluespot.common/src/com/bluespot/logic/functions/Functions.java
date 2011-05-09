@@ -2,6 +2,7 @@ package com.bluespot.logic.functions;
 
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.values.FunctionValue;
 import com.bluespot.logic.values.Value;
 import com.bluespot.logic.values.Values;
 
@@ -50,6 +51,14 @@ public class Functions {
 	 */
 	public static <I, V> SafeFunction<? extends V> cast(Class<I> guardType, Function<? super I, ? extends V> function) {
 		return new AdaptingSafeFunction<I, V>(Adapters.cast(guardType), function);
+	}
+
+	public static <C, R> R curry(Curryable<? super C, ? extends R> curryable, C value) {
+		return curryable.curry(value);
+	}
+
+	public static <C, R> SafeFunction<? extends R> curry(Function<? super C, ? extends R> function, C value) {
+		return new FunctionValue<C, R>(function, value);
 	}
 
 	public static <I, V> Function<? super I, ? extends V> guard(Predicate<? super I> guard, Function<? super I, ? extends V> function) {
