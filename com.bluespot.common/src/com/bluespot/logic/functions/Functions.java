@@ -108,7 +108,7 @@ public class Functions {
 	 * @see AdaptingSafeCurryable
 	 * @see SafeFunction
 	 */
-	public static <C, I, R> SafeCurryable<SafeFunction<? extends R>> protect(
+	public static <C, I, R> SafeCurryable<? extends R> protect(
 			Adapter<? super Object, ? extends C> curryAdapter,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Adapter<? super Function<? super I, ? extends R>, ? extends SafeFunction<? extends R>> functionAdapter) {
@@ -140,7 +140,7 @@ public class Functions {
 	 *         produces {@link SafeFunction} objects that also accept any value
 	 * @see Functions#protect(Adapter, Curryable, Adapter)
 	 */
-	public static <C, I, R> SafeCurryable<SafeFunction<? extends R>> protect(
+	public static <C, I, R> SafeCurryable<? extends R> protect(
 			Class<? extends C> curryType,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Adapter<? super Function<? super I, ? extends R>, ? extends SafeFunction<? extends R>> functionAdapter) {
@@ -173,7 +173,7 @@ public class Functions {
 	 *         {@link SafeFunction} objects that also accept any value
 	 * @see Functions#protect(Adapter, Curryable, Adapter)
 	 */
-	public static <C, I, R> SafeCurryable<SafeFunction<? extends R>> protect(
+	public static <C, I, R> SafeCurryable<? extends R> protect(
 			Adapter<? super Object, ? extends C> curryAdapter,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Class<? extends I> functionInputType) {
@@ -209,7 +209,7 @@ public class Functions {
 	 *         {@link SafeFunction} objects that also accept any value
 	 * @see Functions#protect(Adapter, Curryable, Adapter)
 	 */
-	public static <C, I, R> SafeCurryable<SafeFunction<? extends R>> protect(
+	public static <C, I, R> SafeCurryable<? extends R> protect(
 			Class<? extends C> curryType,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Class<? extends I> functionInputType) {

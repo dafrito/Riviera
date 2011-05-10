@@ -16,7 +16,7 @@ import com.bluespot.logic.adapters.Adapter;
  *            the type of return value from functions produced by the underlying
  *            {@link Curryable}
  */
-public class AdaptingSafeCurryable<C, I, R> implements SafeCurryable<SafeFunction<? extends R>> {
+public class AdaptingSafeCurryable<C, I, R> implements SafeCurryable<R> {
 
 	private final Adapter<? super Object, ? extends C> curryAdapter;
 	private final Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable;
