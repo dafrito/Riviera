@@ -85,6 +85,17 @@ public final class Adapters {
 	}
 
 	/**
+	 * Returns an {@link Adapter} that returns any specified value.
+	 * 
+	 * @param <T>
+	 *            the type of adapted and returned value
+	 * @return an {@link Adapter} that does no adapting
+	 */
+	public static <T> Adapter<T, T> identity() {
+		return Adapters.noop();
+	}
+
+	/**
 	 * An {@link Adapter} that converts an object to a string using
 	 * {@link Object#toString()}.
 	 * 
