@@ -60,18 +60,14 @@ public class Functions {
 	 *            the type of input value expected by the function
 	 * @param <R>
 	 *            the type of the function's return value
-	 * @param guardType
+	 * @param underlyingType
 	 *            the type of value that is passed to the underlying function
 	 * @param function
 	 *            the underlying function
 	 * @return a new {@link Function} object
 	 */
-	public static <I, R> SafeFunction<? extends R> cast(Class<I> guardType, Function<? super I, ? extends R> function) {
-		return Functions.protect(Adapters.cast(guardType), function);
-	}
-
-	public static <I, R> SafeFunction<? extends R> protect(Adapter<? super Object, ? extends I> adapter, Function<? super I, ? extends R> function) {
-		return new AdaptingSafeFunction<I, R>(adapter, function);
+	public static <I, R> SafeFunction<? extends R> protect(Class<? extends I> underlyingType, Function<? super I, ? extends R> function) {
+		return new AdaptingSafeFunction<I, R>(Adapters.cast(underlyingType), function);
 	}
 
 	public static <C, F> F curry(Curryable<? super C, ? extends F> curryable, C value) {
