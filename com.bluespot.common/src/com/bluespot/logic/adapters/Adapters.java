@@ -5,6 +5,8 @@ import java.io.File;
 
 import javax.swing.text.JTextComponent;
 
+import com.bluespot.logic.functions.Function;
+import com.bluespot.logic.functions.SafeFunction;
 import com.bluespot.logic.predicates.Predicates;
 
 /**
@@ -254,6 +256,14 @@ public final class Adapters {
 	 */
 	public static <D> Adapter<? super Object, ? extends D> cast(final Class<? extends D> destinationType) {
 		return new CastingAdapter<D>(destinationType);
+	}
+
+	public static <I, R> Adapter<? super Function<? super I, ? extends R>, SafeFunction<? extends R>> protectFunctions(Class<? extends I> functionInputType) {
+		return protectFunctions(Adapters.cast(functionInputType));
+	}
+
+	public static <I, R> Adapter<? super Function<? super I, ? extends R>, SafeFunction<? extends R>> protectFunctions(Adapter<? super Object, ? extends I> adapter) {
+		return new SafeFunctionAdapter<I, R>(adapter);
 	}
 
 	/**

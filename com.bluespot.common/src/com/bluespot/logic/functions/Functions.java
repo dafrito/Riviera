@@ -2,7 +2,6 @@ package com.bluespot.logic.functions;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.Adapters;
-import com.bluespot.logic.adapters.SafeFunctionAdapter;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.values.FunctionValue;
 import com.bluespot.logic.values.Value;
@@ -196,7 +195,7 @@ public class Functions {
 			Adapter<? super Object, ? extends C> curryAdapter,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Class<? extends I> functionInputType) {
-		return Functions.protect(curryAdapter, curryable, new SafeFunctionAdapter<I, R>(Adapters.cast(functionInputType)));
+		return Functions.protect(curryAdapter, curryable, Adapters.<I, R> protectFunctions(functionInputType));
 	}
 
 	/**
@@ -232,7 +231,7 @@ public class Functions {
 			Class<? extends C> curryType,
 			Curryable<? super C, ? extends Function<? super I, ? extends R>> curryable,
 			Class<? extends I> functionInputType) {
-		return Functions.protect(Adapters.cast(curryType), curryable, new SafeFunctionAdapter<I, R>(Adapters.cast(functionInputType)));
+		return Functions.protect(Adapters.cast(curryType), curryable, Adapters.<I, R> protectFunctions(functionInputType));
 	}
 
 	public static <I, V> Function<? super I, ? extends V> guard(Predicate<? super I> guard, Function<? super I, ? extends V> function) {
