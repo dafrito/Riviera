@@ -69,12 +69,6 @@ public class Functions {
 		return (CreateCurryFunction<I>) CreateCurryFunction.INSTANCE;
 	}
 
-	private static class AdaptingSafeFunction<D, R> extends AdaptingFunction<Object, D, R> implements SafeFunction<R> {
-		public AdaptingSafeFunction(Adapter<Object, ? extends D> adapter, Function<? super D, ? extends R> function) {
-			super(adapter, function);
-		}
-	}
-
 	/**
 	 * A {@link Function} that safely casts to a specified value before
 	 * proceeding. Casts that fail will be passed to the underlying function as
