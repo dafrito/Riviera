@@ -26,7 +26,7 @@ public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryab
 
 	@Override
 	public Function<Curryable<? super C, ? extends F>, ? extends F> curry(C value) {
-		return new CurryFunction<C, F>(value);
+		return apply(value);
 	}
 
 	@Override

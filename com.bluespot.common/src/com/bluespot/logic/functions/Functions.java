@@ -37,9 +37,9 @@ public class Functions {
 	}
 
 	/**
-	 * Get an instance of {@link MetaCurryable}. This object behaves as a
-	 * function as well as a curryable, and produces functions that curry
-	 * values.
+	 * Get an instance of {@link MetaCurryable}. This object behaves as both a
+	 * {@link Function} and a {@link Curryable}. It produces functions that
+	 * curry values.
 	 * 
 	 * @param <C>
 	 *            the type of values that will be curried
