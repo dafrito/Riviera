@@ -96,8 +96,21 @@ public class Functions {
 		return new FunctionValue<C, R>(function, value);
 	}
 
-	public static <C, R extends Function<?, ?>> CurryFunction<C, R> curry(C value) {
-		return new CurryFunction<C, R>(value);
+	/**
+	 * Create a function that curries the specified value. This method is
+	 * normally not necessary, since {@link Curryable} objects can curry
+	 * themselves.
+	 * 
+	 * @param <C>
+	 *            the type of the curried value
+	 * @param <F>
+	 *            the type of function produced by {@link Curryable} objects
+	 * @param value
+	 *            the value that will be curried
+	 * @return a {@link Function} that curries values.
+	 */
+	public static <C, F extends Function<?, ?>> Function<Curryable<? super C, ? extends F>, F> curry(C value) {
+		return new CurryFunction<C, F>(value);
 	}
 
 	/**
