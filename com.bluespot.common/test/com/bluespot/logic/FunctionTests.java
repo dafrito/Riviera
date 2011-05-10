@@ -71,6 +71,7 @@ public class FunctionTests {
 	@Test
 	public void testMetaCurryableChaos() throws Exception {
 		SafeMetaCurryable.newInstance().curry(2).apply(Functions.protect(Number.class, NumericOperations.ADD, Number.class)).apply(4).equals(6.0d);
+		SafeMetaCurryable.newInstance().apply(2).apply(Functions.protect(Number.class, NumericOperations.ADD, Number.class)).apply(4).equals(6.0d);
 	}
 
 	@Test
