@@ -24,6 +24,7 @@ package com.bluespot.logic.functions;
  * @param <R>
  *            the function produced by this currying operation
  * @see {@link Functions#curry(Function, Object)}
+ * @see SafeCurryable
  */
 public interface Curryable<C, R extends Function<?, ?>> {
 
