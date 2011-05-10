@@ -18,11 +18,6 @@ public class FunctionTests {
 	}
 
 	@Test
-	public void testCurryingTypes() throws Exception {
-		Functions.curry(2).apply(NumericOperations.ADD);
-	}
-
-	@Test
 	public void testSafeFunctionAdapter() throws Exception {
 		SafeFunctionAdapter<String, Integer> inputAdapter = new SafeFunctionAdapter<String, Integer>(Adapters.stringValue());
 		Function<? super Object, ? extends Integer> fxn = inputAdapter.adapt(new AdapterFunction<String, Integer>(Adapters.stringLength()));
