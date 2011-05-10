@@ -54,6 +54,10 @@ public class Functions {
 		return FUNCTION_IDENTITY;
 	}
 
+	public static <I, R> SafeFunction<? extends R> protect(Adapter<? super Object, ? extends I> adapter, Function<? super I, ? extends R> function) {
+		return new AdaptingSafeFunction<I, R>(adapter, function);
+	}
+
 	/**
 	 * A {@link Function} that safely casts to a specified value before
 	 * proceeding. Casts that fail will be passed to the underlying function as
@@ -70,7 +74,7 @@ public class Functions {
 	 * @return a new {@link Function} object
 	 */
 	public static <I, R> SafeFunction<? extends R> protect(Class<? extends I> underlyingType, Function<? super I, ? extends R> function) {
-		return new AdaptingSafeFunction<I, R>(Adapters.cast(underlyingType), function);
+		return Functions.<I, R> protect(Adapters.cast(underlyingType), function);
 	}
 
 	public static <C, F> F curry(Curryable<? super C, ? extends F> curryable, C value) {
