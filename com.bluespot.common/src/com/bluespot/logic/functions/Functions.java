@@ -55,21 +55,6 @@ public class Functions {
 	}
 
 	/**
-	 * Get an instance of {@link MetaCurryable}. This object behaves as both a
-	 * {@link Function} and a {@link Curryable}. It produces functions that
-	 * curry values.
-	 * 
-	 * @param <C>
-	 *            the type of values that will be curried
-	 * @param <F>
-	 *            the type of functions produced by curried functions
-	 * @return an instance of {@link MetaCurryable}
-	 */
-	public static <C, F extends Function<?, ?>> MetaCurryable<? super C, ? extends F> curry() {
-		return MetaCurryable.newInstance();
-	}
-
-	/**
 	 * A {@link Function} that safely casts to a specified value before
 	 * proceeding. Casts that fail will be passed to the underlying function as
 	 * {@code null}.
