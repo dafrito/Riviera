@@ -39,11 +39,32 @@ public class Functions {
 	 * @param <R>
 	 *            the type of value returned by the underlying function.
 	 * @return the {@link SafeCurryable} class, cast as a {@link Curryable}
+	 * @see #safeFunctionType()
 	 */
 	@SuppressWarnings("unchecked")
 	public static <R> Class<? extends Curryable<Object, SafeFunction<R>>> safeCurryableType() {
-		// This cast is safe since it's guaranteed to always be 
+		// This cast is safe since it matches SafeCurryable's declared type. 
 		return (Class<? extends Curryable<Object, SafeFunction<R>>>) SafeCurryable.class;
+	}
+
+	/**
+	 * Returns the {@link SafeFunction} class, cast as the parent
+	 * {@link Function} type. This type is useful when working with complicated
+	 * adapters that require a {@link Function} type, and you are only using
+	 * {@link SafeFunction} objects.
+	 * <p>
+	 * This is the authoritative cast, so any {@link SafeFunction} object is
+	 * guaranteed to be accepted by this type.
+	 * 
+	 * @param <R>
+	 *            the type of value returned by the underlying function.
+	 * @return the {@link SafeFunction} type, cast as a {@link Function}
+	 * @see #safeCurryableType()
+	 */
+	@SuppressWarnings("unchecked")
+	public static <R> Class<? extends Function<Object, R>> safeFunctionType() {
+		// This cast is safe since it matches SafeFunction's declared type. 
+		return (Class<? extends Function<Object, R>>) SafeFunction.class;
 	}
 
 	/**
