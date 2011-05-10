@@ -5,7 +5,7 @@ import com.bluespot.logic.predicates.Predicate;
 /**
  * A {@link Function} that is applied only if its predicate returns true.
  * 
- * @author dafrito
+ * @author Aaron Faanes
  * 
  * @param <I>
  *            the type of value received by this function
