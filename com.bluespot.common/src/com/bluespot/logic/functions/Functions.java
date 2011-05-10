@@ -85,7 +85,11 @@ public class Functions {
 	 * @return a new {@link Function} object
 	 */
 	public static <I, R> SafeFunction<? extends R> cast(Class<I> guardType, Function<? super I, ? extends R> function) {
-		return new AdaptingSafeFunction<I, R>(Adapters.cast(guardType), function);
+		return Functions.protect(Adapters.cast(guardType), function);
+	}
+
+	public static <I, R> SafeFunction<? extends R> protect(Adapter<? super Object, ? extends I> adapter, Function<? super I, ? extends R> function) {
+		return new AdaptingSafeFunction<I, R>(adapter, function);
 	}
 
 	public static <C, R> R curry(Curryable<? super C, ? extends R> curryable, C value) {
