@@ -1,12 +1,13 @@
 package com.bluespot.logic.functions;
 
 /**
- * A {@link Curryable} that curries values.
+ * A {@link Curryable} that curries values. This class constructs
+ * {@link Function} instances that will attempt to curry provided
+ * {@link Curryable} objects.
  * <p>
- * It some ways, this class represents a fundamental unit of dynamic
- * programming, as it produces functions that produce curryables. It implements
- * both {@link Curryable} and {@link Function} to provide users with either
- * method.
+ * * This class is implemented as both a {@link SafeCurryable} (hence the prefix
+ * Meta-) and a {@link SafeFunction}. It has the unique characteristic of
+ * implementing currying and function application in the same way.
  * 
  * @author Aaron Faanes
  * 
@@ -14,7 +15,7 @@ package com.bluespot.logic.functions;
  *            the type of value that will be curried
  * @param <F>
  *            the type of function produced by curried objects
- * @see #newInstance()
+ * @see SafeMetaCurryable
  */
 public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryable<C,
 		Function<Curryable<? super C, ? extends F>, ? extends F>>,
