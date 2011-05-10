@@ -92,7 +92,7 @@ public class Functions {
 		return new AdaptingSafeFunction<I, R>(adapter, function);
 	}
 
-	public static <C, R> R curry(Curryable<? super C, ? extends R> curryable, C value) {
+	public static <C, F> F curry(Curryable<? super C, ? extends F> curryable, C value) {
 		return curryable.curry(value);
 	}
 

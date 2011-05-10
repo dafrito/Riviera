@@ -21,12 +21,12 @@ package com.bluespot.logic.functions;
  * 
  * @param <C>
  *            the type of curried value
- * @param <R>
+ * @param <F>
  *            the function produced by this currying operation
  * @see {@link Functions#curry(Function, Object)}
  * @see SafeCurryable
  */
-public interface Curryable<C, R extends Function<?, ?>> {
+public interface Curryable<C, F extends Function<?, ?>> {
 
 	/**
 	 * Curry the specified value to this object, returning a function that
@@ -37,5 +37,5 @@ public interface Curryable<C, R extends Function<?, ?>> {
 	 * @return a new {@link Function} object if the value was successfully
 	 *         curried, {@code null} otherwise
 	 */
-	public R curry(C value);
+	public F curry(C value);
 }

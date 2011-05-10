@@ -9,10 +9,10 @@ package com.bluespot.logic.functions;
  * @param <C>
  *            the type of the curried value. {@link Curryable} input values will
  *            be passed an object of this type.
- * @param <R>
+ * @param <F>
  *            the function that is returned as a result of the currying
  */
-public class CurryFunction<C, R extends Function<?, ?>> implements Function<Curryable<? super C, ? extends R>, R> {
+public class CurryFunction<C, F extends Function<?, ?>> implements Function<Curryable<? super C, ? extends F>, F> {
 
 	private final C curriedValue;
 
@@ -25,7 +25,7 @@ public class CurryFunction<C, R extends Function<?, ?>> implements Function<Curr
 	}
 
 	@Override
-	public R apply(Curryable<? super C, ? extends R> input) {
+	public F apply(Curryable<? super C, ? extends F> input) {
 		if (input == null) {
 			return null;
 		}

@@ -10,30 +10,30 @@ import com.bluespot.logic.functions.SafeFunction;
  * 
  * @author Aaron Faanes
  * 
- * @param <D>
+ * @param <I>
  *            the type of input value of underlying functions
  * @param <R>
  *            the return type of underlying functions
  * @see AdaptingFunction
  */
-public class SafeFunctionAdapter<D, R> implements Adapter<Function<? super D, ? extends R>, SafeFunction<? extends R>> {
+public class SafeFunctionAdapter<I, R> implements Adapter<Function<? super I, ? extends R>, SafeFunction<? extends R>> {
 
-	private Adapter<? super Object, ? extends D> adapter;
+	private Adapter<? super Object, ? extends I> adapter;
 
-	public SafeFunctionAdapter(Adapter<? super Object, ? extends D> adapter) {
+	public SafeFunctionAdapter(Adapter<? super Object, ? extends I> adapter) {
 		this.adapter = adapter;
 	}
 
-	public Adapter<? super Object, ? extends D> getAdapter() {
+	public Adapter<? super Object, ? extends I> getAdapter() {
 		return this.adapter;
 	}
 
 	@Override
-	public SafeFunction<? extends R> adapt(Function<? super D, ? extends R> function) {
+	public SafeFunction<? extends R> adapt(Function<? super I, ? extends R> function) {
 		if (function == null) {
 			return null;
 		}
-		return new AdaptingSafeFunction<D, R>(this.getAdapter(), function);
+		return new AdaptingSafeFunction<I, R>(this.getAdapter(), function);
 	}
 
 	@Override
