@@ -18,7 +18,7 @@ package com.bluespot.logic.functions;
  */
 public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryable<C,
 		Function<Curryable<? super C, ? extends F>, ? extends F>>,
-		Function<C, Function<Curryable<? super C, ? extends F>, ? extends F>> {
+		Function<C, Function<? super Curryable<? super C, ? extends F>, ? extends F>> {
 
 	private MetaCurryable() {
 		// Hide this constructor since we're a singleton
@@ -50,7 +50,7 @@ public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryab
 	 * @see MetaCurryable
 	 */
 	@SuppressWarnings("unchecked")
-	public static <C, F extends Function<?, ?>> MetaCurryable<C, F> newInstance() {
+	public static <C, F extends Function<?, ?>> MetaCurryable<? super C, ? extends F> newInstance() {
 		// This unsafe cast will always succeed, since MetaCurryable has no state.
 		return (MetaCurryable<C, F>) INSTANCE;
 	}
