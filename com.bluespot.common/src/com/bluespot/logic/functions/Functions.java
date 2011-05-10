@@ -65,7 +65,7 @@ public class Functions {
 	 *            the type of functions produced by curried functions
 	 * @return an instance of {@link MetaCurryable}
 	 */
-	public static <C, F extends Function<?, ?>> MetaCurryable<C, F> curry() {
+	public static <C, F extends Function<?, ?>> MetaCurryable<? super C, ? extends F> curry() {
 		return MetaCurryable.newInstance();
 	}
 
