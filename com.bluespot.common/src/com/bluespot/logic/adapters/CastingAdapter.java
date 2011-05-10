@@ -12,7 +12,7 @@ package com.bluespot.logic.adapters;
  */
 public class CastingAdapter<D> extends AbstractHandledAdapter<Object, D, CastingAdapterException> {
 
-	private final Class<D> castType;
+	private final Class<? extends D> castType;
 
 	/**
 	 * Constructs a {@link CastingAdapter} that converts to the specified type.
@@ -20,7 +20,7 @@ public class CastingAdapter<D> extends AbstractHandledAdapter<Object, D, Casting
 	 * @param castType
 	 *            the type to which given values are cast. It may not be null.
 	 */
-	public CastingAdapter(final Class<D> castType) {
+	public CastingAdapter(final Class<? extends D> castType) {
 		if (castType == null) {
 			throw new NullPointerException("castType is null");
 		}
@@ -32,7 +32,7 @@ public class CastingAdapter<D> extends AbstractHandledAdapter<Object, D, Casting
 	 * 
 	 * @return the destination type of this adapter
 	 */
-	public Class<D> getCastType() {
+	public Class<? extends D> getCastType() {
 		return this.castType;
 	}
 

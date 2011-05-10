@@ -252,7 +252,7 @@ public final class Adapters {
 	 *            is explicitly provided since it's not reified in the adapter.
 	 * @return a new {@link CastingAdapter} object
 	 */
-	public static <D> Adapter<Object, D> cast(final Class<D> destinationType) {
+	public static <D> Adapter<? super Object, ? extends D> cast(final Class<? extends D> destinationType) {
 		return new CastingAdapter<D>(destinationType);
 	}
 
