@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.bluespot.logic.adapters.Adapters;
-import com.bluespot.logic.adapters.FunctionInputAdapter;
+import com.bluespot.logic.adapters.SafeFunctionAdapter;
 import com.bluespot.logic.functions.AdapterFunction;
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.Functions;
@@ -23,8 +23,8 @@ public class FunctionTests {
 	}
 
 	@Test
-	public void testFunctionInputAdapter() throws Exception {
-		FunctionInputAdapter<Object, String, Integer> inputAdapter = new FunctionInputAdapter<Object, String, Integer>(Adapters.stringValue());
+	public void testSafeFunctionAdapter() throws Exception {
+		SafeFunctionAdapter<String, Integer> inputAdapter = new SafeFunctionAdapter<String, Integer>(Adapters.stringValue());
 		Function<? super Object, ? extends Integer> fxn = inputAdapter.adapt(new AdapterFunction<String, Integer>(Adapters.stringLength()));
 		Assert.assertTrue(fxn.apply(42) == 2);
 	}
