@@ -34,7 +34,6 @@ public class AgentTests {
 		for (int i = 0; i < 50; i++) {
 			Assert.assertTrue(iter.hasNext());
 			System.out.println(iter.next());
-			//iter.next();
 		}
 	}
 
