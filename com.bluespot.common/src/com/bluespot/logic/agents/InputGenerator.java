@@ -42,11 +42,13 @@ public class InputGenerator<I> implements Iterator<I> {
 	 */
 	public InputGenerator(Class<? extends I> generatedType, Collection<? extends Object> pool) {
 		this.round = new Round<I>(generatedType, pool);
-		next = this.round.search();
 	}
 
 	@Override
 	public I next() {
+		if (!this.round.hasBegun()) {
+			next = this.round.search();
+		}
 		if (next == null) {
 			throw new IllegalStateException("Next element is not available");
 		}
@@ -59,6 +61,9 @@ public class InputGenerator<I> implements Iterator<I> {
 
 	@Override
 	public boolean hasNext() {
+		if (!this.round.hasBegun()) {
+			next = this.round.search();
+		}
 		return next != null;
 	}
 
