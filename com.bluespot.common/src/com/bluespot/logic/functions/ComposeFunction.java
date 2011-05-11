@@ -58,14 +58,6 @@ public class ComposeFunction<I, K, R> implements Function<I, R> {
 	}
 
 	@Override
-	public int hashCode() {
-		int result = 67;
-		result = 31 * result + this.getInnerFunction().hashCode();
-		result = 31 * result + this.getOuterFunction().hashCode();
-		return result;
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		if (obj == this) {
 			return true;
@@ -76,6 +68,14 @@ public class ComposeFunction<I, K, R> implements Function<I, R> {
 		ComposeFunction<?, ?, ?> other = (ComposeFunction<?, ?, ?>) obj;
 		return this.getInnerFunction().equals(other.getInnerFunction()) &&
 				this.getOuterFunction().equals(other.getOuterFunction());
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 67;
+		result = 31 * result + this.getInnerFunction().hashCode();
+		result = 31 * result + this.getOuterFunction().hashCode();
+		return result;
 	}
 
 	@Override
