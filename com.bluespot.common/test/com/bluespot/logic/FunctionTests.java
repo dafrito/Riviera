@@ -23,9 +23,31 @@ public class FunctionTests {
 		operation.curry(4).apply(4);
 	}
 
+	/**
+	 * I struggled a bit regarding the order of functions in Functions.compose.
+	 * I went with (inner, outer) but the reverse may have been just as well. I
+	 * think staying consistent matters more than finding the "perfect reason"
+	 * for some syntax.
+	 * <p>
+	 * Similarly, composing curryables add outer, rather than inner, functions.
+	 * I think the code would not be that much different for the unchosen case,
+	 * but I prefer inner-to-outer since it meshes with other decisions (and my
+	 * own line of thinking).
+	 * <p>
+	 * Functions chain inner to outer: {@code (((x + 3) * 2) / 3)}
+	 * <p>
+	 * I use the numeric utility functions below. Remember that they always
+	 * specify the right argument, even the cases of division and subtraction.
+	 * {@code Functions.divide(3)} means {@code x / 3} rather than {@code 3 / x}.
+	 */
 	@Test
 	public void testComposeFunctions() {
-		Functions.compose(Functions.multiply(2), Functions.add(3));
+		Functions.compose(Functions.compose(Functions.add(3), Functions.multiply(2)), Functions.divide(3)).apply(4).equals((double) (((4 + 3) * 2) / 3));
+	}
+
+	@Test
+	public void testComposingCurryable() {
+		Functions.composing(Functions.add(3)).curry(Functions.multiply(2)).curry(Functions.divide(3)).apply(4).equals((double) (((4 + 3) * 2) / 3));
 	}
 
 	@Test
