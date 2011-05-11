@@ -319,4 +319,33 @@ public class Functions {
 		return new NumericFunction(NumericOperations.MODULUS, constant);
 	}
 
+	/**
+	 * Create a {@link Function} that composes the specified functions together,
+	 * in the following manner:
+	 * 
+	 * <pre>
+	 * outerFunction.apply(innerFunction.apply(input))
+	 * </pre>
+	 * 
+	 * The outer function will be evaluated whenever the inner function is
+	 * evaluated, even if the inner function returned {@code null}.
+	 * 
+	 * @param <I>
+	 *            the type of the inner function's input value
+	 * @param <K>
+	 *            the common type between the inner function's return value and
+	 *            the outer function's input value
+	 * @param <R>
+	 *            the type of the outer function's return value
+	 * 
+	 * @param innerFunction
+	 *            the inner function that is evaluated first during composition
+	 * @param outerFunction
+	 *            that outer function that is evaluated using the result of the
+	 *            inner function
+	 * @return a {@link Function} that composes the specified functions together
+	 */
+	public static <I, K, R> Function<? super I, ? extends R> compose(Function<? super I, ? extends K> innerFunction, Function<? super K, ? extends R> outerFunction) {
+		return new ComposeFunction<I, K, R>(innerFunction, outerFunction);
+	}
 }

@@ -24,6 +24,11 @@ public class FunctionTests {
 	}
 
 	@Test
+	public void testComposeFunctions() {
+		Functions.compose(Functions.multiply(2), Functions.add(3));
+	}
+
+	@Test
 	public void testProtectFunction() {
 		Function<? super Number, ? extends Number> addFunction = new NumericFunction(NumericOperations.ADD, 2);
 
