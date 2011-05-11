@@ -16,10 +16,22 @@ public class CurryFunction<C, F extends Function<?, ?>> implements Function<Curr
 
 	private final C curriedValue;
 
+	/**
+	 * Create a new {@link CurryFunction} that curries the specified value.
+	 * 
+	 * @param curriedValue
+	 *            the value to curry.
+	 */
 	public CurryFunction(C curriedValue) {
+		if (curriedValue == null) {
+			throw new NullPointerException("curriedValue must not be null");
+		}
 		this.curriedValue = curriedValue;
 	}
 
+	/**
+	 * @return the value used in currying.
+	 */
 	public C getCurriedValue() {
 		return this.curriedValue;
 	}

@@ -32,7 +32,7 @@ public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryab
 
 	@Override
 	public Function<Curryable<? super C, ? extends F>, ? extends F> apply(C input) {
-		return new CurryFunction<C, F>(input);
+		return Functions.curry(input);
 	}
 
 	private static final MetaCurryable<?, ?> INSTANCE = new MetaCurryable<Object, Function<?, ?>>();

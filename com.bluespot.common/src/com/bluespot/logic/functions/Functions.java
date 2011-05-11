@@ -106,6 +106,21 @@ public class Functions {
 		return new FunctionValue<C, R>(function, value);
 	}
 
+	private static final Function<?, ?> FUNCTION_CURRY_NULL = new Function<Curryable<?, ?>, Function<?, ?>>() {
+
+		@Override
+		public Function<?, ?> apply(Curryable<?, ?> input) {
+			return input.curry(null);
+		}
+
+	};
+
+	@SuppressWarnings("unchecked")
+	public static <C, F extends Function<?, ?>> Function<Curryable<? super C, ? extends F>, F> curryNull() {
+		// This cast is safe since FUNCTION_CURRY_NULL does not use the underlying curryable (beyond currying it, of course)
+		return (Function<Curryable<? super C, ? extends F>, F>) FUNCTION_CURRY_NULL;
+	}
+
 	/**
 	 * Create a function that curries the specified value. This method is
 	 * normally not necessary, since {@link Curryable} objects can curry
@@ -120,6 +135,9 @@ public class Functions {
 	 * @return a {@link Function} that curries values.
 	 */
 	public static <C, F extends Function<?, ?>> Function<Curryable<? super C, ? extends F>, F> curry(C value) {
+		if (value == null) {
+			return Functions.curryNull();
+		}
 		return new CurryFunction<C, F>(value);
 	}
 
