@@ -33,7 +33,7 @@ public class AgentTests {
 		InputGenerator<Number> iter = new InputGenerator<Number>(Number.class, getPool());
 		for (int i = 0; i < 50; i++) {
 			Assert.assertTrue(iter.hasNext());
-			System.out.println(iter.next());
+			iter.next();
 		}
 	}
 
