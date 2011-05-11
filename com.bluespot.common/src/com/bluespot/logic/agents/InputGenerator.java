@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.SafeFunction;
 
 /**
@@ -31,34 +30,26 @@ public class InputGenerator<I> implements Iterator<I> {
 
 	private Round<I> round;
 
-	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<? extends I> generatedType) {
-		this(functions, generatedType, Collections.<Object> emptySet());
-	}
-
 	/**
 	 * Create a new {@link InputGenerator} object that uses the specified
 	 * functions and values in the first round.
 	 * 
-	 * @param functions
-	 *            a collection of {@link Function} objects that will be used to
-	 *            generate input values
+	 * @param pool
+	 *            a collection of objects that will be used to generate input
+	 *            values
 	 * @param generatedType
 	 *            the required type of generated input values
-	 * @param values
-	 *            a collection of values that will be passed to each
-	 *            {@link Function} in {@code functions}. {@code null} will
-	 *            always be passed along with other values.
 	 */
-	public InputGenerator(Collection<? extends Function<Object, ?>> functions, Class<? extends I> generatedType, Collection<? extends Object> values) {
-		if (functions == null) {
-			throw new NullPointerException("functions must not be null");
-		}
-		this.round = new Round<I>(generatedType, functions, values);
+	public InputGenerator(Class<? extends I> generatedType, Collection<? extends Object> pool) {
+		this.round = new Round<I>(generatedType, pool);
 		next = this.round.search();
 	}
 
 	@Override
 	public I next() {
+		if (next == null) {
+			throw new IllegalStateException("Next element is not available");
+		}
 		I thisValue = next;
 		while ((next = this.round.search()) == null) {
 			this.round = this.round.nextRound();
@@ -71,54 +62,53 @@ public class InputGenerator<I> implements Iterator<I> {
 		return next != null;
 	}
 
+	/**
+	 * Add an object to this generator's pool.
+	 * 
+	 * @param value
+	 *            the value to add
+	 * @throw {@link IllegalStateException} if this generator cannot accept
+	 *        arguments at this time
+	 */
+	public void add(Object value) {
+		this.round.add(value);
+	}
+
 	private static class Round<I> {
 
 		private final Class<? extends I> generatedType;
-		private Set<Object> blacklist;
 
-		private Function<Object, ?> currentFunc;
-		private Set<Function<Object, ?>> functions;
-		private Iterator<Function<Object, ?>> functionIterator;
+		private Set<Object> pool;
 
-		private Set<Object> values;
-		private Iterator<Object> valueIterator;
+		private SafeFunction<?> currentOperator;
+		private Iterator<Object> operatorIterator;
+		private Iterator<Object> poolIterator;
 
+		private HashSet<I> blacklist;
 		private Round<I> nextRound;
 
-		private Round(Class<? extends I> inputType, Collection<? extends Function<Object, ?>> functions, Collection<? extends Object> values) {
-			this.generatedType = inputType;
-			this.functions = new HashSet<Function<Object, ?>>(functions);
-			if (this.functions.isEmpty()) {
-				throw new IllegalArgumentException("functions must contain at least one function");
-			}
-			this.values = new HashSet<Object>(values);
-			this.values.add(null);
-			this.blacklist = new HashSet<Object>();
+		public Round(Class<? extends I> generatedType, Collection<? extends Object> pool) {
+			this.generatedType = generatedType;
+			this.pool = new HashSet<Object>(pool);
+			this.pool.add(null);
+			this.blacklist = new HashSet<I>();
 		}
 
-		private Round(Round<I> parentRound, Set<Object> blacklist) {
-			this(parentRound.getGeneratedType(), parentRound.getFunctions(), parentRound.getValues());
-			this.blacklist = blacklist;
-		}
-
-		private Collection<? extends Object> getValues() {
-			return Collections.unmodifiableSet(this.values);
-		}
-
-		private Collection<? extends Function<Object, ?>> getFunctions() {
-			return Collections.unmodifiableSet(this.functions);
+		private Round(Round<I> round) {
+			this(round.getGeneratedType(), round.getPool());
+			this.blacklist = round.blacklist;
 		}
 
 		private Class<? extends I> getGeneratedType() {
 			return this.generatedType;
 		}
 
-		public void addFunction(Function<Object, ?> function) {
-			this.functions.add(function);
+		private Collection<? extends Object> getPool() {
+			return Collections.unmodifiableSet(this.pool);
 		}
 
-		public void addValue(Object value) {
-			this.values.add(value);
+		public void add(Object value) {
+			this.pool.add(value);
 		}
 
 		private void begin() {
@@ -126,32 +116,63 @@ public class InputGenerator<I> implements Iterator<I> {
 				return;
 			}
 			// We're a new round, so freeze our state and begin.
-			this.functions = Collections.unmodifiableSet(this.functions);
-			this.values = Collections.unmodifiableSet(this.values);
-			this.nextRound = new Round<I>(this, this.blacklist);
+			this.pool = Collections.unmodifiableSet(this.pool);
+			this.nextRound = new Round<I>(this);
 
-			this.functionIterator = this.functions.iterator();
-			this.valueIterator = this.values.iterator();
-			this.currentFunc = this.functionIterator.next();
+			this.operatorIterator = this.pool.iterator();
+			this.nextOperator();
+			this.poolIterator = this.pool.iterator();
 		}
 
-		public I search() {
-			this.begin();
-			while (this.isAlive()) {
-				while (this.valueIterator.hasNext()) {
-					I generated = this.analyzeResult(this.currentFunc.apply(this.valueIterator.next()));
-					if (generated != null) {
-						return generated;
-					}
+		private void nextOperator() {
+			this.currentOperator = null;
+			while (this.currentOperator == null && this.operatorIterator.hasNext()) {
+				Object operator = this.operatorIterator.next();
+				if (operator == null) {
+					continue;
 				}
-				this.valueIterator = this.values.iterator();
-				if (this.functionIterator.hasNext()) {
-					this.currentFunc = this.functionIterator.next();
-				} else {
-					this.currentFunc = null;
+				if (SafeFunction.class.isInstance(operator)) {
+					this.currentOperator = (SafeFunction<?>) operator;
 				}
 			}
-			// At this point, we've exhausted every permutation, so just return null.
+		}
+
+		// We run into the problem of equality here. Consider these two functions:
+		// y = x + 2
+		// y = x + 2 + 1 - 1
+		// These are logically equivalent, so at least one of them should be
+		// retained. However, they're not equal according to Object#equals, so
+		// we'd lose this result.
+		//
+		// To resolve this, we either need some simplifying process, or we need to
+		// ensure that functions are always produced in their simplest form.
+		//
+		// Also consider the possibility that the result might be composed of two
+		// separate functions. In this case, there may not be a single function that
+		// fits both results. In this scenario, we should attempt to create a
+		// piece-wise function from the discarded candidates.
+		private I search() {
+			this.begin();
+			while (this.isAlive()) {
+				while (this.poolIterator.hasNext()) {
+					Object input = this.poolIterator.next();
+					Object generated = this.currentOperator.apply(input);
+					if (generated == null) {
+						continue;
+					}
+					this.nextRound.add(generated);
+					if (this.generatedType.isInstance(generated)) {
+						I candidate = this.generatedType.cast(generated);
+						if (!this.blacklist.contains(candidate)) {
+							this.blacklist.add(candidate);
+							return candidate;
+						}
+					}
+				}
+				this.poolIterator = this.pool.iterator();
+				this.nextOperator();
+			}
+			// We've exhausted every permutation, so just die.
 			return null;
 		}
 
@@ -160,45 +181,7 @@ public class InputGenerator<I> implements Iterator<I> {
 		}
 
 		public boolean isAlive() {
-			return this.currentFunc != null;
-		}
-
-		/**
-		 * Check if the specified value is a a "useful" result. Useful values
-		 * are defined as:
-		 * <ul>
-		 * <li>A {@link SafeFunction} object, that will be used as another
-		 * generator in the next generation round
-		 * <li>A non-null value. These values will be used as input values in
-		 * the next generation round
-		 * <li>A value of type {@link #generatedType}, which will be returned as
-		 * a generated value. These values will also be used as inputs in the
-		 * next generation round
-		 * </ul>
-		 * 
-		 * @param generated
-		 *            the analyzed value
-		 * 
-		 * @return {@code generated} cast as {@link #generatedType} if such a
-		 *         cast would succeed
-		 */
-		private I analyzeResult(Object generated) {
-			if (generated == null) {
-				return null;
-			}
-			if (this.blacklist.contains(generated)) {
-				return null;
-			}
-			this.blacklist.add(generated);
-			this.nextRound.addValue(generated);
-			if (SafeFunction.class.isInstance(generated)) {
-				this.nextRound.addFunction((SafeFunction<?>) generated);
-			}
-			if (this.generatedType.isInstance(generated)) {
-				I candidate = this.generatedType.cast(generated);
-				return candidate;
-			}
-			return null;
+			return this.currentOperator != null;
 		}
 
 		public Round<I> nextRound() {

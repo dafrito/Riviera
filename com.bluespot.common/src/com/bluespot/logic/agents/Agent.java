@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.bluespot.logic.functions.Function;
-import com.bluespot.logic.functions.UnanimousFunction;
+import com.bluespot.logic.functions.Functions;
 
 /**
  * A solver of {@link Function} objects.
@@ -29,30 +29,32 @@ import com.bluespot.logic.functions.UnanimousFunction;
  */
 public class Agent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
 
-	private final Class<I> inputType;
+	private static final int DESIRED_CONFIDENCE = 10;
 
-	private final Set<? extends Function<Object, ?>> functions;
+	private final Class<? extends I> inputType;
 
-	public Agent(Class<I> inputType, Collection<? extends Function<Object, ?>> functions) {
+	private final Set<? extends Object> pool;
+
+	public Agent(Class<? extends I> inputType, Collection<? extends Object> pool) {
 		if (inputType == null) {
 			throw new NullPointerException("inputType must not be null");
 		}
 		this.inputType = inputType;
-		if (functions == null) {
-			throw new NullPointerException("functions must not be null");
+		if (pool == null) {
+			throw new NullPointerException("pool must not be null");
 		}
-		this.functions = new HashSet<Function<Object, ?>>(functions);
-		if (this.functions.isEmpty()) {
-			throw new IllegalArgumentException("functions must contain at least one function");
+		this.pool = new HashSet<Object>(pool);
+		if (this.pool.isEmpty()) {
+			throw new IllegalArgumentException("pool must not be empty");
 		}
 	}
 
-	public Class<I> getInputType() {
+	public Class<? extends I> getInputType() {
 		return this.inputType;
 	}
 
-	public Collection<? extends Function<Object, ?>> getFunctions() {
-		return this.functions;
+	public Collection<? extends Object> getPool() {
+		return this.pool;
 	}
 
 	/**
@@ -63,16 +65,28 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	 * @return an iterator that generates values of the required input type
 	 */
 	protected Iterator<? extends I> searchInputs() {
-		return new InputGenerator<I>(this.getFunctions(), this.getInputType());
+		return new InputGenerator<I>(this.getInputType(), this.getPool());
 	}
 
-	protected Collection<? extends Function<? super I, ? extends V>> computeFunctions(I input, V output) {
-		return null;
+	protected Iterator<Function<Object, ?>> computeFunctions(I input, V output) {
+		InputGenerator<Function<Object, ?>> generator = new InputGenerator<Function<Object, ?>>(
+				Functions.safeFunctionType(),
+				this.getPool());
+		generator.add(input);
+		generator.add(output);
+		return generator;
 	}
 
+	private boolean testCandidate(Function<Object, ?> candidate, I input, V output) {
+		Object candidateResult = candidate.apply(input);
+		return candidateResult != null && candidateResult.equals(output);
+	}
+
+	@SuppressWarnings("unchecked")
 	@Override
 	public Function<? super I, ? extends V> apply(Function<? super I, ? extends V> function) {
-		Collection<? extends Function<? super I, ? extends V>> candidates = null;
+		Function<Object, ?> candidate = null;
+		int confidence = 0;
 		Iterator<? extends I> iter = this.searchInputs();
 		while (iter.hasNext()) {
 			I input = iter.next();
@@ -80,35 +94,28 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 			if (output == null) {
 				continue;
 			}
-			Collection<? extends Function<? super I, ? extends V>> myCandidates = this.computeFunctions(input, output);
-			if (candidates != null) {
-				// We run into the problem of equality here. Consider these two functions:
-				// y = x + 2
-				// y = x + 2 + 1 - 1
-				// These are logically equivalent, so at least one of them should be
-				// retained. However, they're not equal according to Object#equals, so
-				// we'd lose this result.
-				//
-				// To resolve this, we either need some simplifying process, or we need to
-				// ensure that functions are always produced in their simplest form.
-				//
-				// Also consider the possibility that the result might be composed of two
-				// separate functions. In this case, there may not be a single function that
-				// fits both results. In this scenario, we should attempt to create a
-				// piece-wise function from the discarded candidates.
-				candidates.retainAll(myCandidates);
-			} else {
-				candidates = new HashSet<Function<? super I, ? extends V>>(myCandidates);
+			if (candidate != null && this.testCandidate(candidate, input, output)) {
+				confidence++;
+				if (confidence >= DESIRED_CONFIDENCE) {
+					// This cast is safe because we've verified these results manually.
+					return (Function<? super I, ? extends V>) candidate;
+				}
+				continue;
 			}
-			if (candidates.isEmpty()) {
-				return null;
-			} else if (candidates.size() == 1) {
-				return candidates.iterator().next();
-			}
+			confidence = 0;
+			Iterator<Function<Object, ?>> myCandidates = this.computeFunctions(input, output);
+			do {
+				candidate = null;
+				if (!myCandidates.hasNext()) {
+					// We can't even generate a function that accepts these inputs, so just die.
+					return null;
+				}
+				candidate = myCandidates.next();
+			} while (!this.testCandidate(candidate, input, output));
 		}
-		if (candidates == null || candidates.isEmpty()) {
-			return null;
-		}
-		return new UnanimousFunction<I, V>(candidates);
+		// Nothing was good enough, so die. We could do something more sophisticated here - like
+		// return the best function we came up with - but I'm not ready to tackle complicated schemes
+		// like that.
+		return null;
 	}
 }
