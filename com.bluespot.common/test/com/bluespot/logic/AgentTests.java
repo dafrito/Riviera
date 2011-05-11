@@ -40,6 +40,6 @@ public class AgentTests {
 	@Test
 	public void testAgent() {
 		Agent<Integer, Number> agent = new Agent<Integer, Number>(Integer.class, getPool());
-		agent.apply(Functions.add(4));
+		agent.apply(Functions.add(100));
 	}
 }
