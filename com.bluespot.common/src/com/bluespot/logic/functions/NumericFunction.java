@@ -14,7 +14,7 @@ public class NumericFunction implements Function<Number, Number>, Curryable<Numb
 		}
 		this.operation = operation;
 		this.constant = constant.doubleValue();
-		if (this.constant == 0.0d && this.operation.allowOperationByZero()) {
+		if (!this.operation.allowOperationByZero() && this.constant == 0.0d) {
 			throw new ArithmeticException("constant cannot be zero for the provided operation");
 		}
 	}
