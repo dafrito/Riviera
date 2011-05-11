@@ -25,6 +25,11 @@ public class Functions {
 		public Object apply(Object input) {
 			return input;
 		}
+
+		@Override
+		public String toString() {
+			return "IdentityFunction";
+		}
 	};
 
 	/**
@@ -113,6 +118,10 @@ public class Functions {
 			return input.curry(null);
 		}
 
+		@Override
+		public String toString() {
+			return "CurryNullFunction";
+		}
 	};
 
 	@SuppressWarnings("unchecked")

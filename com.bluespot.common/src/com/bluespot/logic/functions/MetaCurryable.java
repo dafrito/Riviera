@@ -56,4 +56,8 @@ public final class MetaCurryable<C, F extends Function<?, ?>> implements Curryab
 		return (MetaCurryable<C, F>) INSTANCE;
 	}
 
+	@Override
+	public String toString() {
+		return "MetaCurryable";
+	}
 }

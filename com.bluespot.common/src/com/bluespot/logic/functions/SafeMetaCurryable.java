@@ -54,4 +54,9 @@ public class SafeMetaCurryable<R> implements SafeCurryable<SafeFunction<R>>,
 		// This unsafe cast will always succeed, since MetaCurryable has no state.
 		return (SafeMetaCurryable<R>) INSTANCE;
 	}
+
+	@Override
+	public String toString() {
+		return "SafeMetaCurryable";
+	}
 }
