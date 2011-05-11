@@ -20,7 +20,7 @@ package com.bluespot.logic.functions;
  */
 public class ComposingCurryable<I, R> implements Function<I, R>, Curryable<Function<? super R, ? extends R>, ComposingCurryable<? super I, R>> {
 
-	private Function<? super I, ? extends R> innerFunction;
+	private final Function<? super I, ? extends R> innerFunction;
 
 	/**
 	 * @param innerFunction
