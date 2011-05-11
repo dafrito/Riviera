@@ -103,16 +103,33 @@ public class InputGenerator<I> implements Iterator<I> {
 			return this.generatedType;
 		}
 
-		private Collection<? extends Object> getPool() {
+		/**
+		 * Return a view of this generator's pool. The pool contains all values
+		 * used during the generation process.
+		 * 
+		 * @return an unmodifiable view of this generator's pool
+		 */
+		private Set<? extends Object> getPool() {
 			return Collections.unmodifiableSet(this.pool);
 		}
 
+		/**
+		 * Add a value to this round's pool. If the value is already contained
+		 * in the round's pool, this invocation has no effect.
+		 * 
+		 * @param value
+		 *            the value to add to the pool
+		 */
 		public void add(Object value) {
 			this.pool.add(value);
 		}
 
+		/**
+		 * Begin generation. This invocation has no effect if generation has
+		 * already started.
+		 */
 		private void begin() {
-			if (this.nextRound != null) {
+			if (this.hasBegun()) {
 				return;
 			}
 			// We're a new round, so freeze our state and begin.
@@ -124,6 +141,9 @@ public class InputGenerator<I> implements Iterator<I> {
 			this.poolIterator = this.pool.iterator();
 		}
 
+		/**
+		 * Load the next available operator from the pool.
+		 */
 		private void nextOperator() {
 			this.currentOperator = null;
 			while (this.currentOperator == null && this.operatorIterator.hasNext()) {
