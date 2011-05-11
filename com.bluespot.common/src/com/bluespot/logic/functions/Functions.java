@@ -348,4 +348,27 @@ public class Functions {
 	public static <I, K, R> Function<? super I, ? extends R> compose(Function<? super I, ? extends K> innerFunction, Function<? super K, ? extends R> outerFunction) {
 		return new ComposeFunction<I, K, R>(innerFunction, outerFunction);
 	}
+
+	/**
+	 * Create a {@link ComposingCurryable} object that uses the specified
+	 * {@link Function}. The specified function will be used as the inner
+	 * function for the new {@code ComposingCurryable} instance.
+	 * 
+	 * @param innerFunction
+	 *            the function that will be used as the inner-most function in
+	 *            the return {@link Curryable} object
+	 * @param <I>
+	 *            the type of input value for both the specified and the
+	 *            returned function
+	 * @param <R>
+	 *            the common type of the return value of the specified function,
+	 *            and the input type of all subsequent functions.
+	 * @return a new {@link ComposingCurryable} instance that uses the specified
+	 *         function
+	 * @see ComposingCurryable
+	 * @see Functions#compose
+	 */
+	public static <I, R> ComposingCurryable<I, R> composing(Function<? super I, ? extends R> innerFunction) {
+		return new ComposingCurryable<I, R>(innerFunction);
+	}
 }

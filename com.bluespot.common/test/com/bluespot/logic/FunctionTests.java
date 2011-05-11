@@ -42,12 +42,21 @@ public class FunctionTests {
 	 */
 	@Test
 	public void testComposeFunctions() {
-		Functions.compose(Functions.compose(Functions.add(3), Functions.multiply(2)), Functions.divide(3)).apply(4).equals((double) (((4 + 3) * 2) / 3));
+		Assert.assertEquals(
+				Double.valueOf(((4.0d + 3) * 2) / 3),
+				Functions.compose(Functions.compose(Functions.add(3), Functions.multiply(2)), Functions.divide(3)).apply(4)
+				);
 	}
 
 	@Test
 	public void testComposingCurryable() {
-		Functions.composing(Functions.add(3)).curry(Functions.multiply(2)).curry(Functions.divide(3)).apply(4).equals((double) (((4 + 3) * 2) / 3));
+		Assert.assertEquals(
+				Double.valueOf((2 + 3) * 2),
+				Functions.composing(Functions.add(3)).curry(Functions.multiply(2)).apply(2));
+		Assert.assertEquals(
+				Double.valueOf(((4.0d + 3) * 2) / 3),
+				Functions.composing(Functions.add(3)).curry(Functions.multiply(2)).curry(Functions.divide(3)).apply(4)
+				);
 	}
 
 	@Test
