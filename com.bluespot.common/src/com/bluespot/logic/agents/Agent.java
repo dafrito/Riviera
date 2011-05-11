@@ -31,6 +31,8 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 
 	private static final int DESIRED_CONFIDENCE = 10;
 
+	private static final int PATIENCE = 1000;
+
 	private final Class<? extends I> inputType;
 
 	private final Set<? extends Object> pool;
@@ -86,9 +88,10 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 	@Override
 	public Function<? super I, ? extends V> apply(Function<? super I, ? extends V> function) {
 		Function<Object, ?> candidate = null;
+		int patience = PATIENCE;
 		int confidence = 0;
 		Iterator<? extends I> iter = this.searchInputs();
-		while (iter.hasNext()) {
+		while (iter.hasNext() && patience-- > 0) {
 			I input = iter.next();
 			V output = function.apply(input);
 			if (output == null) {
