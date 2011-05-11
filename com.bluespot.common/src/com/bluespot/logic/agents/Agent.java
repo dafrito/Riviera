@@ -31,7 +31,7 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 
 	private static final int DESIRED_CONFIDENCE = 10;
 
-	private static final int PATIENCE = 1000;
+	private static final int PATIENCE = 100;
 
 	private final Class<? extends I> inputType;
 
