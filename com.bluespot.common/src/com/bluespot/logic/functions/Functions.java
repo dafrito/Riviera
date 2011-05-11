@@ -115,6 +115,9 @@ public class Functions {
 
 		@Override
 		public Function<?, ?> apply(Curryable<?, ?> input) {
+			if (input == null) {
+				return null;
+			}
 			return input.curry(null);
 		}
 
