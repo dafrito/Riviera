@@ -399,11 +399,11 @@ public class Functions {
 		return new ComposingCurryable<I, R>(innerFunction);
 	}
 
-	public static <T> ComposingCurryable<? super T, ? extends T> composing() {
+	public static <T> ComposingCurryable<T, T> composing() {
 		return new ComposingCurryable<T, T>(Functions.<T> identity());
 	}
 
-	public static <R> SafeComposingCurryable<? extends R> safeComposing() {
+	public static <R> SafeComposingCurryable<R> safeComposing() {
 		return new SafeComposingCurryable<R>();
 	}
 }
