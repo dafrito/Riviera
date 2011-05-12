@@ -10,7 +10,7 @@ package com.bluespot.logic.adapters;
  * @param <D>
  *            the destination type.
  */
-public class CastingAdapter<D> extends AbstractHandledAdapter<Object, D, CastingAdapterException> {
+public class CastingAdapter<D> implements Adapter<Object, D> {
 
 	private final Class<? extends D> castType;
 
@@ -42,7 +42,6 @@ public class CastingAdapter<D> extends AbstractHandledAdapter<Object, D, Casting
 			return null;
 		}
 		if (!this.getCastType().isInstance(source)) {
-			this.dispatch(new CastingAdapterException(this, source));
 			return null;
 		}
 		try {
