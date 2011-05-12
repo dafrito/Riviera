@@ -6,11 +6,13 @@ import org.junit.Test;
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.adapters.SafeFunctionAdapter;
 import com.bluespot.logic.functions.AdapterFunction;
+import com.bluespot.logic.functions.ComposingCurryable;
 import com.bluespot.logic.functions.Curryable;
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.Functions;
 import com.bluespot.logic.functions.NumericFunction;
 import com.bluespot.logic.functions.NumericOperations;
+import com.bluespot.logic.functions.SafeComposingCurryable;
 import com.bluespot.logic.functions.SafeMetaCurryable;
 
 public class FunctionTests {
@@ -108,6 +110,18 @@ public class FunctionTests {
 	public void testMetaCurryableChaos() throws Exception {
 		SafeMetaCurryable.newInstance().curry(2).apply(Functions.protect(Number.class, NumericOperations.ADD, Number.class)).apply(4).equals(6.0d);
 		SafeMetaCurryable.newInstance().apply(2).apply(Functions.protect(Number.class, NumericOperations.ADD, Number.class)).apply(4).equals(6.0d);
+	}
+
+	@Test
+	public void testSafeComposingCurryableActsAsAEssentialType() throws Exception {
+		SafeComposingCurryable<Object> seedingComposer = new SafeComposingCurryable<Object>(Functions.identity());
+		Assert.assertEquals(seedingComposer.apply(true), true);
+
+		Assert.assertEquals(10.0d, new ComposingCurryable<Number, Number>(Functions.<Number> identity()).curry(Functions.add(3)).curry(Functions.multiply(2)).apply(2));
+		Assert.assertEquals(10.0d, new SafeComposingCurryable<Object>(Functions.identity())
+				.curry(Functions.protect(Number.class, Functions.add(3)))
+				.curry(Functions.protect(Number.class, Functions.multiply(2)))
+				.apply(2));
 	}
 
 	@Test
