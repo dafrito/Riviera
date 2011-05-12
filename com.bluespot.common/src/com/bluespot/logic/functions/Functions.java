@@ -33,6 +33,41 @@ public class Functions {
 	};
 
 	/**
+	 * Returns a {@link Function} that returns all provided values as-is,
+	 * including null.
+	 * 
+	 * @param <T>
+	 *            the type of values accepted and returned
+	 * @return a {@link Function} implementation that returns any value it is
+	 *         given.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <T> Function<? super T, ? extends T> identity() {
+		// This unsafe cast will always succeed since the identity function doesn't depend
+		// on the type of the specified arguments.
+		return (Function<? super T, ? extends T>) FUNCTION_IDENTITY;
+	}
+
+	/**
+	 * Returns a {@link SafeFunction} that returns all provided values as-is,
+	 * including null.
+	 * 
+	 * @param <R>
+	 *            the type of return value from the returned
+	 *            {@link SafeFunction}
+	 * 
+	 * @return a {@link Function} implementation that returns any value it is
+	 *         given.
+	 * @see #identity()
+	 */
+	@SuppressWarnings("unchecked")
+	public static <R> SafeFunction<R> safeIdentity() {
+		// This unsafe cast will always succeed since the identity function doesn't depend
+		// on the type of the specified arguments.
+		return (SafeFunction<R>) FUNCTION_IDENTITY;
+	}
+
+	/**
 	 * Returns the {@link SafeCurryable} class, cast as the parent
 	 * {@link Curryable} type. This type is useful when working with complicated
 	 * adapters that require a {@link Curryable} type, but you are only using
@@ -70,14 +105,6 @@ public class Functions {
 	public static <R> Class<? extends Function<Object, R>> safeFunctionType() {
 		// This cast is safe since it matches SafeFunction's declared type. 
 		return (Class<? extends Function<Object, R>>) SafeFunction.class;
-	}
-
-	/**
-	 * @return a {@link Function} implementation that returns any value it is
-	 *         given.
-	 */
-	public static SafeFunction<Object> identity() {
-		return FUNCTION_IDENTITY;
 	}
 
 	public static <I, R> SafeFunction<? extends R> protect(Adapter<? super Object, ? extends I> adapter, Function<? super I, ? extends R> function) {
