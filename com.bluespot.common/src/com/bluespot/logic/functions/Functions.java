@@ -398,4 +398,12 @@ public class Functions {
 	public static <I, R> ComposingCurryable<I, R> composing(Function<? super I, ? extends R> innerFunction) {
 		return new ComposingCurryable<I, R>(innerFunction);
 	}
+
+	public static <T> ComposingCurryable<? super T, ? extends T> composing() {
+		return new ComposingCurryable<T, T>(Functions.<T> identity());
+	}
+
+	public static <R> SafeComposingCurryable<? extends R> safeComposing() {
+		return new SafeComposingCurryable<R>();
+	}
 }
