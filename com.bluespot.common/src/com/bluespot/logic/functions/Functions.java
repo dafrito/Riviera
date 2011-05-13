@@ -326,6 +326,10 @@ public class Functions {
 		return new ValueFunction<V>(constant);
 	}
 
+	public static <T> Function<T, Boolean> test(Predicate<? super T> predicate) {
+		return new PredicateFunction<T>(predicate);
+	}
+
 	public static <T extends Number> Function<Number, ? extends Number> add(final T constant) {
 		return new NumericFunction(NumericOperations.ADD, constant);
 	}
