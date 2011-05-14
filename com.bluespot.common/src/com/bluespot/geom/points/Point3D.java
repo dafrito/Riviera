@@ -95,7 +95,7 @@ public interface Point3D<P extends Point3D<?>> {
 	 * @return a point that lies between this point and the destination
 	 * @see #interpolate(Point3D, float)
 	 */
-	public P toInterpolated(P dest, float offset);
+	public P interpolated(P dest, float offset);
 
 	/**
 	 * Interpolates between this point and the destination. This point will be
@@ -112,7 +112,7 @@ public interface Point3D<P extends Point3D<?>> {
 	 *            the final point
 	 * @param offset
 	 *            the percentage of distance traveled
-	 * @see #toInterpolated(Point3D, float)
+	 * @see #interpolated(Point3D, float)
 	 */
 	public void interpolate(P dest, float offset);
 

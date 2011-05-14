@@ -277,7 +277,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	@Override
-	public IntegerPoint3D toInterpolated(IntegerPoint3D dest, float offset) {
+	public IntegerPoint3D interpolated(IntegerPoint3D dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}

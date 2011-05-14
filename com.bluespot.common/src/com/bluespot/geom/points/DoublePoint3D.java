@@ -282,7 +282,7 @@ public class DoublePoint3D extends AbstractPoint3D<DoublePoint3D> {
 	}
 
 	@Override
-	public DoublePoint3D toInterpolated(DoublePoint3D dest, float offset) {
+	public DoublePoint3D interpolated(DoublePoint3D dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}

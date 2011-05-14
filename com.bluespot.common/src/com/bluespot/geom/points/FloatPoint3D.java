@@ -320,7 +320,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public FloatPoint3D toInterpolated(FloatPoint3D dest, float offset) {
+	public FloatPoint3D interpolated(FloatPoint3D dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
