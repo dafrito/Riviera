@@ -27,6 +27,24 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		return new IntegerPoint3D(false, point.x, point.y, point.z);
 	}
 
+	/**
+	 * Interpolates between this point and the destination. Offsets that are not
+	 * between zero and one are handled specially:
+	 * <ul>
+	 * <li>If {@code offset <= 0}, a copy of {@code src} is returned
+	 * <li>If {@code offset >= 1}, a copy of {@code dest} is returned
+	 * </ul>
+	 * This special behavior allows clients to reliably detect when
+	 * interpolation is complete.
+	 * 
+	 * @param src
+	 *            the starting point
+	 * @param dest
+	 *            the ending point
+	 * @param offset
+	 *            the percentage of distance between the specified points
+	 * @return a mutable point that lies between src and dest
+	 */
 	public static IntegerPoint3D interpolated(IntegerPoint3D src, IntegerPoint3D dest, float offset) {
 		if (src == null) {
 			throw new NullPointerException("src must not be null");
@@ -53,7 +71,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * Constructs a point using the specified coordinates.
 	 * 
 	 * @param mutable
-	 *            whether this point is mutable
+	 *            whether this point can be directly modified
 	 * @param x
 	 *            the x-coordinate of this point
 	 * @param y
@@ -65,15 +83,6 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 */
 	private IntegerPoint3D(final boolean mutable, final int x, final int y, final int z) {
 		super(mutable);
-		if (java.lang.Float.isNaN(x)) {
-			throw new IllegalArgumentException("x is NaN");
-		}
-		if (java.lang.Float.isNaN(y)) {
-			throw new IllegalArgumentException("y is NaN");
-		}
-		if (java.lang.Float.isNaN(z)) {
-			throw new IllegalArgumentException("z is NaN");
-		}
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -91,16 +100,16 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	/**
 	 * Sets the x position to the specified value.
 	 * 
-	 * @param x
+	 * @param value
 	 *            the new x value
 	 * @return the old x value
 	 */
-	public int setX(int x) {
+	public int setX(int value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
 		int old = this.x;
-		this.x = x;
+		this.x = value;
 		return old;
 	}
 
@@ -141,16 +150,16 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	/**
 	 * Sets the y position to the specified value.
 	 * 
-	 * @param y
+	 * @param value
 	 *            the new y value
 	 * @return the old y value
 	 */
-	public int setY(int y) {
+	public int setY(int value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
 		int old = this.y;
-		this.y = y;
+		this.y = value;
 		return old;
 	}
 
@@ -191,16 +200,16 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	/**
 	 * Sets the z position to the specified value.
 	 * 
-	 * @param z
+	 * @param value
 	 *            the new z value
 	 * @return the old z value
 	 */
-	public int setZ(int z) {
+	public int setZ(int value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
 		int old = this.z;
-		this.z = z;
+		this.z = value;
 		return old;
 	}
 
@@ -236,21 +245,242 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		this.setZ(point.getZ());
 	}
 
+	/**
+	 * Sets all of this point's values to the specified value.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void set(int value) {
+		this.setX(value);
+		this.setY(value);
+		this.setZ(value);
+	}
+
 	@Override
-	public void set(com.bluespot.geom.points.Point3D.Axis axis, IntegerPoint3D point) {
+	public void add(IntegerPoint3D point) {
+		this.addX(point.getX());
+		this.addY(point.getY());
+		this.addZ(point.getZ());
+	}
+
+	/**
+	 * Adds the specified value to all of this point's values.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void add(int value) {
+		this.addX(value);
+		this.addY(value);
+		this.addZ(value);
+	}
+
+	@Override
+	public IntegerPoint3D added(IntegerPoint3D point) {
+		IntegerPoint3D result = this.toMutable();
+		result.add(point);
+		return result;
+	}
+
+	/**
+	 * Returns a mutable point that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable point that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public IntegerPoint3D added(int value) {
+		IntegerPoint3D result = this.toMutable();
+		result.add(value);
+		return result;
+	}
+
+	@Override
+	public void set(Axis axis, IntegerPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
 		switch (axis) {
 		case X:
 			this.setX(point.getX());
 			break;
-
 		case Y:
 			this.setY(point.getY());
 			break;
-
 		case Z:
 			this.setZ(point.getZ());
 			break;
+		case XY:
+			this.setX(point.getX());
+			this.setY(point.getY());
+			break;
+		case XZ:
+			this.setX(point.getX());
+			this.setZ(point.getZ());
+			break;
+		case YZ:
+			this.setY(point.getY());
+			this.setZ(point.getZ());
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
 		}
+	}
+
+	/**
+	 * Sets values at the specified axes to the specified value.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param value
+	 *            the added value
+	 */
+	public void set(Axis axis, int value) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("Point is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.setX(value);
+			break;
+		case Y:
+			this.setY(value);
+			break;
+		case Z:
+			this.setZ(value);
+			break;
+		case XY:
+			this.setX(value);
+			this.setY(value);
+			break;
+		case XZ:
+			this.setX(value);
+			this.setZ(value);
+			break;
+		case YZ:
+			this.setY(value);
+			this.setZ(value);
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+		throw new IllegalArgumentException("Axis must be X, Y, or Z");
+	}
+
+	@Override
+	public void add(Axis axis, IntegerPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.addX(point.getX());
+			break;
+		case Y:
+			this.addY(point.getY());
+			break;
+		case Z:
+			this.addZ(point.getZ());
+			break;
+		case XY:
+			this.addX(point.getX());
+			this.addY(point.getY());
+			break;
+		case XZ:
+			this.addX(point.getX());
+			this.addZ(point.getZ());
+			break;
+		case YZ:
+			this.addY(point.getY());
+			this.addZ(point.getZ());
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+	}
+
+	/**
+	 * Adds the specified value to the specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param value
+	 *            the added value
+	 */
+	public void add(Axis axis, int value) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("Point is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.addX(value);
+			break;
+		case Y:
+			this.addY(value);
+			break;
+		case Z:
+			this.addZ(value);
+			break;
+		case XY:
+			this.addX(value);
+			this.addY(value);
+			break;
+		case XZ:
+			this.addX(value);
+			this.addZ(value);
+			break;
+		case YZ:
+			this.addY(value);
+			this.addZ(value);
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+	}
+
+	@Override
+	public IntegerPoint3D added(Axis axis, IntegerPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
+		IntegerPoint3D result = this.toMutable();
+		result.add(axis, point);
+		return result;
+	}
+
+	/**
+	 * Returns a mutable point at this position, plus the specified translation.
+	 * 
+	 * @param axis
+	 *            the axes that will be translated
+	 * @param value
+	 *            the added value
+	 * @return a mutable point translated from this position
+	 */
+	public IntegerPoint3D added(Axis axis, int value) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		IntegerPoint3D result = this.toMutable();
+		result.add(axis, value);
+		return result;
 	}
 
 	@Override

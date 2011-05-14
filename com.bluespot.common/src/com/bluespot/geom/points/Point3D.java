@@ -15,10 +15,6 @@ package com.bluespot.geom.points;
  */
 public interface Point3D<P extends Point3D<?>> {
 
-	public static enum Axis {
-		X, Y, Z;
-	}
-
 	/**
 	 * Set this point's values to the specified point.
 	 * 
@@ -30,6 +26,26 @@ public interface Point3D<P extends Point3D<?>> {
 	public void set(P point);
 
 	/**
+	 * Add the specified point's value to this point.
+	 * 
+	 * @param point
+	 *            the point that will be added
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void add(P point);
+
+	/**
+	 * Add the specified point's value to this point.
+	 * 
+	 * @param point
+	 *            the point that will be added
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public P added(P point);
+
+	/**
 	 * Copy another point's value at the specified axis.
 	 * 
 	 * @param axis
@@ -38,6 +54,28 @@ public interface Point3D<P extends Point3D<?>> {
 	 *            the point from which to copy
 	 */
 	public void set(Axis axis, P point);
+
+	/**
+	 * Add another point's value at the specified axis.
+	 * 
+	 * @param axis
+	 *            the axis to copy
+	 * @param point
+	 *            the point from which to copy
+	 */
+	public void add(Axis axis, P point);
+
+	/**
+	 * Return a mutable point at this position, but with the specified
+	 * translation.
+	 * 
+	 * @param axis
+	 *            the axis to copy
+	 * @param point
+	 *            the point from which to copy
+	 * @return a mutable point translated from this point
+	 */
+	public P added(Axis axis, P point);
 
 	/**
 	 * Return whether this point can be directly modified. This value is a

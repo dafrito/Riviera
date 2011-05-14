@@ -8,7 +8,7 @@ import com.bluespot.geom.Vector;
 /**
  * Represents a single point in space in {@code float} precision. Be aware that
  * while this class implements {@link #equals(Object)} appropriately, it may
- * yield unexpected results due to the inherent impreciseness of floating-point
+ * yield unexpected results due to the inherent imprecision of floating-point
  * values.
  * 
  * @author Aaron Faanes
@@ -121,16 +121,19 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	/**
 	 * Sets the x position to the specified value.
 	 * 
-	 * @param x
+	 * @param value
 	 *            the new x value
 	 * @return the old x value
 	 */
-	public float setX(float x) {
+	public float setX(float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
 		float old = this.x;
-		this.x = x;
+		this.x = value;
 		return old;
 	}
 
@@ -171,16 +174,19 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	/**
 	 * Sets the y position to the specified value.
 	 * 
-	 * @param y
+	 * @param value
 	 *            the new y value
 	 * @return the old y value
 	 */
-	public float setY(float y) {
+	public float setY(float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
 		float old = this.y;
-		this.y = y;
+		this.y = value;
 		return old;
 	}
 
@@ -221,16 +227,19 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	/**
 	 * Sets the z position to the specified value.
 	 * 
-	 * @param z
+	 * @param value
 	 *            the new z value
 	 * @return the old z value
 	 */
-	public float setZ(float z) {
+	public float setZ(float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
 		float old = this.z;
-		this.z = z;
+		this.z = value;
 		return old;
 	}
 
@@ -266,8 +275,66 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 		this.setZ(point.getZ());
 	}
 
+	/**
+	 * Sets all of this point's values to the specified value.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void set(float value) {
+		this.setX(value);
+		this.setY(value);
+		this.setZ(value);
+	}
+
 	@Override
-	public void set(com.bluespot.geom.points.Point3D.Axis axis, FloatPoint3D point) {
+	public void add(FloatPoint3D point) {
+		this.addX(point.getX());
+		this.addY(point.getY());
+		this.addZ(point.getZ());
+	}
+
+	/**
+	 * Adds the specified value to all of this point's values.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void add(float value) {
+		this.addX(value);
+		this.addY(value);
+		this.addZ(value);
+	}
+
+	@Override
+	public FloatPoint3D added(FloatPoint3D point) {
+		FloatPoint3D result = this.toMutable();
+		result.add(point);
+		return result;
+	}
+
+	/**
+	 * Returns a mutable point that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable point that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public FloatPoint3D added(float value) {
+		FloatPoint3D result = this.toMutable();
+		result.add(value);
+		return result;
+	}
+
+	@Override
+	public void set(Axis axis, FloatPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
 		switch (axis) {
 		case X:
 			this.setX(point.getX());
@@ -280,7 +347,172 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 		case Z:
 			this.setZ(point.getZ());
 			break;
+		case XY:
+			this.setX(point.getX());
+			this.setY(point.getY());
+			break;
+		case XZ:
+			this.setX(point.getX());
+			this.setZ(point.getZ());
+			break;
+		case YZ:
+			this.setY(point.getY());
+			this.setZ(point.getZ());
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
 		}
+	}
+
+	/**
+	 * Sets values at the specified axes to the specified value.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param value
+	 *            the added value
+	 */
+	public void set(Axis axis, float value) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("Point is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.setX(value);
+			break;
+		case Y:
+			this.setY(value);
+			break;
+		case Z:
+			this.setZ(value);
+			break;
+		case XY:
+			this.setX(value);
+			this.setY(value);
+			break;
+		case XZ:
+			this.setX(value);
+			this.setZ(value);
+			break;
+		case YZ:
+			this.setY(value);
+			this.setZ(value);
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+		throw new IllegalArgumentException("Axis must be X, Y, or Z");
+	}
+
+	@Override
+	public void add(Axis axis, FloatPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.addX(point.getX());
+			break;
+		case Y:
+			this.addY(point.getY());
+			break;
+		case Z:
+			this.addZ(point.getZ());
+			break;
+		case XY:
+			this.addX(point.getX());
+			this.addY(point.getY());
+			break;
+		case XZ:
+			this.addX(point.getX());
+			this.addZ(point.getZ());
+			break;
+		case YZ:
+			this.addY(point.getY());
+			this.addZ(point.getZ());
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+	}
+
+	/**
+	 * Adds the specified value to the specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param value
+	 *            the added value
+	 */
+	public void add(Axis axis, float value) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("Point is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.addX(value);
+			break;
+		case Y:
+			this.addY(value);
+			break;
+		case Z:
+			this.addZ(value);
+			break;
+		case XY:
+			this.addX(value);
+			this.addY(value);
+			break;
+		case XZ:
+			this.addX(value);
+			this.addZ(value);
+			break;
+		case YZ:
+			this.addY(value);
+			this.addZ(value);
+			break;
+		default:
+			throw new IllegalArgumentException("Axis is invalid");
+		}
+	}
+
+	@Override
+	public FloatPoint3D added(Axis axis, FloatPoint3D point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
+		FloatPoint3D result = this.toMutable();
+		result.add(axis, point);
+		return result;
+	}
+
+	/**
+	 * Returns a mutable point at this position, plus the specified translation.
+	 * 
+	 * @param axis
+	 *            the axes that will be translated
+	 * @param value
+	 *            the added value
+	 * @return a mutable point translated from this position
+	 */
+	public FloatPoint3D added(Axis axis, float value) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		FloatPoint3D result = this.toMutable();
+		result.add(axis, value);
+		return result;
 	}
 
 	/**
@@ -358,6 +590,9 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 			return false;
 		}
 		final FloatPoint3D other = (FloatPoint3D) obj;
+		if (this.isMutable() != other.isMutable()) {
+			return false;
+		}
 		if (this.getX() != other.getX()) {
 			return false;
 		}
@@ -373,6 +608,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	@Override
 	public int hashCode() {
 		int result = 11;
+		result = 31 * result + (this.isMutable() ? 1 : 0);
 		result = 31 * result + java.lang.Float.floatToIntBits(this.getX());
 		result = 31 * result + java.lang.Float.floatToIntBits(this.getY());
 		result = 31 * result + java.lang.Float.floatToIntBits(this.getZ());
@@ -381,7 +617,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 
 	@Override
 	public String toString() {
-		return String.format("Point3D.Float[%f, %f, %f]", this.getX(), this.getY(), this.getZ());
+		return String.format("Point3D.Float[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.getX(), this.getY(), this.getZ());
 	}
 
 }

@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import com.bluespot.geom.points.Axis;
 import com.bluespot.geom.points.DoublePoint3D;
 import com.bluespot.geom.points.FloatPoint3D;
 import com.bluespot.geom.points.IntegerPoint3D;
@@ -23,6 +24,21 @@ public final class PointTests {
 	@Test
 	public void pointsSupportCreatingAddedValues() throws Exception {
 		assertTrue(Points.mutable(0d, 0d, 0d).addedX(4d).at(Points.frozen(4d, 0d, 0d)));
+		assertTrue(Points.mutable(0d, 0d, 0d).addedY(4d).at(Points.frozen(0d, 4d, 0d)));
+		assertTrue(Points.mutable(0d, 0d, 0d).addedZ(4d).at(Points.frozen(0d, 0d, 4d)));
+
+		assertTrue(Points.mutable(0f, 0f, 0f).addedX(4f).at(Points.frozen(4f, 0f, 0f)));
+		assertTrue(Points.mutable(0f, 0f, 0f).addedY(4f).at(Points.frozen(0f, 4f, 0f)));
+		assertTrue(Points.mutable(0f, 0f, 0f).addedZ(4f).at(Points.frozen(0f, 0f, 4f)));
+
+		assertTrue(Points.mutable(0, 0, 0).addedX(4).at(Points.frozen(4, 0, 0)));
+		assertTrue(Points.mutable(0, 0, 0).addedY(4).at(Points.frozen(0, 4, 0)));
+		assertTrue(Points.mutable(0, 0, 0).addedZ(4).at(Points.frozen(0, 0, 4)));
+	}
+
+	@Test
+	public void pointsSupportAddingByAxis() throws Exception {
+		assertTrue(Points.mutable(0d, 0d, 0d).added(Axis.XZ, 4d).at(Points.frozen(4d, 0d, 0d)));
 		assertTrue(Points.mutable(0d, 0d, 0d).addedY(4d).at(Points.frozen(0d, 4d, 0d)));
 		assertTrue(Points.mutable(0d, 0d, 0d).addedZ(4d).at(Points.frozen(0d, 0d, 4d)));
 
