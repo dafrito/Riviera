@@ -1,6 +1,6 @@
 package com.bluespot.logic.adapters;
 
-import com.bluespot.logic.visitors.Visitor;
+import com.bluespot.logic.actors.Actor;
 
 /**
  * An {@link HandledAdapter} implementation that parses and converts string
@@ -16,7 +16,7 @@ public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer
 
 	/**
 	 * Constructs a {@link ParsedIntegerAdapter} that uses the default no-op
-	 * {@link Visitor} for its handler.
+	 * {@link Actor} for its handler.
 	 */
 	public ParsedIntegerAdapter() {
 		super();
@@ -24,7 +24,7 @@ public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer
 
 	/**
 	 * Constructs a {@link ParsedIntegerAdapter} that uses the specified
-	 * {@link Visitor} for its handler.
+	 * {@link Actor} for its handler.
 	 * 
 	 * @param handler
 	 *            the handler that is notified of {@link NumberFormatException}
@@ -32,7 +32,7 @@ public class ParsedIntegerAdapter extends AbstractHandledAdapter<String, Integer
 	 * @throws NullPointerException
 	 *             if {@code handler} is null
 	 */
-	public ParsedIntegerAdapter(final Visitor<? super NumberFormatException> handler) {
+	public ParsedIntegerAdapter(final Actor<? super NumberFormatException> handler) {
 		super(handler);
 	}
 

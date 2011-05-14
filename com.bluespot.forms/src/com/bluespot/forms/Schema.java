@@ -5,17 +5,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.bluespot.logic.actors.Actor;
+import com.bluespot.logic.actors.Actors;
+import com.bluespot.logic.actors.GuardedActor;
 import com.bluespot.logic.adapters.AbstractHandledAdapter;
 import com.bluespot.logic.adapters.HandledAdapter;
 import com.bluespot.logic.predicates.AdaptingPredicate;
 import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.visitors.GuardedVisitor;
-import com.bluespot.logic.visitors.Visitor;
-import com.bluespot.logic.visitors.Visitors;
 
 /**
  * A schema is a type-safe bridge between arbitrary forms of submission and the
- * visitors that expect and act on them.
+ * actors that expect and act on them.
  * 
  * @author Aaron Faanes
  * 
@@ -132,50 +132,50 @@ public final class Schema<K> {
 	}
 
 	/**
-	 * Constructs a {@link GuardedVisitor} that is guarded by this schema's
+	 * Constructs a {@link GuardedActor} that is guarded by this schema's
 	 * predicate. If the predicate evaluates to {@code true}, the specified
-	 * visitor will be invoked.
+	 * actor will be invoked.
 	 * 
-	 * @param visitor
-	 *            the invoked visitor for all validated submissions
-	 * @return a new {@code Sentinel} that guards the specified visitor with
+	 * @param actor
+	 *            the invoked actor for all validated submissions
+	 * @return a new {@code GuardedActor} that guards the specified actor with
 	 *         this schema's predicate
 	 */
-	public GuardedVisitor<Submission<K>> newSentinel(final Visitor<? super Submission<? extends K>> visitor) {
-		return new GuardedVisitor<Submission<K>>(this.getPredicate(), visitor);
+	public GuardedActor<Submission<K>> newSentinel(final Actor<? super Submission<? extends K>> actor) {
+		return new GuardedActor<Submission<K>>(this.getPredicate(), actor);
 	}
 
 	/**
-	 * Helper method that calls {@link #newCheckedSentinel(Visitor, Visitor)}
-	 * using {@link Visitors#throwException()} as the handler.
+	 * Helper method that calls {@link #newCheckedSentinel(Actor, Actor)} using
+	 * {@link Actors#throwException()} as the handler.
 	 * <p>
-	 * See {@link #newCheckedSentinel(Visitor, Visitor)} for full information on
-	 * the requirements of this class.
+	 * See {@link #newCheckedSentinel(Actor, Actor)} for full information on the
+	 * requirements of this class.
 	 * 
-	 * @param visitor
-	 *            the visitor that is guarded by the returned sentinel
-	 * @return a sentinel that guards the specified visitor.
+	 * @param actor
+	 *            the actor that is guarded by the returned sentinel
+	 * @return a sentinel that guards the specified actor.
 	 */
-	public GuardedVisitor<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor) {
-		return this.newCheckedSentinel(visitor, Visitors.throwException());
+	public GuardedActor<Submission<K>> newCheckedSentinel(final Actor<? super Submission<? extends K>> actor) {
+		return this.newCheckedSentinel(actor, Actors.throwException());
 	}
 
 	/**
-	 * Returns a {@link GuardedVisitor} that guards the specified visitor. This
-	 * is similar to {@link #newSentinel(Visitor)}, but is a two-step process.
+	 * Returns a {@link GuardedActor} that guards the specified actor. This is
+	 * similar to {@link #newSentinel(Actor)} except this is a two-step process.
 	 * Each step must succeed before the next begins:
 	 * <ul>
 	 * <li><em>Type validation</em>: A given {@link Submission} will be checked
 	 * for type-safety. Specifically, each field will be queried to ensure that
 	 * its type is a subtype of this schema's expected type for that field.
 	 * <li><em>Validation</em>: The {@code Submission} will be checked by this
-	 * schema's predicate, exactly like {@link #newSentinel(Visitor)}.
+	 * schema's predicate, exactly like {@link #newSentinel(Actor)}.
 	 * </ul>
 	 * If both steps of validation are successful, the submission is passed to
-	 * the specified {@code visitor}.
+	 * the specified {@code actor}.
 	 * 
-	 * @param visitor
-	 *            the visitor that will receive all {@code Submission} objects
+	 * @param actor
+	 *            the actor that will receive all {@code Submission} objects
 	 *            that pass validation, as described above
 	 * @param handler
 	 *            the handler that will receive
@@ -183,15 +183,15 @@ public final class Schema<K> {
 	 *            in the submission that is not type-safe with this schema
 	 * @return a {@code Sentinel} that performs the process described above
 	 * @throws NullPointerException
-	 *             if either argument is null. Use {@link Visitors#noop()} if
-	 *             you don't wish to respond to fields that are not type-safe.
-	 *             Of course, a no-op visitor does not affect the rules of
+	 *             if either argument is null. Use {@link Actors#noop()} if you
+	 *             don't wish to respond to fields that are not type-safe. Of
+	 *             course, a no-op actor does not affect the rules of
 	 *             validation.
 	 */
-	public GuardedVisitor<Submission<K>> newCheckedSentinel(final Visitor<? super Submission<? extends K>> visitor,
-			final Visitor<? super SubmissionClassCastException> handler) {
-		if (visitor == null) {
-			throw new NullPointerException("visitor is null");
+	public GuardedActor<Submission<K>> newCheckedSentinel(final Actor<? super Submission<? extends K>> actor,
+			final Actor<? super SubmissionClassCastException> handler) {
+		if (actor == null) {
+			throw new NullPointerException("actor is null");
 		}
 		if (handler == null) {
 			throw new NullPointerException("handler is null");
@@ -200,7 +200,7 @@ public final class Schema<K> {
 		checker.setHandler(handler);
 		final Predicate<Submission<K>> checkedPredicate = new AdaptingPredicate<Submission<K>, Submission<K>>(checker,
 				this.getPredicate());
-		return new GuardedVisitor<Submission<K>>(checkedPredicate, visitor);
+		return new GuardedActor<Submission<K>>(checkedPredicate, actor);
 	}
 
 	@Override

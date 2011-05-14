@@ -9,11 +9,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.forms.submission.MutableSubmission;
+import com.bluespot.logic.actors.Actor;
+import com.bluespot.logic.actors.GuardedActor;
 import com.bluespot.logic.predicates.Predicate;
 import com.bluespot.logic.predicates.Predicates;
 import com.bluespot.logic.predicates.builder.PredicateBuilder;
-import com.bluespot.logic.visitors.GuardedVisitor;
-import com.bluespot.logic.visitors.Visitor;
 
 public class SchemaTests {
 
@@ -21,9 +21,9 @@ public class SchemaTests {
 	private boolean flag = false;
 	private MutableSubmission<String> submission;
 
-	private final Visitor<Object> visitor = new Visitor<Object>() {
+	private final Actor<Object> actor = new Actor<Object>() {
 		@Override
-		public void accept(final Object value) {
+		public void receive(final Object value) {
 			SchemaTests.this.flag = true;
 		}
 	};
@@ -76,16 +76,16 @@ public class SchemaTests {
 
 	@Test
 	public void testInvalidSubmission() {
-		final GuardedVisitor<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
-		sentinel.accept(this.submission);
+		final GuardedActor<Submission<String>> sentinel = this.schema.newSentinel(this.actor);
+		sentinel.receive(this.submission);
 		assertTrue("Submission is invalid", !this.flag);
 	}
 
 	@Test
 	public void testValidSubmission() {
-		final GuardedVisitor<Submission<String>> sentinel = this.schema.newSentinel(this.visitor);
+		final GuardedActor<Submission<String>> sentinel = this.schema.newSentinel(this.actor);
 		this.submission.put("String", "No time");
-		sentinel.accept(this.submission);
+		sentinel.receive(this.submission);
 		assertTrue("Submission is valid", this.flag);
 	}
 }

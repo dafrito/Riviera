@@ -1,33 +1,33 @@
-package com.bluespot.logic.visitors;
+package com.bluespot.logic.actors;
 
 import java.util.Collection;
 
 /**
- * A {@link Visitor} that prunes a specified collection. For every element that
- * is accepted by this visitor, a call to {@link Collection#remove(Object)} will
- * be made. The actual action taken by the specified collection is, of course,
+ * A {@link Actor} that prunes a specified collection.
+ * {@link Collection#remove(Object)} on the specified collection for every given
+ * argument. The actual action taken by the specified collection is, of course,
  * implementation-dependent.
  * 
  * @author Aaron Faanes
  * 
  * @param <T>
- *            the type of value that is accepted by this visitor
- * @see PopulatingVisitor
+ *            the type of value that is accepted by this sink
+ * @see PopulatingActor
  */
-public final class PruningVisitor<T> implements Visitor<T> {
+public final class PruningActor<T> implements Actor<T> {
 
 	private final Collection<? super T> collection;
 
 	/**
-	 * Constructs a {@link PruningVisitor} that will prune the specified
+	 * Constructs a {@link PruningActor} that will prune the specified
 	 * collection.
 	 * 
 	 * @param collection
-	 *            the collection that is pruned by this visitor
+	 *            the collection that is pruned by this actor
 	 * @throws NullPointerException
 	 *             if {@code collection} is null
 	 */
-	public PruningVisitor(final Collection<? super T> collection) {
+	public PruningActor(final Collection<? super T> collection) {
 		if (collection == null) {
 			throw new NullPointerException("collection is null");
 		}
@@ -35,19 +35,19 @@ public final class PruningVisitor<T> implements Visitor<T> {
 	}
 
 	/**
-	 * Returns the collection that is pruned by this visitor.
+	 * Returns the collection that is pruned by this actor.
 	 * 
-	 * @return the collection that is pruned by this visitor
+	 * @return the collection that is pruned by this actor
 	 */
 	public Collection<? super T> getCollection() {
 		return this.collection;
 	}
 
 	/**
-	 * Removes the specified value from this visitor's collection.
+	 * Removes the specified value from this actor's collection.
 	 */
 	@Override
-	public void accept(final T value) {
+	public void receive(final T value) {
 		this.getCollection().remove(value);
 	}
 
@@ -56,15 +56,15 @@ public final class PruningVisitor<T> implements Visitor<T> {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof PopulatingVisitor<?>)) {
+		if (!(obj instanceof PruningActor<?>)) {
 			return false;
 		}
-		final PopulatingVisitor<?> visitor = (PopulatingVisitor<?>) obj;
+		final PruningActor<?> other = (PruningActor<?>) obj;
 		/*
 		 * We intentionally use identity here; we don't want false positives for
 		 * lists that contain the same items
 		 */
-		if (visitor.getCollection() != this.getCollection()) {
+		if (other.getCollection() != this.getCollection()) {
 			return false;
 		}
 		return true;

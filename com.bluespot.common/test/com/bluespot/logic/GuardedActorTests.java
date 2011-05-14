@@ -9,21 +9,21 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.bluespot.logic.actors.Actors;
+import com.bluespot.logic.actors.GuardedActor;
 import com.bluespot.logic.predicates.Predicates;
-import com.bluespot.logic.visitors.GuardedVisitor;
-import com.bluespot.logic.visitors.Visitors;
 
-public class GuardedVisitorTests {
+public class GuardedActorTests {
 
 	@Test
 	public void testSentinel() {
 
 		final List<String> strings = new ArrayList<String>();
 
-		final GuardedVisitor<String> sentinel = new GuardedVisitor<String>(Predicates.lowerCase(), Visitors.addTo(strings));
+		final GuardedActor<String> sentinel = new GuardedActor<String>(Predicates.lowerCase(), Actors.addTo(strings));
 
-		sentinel.accept("no time");
-		sentinel.accept("NO TIME");
+		sentinel.receive("no time");
+		sentinel.receive("NO TIME");
 
 		assertThat(strings, is(Arrays.asList("no time")));
 	}

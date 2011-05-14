@@ -1,14 +1,14 @@
 package com.bluespot.logic.predicates;
 
+import com.bluespot.logic.actors.Actor;
+import com.bluespot.logic.actors.Actors;
 import com.bluespot.logic.adapters.HandledAdapter;
-import com.bluespot.logic.visitors.Visitor;
-import com.bluespot.logic.visitors.Visitors;
 
 /**
- * A {@link Predicate} that notifies a given {@link Visitor} for failed
- * evaluations. The {@code Visitor} will immediately receive the tested value
- * once the target predicate has evaluated to {@code false}. This allows
- * visitors to potentially throw exceptions before this predicate returns.
+ * A {@link Predicate} that notifies a given {@link Actor} for failed
+ * evaluations. The {@code Actor} will immediately receive the tested value once
+ * the target predicate has evaluated to {@code false}. This allows actors to
+ * potentially throw exceptions before this predicate returns.
  * <p>
  * This class is similar to {@link HandledAdapter} in that it provides a
  * mechanism for observing the state of a process. Like that interface, this
@@ -35,11 +35,11 @@ import com.bluespot.logic.visitors.Visitors;
 public final class HandledPredicate<T> implements Predicate<T> {
 
 	private final Predicate<? super T> predicate;
-	private Visitor<? super T> handler;
+	private Actor<? super T> handler;
 
 	/**
 	 * Constructs a {@link HandledPredicate} using the specified predicate and a
-	 * no-op visitor for the handler.
+	 * no-op actor for the handler.
 	 * 
 	 * @param predicate
 	 *            the predicate used by this object. It may not be null.
@@ -47,12 +47,12 @@ public final class HandledPredicate<T> implements Predicate<T> {
 	 *             if {@code predicate} is null
 	 */
 	public HandledPredicate(final Predicate<? super T> predicate) {
-		this(predicate, Visitors.noop());
+		this(predicate, Actors.noop());
 	}
 
 	/**
 	 * Constructs a {@link HandledPredicate} using the specified predicate and
-	 * the specified visitor for the handler.
+	 * the specified actor for the handler.
 	 * 
 	 * @param predicate
 	 *            the predicate used by this object. It may not be null.
@@ -61,7 +61,7 @@ public final class HandledPredicate<T> implements Predicate<T> {
 	 * @throws NullPointerException
 	 *             if either argument is null
 	 */
-	public HandledPredicate(final Predicate<? super T> predicate, final Visitor<? super T> handler) {
+	public HandledPredicate(final Predicate<? super T> predicate, final Actor<? super T> handler) {
 		if (predicate == null) {
 			throw new NullPointerException("predicate is null");
 		}
@@ -82,7 +82,7 @@ public final class HandledPredicate<T> implements Predicate<T> {
 		return this.predicate;
 	}
 
-	private Visitor<? super T> getHandler() {
+	private Actor<? super T> getHandler() {
 		return this.handler;
 	}
 
@@ -96,10 +96,10 @@ public final class HandledPredicate<T> implements Predicate<T> {
 	 *            may not be null.
 	 * 
 	 * @throws NullPointerException
-	 *             if {@code handler} is null. Use {@link Visitors#noop()} for a
-	 *             no-op visitor.
+	 *             if {@code handler} is null. Use {@link Actors#noop()} for a
+	 *             no-op actor.
 	 */
-	public void setHandler(final Visitor<? super T> handler) {
+	public void setHandler(final Actor<? super T> handler) {
 		if (handler == null) {
 			throw new NullPointerException("handler is null");
 		}
@@ -110,7 +110,7 @@ public final class HandledPredicate<T> implements Predicate<T> {
 	public boolean test(final T candidate) {
 		final boolean result = this.getPredicate().test(candidate);
 		if (!result) {
-			this.getHandler().accept(candidate);
+			this.getHandler().receive(candidate);
 		}
 		return result;
 	}
