@@ -162,6 +162,24 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
+	 * Returns a translated mutable point. The returned point will be at the
+	 * same position as this one, but with the x value set to the specified
+	 * value.
+	 * 
+	 * @param value
+	 *            the new x value
+	 * @return a mutable point that uses the specified value for its x axis
+	 */
+	public Point3f withX(float value) {
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		Point3f result = this.toMutable();
+		result.setX(value);
+		return result;
+	}
+
+	/**
 	 * Add the specified x value to this point.
 	 * 
 	 * @param offset
@@ -215,6 +233,24 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
+	 * Returns a translated mutable point. The returned point will be at the
+	 * same position as this one, but with the y value set to the specified
+	 * value.
+	 * 
+	 * @param value
+	 *            the new y value
+	 * @return a mutable point that uses the specified value for its y axis
+	 */
+	public Point3f withY(float value) {
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		Point3f result = this.toMutable();
+		result.setY(value);
+		return result;
+	}
+
+	/**
 	 * Add the specified y value to this point.
 	 * 
 	 * @param offset
@@ -265,6 +301,24 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		float old = this.z;
 		this.z = value;
 		return old;
+	}
+
+	/**
+	 * Returns a translated mutable point. The returned point will be at the
+	 * same position as this one, but with the z value set to the specified
+	 * value.
+	 * 
+	 * @param value
+	 *            the new z value
+	 * @return a mutable point that uses the specified value for its z axis
+	 */
+	public Point3f withZ(float value) {
+		if (Float.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		Point3f result = this.toMutable();
+		result.setZ(value);
+		return result;
 	}
 
 	/**
