@@ -11,6 +11,17 @@ package com.bluespot.geom.points;
  */
 public final class Point3i extends AbstractPoint3<Point3i> {
 
+	private static final Point3i ORIGIN = new Point3i(false, 0, 0, 0);
+
+	/**
+	 * Returns a frozen point at the origin.
+	 * 
+	 * @return a frozen point at the origin.
+	 */
+	public static Point3i origin() {
+		return ORIGIN;
+	}
+
 	public static Point3i mutable(int x, int y, int z) {
 		return new Point3i(true, x, y, z);
 	}
@@ -20,11 +31,27 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	public static Point3i mutable(Point3i point) {
-		return new Point3i(true, point.x, point.y, point.z);
+		return new Point3i(true, point.getX(), point.getY(), point.getZ());
 	}
 
 	public static Point3i frozen(Point3i point) {
-		return new Point3i(false, point.x, point.y, point.z);
+		return new Point3i(false, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3i mutable(Point3f point) {
+		return new Point3i(true, (int) point.getX(), (int) point.getY(), (int) point.getZ());
+	}
+
+	public static Point3i frozen(Point3f point) {
+		return new Point3i(false, (int) point.getX(), (int) point.getY(), (int) point.getZ());
+	}
+
+	public static Point3i mutable(Point3d point) {
+		return new Point3i(true, (int) point.getX(), (int) point.getY(), (int) point.getZ());
+	}
+
+	public static Point3i frozen(Point3d point) {
+		return new Point3i(false, (int) point.getX(), (int) point.getY(), (int) point.getZ());
 	}
 
 	/**

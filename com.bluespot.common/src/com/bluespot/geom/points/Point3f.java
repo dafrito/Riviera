@@ -16,6 +16,17 @@ import com.bluespot.geom.Vector;
  */
 public final class Point3f extends AbstractPoint3<Point3f> {
 
+	private static final Point3f ORIGIN = new Point3f(false, 0, 0, 0);
+
+	/**
+	 * Returns a frozen point at the origin.
+	 * 
+	 * @return a frozen point at the origin.
+	 */
+	public static Point3f origin() {
+		return ORIGIN;
+	}
+
 	public static Point3f mutable(final float x, final float y, final float z) {
 		return new Point3f(true, x, y, z);
 	}
@@ -30,6 +41,22 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 
 	public static Point3f frozen(Point3f point) {
 		return new Point3f(false, point.x, point.y, point.z);
+	}
+
+	public static Point3f mutable(Point3i point) {
+		return new Point3f(true, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3f frozen(Point3i point) {
+		return new Point3f(false, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3f mutable(Point3d point) {
+		return new Point3f(true, (float) point.getX(), (float) point.getY(), (float) point.getZ());
+	}
+
+	public static Point3f frozen(Point3d point) {
+		return new Point3f(false, (float) point.getX(), (float) point.getY(), (float) point.getZ());
 	}
 
 	/**
@@ -67,11 +94,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 				src.y + (dest.y - src.y) * offset,
 				src.z + (dest.z - src.z) * offset);
 	}
-
-	/**
-	 * Represents a point at {@code (0, 0, 0)}.
-	 */
-	public static final Point3f ORIGIN = new Point3f(false, 0, 0, 0);
 
 	private float z;
 	private float y;
@@ -516,8 +538,8 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Creates and returns a new {@link Point3f} that is this point
-	 * translated by the specified {@link Vector}.
+	 * Creates and returns a new {@link Point3f} that is this point translated
+	 * by the specified {@link Vector}.
 	 * 
 	 * @param vector
 	 *            the vector used to create the new point

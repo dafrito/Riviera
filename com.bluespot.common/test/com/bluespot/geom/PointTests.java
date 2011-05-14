@@ -18,37 +18,37 @@ public final class PointTests {
 
 	@Test
 	public void pointsCanBeMutable() {
-		Points.mutable(0d, 0d, 0d).set(Points.frozen(0d, 1d, 0d));
+		Points.mutable(0d).set(Points.frozen(0d, 1d, 0d));
 	}
 
 	@Test
 	public void pointsSupportCreatingAddedValues() throws Exception {
-		assertTrue(Points.mutable(0d, 0d, 0d).addedX(4d).at(Points.frozen(4d, 0d, 0d)));
-		assertTrue(Points.mutable(0d, 0d, 0d).addedY(4d).at(Points.frozen(0d, 4d, 0d)));
-		assertTrue(Points.mutable(0d, 0d, 0d).addedZ(4d).at(Points.frozen(0d, 0d, 4d)));
+		assertTrue(Points.mutable(0d).addedX(4d).at(Points.frozen(4d, 0d, 0d)));
+		assertTrue(Points.mutable(0d).addedY(4d).at(Points.frozen(0d, 4d, 0d)));
+		assertTrue(Points.mutable(0d).addedZ(4d).at(Points.frozen(0d, 0d, 4d)));
 
-		assertTrue(Points.mutable(0f, 0f, 0f).addedX(4f).at(Points.frozen(4f, 0f, 0f)));
-		assertTrue(Points.mutable(0f, 0f, 0f).addedY(4f).at(Points.frozen(0f, 4f, 0f)));
-		assertTrue(Points.mutable(0f, 0f, 0f).addedZ(4f).at(Points.frozen(0f, 0f, 4f)));
+		assertTrue(Points.mutable(0f).addedX(4f).at(Points.frozen(4f, 0f, 0f)));
+		assertTrue(Points.mutable(0f).addedY(4f).at(Points.frozen(0f, 4f, 0f)));
+		assertTrue(Points.mutable(0f).addedZ(4f).at(Points.frozen(0f, 0f, 4f)));
 
-		assertTrue(Points.mutable(0, 0, 0).addedX(4).at(Points.frozen(4, 0, 0)));
-		assertTrue(Points.mutable(0, 0, 0).addedY(4).at(Points.frozen(0, 4, 0)));
-		assertTrue(Points.mutable(0, 0, 0).addedZ(4).at(Points.frozen(0, 0, 4)));
+		assertTrue(Points.mutable(0).addedX(4).at(Points.frozen(4, 0, 0)));
+		assertTrue(Points.mutable(0).addedY(4).at(Points.frozen(0, 4, 0)));
+		assertTrue(Points.mutable(0).addedZ(4).at(Points.frozen(0, 0, 4)));
 	}
 
 	@Test
 	public void pointsSupportAddingByAxis() throws Exception {
-		assertTrue(Points.mutable(0d, 0d, 0d).added(Axis.XZ, 4d).at(Points.frozen(4d, 0d, 4d)));
-		assertTrue(Points.mutable(0d, 0d, 0d).added(Axis.XY, 4d).at(Points.frozen(4d, 4d, 0d)));
-		assertTrue(Points.mutable(0d, 0d, 0d).added(Axis.YZ, 4d).at(Points.frozen(0d, 4d, 4d)));
+		assertTrue(Points.mutable(0d).added(Axis.XZ, 4d).at(Points.frozen(4d, 0d, 4d)));
+		assertTrue(Points.mutable(0d).added(Axis.XY, 4d).at(Points.frozen(4d, 4d, 0d)));
+		assertTrue(Points.mutable(0d).added(Axis.YZ, 4d).at(Points.frozen(0d, 4d, 4d)));
 
-		assertTrue(Points.mutable(0f, 0f, 0f).added(Axis.XZ, 4f).at(Points.frozen(4f, 0f, 4f)));
-		assertTrue(Points.mutable(0f, 0f, 0f).added(Axis.XY, 4f).at(Points.frozen(4f, 4f, 0f)));
-		assertTrue(Points.mutable(0f, 0f, 0f).added(Axis.YZ, 4f).at(Points.frozen(0f, 4f, 4f)));
+		assertTrue(Points.mutable(0f).added(Axis.XZ, 4f).at(Points.frozen(4f, 0f, 4f)));
+		assertTrue(Points.mutable(0f).added(Axis.XY, 4f).at(Points.frozen(4f, 4f, 0f)));
+		assertTrue(Points.mutable(0f).added(Axis.YZ, 4f).at(Points.frozen(0f, 4f, 4f)));
 
-		assertTrue(Points.mutable(0, 0, 0).added(Axis.XZ, 4).at(Points.frozen(4, 0, 4)));
-		assertTrue(Points.mutable(0, 0, 0).added(Axis.XY, 4).at(Points.frozen(4, 4, 0)));
-		assertTrue(Points.mutable(0, 0, 0).added(Axis.YZ, 4).at(Points.frozen(0, 4, 4)));
+		assertTrue(Points.mutable(0).added(Axis.XZ, 4).at(Points.frozen(4, 0, 4)));
+		assertTrue(Points.mutable(0).added(Axis.XY, 4).at(Points.frozen(4, 4, 0)));
+		assertTrue(Points.mutable(0).added(Axis.YZ, 4).at(Points.frozen(0, 4, 4)));
 	}
 
 	@Test

@@ -14,6 +14,17 @@ package com.bluespot.geom.points;
  */
 public final class Point3d extends AbstractPoint3<Point3d> {
 
+	private static final Point3d ORIGIN = new Point3d(false, 0, 0, 0);
+
+	/**
+	 * Returns a frozen point at the origin.
+	 * 
+	 * @return a frozen point at the origin.
+	 */
+	public static Point3d origin() {
+		return ORIGIN;
+	}
+
 	public static Point3d mutable(double x, final double y, final double z) {
 		return new Point3d(true, x, y, z);
 	}
@@ -28,6 +39,22 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 
 	public static Point3d frozen(Point3d point) {
 		return new Point3d(false, point.x, point.y, point.z);
+	}
+
+	public static Point3d mutable(Point3i point) {
+		return new Point3d(true, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3d frozen(Point3i point) {
+		return new Point3d(false, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3d mutable(Point3f point) {
+		return new Point3d(true, point.getX(), point.getY(), point.getZ());
+	}
+
+	public static Point3d frozen(Point3f point) {
+		return new Point3d(false, point.getX(), point.getY(), point.getZ());
 	}
 
 	/**
