@@ -13,6 +13,8 @@ import com.bluespot.geom.Axis;
  * 
  * @author Aaron Faanes
  * 
+ * @see Point3f
+ * @see Point3i
  */
 public final class Point3d extends AbstractPoint3<Point3d> {
 

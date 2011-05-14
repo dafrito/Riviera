@@ -14,6 +14,8 @@ import com.bluespot.geom.vectors.Vector3d;
  * 
  * @author Aaron Faanes
  * 
+ * @see Point3d
+ * @see Point3i
  */
 public final class Point3f extends AbstractPoint3<Point3f> {
 
