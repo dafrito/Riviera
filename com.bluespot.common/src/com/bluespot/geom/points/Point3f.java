@@ -14,22 +14,22 @@ import com.bluespot.geom.Vector;
  * @author Aaron Faanes
  * 
  */
-public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
+public final class Point3f extends AbstractPoint3<Point3f> {
 
-	public static FloatPoint3D mutable(final float x, final float y, final float z) {
-		return new FloatPoint3D(true, x, y, z);
+	public static Point3f mutable(final float x, final float y, final float z) {
+		return new Point3f(true, x, y, z);
 	}
 
-	public static FloatPoint3D frozen(final float x, final float y, final float z) {
-		return new FloatPoint3D(false, x, y, z);
+	public static Point3f frozen(final float x, final float y, final float z) {
+		return new Point3f(false, x, y, z);
 	}
 
-	public static FloatPoint3D mutable(FloatPoint3D point) {
-		return new FloatPoint3D(true, point.x, point.y, point.z);
+	public static Point3f mutable(Point3f point) {
+		return new Point3f(true, point.x, point.y, point.z);
 	}
 
-	public static FloatPoint3D frozen(FloatPoint3D point) {
-		return new FloatPoint3D(false, point.x, point.y, point.z);
+	public static Point3f frozen(Point3f point) {
+		return new Point3f(false, point.x, point.y, point.z);
 	}
 
 	/**
@@ -50,7 +50,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 *            the percentage of distance between the specified points
 	 * @return a mutable point that lies between src and dest
 	 */
-	public static FloatPoint3D interpolated(FloatPoint3D src, FloatPoint3D dest, final float offset) {
+	public static Point3f interpolated(Point3f src, Point3f dest, final float offset) {
 		if (src == null) {
 			throw new NullPointerException("src must not be null");
 		}
@@ -71,7 +71,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	/**
 	 * Represents a point at {@code (0, 0, 0)}.
 	 */
-	public static final FloatPoint3D ORIGIN = new FloatPoint3D(false, 0, 0, 0);
+	public static final Point3f ORIGIN = new Point3f(false, 0, 0, 0);
 
 	private float z;
 	private float y;
@@ -93,7 +93,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 * @throws IllegalArgumentException
 	 *             if any coordinate is {@code NaN}
 	 */
-	private FloatPoint3D(final boolean mutable, final float x, final float y, final float z) {
+	private Point3f(final boolean mutable, final float x, final float y, final float z) {
 		super(mutable);
 		if (java.lang.Float.isNaN(x)) {
 			throw new IllegalArgumentException("x is NaN");
@@ -156,8 +156,8 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x + offset, y, z)}
 	 */
-	public FloatPoint3D addedX(float offset) {
-		FloatPoint3D point = this.toMutable();
+	public Point3f addedX(float offset) {
+		Point3f point = this.toMutable();
 		point.addX(offset);
 		return point;
 	}
@@ -209,8 +209,8 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x, y + offset, z)}
 	 */
-	public FloatPoint3D addedY(float offset) {
-		FloatPoint3D point = this.toMutable();
+	public Point3f addedY(float offset) {
+		Point3f point = this.toMutable();
 		point.addY(offset);
 		return point;
 	}
@@ -262,14 +262,14 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x, y, z + offset)}
 	 */
-	public FloatPoint3D addedZ(float offset) {
-		FloatPoint3D point = this.toMutable();
+	public Point3f addedZ(float offset) {
+		Point3f point = this.toMutable();
 		point.addZ(offset);
 		return point;
 	}
 
 	@Override
-	public void set(FloatPoint3D point) {
+	public void set(Point3f point) {
 		this.setX(point.getX());
 		this.setY(point.getY());
 		this.setZ(point.getZ());
@@ -288,7 +288,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public void add(FloatPoint3D point) {
+	public void add(Point3f point) {
 		this.addX(point.getX());
 		this.addY(point.getY());
 		this.addZ(point.getZ());
@@ -307,8 +307,8 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public FloatPoint3D added(FloatPoint3D point) {
-		FloatPoint3D result = this.toMutable();
+	public Point3f added(Point3f point) {
+		Point3f result = this.toMutable();
 		result.add(point);
 		return result;
 	}
@@ -321,14 +321,14 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 * @return a mutable point that's at this position, but translated by the
 	 *         specified amount
 	 */
-	public FloatPoint3D added(float value) {
-		FloatPoint3D result = this.toMutable();
+	public Point3f added(float value) {
+		Point3f result = this.toMutable();
 		result.add(value);
 		return result;
 	}
 
 	@Override
-	public void set(Axis axis, FloatPoint3D point) {
+	public void set(Axis axis, Point3f point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -408,7 +408,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public void add(Axis axis, FloatPoint3D point) {
+	public void add(Axis axis, Point3f point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -485,14 +485,14 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public FloatPoint3D added(Axis axis, FloatPoint3D point) {
+	public Point3f added(Axis axis, Point3f point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
 		if (point == null) {
 			throw new NullPointerException("Point must not be null");
 		}
-		FloatPoint3D result = this.toMutable();
+		Point3f result = this.toMutable();
 		result.add(axis, point);
 		return result;
 	}
@@ -506,43 +506,43 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	 *            the added value
 	 * @return a mutable point translated from this position
 	 */
-	public FloatPoint3D added(Axis axis, float value) {
+	public Point3f added(Axis axis, float value) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		FloatPoint3D result = this.toMutable();
+		Point3f result = this.toMutable();
 		result.add(axis, value);
 		return result;
 	}
 
 	/**
-	 * Creates and returns a new {@link FloatPoint3D} that is this point
+	 * Creates and returns a new {@link Point3f} that is this point
 	 * translated by the specified {@link Vector}.
 	 * 
 	 * @param vector
 	 *            the vector used to create the new point
 	 * @return a new point that is this point translated by the specified vector
 	 */
-	public FloatPoint3D add(final Vector vector) {
-		return new FloatPoint3D(false, this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
+	public Point3f add(final Vector vector) {
+		return new Point3f(false, this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
 				this.getZ() + (float) vector.getZ());
 	}
 
 	@Override
-	public FloatPoint3D toMutable() {
-		return FloatPoint3D.mutable(x, y, z);
+	public Point3f toMutable() {
+		return Point3f.mutable(x, y, z);
 	}
 
 	@Override
-	public FloatPoint3D toFrozen() {
+	public Point3f toFrozen() {
 		if (!this.isMutable()) {
 			return this;
 		}
-		return FloatPoint3D.frozen(x, y, z);
+		return Point3f.frozen(x, y, z);
 	}
 
 	@Override
-	public boolean at(FloatPoint3D point) {
+	public boolean at(Point3f point) {
 		if (point == null) {
 			throw new NullPointerException("point must not be null");
 		}
@@ -552,7 +552,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public FloatPoint3D interpolated(FloatPoint3D dest, float offset) {
+	public Point3f interpolated(Point3f dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -568,7 +568,7 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 	}
 
 	@Override
-	public void interpolate(FloatPoint3D dest, float offset) {
+	public void interpolate(Point3f dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -586,10 +586,10 @@ public final class FloatPoint3D extends AbstractPoint3D<FloatPoint3D> {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof FloatPoint3D)) {
+		if (!(obj instanceof Point3f)) {
 			return false;
 		}
-		final FloatPoint3D other = (FloatPoint3D) obj;
+		final Point3f other = (Point3f) obj;
 		if (this.isMutable() != other.isMutable()) {
 			return false;
 		}

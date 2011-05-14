@@ -11,9 +11,12 @@ package com.bluespot.geom.points;
  * @author Aaron Faanes
  * @param <P>
  *            the type of point object. This should be recursive.
- * 
+ * @see AbstractPoint3
+ * @see Point3d
+ * @see Point3f
+ * @see Point3i
  */
-public interface Point3D<P extends Point3D<?>> {
+public interface Point3<P extends Point3<?>> {
 
 	/**
 	 * Set this point's values to the specified point.
@@ -135,7 +138,7 @@ public interface Point3D<P extends Point3D<?>> {
 	 * @param offset
 	 *            the percentage of distance traveled.
 	 * @return a point that lies between this point and the destination
-	 * @see #interpolate(Point3D, float)
+	 * @see #interpolate(Point3, float)
 	 */
 	public P interpolated(P dest, float offset);
 
@@ -154,7 +157,7 @@ public interface Point3D<P extends Point3D<?>> {
 	 *            the final point
 	 * @param offset
 	 *            the percentage of distance traveled
-	 * @see #interpolated(Point3D, float)
+	 * @see #interpolated(Point3, float)
 	 * @throws UnsupportedOperationException
 	 *             if this point is immutable
 	 */

@@ -4,27 +4,30 @@
 package com.bluespot.geom.points;
 
 /**
- * Represents a single point in space in {@code int} precision.
+ * Represents a single point in space in {@code double} precision. Be aware that
+ * while this class implements {@link #equals(Object)} appropriately, it may
+ * yield unexpected results due to the inherent imprecision of floating-point
+ * values.
  * 
  * @author Aaron Faanes
  * 
  */
-public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
+public final class Point3d extends AbstractPoint3<Point3d> {
 
-	public static IntegerPoint3D mutable(int x, int y, int z) {
-		return new IntegerPoint3D(true, x, y, z);
+	public static Point3d mutable(double x, final double y, final double z) {
+		return new Point3d(true, x, y, z);
 	}
 
-	public static IntegerPoint3D frozen(int x, int y, int z) {
-		return new IntegerPoint3D(false, x, y, z);
+	public static Point3d frozen(double x, final double y, final double z) {
+		return new Point3d(false, x, y, z);
 	}
 
-	public static IntegerPoint3D mutable(IntegerPoint3D point) {
-		return new IntegerPoint3D(true, point.x, point.y, point.z);
+	public static Point3d mutable(Point3d point) {
+		return new Point3d(true, point.x, point.y, point.z);
 	}
 
-	public static IntegerPoint3D frozen(IntegerPoint3D point) {
-		return new IntegerPoint3D(false, point.x, point.y, point.z);
+	public static Point3d frozen(Point3d point) {
+		return new Point3d(false, point.x, point.y, point.z);
 	}
 
 	/**
@@ -45,7 +48,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the percentage of distance between the specified points
 	 * @return a mutable point that lies between src and dest
 	 */
-	public static IntegerPoint3D interpolated(IntegerPoint3D src, IntegerPoint3D dest, float offset) {
+	public static Point3d interpolated(Point3d src, Point3d dest, float offset) {
 		if (src == null) {
 			throw new NullPointerException("src must not be null");
 		}
@@ -58,17 +61,19 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		if (offset >= 1f) {
 			return dest.toMutable();
 		}
-		return mutable(src.x + (int) ((dest.x - src.x) * offset),
-				src.y + (int) ((dest.y - src.y) * offset),
-				src.z + (int) ((dest.z - src.z) * offset));
+		return mutable(src.x + (dest.x - src.x) * offset,
+				src.y + (dest.y - src.y) * offset,
+				src.z + (dest.z - src.z) * offset);
 	}
 
-	private int z;
-	private int y;
-	private int x;
+	private double z;
+	private double y;
+	private double x;
 
 	/**
-	 * Constructs a point using the specified coordinates.
+	 * Constructs a point using the specified coordinates. There are no
+	 * restrictions on the values of these points except that none of them can
+	 * be {@code NaN}.
 	 * 
 	 * @param mutable
 	 *            whether this point can be directly modified
@@ -81,8 +86,17 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @throws IllegalArgumentException
 	 *             if any coordinate is {@code NaN}
 	 */
-	private IntegerPoint3D(final boolean mutable, final int x, final int y, final int z) {
+	private Point3d(final boolean mutable, final double x, final double y, final double z) {
 		super(mutable);
+		if (java.lang.Double.isNaN(x)) {
+			throw new IllegalArgumentException("x is NaN");
+		}
+		if (java.lang.Double.isNaN(y)) {
+			throw new IllegalArgumentException("y is NaN");
+		}
+		if (java.lang.Double.isNaN(z)) {
+			throw new IllegalArgumentException("z is NaN");
+		}
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -93,7 +107,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * 
 	 * @return the x-coordinate of this point
 	 */
-	public int getX() {
+	public double getX() {
 		return this.x;
 	}
 
@@ -104,11 +118,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the new x value
 	 * @return the old x value
 	 */
-	public int setX(int value) {
+	public double setX(double value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
-		int old = this.x;
+		if (Double.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		double old = this.x;
 		this.x = value;
 		return old;
 	}
@@ -120,7 +137,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return the old x value
 	 */
-	public int addX(int offset) {
+	public double addX(double offset) {
 		return this.setX(this.getX() + offset);
 	}
 
@@ -132,8 +149,8 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x + offset, y, z)}
 	 */
-	public IntegerPoint3D addedX(int offset) {
-		IntegerPoint3D point = this.toMutable();
+	public Point3d addedX(double offset) {
+		Point3d point = this.toMutable();
 		point.addX(offset);
 		return point;
 	}
@@ -143,7 +160,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * 
 	 * @return the y-coordinate of this point
 	 */
-	public int getY() {
+	public double getY() {
 		return this.y;
 	}
 
@@ -154,11 +171,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the new y value
 	 * @return the old y value
 	 */
-	public int setY(int value) {
+	public double setY(double value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
-		int old = this.y;
+		if (Double.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		double old = this.y;
 		this.y = value;
 		return old;
 	}
@@ -170,7 +190,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return the old y value
 	 */
-	public int addY(int offset) {
+	public double addY(double offset) {
 		return this.setY(this.getY() + offset);
 	}
 
@@ -182,8 +202,8 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x, y + offset, z)}
 	 */
-	public IntegerPoint3D addedY(int offset) {
-		IntegerPoint3D point = this.toMutable();
+	public Point3d addedY(double offset) {
+		Point3d point = this.toMutable();
 		point.addY(offset);
 		return point;
 	}
@@ -193,7 +213,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * 
 	 * @return the z-coordinate of this point
 	 */
-	public int getZ() {
+	public double getZ() {
 		return this.z;
 	}
 
@@ -204,11 +224,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the new z value
 	 * @return the old z value
 	 */
-	public int setZ(int value) {
+	public double setZ(double value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
-		int old = this.z;
+		if (Double.isNaN(value)) {
+			throw new IllegalArgumentException("value must not be NaN");
+		}
+		double old = this.z;
 		this.z = value;
 		return old;
 	}
@@ -220,7 +243,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return the old z value
 	 */
-	public int addZ(int offset) {
+	public double addZ(double offset) {
 		return this.setZ(this.getZ() + offset);
 	}
 
@@ -232,14 +255,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the value to add
 	 * @return a point at {@code (x, y, z + offset)}
 	 */
-	public IntegerPoint3D addedZ(int offset) {
-		IntegerPoint3D point = this.toMutable();
+	public Point3d addedZ(double offset) {
+		Point3d point = this.toMutable();
 		point.addZ(offset);
 		return point;
 	}
 
 	@Override
-	public void set(IntegerPoint3D point) {
+	public void set(Point3d point) {
 		this.setX(point.getX());
 		this.setY(point.getY());
 		this.setZ(point.getZ());
@@ -251,14 +274,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @param value
 	 *            the value that will be used
 	 */
-	public void set(int value) {
+	public void set(double value) {
 		this.setX(value);
 		this.setY(value);
 		this.setZ(value);
 	}
 
 	@Override
-	public void add(IntegerPoint3D point) {
+	public void add(Point3d point) {
 		this.addX(point.getX());
 		this.addY(point.getY());
 		this.addZ(point.getZ());
@@ -270,15 +293,15 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @param value
 	 *            the value that will be used
 	 */
-	public void add(int value) {
+	public void add(double value) {
 		this.addX(value);
 		this.addY(value);
 		this.addZ(value);
 	}
 
 	@Override
-	public IntegerPoint3D added(IntegerPoint3D point) {
-		IntegerPoint3D result = this.toMutable();
+	public Point3d added(Point3d point) {
+		Point3d result = this.toMutable();
 		result.add(point);
 		return result;
 	}
@@ -291,14 +314,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @return a mutable point that's at this position, but translated by the
 	 *         specified amount
 	 */
-	public IntegerPoint3D added(int value) {
-		IntegerPoint3D result = this.toMutable();
+	public Point3d added(double value) {
+		Point3d result = this.toMutable();
 		result.add(value);
 		return result;
 	}
 
 	@Override
-	public void set(Axis axis, IntegerPoint3D point) {
+	public void set(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -340,7 +363,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @param value
 	 *            the added value
 	 */
-	public void set(Axis axis, int value) {
+	public void set(Axis axis, double value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
@@ -376,7 +399,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	@Override
-	public void add(Axis axis, IntegerPoint3D point) {
+	public void add(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -418,7 +441,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 * @param value
 	 *            the added value
 	 */
-	public void add(Axis axis, int value) {
+	public void add(Axis axis, double value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("Point is not mutable");
 		}
@@ -453,14 +476,14 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	@Override
-	public IntegerPoint3D added(Axis axis, IntegerPoint3D point) {
+	public Point3d added(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
 		if (point == null) {
 			throw new NullPointerException("Point must not be null");
 		}
-		IntegerPoint3D result = this.toMutable();
+		Point3d result = this.toMutable();
 		result.add(axis, point);
 		return result;
 	}
@@ -474,30 +497,30 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	 *            the added value
 	 * @return a mutable point translated from this position
 	 */
-	public IntegerPoint3D added(Axis axis, int value) {
+	public Point3d added(Axis axis, double value) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		IntegerPoint3D result = this.toMutable();
+		Point3d result = this.toMutable();
 		result.add(axis, value);
 		return result;
 	}
 
 	@Override
-	public IntegerPoint3D toMutable() {
-		return IntegerPoint3D.mutable(x, y, z);
+	public Point3d toMutable() {
+		return Point3d.mutable(x, y, z);
 	}
 
 	@Override
-	public IntegerPoint3D toFrozen() {
+	public Point3d toFrozen() {
 		if (!this.isMutable()) {
 			return this;
 		}
-		return IntegerPoint3D.frozen(x, y, z);
+		return Point3d.frozen(x, y, z);
 	}
 
 	@Override
-	public boolean at(IntegerPoint3D point) {
+	public boolean at(Point3d point) {
 		if (point == null) {
 			throw new NullPointerException("point must not be null");
 		}
@@ -507,7 +530,7 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	@Override
-	public IntegerPoint3D interpolated(IntegerPoint3D dest, float offset) {
+	public Point3d interpolated(Point3d dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -517,13 +540,13 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		if (offset <= 0f) {
 			return this.toMutable();
 		}
-		return mutable(this.x + (int) ((dest.x - this.x) * offset),
-				this.y + (int) ((dest.y - this.y) * offset),
-				this.z + (int) ((dest.z - this.z) * offset));
+		return mutable(this.x + (dest.x - this.x) * offset,
+				this.y + (dest.y - this.y) * offset,
+				this.z + (dest.z - this.z) * offset);
 	}
 
 	@Override
-	public void interpolate(IntegerPoint3D dest, float offset) {
+	public void interpolate(Point3d dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -541,10 +564,10 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof IntegerPoint3D)) {
+		if (!(obj instanceof Point3d)) {
 			return false;
 		}
-		final IntegerPoint3D other = (IntegerPoint3D) obj;
+		final Point3d other = (Point3d) obj;
 		if (this.isMutable() != other.isMutable()) {
 			return false;
 		}
@@ -562,17 +585,20 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 
 	@Override
 	public int hashCode() {
-		int result = 17;
+		int result = 13;
 		result = 31 * result + (this.isMutable() ? 1 : 0);
-		result = 31 * result + this.getX();
-		result = 31 * result + this.getY();
-		result = 31 * result + this.getZ();
+		final long xLong = java.lang.Double.doubleToLongBits(this.getX());
+		final long yLong = java.lang.Double.doubleToLongBits(this.getY());
+		final long zLong = java.lang.Double.doubleToLongBits(this.getZ());
+		result = 31 * result + (int) (xLong ^ (xLong >>> 32));
+		result = 31 * result + (int) (yLong ^ (yLong >>> 32));
+		result = 31 * result + (int) (zLong ^ (zLong >>> 32));
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Point3D.Integer[%s (%d, %d, %d)]", this.isMutable(), this.getX(), this.getY(), this.getZ());
+		return String.format("Point3D.Double[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.getX(), this.getY(), this.getZ());
 	}
 
 }
