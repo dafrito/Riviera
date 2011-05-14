@@ -311,6 +311,33 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		this.setZ(value);
 	}
 
+	/**
+	 * Sets all of this point's values to the specified values.
+	 * 
+	 * @param x
+	 *            the new x value
+	 * @param y
+	 *            the new y value
+	 * @param z
+	 *            the new z value
+	 * @throw IllegalArgumentException if any value is NaN. All values are
+	 *        checked before any are used.
+	 */
+	public void set(double x, double y, double z) {
+		if (Double.isNaN(x)) {
+			throw new IllegalArgumentException("x must not be NaN");
+		}
+		if (Double.isNaN(y)) {
+			throw new IllegalArgumentException("y must not be NaN");
+		}
+		if (Double.isNaN(z)) {
+			throw new IllegalArgumentException("z must not be NaN");
+		}
+		this.setX(x);
+		this.setY(y);
+		this.setZ(z);
+	}
+
 	@Override
 	public void add(Point3d point) {
 		this.addX(point.getX());

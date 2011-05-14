@@ -288,6 +288,22 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 		this.setZ(value);
 	}
 
+	/**
+	 * Sets all of this point's values to the specified values.
+	 * 
+	 * @param x
+	 *            the new x value
+	 * @param y
+	 *            the new y value
+	 * @param z
+	 *            the new z value
+	 */
+	public void set(int x, int y, int z) {
+		this.setX(x);
+		this.setY(y);
+		this.setZ(z);
+	}
+
 	@Override
 	public void add(Point3i point) {
 		this.addX(point.getX());
