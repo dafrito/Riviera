@@ -36,12 +36,12 @@ public interface Point3D<P extends Point3D<?>> {
 	public void add(P point);
 
 	/**
-	 * Add the specified point's value to this point.
+	 * Return a mutable point that has the specified point's values added to it.
 	 * 
 	 * @param point
 	 *            the point that will be added
-	 * @throws UnsupportedOperationException
-	 *             if this point is immutable
+	 * @return a mutable point at this position, but translated by the specified
+	 *         point's values
 	 */
 	public P added(P point);
 
@@ -52,6 +52,8 @@ public interface Point3D<P extends Point3D<?>> {
 	 *            the axis to copy
 	 * @param point
 	 *            the point from which to copy
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
 	 */
 	public void set(Axis axis, P point);
 
@@ -62,6 +64,8 @@ public interface Point3D<P extends Point3D<?>> {
 	 *            the axis to copy
 	 * @param point
 	 *            the point from which to copy
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
 	 */
 	public void add(Axis axis, P point);
 
@@ -151,6 +155,8 @@ public interface Point3D<P extends Point3D<?>> {
 	 * @param offset
 	 *            the percentage of distance traveled
 	 * @see #interpolated(Point3D, float)
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
 	 */
 	public void interpolate(P dest, float offset);
 
