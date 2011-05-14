@@ -105,6 +105,31 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	/**
+	 * Add the specified x value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old x value
+	 */
+	public int addX(int offset) {
+		return this.setX(this.getX() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x + offset, y, z)}
+	 */
+	public IntegerPoint3D addedX(int offset) {
+		IntegerPoint3D point = this.toMutable();
+		point.addX(offset);
+		return point;
+	}
+
+	/**
 	 * Returns the y-coordinate of this point.
 	 * 
 	 * @return the y-coordinate of this point
@@ -130,6 +155,31 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 	}
 
 	/**
+	 * Add the specified y value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old y value
+	 */
+	public int addY(int offset) {
+		return this.setY(this.getY() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x, y + offset, z)}
+	 */
+	public IntegerPoint3D addedY(int offset) {
+		IntegerPoint3D point = this.toMutable();
+		point.addY(offset);
+		return point;
+	}
+
+	/**
 	 * Returns the z-coordinate of this point.
 	 * 
 	 * @return the z-coordinate of this point
@@ -152,6 +202,31 @@ public final class IntegerPoint3D extends AbstractPoint3D<IntegerPoint3D> {
 		int old = this.z;
 		this.z = z;
 		return old;
+	}
+
+	/**
+	 * Add the specified z value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old z value
+	 */
+	public int addZ(int offset) {
+		return this.setZ(this.getZ() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x, y, z + offset)}
+	 */
+	public IntegerPoint3D addedZ(int offset) {
+		IntegerPoint3D point = this.toMutable();
+		point.addZ(offset);
+		return point;
 	}
 
 	@Override

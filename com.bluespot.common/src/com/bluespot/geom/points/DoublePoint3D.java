@@ -110,6 +110,31 @@ public class DoublePoint3D extends AbstractPoint3D<DoublePoint3D> {
 	}
 
 	/**
+	 * Add the specified x value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old x value
+	 */
+	public double addX(double offset) {
+		return this.setX(this.getX() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x + offset, y, z)}
+	 */
+	public DoublePoint3D addedX(double offset) {
+		DoublePoint3D point = this.toMutable();
+		point.addX(offset);
+		return point;
+	}
+
+	/**
 	 * Returns the y-coordinate of this point.
 	 * 
 	 * @return the y-coordinate of this point
@@ -135,6 +160,31 @@ public class DoublePoint3D extends AbstractPoint3D<DoublePoint3D> {
 	}
 
 	/**
+	 * Add the specified y value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old y value
+	 */
+	public double addY(double offset) {
+		return this.setY(this.getY() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x, y + offset, z)}
+	 */
+	public DoublePoint3D addedY(double offset) {
+		DoublePoint3D point = this.toMutable();
+		point.addY(offset);
+		return point;
+	}
+
+	/**
 	 * Returns the z-coordinate of this point.
 	 * 
 	 * @return the z-coordinate of this point
@@ -157,6 +207,31 @@ public class DoublePoint3D extends AbstractPoint3D<DoublePoint3D> {
 		double old = this.z;
 		this.z = z;
 		return old;
+	}
+
+	/**
+	 * Add the specified z value to this point.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return the old z value
+	 */
+	public double addZ(double offset) {
+		return this.setZ(this.getZ() + offset);
+	}
+
+	/**
+	 * Return a mutable point that has the same position as this one, except for
+	 * the specified translation.
+	 * 
+	 * @param offset
+	 *            the value to add
+	 * @return a point at {@code (x, y, z + offset)}
+	 */
+	public DoublePoint3D addedZ(double offset) {
+		DoublePoint3D point = this.toMutable();
+		point.addZ(offset);
+		return point;
 	}
 
 	@Override
