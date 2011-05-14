@@ -8,7 +8,9 @@ import com.bluespot.geom.Axis;
  * <p>
  * Points use a slightly unusual recursive type definition. This lets us have a
  * common interface for points, while still avoiding the performance penalties
- * of boxing.
+ * of boxing. Unfortunately, that means there are many methods that are not part
+ * of this interface, but are still implied for {@link Point3} implementations.
+ * Refer to {@link Point3i}, {@link Point3d}, or {@link Point3f} for reference.
  * 
  * @author Aaron Faanes
  * @param <P>

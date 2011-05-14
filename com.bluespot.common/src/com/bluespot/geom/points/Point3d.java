@@ -6,10 +6,9 @@ package com.bluespot.geom.points;
 import com.bluespot.geom.Axis;
 
 /**
- * Represents a single point in space in {@code double} precision. Be aware that
- * while this class implements {@link #equals(Object)} appropriately, it may
- * yield unexpected results due to the inherent imprecision of floating-point
- * values.
+ * A {@link Point3} in {@code double} precision. Be aware that while this class
+ * implements {@link #equals(Object)} appropriately, it may yield unexpected
+ * results due to the inherent imprecision of floating-point values.
  * 
  * @author Aaron Faanes
  * 

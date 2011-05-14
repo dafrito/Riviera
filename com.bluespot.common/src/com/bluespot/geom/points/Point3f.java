@@ -7,10 +7,9 @@ import com.bluespot.geom.Axis;
 import com.bluespot.geom.vectors.Vector3d;
 
 /**
- * Represents a single point in space in {@code float} precision. Be aware that
- * while this class implements {@link #equals(Object)} appropriately, it may
- * yield unexpected results due to the inherent imprecision of floating-point
- * values.
+ * A {@link Point3} in {@code float} precision. Be aware that while this class
+ * implements {@link #equals(Object)} appropriately, it may yield unexpected
+ * results due to the inherent imprecision of floating-point values.
  * 
  * @author Aaron Faanes
  * 
