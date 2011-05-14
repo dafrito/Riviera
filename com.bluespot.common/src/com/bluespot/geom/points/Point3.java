@@ -11,6 +11,12 @@ import com.bluespot.geom.Axis;
  * of boxing. Unfortunately, that means there are many methods that are not part
  * of this interface, but are still implied for {@link Point3} implementations.
  * Refer to {@link Point3i}, {@link Point3d}, or {@link Point3f} for reference.
+ * <p>
+ * Every operation should have two variants: one to work on the current point,
+ * and one that creates a new point. The convention is to name the creating
+ * methods with the -ed suffix (inverted, cleared, etc.), though exceptions
+ * exist: setX's immutable variant is withX. Be pragmatic and use what reads
+ * well.
  * 
  * @author Aaron Faanes
  * @param <P>
