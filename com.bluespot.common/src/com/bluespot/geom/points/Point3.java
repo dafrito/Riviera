@@ -100,6 +100,16 @@ public interface Point3<P extends Point3<?>> {
 	public void clear(Axis axis);
 
 	/**
+	 * Returns a mutable point that has zeros for the specified axis.
+	 * 
+	 * @param axis
+	 *            the axis whose values will be cleared
+	 * @return a mutable point at this point's position, but with zeros for the
+	 *         specified axes
+	 */
+	public P cleared(Axis axis);
+
+	/**
 	 * Return whether this point can be directly modified. This value is a
 	 * constant for a given instance.
 	 * 

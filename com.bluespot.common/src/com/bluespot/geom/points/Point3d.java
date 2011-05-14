@@ -360,6 +360,13 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	}
 
 	@Override
+	public Point3d cleared(Axis axis) {
+		Point3d result = this.toMutable();
+		result.clear(axis);
+		return result;
+	}
+
+	@Override
 	public void set(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
