@@ -3,6 +3,7 @@
  */
 package com.bluespot.geom.points;
 
+import com.bluespot.geom.Axis;
 import com.bluespot.geom.Vector;
 
 /**

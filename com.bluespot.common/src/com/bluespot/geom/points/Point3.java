@@ -1,5 +1,7 @@
 package com.bluespot.geom.points;
 
+import com.bluespot.geom.Axis;
+
 /**
  * Represents a single point in space, in varying precision. Points may or may
  * not be mutable, but mutability must never change for a given object.

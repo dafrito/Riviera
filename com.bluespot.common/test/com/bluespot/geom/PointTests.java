@@ -8,7 +8,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.bluespot.geom.points.Axis;
 import com.bluespot.geom.points.Point3d;
 import com.bluespot.geom.points.Point3f;
 import com.bluespot.geom.points.Point3i;

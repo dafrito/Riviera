@@ -3,6 +3,8 @@
  */
 package com.bluespot.geom.points;
 
+import com.bluespot.geom.Axis;
+
 /**
  * Represents a single point in space in {@code double} precision. Be aware that
  * while this class implements {@link #equals(Object)} appropriately, it may

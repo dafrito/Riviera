@@ -3,6 +3,8 @@
  */
 package com.bluespot.geom.points;
 
+import com.bluespot.geom.Axis;
+
 /**
  * Represents a single point in space in {@code int} precision.
  * 
