@@ -4,7 +4,7 @@
 package com.bluespot.geom.points;
 
 import com.bluespot.geom.Axis;
-import com.bluespot.geom.Vector;
+import com.bluespot.geom.vectors.Vector3d;
 
 /**
  * Represents a single point in space in {@code float} precision. Be aware that
@@ -550,13 +550,13 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 
 	/**
 	 * Creates and returns a new {@link Point3f} that is this point translated
-	 * by the specified {@link Vector}.
+	 * by the specified {@link Vector3d}.
 	 * 
 	 * @param vector
 	 *            the vector used to create the new point
 	 * @return a new point that is this point translated by the specified vector
 	 */
-	public Point3f add(final Vector vector) {
+	public Point3f add(final Vector3d vector) {
 		return new Point3f(false, this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
 				this.getZ() + (float) vector.getZ());
 	}
