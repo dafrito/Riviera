@@ -348,6 +348,16 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	}
 
 	@Override
+	public void clear() {
+		this.set(0d);
+	}
+
+	@Override
+	public void clear(Axis axis) {
+		this.set(axis, 0d);
+	}
+
+	@Override
 	public void set(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");

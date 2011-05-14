@@ -85,6 +85,19 @@ public interface Point3<P extends Point3<?>> {
 	public P added(Axis axis, P point);
 
 	/**
+	 * Clear all values on this point.
+	 */
+	public void clear();
+
+	/**
+	 * Clear values for the specified axis.
+	 * 
+	 * @param axis
+	 *            the axis whose values will be cleared
+	 */
+	public void clear(Axis axis);
+
+	/**
 	 * Return whether this point can be directly modified. This value is a
 	 * constant for a given instance.
 	 * 
