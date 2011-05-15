@@ -151,6 +151,99 @@ public interface Point3<P extends Point3<P>> {
 	public P added(Axis axis, P point);
 
 	/**
+	 * Multiply this point's values by the specified point's values. This
+	 * modified point will become {@code (x*point.x, y*point.y, z*point.z)}
+	 * 
+	 * @param point
+	 *            the point that will be added
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void multiply(P point);
+
+	/**
+	 * Multiply this point's values by the specified factor. This modified point
+	 * will become {@code (x*factor, y*factor, z*factor)}
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void multiply(double factor);
+
+	/**
+	 * Multiply this point's values at the specified axis, using the values from
+	 * the specified point.
+	 * 
+	 * @param axis
+	 *            the axis to multiply
+	 * @param point
+	 *            the point used in multiplication
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void multiply(Axis axis, P point);
+
+	/**
+	 * Multiply this point's values at the specified axis by the specified
+	 * factor.
+	 * 
+	 * @param axis
+	 *            the axis to multiply
+	 * @param factor
+	 *            the factor of multiplication
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void multiply(Axis axis, double factor);
+
+	/**
+	 * Return a mutable copy of this point, multiplied by the specified points
+	 * values.
+	 * 
+	 * @param point
+	 *            the point that will be added
+	 * @return a mutable point at this position, but translated by the specified
+	 *         point's values
+	 */
+	public P multiplied(P point);
+
+	/**
+	 * Return a mutable copy of this point, multiplied by the specified factor
+	 * for all axes.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return a mutable copy of this point, multiplied by the specified factor
+	 */
+	public P multiplied(double factor);
+
+	/**
+	 * Return a mutable point at this position, but with the specified
+	 * translation.
+	 * 
+	 * @param axis
+	 *            the axis to copy
+	 * @param point
+	 *            the point from which to copy
+	 * @return a mutable point translated from this point
+	 */
+	public P multiplied(Axis axis, P point);
+
+	/**
+	 * * Return a mutable copy of this point, multiplied by the specified factor
+	 * for the specified axes.
+	 * 
+	 * @param axis
+	 *            the axis that will be multiplied
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return a modified, mutable copy of this point
+	 */
+	public P multiplied(Axis axis, double factor);
+
+	/**
 	 * Clear all values on this point.
 	 */
 	public void clear();
