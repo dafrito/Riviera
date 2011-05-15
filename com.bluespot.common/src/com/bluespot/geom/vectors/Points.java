@@ -31,14 +31,6 @@ public final class Points {
 		return Point3d.frozen(x, y, z);
 	}
 
-	public static Point3d mutable(Point3d point) {
-		return Point3d.mutable(point);
-	}
-
-	public static Point3d frozen(Point3d point) {
-		return Point3d.frozen(point);
-	}
-
 	public static Point3f mutable(float x, float y, float z) {
 		return Point3f.mutable(x, y, z);
 	}
@@ -55,14 +47,6 @@ public final class Points {
 		return Point3f.frozen(v, v, v);
 	}
 
-	public static Point3f mutable(Point3f point) {
-		return Point3f.mutable(point);
-	}
-
-	public static Point3f frozen(Point3f point) {
-		return Point3f.frozen(point);
-	}
-
 	public static Point3i mutable(int x, int y, int z) {
 		return Point3i.mutable(x, y, z);
 	}
@@ -77,14 +61,6 @@ public final class Points {
 
 	public static Point3i frozen(int v) {
 		return Point3i.frozen(v, v, v);
-	}
-
-	public static Point3i mutable(Point3i point) {
-		return Point3i.mutable(point);
-	}
-
-	public static Point3i frozen(Point3i point) {
-		return Point3i.frozen(point);
 	}
 
 }
