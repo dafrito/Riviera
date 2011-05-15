@@ -60,6 +60,34 @@ public abstract class AbstractPoint3<P extends Point3<P>> implements Point3<P> {
 	}
 
 	@Override
+	public P multiplied(P point) {
+		P result = this.toMutable();
+		result.multiply(point);
+		return result;
+	}
+
+	@Override
+	public P multiplied(double factor) {
+		P result = this.toMutable();
+		result.multiply(factor);
+		return result;
+	}
+
+	@Override
+	public P multiplied(Axis axis, P point) {
+		P result = this.toMutable();
+		result.multiply(axis, point);
+		return result;
+	}
+
+	@Override
+	public P multiplied(Axis axis, double factor) {
+		P result = this.toMutable();
+		result.multiply(axis, factor);
+		return result;
+	}
+
+	@Override
 	public P interpolated(P dest, float offset) {
 		P result = this.toMutable();
 		result.interpolate(dest, offset);
