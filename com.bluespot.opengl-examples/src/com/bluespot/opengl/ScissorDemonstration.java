@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
@@ -58,7 +59,7 @@ public class ScissorDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		final int width = this.getWidth();
 		final int height = this.getHeight();
 		gl.glEnable(GL.GL_SCISSOR_TEST);

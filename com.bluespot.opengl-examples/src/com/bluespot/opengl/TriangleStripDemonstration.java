@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
@@ -33,7 +34,7 @@ public class TriangleStripDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
 		gl.glVertex2f(0, 0);

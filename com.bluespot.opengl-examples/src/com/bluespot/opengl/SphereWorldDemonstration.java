@@ -10,15 +10,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLJPanel;
+import javax.media.opengl.awt.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import com.bluespot.demonstration.Demonstration;
 import com.bluespot.geom.vectors.Vector3f;
 import com.bluespot.graphics.Painting;
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * Demonstrates relatively complicated transforms that generate a random world
@@ -87,10 +88,10 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 
 	@Override
 	public void init(final GLAutoDrawable drawable) {
-		final GL gl = drawable.getGL();
+		final GL2 gl = drawable.getGL().getGL2();
 		gl.glClearColor(0, 0, .5f, 1.0f);
 
-		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL.GL_LINE);
+		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);
 
 		for (int i = 0; i < 50; i++) {
 			final float x = ((float) Math.random()) * 40.0f - 20.0f;
@@ -104,7 +105,7 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 
 	@Override
 	public void display(final GLAutoDrawable drawable) {
-		final GL gl = drawable.getGL();
+		final GL2 gl = drawable.getGL().getGL2();
 
 		Rendering.setClearColor(gl, Color.darkGray);
 		Rendering.Buffer.COLOR.clear(gl);
@@ -124,7 +125,7 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 	 * @param gl
 	 *            the rendering context
 	 */
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		this.drawGrid(gl);
 		final GLUT glut = new GLUT();
 		for (final Frame sphere : this.frames) {
@@ -135,7 +136,7 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 		}
 	}
 
-	private void drawGrid(final GL gl) {
+	private void drawGrid(final GL2 gl) {
 		final float extent = 20.0f;
 		gl.glBegin(GL.GL_LINES);
 		final float y = -.4f;
@@ -150,23 +151,23 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 	}
 
 	@Override
-	public void displayChanged(final GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
-		// XXX Do nothing; I'm not currently sure what to do here.
-	}
-
-	@Override
 	public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width, final int height) {
-		final GL gl = drawable.getGL();
+		final GL2 gl = drawable.getGL().getGL2();
 		final double aspectRatio = (double) width / (double) height;
 
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 
 		final GLU glu = new GLU();
 		glu.gluPerspective(60.0f, aspectRatio, 0, 400.0);
 
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
+	}
+
+	@Override
+	public void dispose(GLAutoDrawable drawable) {
+		// Do nothing.
 	}
 
 }

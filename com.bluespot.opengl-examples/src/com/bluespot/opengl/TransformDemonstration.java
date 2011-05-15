@@ -1,9 +1,9 @@
 package com.bluespot.opengl;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.demonstration.Demonstration;
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * Shows very basic transformations.
@@ -26,7 +26,7 @@ public class TransformDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		final GLUT glut = new GLUT();
 		gl.glRotatef(45, 1, 1, 1);
 		glut.glutWireCube(30.0f);

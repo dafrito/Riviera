@@ -7,9 +7,10 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import javax.media.opengl.GLJPanel;
+import javax.media.opengl.awt.GLJPanel;
 
 import com.bluespot.graphics.Painting;
 
@@ -70,7 +71,7 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 
 	@Override
 	public void display(final GLAutoDrawable drawable) {
-		final GL gl = drawable.getGL();
+		final GL2 gl = drawable.getGL().getGL2();
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
 
 		gl.glPushMatrix();
@@ -88,12 +89,7 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 	 * @param gl
 	 *            the rendering context
 	 */
-	protected abstract void render(GL gl);
-
-	@Override
-	public void displayChanged(final GLAutoDrawable drawable, final boolean modeChanged, final boolean deviceChanged) {
-		// XXX Do nothing; I'm not currently sure what to do here.
-	}
+	protected abstract void render(GL2 gl);
 
 	@Override
 	public void init(final GLAutoDrawable drawable) {
@@ -103,8 +99,8 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 
 	@Override
 	public void reshape(final GLAutoDrawable drawable, final int x, final int y, final int width, final int height) {
-		final GL gl = drawable.getGL();
-		gl.glMatrixMode(GL.GL_PROJECTION);
+		final GL2 gl = drawable.getGL().getGL2();
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		final double aspectRatio = (double) height / (double) width;
 
@@ -114,8 +110,14 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 		} else {
 			gl.glOrtho(-range / aspectRatio, range / aspectRatio, -range, range, 2 * range, 2 * -range);
 		}
-		gl.glMatrixMode(GL.GL_MODELVIEW);
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 		gl.glLoadIdentity();
+	}
+
+	@Override
+	public void dispose(GLAutoDrawable arg0) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

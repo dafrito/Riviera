@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -28,8 +29,8 @@ public class StippledSpiralDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
-		gl.glEnable(GL.GL_LINE_STIPPLE);
+	protected void render(final GL2 gl) {
+		gl.glEnable(GL2.GL_LINE_STIPPLE);
 		gl.glLineStipple(1, (short) 0x5555);
 		gl.glLineWidth(4);
 		gl.glBegin(GL.GL_LINE_STRIP);

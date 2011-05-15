@@ -1,9 +1,10 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.demonstration.Demonstration;
-import com.sun.opengl.util.GLUT;
+import com.jogamp.opengl.util.gl2.GLUT;
 
 /**
  * Demonstrates simple animation by using {@link GL#glPushMatrix()} and
@@ -31,7 +32,7 @@ public class AtomDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 

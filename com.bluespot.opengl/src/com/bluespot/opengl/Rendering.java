@@ -3,7 +3,7 @@ package com.bluespot.opengl;
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 /**
@@ -24,17 +24,17 @@ public final class Rendering {
 		/**
 		 * Represents the modelview matrix stack.
 		 */
-		MODELVIEW(GL.GL_MODELVIEW),
+		MODELVIEW(GL2.GL_MODELVIEW),
 
 		/**
 		 * Represents the projection matrix stack.
 		 */
-		PROJECTION(GL.GL_PROJECTION),
+		PROJECTION(GL2.GL_PROJECTION),
 
 		/**
 		 * Represents the texture matrix stack.
 		 */
-		TEXTURE(GL.GL_TEXTURE);
+		TEXTURE(GL2.GL_TEXTURE);
 
 		private final int matrixConstant;
 
@@ -57,7 +57,7 @@ public final class Rendering {
 		 * @param gl
 		 *            the OpenGL context that is affected by this operation
 		 */
-		public void activate(final GL gl) {
+		public void activate(final GL2 gl) {
 			gl.glMatrixMode(this.getConstant());
 		}
 
@@ -73,23 +73,23 @@ public final class Rendering {
 		/**
 		 * The buffer used for color writing.
 		 */
-		COLOR(GL.GL_COLOR_BUFFER_BIT),
+		COLOR(GL2.GL_COLOR_BUFFER_BIT),
 
 		/**
 		 * The buffer used for depth testing.
 		 */
-		DEPTH(GL.GL_DEPTH_BUFFER_BIT),
+		DEPTH(GL2.GL_DEPTH_BUFFER_BIT),
 
 		/**
 		 * The buffer used for stenciling operations.
 		 */
-		STENCIL(GL.GL_STENCIL_BUFFER_BIT),
+		STENCIL(GL2.GL_STENCIL_BUFFER_BIT),
 
 		/**
 		 * The accumulation buffer. This buffer is used in compositing
 		 * operations.
 		 */
-		ACCUMULATION(GL.GL_ACCUM_BUFFER_BIT);
+		ACCUMULATION(GL2.GL_ACCUM_BUFFER_BIT);
 
 		private int bufferConstant;
 
@@ -112,7 +112,7 @@ public final class Rendering {
 		 * @param gl
 		 *            the context used during this operation
 		 */
-		public void clear(final GL gl) {
+		public void clear(final GL2 gl) {
 			gl.glClear(this.getConstant());
 		}
 
@@ -156,7 +156,7 @@ public final class Rendering {
 	 * @param color
 	 *            the color that will become the new clear color
 	 */
-	public static void setClearColor(final GL gl, final Color color) {
+	public static void setClearColor(final GL2 gl, final Color color) {
 		gl.glClearColor(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f,
 				color.getAlpha() / 255.0f);
 	}
@@ -170,8 +170,8 @@ public final class Rendering {
 	 * @param view
 	 *            the rectangle that encompasses the new orthogonal view
 	 */
-	public static void setOrthogonalMatrix(final GL gl, final Rectangle2D.Double view) {
-		gl.glMatrixMode(GL.GL_PROJECTION);
+	public static void setOrthogonalMatrix(final GL2 gl, final Rectangle2D.Double view) {
+		gl.glMatrixMode(GL2.GL_PROJECTION);
 		gl.glLoadIdentity();
 		getGLU().gluOrtho2D(view.x, view.x + view.width, view.y, view.y + view.height);
 	}

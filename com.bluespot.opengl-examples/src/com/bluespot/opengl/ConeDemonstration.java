@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
@@ -79,12 +80,12 @@ public class ConeDemonstration extends AbstractGLDemonstration {
 	@Override
 	public void init(final GLAutoDrawable drawable) {
 		super.init(drawable);
-		final GL gl = drawable.getGL();
-		gl.glShadeModel(GL.GL_FLAT);
+		final GL2 gl = drawable.getGL().getGL2();
+		gl.glShadeModel(GL2.GL_FLAT);
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
 		gl.glFrontFace(GL.GL_CW);
@@ -100,9 +101,9 @@ public class ConeDemonstration extends AbstractGLDemonstration {
 		} else {
 			gl.glDisable(GL.GL_CULL_FACE);
 			if (this.drawBacksAsWireFrame) {
-				gl.glPolygonMode(GL.GL_BACK, GL.GL_LINE);
+				gl.glPolygonMode(GL.GL_BACK, GL2.GL_LINE);
 			} else {
-				gl.glPolygonMode(GL.GL_BACK, GL.GL_FILL);
+				gl.glPolygonMode(GL.GL_BACK, GL2.GL_FILL);
 			}
 		}
 

@@ -1,6 +1,6 @@
 package com.bluespot.opengl;
 
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.geom.vectors.Vector3f;
 
@@ -126,7 +126,7 @@ public class Frame {
 		return this.matrix;
 	}
 
-	public void transform(final GL gl) {
+	public void transform(final GL2 gl) {
 		gl.glMultMatrixd(this.getMatrix(), 0);
 	}
 }

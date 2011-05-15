@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -37,7 +38,7 @@ public class TrivialTriangleDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
+	protected void render(final GL2 gl) {
 		gl.glBegin(GL.GL_TRIANGLES);
 
 		gl.glVertex2f(0, 0);

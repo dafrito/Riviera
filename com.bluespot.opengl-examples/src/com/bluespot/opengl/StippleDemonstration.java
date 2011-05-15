@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -36,8 +37,8 @@ public class StippleDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
-		gl.glEnable(GL.GL_LINE_STIPPLE);
+	protected void render(final GL2 gl) {
+		gl.glEnable(GL2.GL_LINE_STIPPLE);
 
 		int factor = 1;
 		for (float y = -90.0f; y < 90.0f; y += 20.0f) {

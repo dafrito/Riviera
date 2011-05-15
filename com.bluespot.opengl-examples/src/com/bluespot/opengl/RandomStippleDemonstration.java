@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
@@ -57,8 +58,8 @@ public class RandomStippleDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL gl) {
-		gl.glEnable(GL.GL_LINE_STIPPLE);
+	protected void render(final GL2 gl) {
+		gl.glEnable(GL2.GL_LINE_STIPPLE);
 
 		final Iterator<Short> iter = this.stipples.iterator();
 		final Iterator<Float> colorIter = this.colors.iterator();
