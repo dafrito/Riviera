@@ -10,8 +10,8 @@ import com.bluespot.geom.Axis;
  * lets us have a common interface for vectors, while still avoiding the
  * performance penalties of boxing. Unfortunately, that means there are many
  * methods that are not part of this interface, but are still implied for
- * {@link Vector3} implementations. Refer to {@link Point3i}, {@link Point3d},
- * or {@link Point3f} for further reference.
+ * {@link Vector3} implementations. Refer to {@link Vector3i}, {@link Vector3d},
+ * or {@link Vector3f} for further reference.
  * <p>
  * Most operations support several different variants:
  * 
@@ -56,11 +56,11 @@ import com.bluespot.geom.Axis;
  * @author Aaron Faanes
  * @param <V>
  *            the type of vector object. This should be recursive.
- * @see AbstractPoint3
- * @see Point3d
- * @see Point3f
- * @see Point3i
- * @see Points
+ * @see AbstractVector3
+ * @see Vector3d
+ * @see Vector3f
+ * @see Vector3i
+ * @see Vectors
  */
 public interface Vector3<V extends Vector3<V>> {
 

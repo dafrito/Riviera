@@ -12,61 +12,85 @@ import com.bluespot.geom.Axis;
  * 
  * @author Aaron Faanes
  * 
- * @see Point3d
- * @see Point3i
+ * @see Vector3d
+ * @see Vector3i
  */
-public final class Point3f extends AbstractPoint3<Point3f> {
-
-	private static final Point3f ORIGIN = new Point3f(false, 0, 0, 0);
+public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	/**
-	 * Returns a frozen point at the origin.
+	 * Create a mutable {@link Vector3f} using the specified value for all axes.
 	 * 
-	 * @return a frozen point at the origin.
+	 * @param v
+	 *            the value used for all axes
+	 * @return a mutable {@code Vector3f}
+	 * @throw {@link IllegalArgumentException} if {@code v} is {@code NaN}
 	 */
-	public static Point3f origin() {
+	public static Vector3f mutable(float v) {
+		return Vector3f.mutable(v, v, v);
+	}
+
+	/**
+	 * Create a frozen {@link Vector3f} using the specified value for all axes.
+	 * 
+	 * @param v
+	 *            the value used for all axes
+	 * @return a frozen {@code Vector3f}
+	 * @throw {@link IllegalArgumentException} if {@code v} is {@code NaN}
+	 */
+	public static Vector3f frozen(float v) {
+		return Vector3f.mutable(v, v, v);
+	}
+
+	public static Vector3f mutable(final float x, final float y, final float z) {
+		return new Vector3f(true, x, y, z);
+	}
+
+	public static Vector3f frozen(final float x, final float y, final float z) {
+		return new Vector3f(false, x, y, z);
+	}
+
+	public static Vector3f mutable(Vector3i vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		return new Vector3f(true, vector.getX(), vector.getY(), vector.getZ());
+	}
+
+	public static Vector3f frozen(Vector3i vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		return new Vector3f(false, vector.getX(), vector.getY(), vector.getZ());
+	}
+
+	public static Vector3f mutable(Vector3d vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		return new Vector3f(true, (float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+	}
+
+	public static Vector3f frozen(Vector3d vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		return new Vector3f(false, (float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+	}
+
+	private static final Vector3f ORIGIN = Vector3f.frozen(0, 0, 0);
+
+	/**
+	 * Returns a frozen vector at the origin.
+	 * 
+	 * @return a frozen vector at the origin.
+	 */
+	public static Vector3f origin() {
 		return ORIGIN;
 	}
 
-	public static Point3f mutable(final float x, final float y, final float z) {
-		return new Point3f(true, x, y, z);
-	}
-
-	public static Point3f frozen(final float x, final float y, final float z) {
-		return new Point3f(false, x, y, z);
-	}
-
-	public static Point3f mutable(Point3i point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3f(true, point.getX(), point.getY(), point.getZ());
-	}
-
-	public static Point3f frozen(Point3i point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3f(false, point.getX(), point.getY(), point.getZ());
-	}
-
-	public static Point3f mutable(Point3d point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3f(true, (float) point.getX(), (float) point.getY(), (float) point.getZ());
-	}
-
-	public static Point3f frozen(Point3d point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3f(false, (float) point.getX(), (float) point.getY(), (float) point.getZ());
-	}
-
 	/**
-	 * Interpolates between this point and the destination. Offsets that are not
-	 * between zero and one are handled specially:
+	 * Interpolates between this vector and the destination. Offsets that are
+	 * not between zero and one are handled specially:
 	 * <ul>
 	 * <li>If {@code offset <= 0}, a copy of {@code src} is returned
 	 * <li>If {@code offset >= 1}, a copy of {@code dest} is returned
@@ -75,14 +99,14 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 * interpolation is complete.
 	 * 
 	 * @param src
-	 *            the starting point
+	 *            the starting vector
 	 * @param dest
-	 *            the ending point
+	 *            the ending vector
 	 * @param offset
 	 *            the percentage of distance between the specified points
-	 * @return a mutable point that lies between src and dest
+	 * @return a mutable vector that lies between src and dest
 	 */
-	public static Point3f interpolated(Point3f src, Point3f dest, final float offset) {
+	public static Vector3f interpolated(Vector3f src, Vector3f dest, final float offset) {
 		if (src == null) {
 			throw new NullPointerException("src must not be null");
 		}
@@ -105,22 +129,22 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	private float x;
 
 	/**
-	 * Constructs a point using the specified coordinates. There are no
+	 * Constructs a vector using the specified coordinates. There are no
 	 * restrictions on the values of these points except that none of them can
 	 * be {@code NaN}.
 	 * 
 	 * @param mutable
-	 *            whether this point can be directly modified
+	 *            whether this vector can be directly modified
 	 * @param x
-	 *            the x-coordinate of this point
+	 *            the x-coordinate of this vector
 	 * @param y
-	 *            the y-coordinate of this point
+	 *            the y-coordinate of this vector
 	 * @param z
-	 *            the z-coordinate of this point
+	 *            the z-coordinate of this vector
 	 * @throws IllegalArgumentException
 	 *             if any coordinate is {@code NaN}
 	 */
-	private Point3f(final boolean mutable, final float x, final float y, final float z) {
+	private Vector3f(final boolean mutable, final float x, final float y, final float z) {
 		super(mutable);
 		if (java.lang.Float.isNaN(x)) {
 			throw new IllegalArgumentException("x is NaN");
@@ -137,9 +161,9 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Returns the x-coordinate of this point.
+	 * Returns the x-coordinate of this vector.
 	 * 
-	 * @return the x-coordinate of this point
+	 * @return the x-coordinate of this vector
 	 */
 	public float getX() {
 		return this.x;
@@ -154,7 +178,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 */
 	public float setX(float value) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
@@ -165,25 +189,25 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Returns a translated mutable point. The returned point will be at the
+	 * Returns a translated mutable vector. The returned vector will be at the
 	 * same position as this one, but with the x value set to the specified
 	 * value.
 	 * 
 	 * @param value
 	 *            the new x value
-	 * @return a mutable point that uses the specified value for its x axis
+	 * @return a mutable vector that uses the specified value for its x axis
 	 */
-	public Point3f withX(float value) {
+	public Vector3f withX(float value) {
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
 		}
-		Point3f result = this.toMutable();
+		Vector3f result = this.toMutable();
 		result.setX(value);
 		return result;
 	}
 
 	/**
-	 * Add the specified x value to this point.
+	 * Add the specified x value to this vector.
 	 * 
 	 * @param offset
 	 *            the value to add
@@ -194,21 +218,21 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable point that has the same position as this one, except for
-	 * the specified translation.
+	 * Return a mutable vector that has the same position as this one, except
+	 * for the specified translation.
 	 * 
 	 * @param offset
 	 *            the value to add
-	 * @return a point at {@code (x + offset, y, z)}
+	 * @return a vector at {@code (x + offset, y, z)}
 	 */
-	public Point3f addedX(float offset) {
-		Point3f point = this.toMutable();
-		point.addX(offset);
-		return point;
+	public Vector3f addedX(float offset) {
+		Vector3f vector = this.toMutable();
+		vector.addX(offset);
+		return vector;
 	}
 
 	/**
-	 * Multiply the specified x value of this point.
+	 * Multiply the specified x value of this vector.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
@@ -219,22 +243,22 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable copy of this point, with a multiplied x value.
+	 * Return a mutable copy of this vector, with a multiplied x value.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
-	 * @return a mutable point at {@code (x * offset, y, z)}
+	 * @return a mutable vector at {@code (x * offset, y, z)}
 	 */
-	public Point3f mulipliedX(double factor) {
-		Point3f point = this.toMutable();
-		point.multiplyX(factor);
-		return point;
+	public Vector3f mulipliedX(double factor) {
+		Vector3f vector = this.toMutable();
+		vector.multiplyX(factor);
+		return vector;
 	}
 
 	/**
-	 * Returns the y-coordinate of this point.
+	 * Returns the y-coordinate of this vector.
 	 * 
-	 * @return the y-coordinate of this point
+	 * @return the y-coordinate of this vector
 	 */
 	public float getY() {
 		return this.y;
@@ -249,7 +273,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 */
 	public float setY(float value) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
@@ -260,25 +284,25 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Returns a translated mutable point. The returned point will be at the
+	 * Returns a translated mutable vector. The returned vector will be at the
 	 * same position as this one, but with the y value set to the specified
 	 * value.
 	 * 
 	 * @param value
 	 *            the new y value
-	 * @return a mutable point that uses the specified value for its y axis
+	 * @return a mutable vector that uses the specified value for its y axis
 	 */
-	public Point3f withY(float value) {
+	public Vector3f withY(float value) {
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
 		}
-		Point3f result = this.toMutable();
+		Vector3f result = this.toMutable();
 		result.setY(value);
 		return result;
 	}
 
 	/**
-	 * Add the specified y value to this point.
+	 * Add the specified y value to this vector.
 	 * 
 	 * @param offset
 	 *            the value to add
@@ -289,21 +313,21 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable point that has the same position as this one, except for
-	 * the specified translation.
+	 * Return a mutable vector that has the same position as this one, except
+	 * for the specified translation.
 	 * 
 	 * @param offset
 	 *            the value to add
-	 * @return a point at {@code (x, y + offset, z)}
+	 * @return a vector at {@code (x, y + offset, z)}
 	 */
-	public Point3f addedY(float offset) {
-		Point3f point = this.toMutable();
-		point.addY(offset);
-		return point;
+	public Vector3f addedY(float offset) {
+		Vector3f vector = this.toMutable();
+		vector.addY(offset);
+		return vector;
 	}
 
 	/**
-	 * Multiply the specified y value of this point.
+	 * Multiply the specified y value of this vector.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
@@ -314,22 +338,22 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable copy of this point, with a multiplied y value.
+	 * Return a mutable copy of this vector, with a multiplied y value.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
-	 * @return a mutable point at {@code (x, y * offset, z)}
+	 * @return a mutable vector at {@code (x, y * offset, z)}
 	 */
-	public Point3f mulipliedY(double factor) {
-		Point3f point = this.toMutable();
-		point.multiplyY(factor);
-		return point;
+	public Vector3f mulipliedY(double factor) {
+		Vector3f vector = this.toMutable();
+		vector.multiplyY(factor);
+		return vector;
 	}
 
 	/**
-	 * Returns the z-coordinate of this point.
+	 * Returns the z-coordinate of this vector.
 	 * 
-	 * @return the z-coordinate of this point
+	 * @return the z-coordinate of this vector
 	 */
 	public float getZ() {
 		return this.z;
@@ -344,7 +368,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 */
 	public float setZ(float value) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
@@ -355,25 +379,25 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Returns a translated mutable point. The returned point will be at the
+	 * Returns a translated mutable vector. The returned vector will be at the
 	 * same position as this one, but with the z value set to the specified
 	 * value.
 	 * 
 	 * @param value
 	 *            the new z value
-	 * @return a mutable point that uses the specified value for its z axis
+	 * @return a mutable vector that uses the specified value for its z axis
 	 */
-	public Point3f withZ(float value) {
+	public Vector3f withZ(float value) {
 		if (Float.isNaN(value)) {
 			throw new IllegalArgumentException("value must not be NaN");
 		}
-		Point3f result = this.toMutable();
+		Vector3f result = this.toMutable();
 		result.setZ(value);
 		return result;
 	}
 
 	/**
-	 * Add the specified z value to this point.
+	 * Add the specified z value to this vector.
 	 * 
 	 * @param offset
 	 *            the value to add
@@ -384,21 +408,21 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable point that has the same position as this one, except for
-	 * the specified translation.
+	 * Return a mutable vector that has the same position as this one, except
+	 * for the specified translation.
 	 * 
 	 * @param offset
 	 *            the value to add
-	 * @return a point at {@code (x, y, z + offset)}
+	 * @return a vector at {@code (x, y, z + offset)}
 	 */
-	public Point3f addedZ(float offset) {
-		Point3f point = this.toMutable();
-		point.addZ(offset);
-		return point;
+	public Vector3f addedZ(float offset) {
+		Vector3f vector = this.toMutable();
+		vector.addZ(offset);
+		return vector;
 	}
 
 	/**
-	 * Multiply the specified z value of this point.
+	 * Multiply the specified z value of this vector.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
@@ -409,27 +433,27 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable copy of this point, with a multiplied z value.
+	 * Return a mutable copy of this vector, with a multiplied z value.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
-	 * @return a mutable point at {@code (x, y, z * offset)}
+	 * @return a mutable vector at {@code (x, y, z * offset)}
 	 */
-	public Point3f mulipliedZ(double factor) {
-		Point3f point = this.toMutable();
-		point.multiplyZ(factor);
-		return point;
+	public Vector3f mulipliedZ(double factor) {
+		Vector3f vector = this.toMutable();
+		vector.multiplyZ(factor);
+		return vector;
 	}
 
 	@Override
-	public void set(Point3f point) {
-		this.setX(point.getX());
-		this.setY(point.getY());
-		this.setZ(point.getZ());
+	public void set(Vector3f vector) {
+		this.setX(vector.getX());
+		this.setY(vector.getY());
+		this.setZ(vector.getZ());
 	}
 
 	/**
-	 * Sets all of this point's values to the specified value.
+	 * Sets all of this vector's values to the specified value.
 	 * 
 	 * @param value
 	 *            the value that will be used
@@ -441,7 +465,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Sets all of this point's values to the specified values.
+	 * Sets all of this vector's values to the specified values.
 	 * 
 	 * @param x
 	 *            the new x value
@@ -468,34 +492,34 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public void set(Axis axis, Point3f point) {
+	public void set(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		if (point == null) {
-			throw new NullPointerException("Point must not be null");
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
 		}
 		switch (axis) {
 		case X:
-			this.setX(point.getX());
+			this.setX(vector.getX());
 			return;
 		case Y:
-			this.setY(point.getY());
+			this.setY(vector.getY());
 			return;
 		case Z:
-			this.setZ(point.getZ());
+			this.setZ(vector.getZ());
 			return;
 		case XY:
-			this.setX(point.getX());
-			this.setY(point.getY());
+			this.setX(vector.getX());
+			this.setY(vector.getY());
 			return;
 		case XZ:
-			this.setX(point.getX());
-			this.setZ(point.getZ());
+			this.setX(vector.getX());
+			this.setZ(vector.getZ());
 			return;
 		case YZ:
-			this.setY(point.getY());
-			this.setZ(point.getZ());
+			this.setY(vector.getY());
+			this.setZ(vector.getZ());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -511,7 +535,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 */
 	public void set(Axis axis, float value) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -543,33 +567,33 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Return a mutable copy of this point, with the copy's axis values set to
+	 * Return a mutable copy of this vector, with the copy's axis values set to
 	 * the specified value.
 	 * 
 	 * @param axis
 	 *            the axes that are modified
 	 * @param value
 	 *            the new axis value
-	 * @return a modified, mutable copy of this point
+	 * @return a modified, mutable copy of this vector
 	 */
-	public Point3f with(Axis axis, float value) {
+	public Vector3f with(Axis axis, float value) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		Point3f result = this.toMutable();
+		Vector3f result = this.toMutable();
 		result.set(axis, value);
 		return result;
 	}
 
 	@Override
-	public void add(Point3f point) {
-		this.addX(point.getX());
-		this.addY(point.getY());
-		this.addZ(point.getZ());
+	public void add(Vector3f vector) {
+		this.addX(vector.getX());
+		this.addY(vector.getY());
+		this.addZ(vector.getZ());
 	}
 
 	/**
-	 * Adds the specified value to all of this point's values.
+	 * Adds the specified value to all of this vector's values.
 	 * 
 	 * @param value
 	 *            the value that will be used
@@ -581,34 +605,34 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public void add(Axis axis, Point3f point) {
+	public void add(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		if (point == null) {
-			throw new NullPointerException("Point must not be null");
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
 		}
 		switch (axis) {
 		case X:
-			this.addX(point.getX());
+			this.addX(vector.getX());
 			return;
 		case Y:
-			this.addY(point.getY());
+			this.addY(vector.getY());
 			return;
 		case Z:
-			this.addZ(point.getZ());
+			this.addZ(vector.getZ());
 			return;
 		case XY:
-			this.addX(point.getX());
-			this.addY(point.getY());
+			this.addX(vector.getX());
+			this.addY(vector.getY());
 			return;
 		case XZ:
-			this.addX(point.getX());
-			this.addZ(point.getZ());
+			this.addX(vector.getX());
+			this.addZ(vector.getZ());
 			return;
 		case YZ:
-			this.addY(point.getY());
-			this.addZ(point.getZ());
+			this.addY(vector.getY());
+			this.addZ(vector.getZ());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -624,7 +648,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	 */
 	public void add(Axis axis, float value) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -656,42 +680,43 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	/**
-	 * Returns a mutable point that's translated by the specified amount.
+	 * Returns a mutable vector that's translated by the specified amount.
 	 * 
 	 * @param value
 	 *            the value that will be used
-	 * @return a mutable point that's at this position, but translated by the
+	 * @return a mutable vector that's at this position, but translated by the
 	 *         specified amount
 	 */
-	public Point3f added(float value) {
-		Point3f result = this.toMutable();
+	public Vector3f added(float value) {
+		Vector3f result = this.toMutable();
 		result.add(value);
 		return result;
 	}
 
 	/**
-	 * Returns a mutable point at this position, plus the specified translation.
+	 * Returns a mutable vector at this position, plus the specified
+	 * translation.
 	 * 
 	 * @param axis
 	 *            the axes that will be translated
 	 * @param value
 	 *            the added value
-	 * @return a mutable point translated from this position
+	 * @return a mutable vector translated from this position
 	 */
-	public Point3f added(Axis axis, float value) {
+	public Vector3f added(Axis axis, float value) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		Point3f result = this.toMutable();
+		Vector3f result = this.toMutable();
 		result.add(axis, value);
 		return result;
 	}
 
 	@Override
-	public void multiply(Point3f point) {
-		this.multiplyX(point.getX());
-		this.multiplyY(point.getY());
-		this.multiplyZ(point.getZ());
+	public void multiply(Vector3f vector) {
+		this.multiplyX(vector.getX());
+		this.multiplyY(vector.getY());
+		this.multiplyZ(vector.getZ());
 	}
 
 	@Override
@@ -702,34 +727,34 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public void multiply(Axis axis, Point3f point) {
+	public void multiply(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
-		if (point == null) {
-			throw new NullPointerException("Point must not be null");
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
 		}
 		switch (axis) {
 		case X:
-			this.multiplyX(point.getX());
+			this.multiplyX(vector.getX());
 			return;
 		case Y:
-			this.multiplyY(point.getY());
+			this.multiplyY(vector.getY());
 			return;
 		case Z:
-			this.multiplyZ(point.getZ());
+			this.multiplyZ(vector.getZ());
 			return;
 		case XY:
-			this.multiplyX(point.getX());
-			this.multiplyY(point.getY());
+			this.multiplyX(vector.getX());
+			this.multiplyY(vector.getY());
 			return;
 		case XZ:
-			this.multiplyX(point.getX());
-			this.multiplyZ(point.getZ());
+			this.multiplyX(vector.getX());
+			this.multiplyZ(vector.getZ());
 			return;
 		case YZ:
-			this.multiplyY(point.getY());
-			this.multiplyZ(point.getZ());
+			this.multiplyY(vector.getY());
+			this.multiplyZ(vector.getZ());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -738,7 +763,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	@Override
 	public void multiply(Axis axis, double factor) {
 		if (!this.isMutable()) {
-			throw new UnsupportedOperationException("Point is not mutable");
+			throw new UnsupportedOperationException("vector is not mutable");
 		}
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -770,7 +795,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public void interpolate(Point3f dest, float offset) {
+	public void interpolate(Vector3f dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -794,26 +819,26 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public Point3f toMutable() {
-		return Point3f.mutable(x, y, z);
+	public Vector3f toMutable() {
+		return Vector3f.mutable(x, y, z);
 	}
 
 	@Override
-	public Point3f toFrozen() {
+	public Vector3f toFrozen() {
 		if (!this.isMutable()) {
 			return this;
 		}
-		return Point3f.frozen(x, y, z);
+		return Vector3f.frozen(x, y, z);
 	}
 
 	@Override
-	public boolean at(Point3f point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
+	public boolean at(Vector3f vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
 		}
-		return this.getX() == point.getX() &&
-				this.getY() == point.getY() &&
-				this.getZ() == point.getZ();
+		return this.getX() == vector.getX() &&
+				this.getY() == vector.getY() &&
+				this.getZ() == vector.getZ();
 	}
 
 	@Override
@@ -821,10 +846,10 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof Point3f)) {
+		if (!(obj instanceof Vector3f)) {
 			return false;
 		}
-		final Point3f other = (Point3f) obj;
+		final Vector3f other = (Vector3f) obj;
 		if (this.isMutable() != other.isMutable()) {
 			return false;
 		}
@@ -852,7 +877,7 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 
 	@Override
 	public String toString() {
-		return String.format("Point3D.Float[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.getX(), this.getY(), this.getZ());
+		return String.format("Vector3f[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.getX(), this.getY(), this.getZ());
 	}
 
 }
