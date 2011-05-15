@@ -383,16 +383,6 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	@Override
-	public void clear() {
-		this.set(0);
-	}
-
-	@Override
-	public void clear(Axis axis) {
-		this.set(axis, 0);
-	}
-
-	@Override
 	public void set(Axis axis, Point3i point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -558,6 +548,16 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 		Point3i result = this.toMutable();
 		result.add(axis, value);
 		return result;
+	}
+
+	@Override
+	public void clear() {
+		this.set(0);
+	}
+
+	@Override
+	public void clear(Axis axis) {
+		this.set(axis, 0);
 	}
 
 	@Override
