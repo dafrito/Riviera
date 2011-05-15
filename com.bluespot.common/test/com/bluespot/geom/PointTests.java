@@ -81,7 +81,7 @@ public final class PointTests {
 	}
 
 	@Test
-	public void testPoint3DDouble() {
+	public void testPoint3d() {
 		final Point3d point = Points.mutable(2.0d, 3.0d, 4.0d);
 		assertThat(point.getX(), is(2.0d));
 		assertThat(point.getY(), is(3.0d));
@@ -100,7 +100,7 @@ public final class PointTests {
 	}
 
 	@Test
-	public void testPoint3DFloat() {
+	public void testPoint3f() {
 		final Point3f point = Points.mutable(2.0f, 3.0f, 4.0f);
 		assertThat(point.getX(), is(2.0f));
 		assertThat(point.getY(), is(3.0f));
@@ -119,7 +119,7 @@ public final class PointTests {
 	}
 
 	@Test
-	public void testPoint3DInteger() {
+	public void testPoint3i() {
 		final Point3i point = Points.mutable(2, 3, 4);
 		assertThat(point.getX(), is(2));
 		assertThat(point.getY(), is(3));
