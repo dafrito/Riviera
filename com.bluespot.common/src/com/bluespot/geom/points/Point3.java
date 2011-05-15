@@ -12,6 +12,42 @@ import com.bluespot.geom.Axis;
  * of this interface, but are still implied for {@link Point3} implementations.
  * Refer to {@link Point3i}, {@link Point3d}, or {@link Point3f} for reference.
  * <p>
+ * Most operations support several different variants:
+ * 
+ * <pre>
+ * // Operate on this object, using all values from the specified point.
+ * void add(P value);
+ * 
+ * // Operate on this object, using the specified value for all axes.
+ * void add(primitive value);
+ * 
+ * // Operate on this object, using the values from the specified point
+ * // to modify this point's values at the specified axes. 
+ * void add(Axis axis, P value);
+ * 
+ * // Operate on this object, using the primitive value to modify this
+ * // point's values at the specified axes. 
+ * void add(Axis axis, primitive value);
+ * 
+ * // Operate on a copy, using all values from the specified point. 
+ * P added(P value)
+ *  
+ * // Operate on a copy, using the specified value for all axes.
+ * P added(primitive value);
+ * 
+ * // Operate on a copy, using the values from the specified point
+ * // to modify the copy's values at the specified axes. 
+ * P added(Axis axis, P value);
+ * 
+ * // Operate on a copy, using the primitive value to modify the
+ * // copy's values at the specified axes. 
+ * P added(Axis axis, primitive value);
+ * </pre>
+ * 
+ * Some operations may be omitted if they don't make sense. They should also be
+ * omitted if some other more common mechanism provides them. For example,
+ * {@code cleared()} is already implemented through an {@code origin()} method.
+ * <p>
  * Every operation should have two variants: one to work on the current point,
  * and one that creates a new point. The convention is to name the creating
  * methods with the -ed suffix (inverted, cleared, etc.), though exceptions
