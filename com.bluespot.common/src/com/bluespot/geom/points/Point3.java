@@ -87,6 +87,18 @@ public interface Point3<P extends Point3<P>> {
 	public void set(Axis axis, P point);
 
 	/**
+	 * Return a mutable point that uses the specified point's values for the
+	 * specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param point
+	 *            the point that will be added
+	 * @return a modified, mutable copy of this point
+	 */
+	public P with(Axis axis, P point);
+
+	/**
 	 * Add the specified point's value to this point.
 	 * 
 	 * @param point
