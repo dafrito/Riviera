@@ -684,6 +684,20 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	}
 
 	@Override
+	public void interpolate(Point3d dest, float offset) {
+		if (dest == null) {
+			throw new NullPointerException("dest must not be null");
+		}
+		if (offset >= 1f) {
+			this.set(dest);
+		} else if (offset >= 0f) {
+			this.x += (dest.x - this.x) * offset;
+			this.y += (dest.y - this.y) * offset;
+			this.z += (dest.z - this.z) * offset;
+		}
+	}
+
+	@Override
 	public void clear() {
 		this.set(0d);
 	}
@@ -714,20 +728,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		return this.getX() == point.getX() &&
 				this.getY() == point.getY() &&
 				this.getZ() == point.getZ();
-	}
-
-	@Override
-	public void interpolate(Point3d dest, float offset) {
-		if (dest == null) {
-			throw new NullPointerException("dest must not be null");
-		}
-		if (offset >= 1f) {
-			this.set(dest);
-		} else if (offset >= 0f) {
-			this.x += (dest.x - this.x) * offset;
-			this.y += (dest.y - this.y) * offset;
-			this.z += (dest.z - this.z) * offset;
-		}
 	}
 
 	@Override

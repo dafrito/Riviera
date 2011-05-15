@@ -684,6 +684,20 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		return result;
 	}
 
+	@Override
+	public void interpolate(Point3f dest, float offset) {
+		if (dest == null) {
+			throw new NullPointerException("dest must not be null");
+		}
+		if (offset >= 1f) {
+			this.set(dest);
+		} else if (offset >= 0f) {
+			this.x += (dest.x - this.x) * offset;
+			this.y += (dest.y - this.y) * offset;
+			this.z += (dest.z - this.z) * offset;
+		}
+	}
+
 	/**
 	 * Creates and returns a new {@link Point3f} that is this point translated
 	 * by the specified {@link Vector3d}.
@@ -728,20 +742,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		return this.getX() == point.getX() &&
 				this.getY() == point.getY() &&
 				this.getZ() == point.getZ();
-	}
-
-	@Override
-	public void interpolate(Point3f dest, float offset) {
-		if (dest == null) {
-			throw new NullPointerException("dest must not be null");
-		}
-		if (offset >= 1f) {
-			this.set(dest);
-		} else if (offset >= 0f) {
-			this.x += (dest.x - this.x) * offset;
-			this.y += (dest.y - this.y) * offset;
-			this.z += (dest.z - this.z) * offset;
-		}
 	}
 
 	@Override
