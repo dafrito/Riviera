@@ -767,6 +767,13 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	}
 
 	@Override
+	public void cross(Vector3i other) {
+		this.set(this.getY() * other.getZ() - other.getY() * this.getZ(),
+				-this.getX() * other.getZ() + other.getX() * this.getZ(),
+				this.getX() * other.getY() - other.getX() * this.getY());
+	}
+
+	@Override
 	public void clear() {
 		this.set(0);
 	}

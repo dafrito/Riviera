@@ -245,6 +245,41 @@ public interface Vector3<V extends Vector3<V>> {
 	public V multiplied(Axis axis, double factor);
 
 	/**
+	 * Invert this vector. All components are multiplied by {@code -1}.
+	 * 
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 */
+	public void invert();
+
+	/**
+	 * Invert the specified components of this vector.
+	 * 
+	 * @param axis
+	 *            the axis to invert
+	 * 
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 */
+	public void invert(Axis axis);
+
+	/**
+	 * Returns a new {@link Vector3} that is the inverse of this vector. All
+	 * dimensions are multiplied by {@code -1}.
+	 * 
+	 * @return a new {@code Vector3} that is the inverse of this vector
+	 */
+	public V inverted();
+
+	/**
+	 * Returns a new {@link Vector3} with inverted values for the specified
+	 * axes.
+	 * 
+	 * @param axis
+	 *            the axis to invert
+	 * @return a new {@code Vector3} with inverted components
+	 */
+	public V inverted(Axis axis);
+
+	/**
 	 * Interpolates between this vector and the destination. This vector will be
 	 * modified as a result of this operation. Offsets that are not between zero
 	 * and one are handled specially:
@@ -285,6 +320,29 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @see #interpolate(Vector3, float)
 	 */
 	public V interpolated(V dest, float offset);
+
+	/**
+	 * Modify this vector by calculating a cross product with the specified
+	 * vector.
+	 * 
+	 * @param other
+	 *            the vector used to calculate the cross product
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 */
+	public void cross(V other);
+
+	/**
+	 * Returns a new {@link Vector3d} that is the cross product of this vector
+	 * with the specified vector.
+	 * 
+	 * @param other
+	 *            the other vector used in the calculation of the cross product
+	 * @return a new {@code Vector3} that represents the cross product of these
+	 *         two vectors
+	 * @throws NullPointerException
+	 *             if {@code other} is null
+	 */
+	public V crossed(V other);
 
 	/**
 	 * Clear all values on this vector.

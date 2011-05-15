@@ -900,7 +900,9 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 
 	@Override
 	public void cross(Vector3d other) {
-
+		this.set(this.getY() * other.getZ() - other.getY() * this.getZ(),
+				-this.getX() * other.getZ() + other.getX() * this.getZ(),
+				this.getX() * other.getY() - other.getX() * this.getY());
 	}
 
 	@Override

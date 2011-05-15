@@ -88,9 +88,36 @@ public abstract class AbstractVector3<V extends Vector3<V>> implements Vector3<V
 	}
 
 	@Override
+	public void invert() {
+		this.multiply(-1);
+	}
+
+	@Override
+	public void invert(Axis axis) {
+		this.multiply(axis, -1);
+	}
+
+	@Override
+	public V inverted() {
+		return this.multiplied(-1);
+	}
+
+	@Override
+	public V inverted(Axis axis) {
+		return this.multiplied(axis, -1);
+	}
+
+	@Override
 	public V interpolated(V dest, float offset) {
 		V result = this.toMutable();
 		result.interpolate(dest, offset);
+		return result;
+	}
+
+	@Override
+	public V crossed(V other) {
+		V result = this.toMutable();
+		result.cross(other);
 		return result;
 	}
 
