@@ -509,6 +509,25 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
+	/**
+	 * Return a mutable copy of this point, with the copy's axis values set to
+	 * the specified value.
+	 * 
+	 * @param axis
+	 *            the axes that are modified
+	 * @param value
+	 *            the new axis value
+	 * @return a modified, mutable copy of this point
+	 */
+	public Point3d with(Axis axis, double value) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		Point3d result = this.toMutable();
+		result.set(axis, value);
+		return result;
+	}
+
 	@Override
 	public void add(Axis axis, Point3d point) {
 		if (axis == null) {
