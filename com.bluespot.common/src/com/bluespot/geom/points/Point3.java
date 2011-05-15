@@ -109,16 +109,6 @@ public interface Point3<P extends Point3<P>> {
 	public void add(P point);
 
 	/**
-	 * Return a mutable point that has the specified point's values added to it.
-	 * 
-	 * @param point
-	 *            the point that will be added
-	 * @return a mutable point at this position, but translated by the specified
-	 *         point's values
-	 */
-	public P added(P point);
-
-	/**
 	 * Add another point's value at the specified axis.
 	 * 
 	 * @param axis
@@ -129,6 +119,16 @@ public interface Point3<P extends Point3<P>> {
 	 *             if this point is immutable
 	 */
 	public void add(Axis axis, P point);
+
+	/**
+	 * Return a mutable point that has the specified point's values added to it.
+	 * 
+	 * @param point
+	 *            the point that will be added
+	 * @return a mutable point at this position, but translated by the specified
+	 *         point's values
+	 */
+	public P added(P point);
 
 	/**
 	 * Return a mutable point at this position, but with the specified
