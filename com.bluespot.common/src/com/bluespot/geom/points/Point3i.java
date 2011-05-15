@@ -185,6 +185,30 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	/**
+	 * Multiply the specified x value of this point.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return the old x value
+	 */
+	public double multiplyX(double factor) {
+		return this.setX((int) Math.round(this.getX() * factor));
+	}
+
+	/**
+	 * Return a mutable copy of this point, with a multiplied x value.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return a mutable point at {@code (x * offset, y, z)}
+	 */
+	public Point3i mulipliedX(double factor) {
+		Point3i point = this.toMutable();
+		point.multiplyX(factor);
+		return point;
+	}
+
+	/**
 	 * Returns the y-coordinate of this point.
 	 * 
 	 * @return the y-coordinate of this point
@@ -250,6 +274,30 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	/**
+	 * Multiply the specified y value of this point.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return the old y value
+	 */
+	public double multiplyY(double factor) {
+		return this.setY((int) Math.round(this.getY() * factor));
+	}
+
+	/**
+	 * Return a mutable copy of this point, with a multiplied y value.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return a mutable point at {@code (x, y * offset, z)}
+	 */
+	public Point3i mulipliedY(double factor) {
+		Point3i point = this.toMutable();
+		point.multiplyY(factor);
+		return point;
+	}
+
+	/**
 	 * Returns the z-coordinate of this point.
 	 * 
 	 * @return the z-coordinate of this point
@@ -311,6 +359,30 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	public Point3i addedZ(int offset) {
 		Point3i point = this.toMutable();
 		point.addZ(offset);
+		return point;
+	}
+
+	/**
+	 * Multiply the specified z value of this point.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return the old z value
+	 */
+	public double multiplyZ(double factor) {
+		return this.setZ((int) Math.round(this.getZ() * factor));
+	}
+
+	/**
+	 * Return a mutable copy of this point, with a multiplied z value.
+	 * 
+	 * @param factor
+	 *            the factor of multiplication
+	 * @return a mutable point at {@code (x, y, z * offset)}
+	 */
+	public Point3i mulipliedZ(double factor) {
+		Point3i point = this.toMutable();
+		point.multiplyZ(factor);
 		return point;
 	}
 
