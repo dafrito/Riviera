@@ -519,16 +519,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	}
 
 	@Override
-	public void clear() {
-		this.set(0d);
-	}
-
-	@Override
-	public void clear(Axis axis) {
-		this.set(axis, 0d);
-	}
-
-	@Override
 	public void add(Axis axis, Point3d point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -619,6 +609,16 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		Point3d result = this.toMutable();
 		result.add(axis, value);
 		return result;
+	}
+
+	@Override
+	public void clear() {
+		this.set(0d);
+	}
+
+	@Override
+	public void clear(Axis axis) {
+		this.set(axis, 0d);
 	}
 
 	@Override
