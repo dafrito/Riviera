@@ -21,6 +21,36 @@ public final class PointTests {
 	}
 
 	@Test
+	public void pointsSupportSetAndWith() throws Exception {
+		assertTrue(Points.mutable(1d).withX(4d).at(Points.frozen(4d, 1d, 1d)));
+		assertTrue(Points.mutable(1d).withY(4d).at(Points.frozen(1d, 4d, 1d)));
+		assertTrue(Points.mutable(1d).withZ(4d).at(Points.frozen(1d, 1d, 4d)));
+
+		assertTrue(Points.mutable(1f).withX(4).at(Points.frozen(4f, 1f, 1f)));
+		assertTrue(Points.mutable(1f).withY(4).at(Points.frozen(1f, 4f, 1f)));
+		assertTrue(Points.mutable(1f).withZ(4).at(Points.frozen(1f, 1f, 4f)));
+
+		assertTrue(Points.mutable(1).withX(4).at(Points.frozen(4, 1, 1)));
+		assertTrue(Points.mutable(1).withY(4).at(Points.frozen(1, 4, 1)));
+		assertTrue(Points.mutable(1).withZ(4).at(Points.frozen(1, 1, 4)));
+	}
+
+	@Test
+	public void pointsSupportSettingAxisValuesUsingWith() throws Exception {
+		assertTrue(Points.mutable(1d).with(Axis.XY, 4d).at(Points.frozen(4d, 4d, 1d)));
+		assertTrue(Points.mutable(1d).with(Axis.XZ, 4d).at(Points.frozen(4d, 1d, 4d)));
+		assertTrue(Points.mutable(1d).with(Axis.YZ, 4d).at(Points.frozen(1d, 4d, 4d)));
+
+		assertTrue(Points.mutable(1f).with(Axis.XY, 4f).at(Points.frozen(4f, 4f, 1f)));
+		assertTrue(Points.mutable(1f).with(Axis.XZ, 4f).at(Points.frozen(4f, 1f, 4f)));
+		assertTrue(Points.mutable(1f).with(Axis.YZ, 4f).at(Points.frozen(1f, 4f, 4f)));
+
+		assertTrue(Points.mutable(1).with(Axis.XY, 4).at(Points.frozen(4, 4, 1)));
+		assertTrue(Points.mutable(1).with(Axis.XZ, 4).at(Points.frozen(4, 1, 4)));
+		assertTrue(Points.mutable(1).with(Axis.YZ, 4).at(Points.frozen(1, 4, 4)));
+	}
+
+	@Test
 	public void pointsSupportCreatingAddedValues() throws Exception {
 		assertTrue(Points.mutable(0d).addedX(4d).at(Points.frozen(4d, 0d, 0d)));
 		assertTrue(Points.mutable(0d).addedY(4d).at(Points.frozen(0d, 4d, 0d)));
