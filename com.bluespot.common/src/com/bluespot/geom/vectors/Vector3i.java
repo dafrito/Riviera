@@ -144,6 +144,19 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return FORWARD;
 	}
 
+	/**
+	 * Return a frozen vector with values of 1 at the specified axes. This is
+	 * normally used to create unit vectors, but {@code axis} values of multiple
+	 * axes are allowed.
+	 * 
+	 * @param axis
+	 *            the axes with values of 1
+	 * @return a frozen unit vector
+	 */
+	public static Vector3i unit(Axis axis) {
+		return origin().with(axis, 1).toFrozen();
+	}
+
 	private int z;
 	private int y;
 	private int x;
