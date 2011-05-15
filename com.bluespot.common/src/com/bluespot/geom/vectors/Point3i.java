@@ -6,7 +6,7 @@ package com.bluespot.geom.vectors;
 import com.bluespot.geom.Axis;
 
 /**
- * A {@link Point3} in {@code int} precision.
+ * A {@link Vector3} in {@code int} precision.
  * 
  * @author Aaron Faanes
  * 

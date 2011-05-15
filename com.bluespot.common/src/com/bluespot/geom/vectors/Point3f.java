@@ -6,7 +6,7 @@ package com.bluespot.geom.vectors;
 import com.bluespot.geom.Axis;
 
 /**
- * A {@link Point3} in {@code float} precision. Be aware that while this class
+ * A {@link Vector3} in {@code float} precision. Be aware that while this class
  * implements {@link #equals(Object)} appropriately, it may yield unexpected
  * results due to the inherent imprecision of floating-point values.
  * 

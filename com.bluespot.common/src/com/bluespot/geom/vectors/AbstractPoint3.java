@@ -6,14 +6,14 @@ package com.bluespot.geom.vectors;
 import com.bluespot.geom.Axis;
 
 /**
- * A basic {@link Point3} implementation.
+ * A basic {@link Vector3} implementation.
  * 
  * @author Aaron Faanes
  * 
  * @param <P>
  *            the type of this point
  */
-public abstract class AbstractPoint3<P extends Point3<P>> implements Point3<P> {
+public abstract class AbstractPoint3<P extends Vector3<P>> implements Vector3<P> {
 
 	private final boolean mutable;
 
