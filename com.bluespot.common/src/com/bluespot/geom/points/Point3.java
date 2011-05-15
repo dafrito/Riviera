@@ -243,6 +243,48 @@ public interface Point3<P extends Point3<P>> {
 	public P multiplied(Axis axis, double factor);
 
 	/**
+	 * Interpolates between this point and the destination. This point will be
+	 * modified as a result of this operation. Offsets that are not between zero
+	 * and one are handled specially:
+	 * <ul>
+	 * <li>If {@code offset <= 0}, nothing is modified
+	 * <li>If {@code offset >= 1}, this point is set to {@code destination}
+	 * </ul>
+	 * This special behavior allows clients to reliably detect when
+	 * interpolation is complete.
+	 * 
+	 * @param dest
+	 *            the final point
+	 * @param offset
+	 *            the percentage of distance traveled
+	 * @see #interpolated(Point3, float)
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void interpolate(P dest, float offset);
+
+	/**
+	 * Return a mutable point that lies between this point and the specified
+	 * destination. The offset may be any value, but interpolation always occurs
+	 * between this point and the specified one: large or negative offset are
+	 * handled specially:
+	 * <ul>
+	 * <li>If {@code offset <= 0}, this point should be returned
+	 * <li>If {@code offset >= 1}, {@code destination} should be returned
+	 * </ul>
+	 * Returning copies instead of always interpolating allows clients to
+	 * reliably detect when interpolation is complete.
+	 * 
+	 * @param dest
+	 *            the final point
+	 * @param offset
+	 *            the percentage of distance traveled.
+	 * @return a point that lies between this point and the destination
+	 * @see #interpolate(Point3, float)
+	 */
+	public P interpolated(P dest, float offset);
+
+	/**
 	 * Clear all values on this point.
 	 */
 	public void clear();
@@ -293,47 +335,5 @@ public interface Point3<P extends Point3<P>> {
 	 *         specified point
 	 */
 	public boolean at(P point);
-
-	/**
-	 * Return a mutable point that lies between this point and the specified
-	 * destination. The offset may be any value, but interpolation always occurs
-	 * between this point and the specified one: large or negative offset are
-	 * handled specially:
-	 * <ul>
-	 * <li>If {@code offset <= 0}, this point should be returned
-	 * <li>If {@code offset >= 1}, {@code destination} should be returned
-	 * </ul>
-	 * Returning copies instead of always interpolating allows clients to
-	 * reliably detect when interpolation is complete.
-	 * 
-	 * @param dest
-	 *            the final point
-	 * @param offset
-	 *            the percentage of distance traveled.
-	 * @return a point that lies between this point and the destination
-	 * @see #interpolate(Point3, float)
-	 */
-	public P interpolated(P dest, float offset);
-
-	/**
-	 * Interpolates between this point and the destination. This point will be
-	 * modified as a result of this operation. Offsets that are not between zero
-	 * and one are handled specially:
-	 * <ul>
-	 * <li>If {@code offset <= 0}, nothing is modified
-	 * <li>If {@code offset >= 1}, this point is set to {@code destination}
-	 * </ul>
-	 * This special behavior allows clients to reliably detect when
-	 * interpolation is complete.
-	 * 
-	 * @param dest
-	 *            the final point
-	 * @param offset
-	 *            the percentage of distance traveled
-	 * @see #interpolated(Point3, float)
-	 * @throws UnsupportedOperationException
-	 *             if this point is immutable
-	 */
-	public void interpolate(P dest, float offset);
 
 }
