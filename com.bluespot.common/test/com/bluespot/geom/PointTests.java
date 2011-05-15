@@ -8,10 +8,10 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import com.bluespot.geom.points.Point3d;
-import com.bluespot.geom.points.Point3f;
-import com.bluespot.geom.points.Point3i;
-import com.bluespot.geom.points.Points;
+import com.bluespot.geom.vectors.Point3d;
+import com.bluespot.geom.vectors.Point3f;
+import com.bluespot.geom.vectors.Point3i;
+import com.bluespot.geom.vectors.Points;
 
 public final class PointTests {
 

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluespot.geom.points;
+package com.bluespot.geom.vectors;
 
 import com.bluespot.geom.Axis;
 
