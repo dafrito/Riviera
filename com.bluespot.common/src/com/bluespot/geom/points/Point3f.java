@@ -460,30 +460,27 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		switch (axis) {
 		case X:
 			this.setX(point.getX());
-			break;
-
+			return;
 		case Y:
 			this.setY(point.getY());
-			break;
-
+			return;
 		case Z:
 			this.setZ(point.getZ());
-			break;
+			return;
 		case XY:
 			this.setX(point.getX());
 			this.setY(point.getY());
-			break;
+			return;
 		case XZ:
 			this.setX(point.getX());
 			this.setZ(point.getZ());
-			break;
+			return;
 		case YZ:
 			this.setY(point.getY());
 			this.setZ(point.getZ());
-			break;
-		default:
-			throw new IllegalArgumentException("Axis is invalid");
+			return;
 		}
+		throw new IllegalArgumentException("Axis is invalid");
 	}
 
 	/**
@@ -504,29 +501,27 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		switch (axis) {
 		case X:
 			this.setX(value);
-			break;
+			return;
 		case Y:
 			this.setY(value);
-			break;
+			return;
 		case Z:
 			this.setZ(value);
-			break;
+			return;
 		case XY:
 			this.setX(value);
 			this.setY(value);
-			break;
+			return;
 		case XZ:
 			this.setX(value);
 			this.setZ(value);
-			break;
+			return;
 		case YZ:
 			this.setY(value);
 			this.setZ(value);
-			break;
-		default:
-			throw new IllegalArgumentException("Axis is invalid");
+			return;
 		}
-		throw new IllegalArgumentException("Axis must be X, Y, or Z");
+		throw new IllegalArgumentException("Axis is invalid");
 	}
 
 	@Override
@@ -540,28 +535,27 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		switch (axis) {
 		case X:
 			this.addX(point.getX());
-			break;
+			return;
 		case Y:
 			this.addY(point.getY());
-			break;
+			return;
 		case Z:
 			this.addZ(point.getZ());
-			break;
+			return;
 		case XY:
 			this.addX(point.getX());
 			this.addY(point.getY());
-			break;
+			return;
 		case XZ:
 			this.addX(point.getX());
 			this.addZ(point.getZ());
-			break;
+			return;
 		case YZ:
 			this.addY(point.getY());
 			this.addZ(point.getZ());
-			break;
-		default:
-			throw new IllegalArgumentException("Axis is invalid");
+			return;
 		}
+		throw new IllegalArgumentException("Axis is invalid");
 	}
 
 	/**
@@ -582,28 +576,27 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		switch (axis) {
 		case X:
 			this.addX(value);
-			break;
+			return;
 		case Y:
 			this.addY(value);
-			break;
+			return;
 		case Z:
 			this.addZ(value);
-			break;
+			return;
 		case XY:
 			this.addX(value);
 			this.addY(value);
-			break;
+			return;
 		case XZ:
 			this.addX(value);
 			this.addZ(value);
-			break;
+			return;
 		case YZ:
 			this.addY(value);
 			this.addZ(value);
-			break;
-		default:
-			throw new IllegalArgumentException("Axis is invalid");
+			return;
 		}
+		throw new IllegalArgumentException("Axis is invalid");
 	}
 
 	@Override
