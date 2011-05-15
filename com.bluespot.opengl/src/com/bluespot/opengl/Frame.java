@@ -2,19 +2,18 @@ package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
 
-import com.bluespot.geom.Point3D;
-import com.bluespot.geom.Vector;
+import com.bluespot.geom.vectors.Vector3f;
 
 public class Frame {
-	private final Point3D.Float location;
-	private final Vector up;
-	private final Vector forward;
+	private final Vector3f location;
+	private final Vector3f up;
+	private final Vector3f forward;
 
 	/**
 	 * Constructs a {@link Frame} positioned at the origin and facing forward.
 	 */
 	public Frame() {
-		this(Point3D.Float.ORIGIN);
+		this(Vector3f.origin());
 	}
 
 	/**
@@ -24,8 +23,8 @@ public class Frame {
 	 * @param location
 	 *            the location of this frame
 	 */
-	public Frame(final Point3D.Float location) {
-		this(location, Vector.UP, Vector.FORWARD);
+	public Frame(final Vector3f location) {
+		this(location, Vector3f.up(), Vector3f.forward());
 	}
 
 	/**
@@ -41,7 +40,7 @@ public class Frame {
 	 * @throws NullPointerException
 	 *             if any argument is null
 	 */
-	public Frame(final Point3D.Float location, final Vector up, final Vector forward) {
+	public Frame(final Vector3f location, final Vector3f up, final Vector3f forward) {
 		if (location == null) {
 			throw new NullPointerException("location is null");
 		}
@@ -56,8 +55,8 @@ public class Frame {
 		this.forward = forward;
 	}
 
-	public Frame translate(final Vector vector) {
-		return new Frame(this.location.add(vector), this.up, this.forward);
+	public Frame translate(final Vector3f vector) {
+		return new Frame(this.location.added(vector), this.up, this.forward);
 	}
 
 	public Frame moveForward() {
@@ -65,31 +64,29 @@ public class Frame {
 	}
 
 	/**
-	 * Returns the {@link Float Point3D.Float} that represents the location of
-	 * this frame.
+	 * Returns the {@link Vector3f} that represents the location of this frame.
 	 * 
-	 * @return the {@code Point3D.Float} that represents the location of this
-	 *         frame
+	 * @return the {@code Vector3f} that represents the location of this frame
 	 */
-	public Point3D.Float getLocation() {
+	public Vector3f getLocation() {
 		return this.location;
 	}
 
 	/**
-	 * Returns the {@link Vector} that represents the Y-axis for this frame.
+	 * Returns the {@link Vector3f} that represents the Y-axis for this frame.
 	 * 
-	 * @return the {@code Vector} that represents the Y-axis for this frame
+	 * @return the {@code Vector3f} that represents the Y-axis for this frame
 	 */
-	public Vector getUp() {
+	public Vector3f getUp() {
 		return this.up;
 	}
 
 	/**
-	 * Returns the {@link Vector} that represents the Z-axis for this frame.
+	 * Returns the {@link Vector3f} that represents the Z-axis for this frame.
 	 * 
-	 * @return the {@code Vector} that represents the Z-axis for this frame
+	 * @return the {@code Vector3f} that represents the Z-axis for this frame
 	 */
-	public Vector getForward() {
+	public Vector3f getForward() {
 		return this.forward;
 	}
 
@@ -98,7 +95,7 @@ public class Frame {
 	private double[] getMatrix() {
 		if (this.matrix == null) {
 			final double[] calculated = new double[16];
-			final Vector xAxis = this.getUp().crossProduct(this.getForward());
+			final Vector3f xAxis = this.getUp().crossed(this.getForward());
 
 			// X axis
 			calculated[0] = xAxis.getX();

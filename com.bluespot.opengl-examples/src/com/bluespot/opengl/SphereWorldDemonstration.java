@@ -16,7 +16,7 @@ import javax.media.opengl.GLJPanel;
 import javax.media.opengl.glu.GLU;
 
 import com.bluespot.demonstration.Demonstration;
-import com.bluespot.geom.Point3D;
+import com.bluespot.geom.vectors.Vector3f;
 import com.bluespot.graphics.Painting;
 import com.sun.opengl.util.GLUT;
 
@@ -95,7 +95,7 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 		for (int i = 0; i < 50; i++) {
 			final float x = ((float) Math.random()) * 40.0f - 20.0f;
 			final float z = ((float) Math.random()) * 40.0f - 20.0f;
-			this.frames.add(new Frame(new Point3D.Float(x, 0.0f, z)));
+			this.frames.add(new Frame(Vector3f.frozen(x, 0.0f, z)));
 		}
 
 	}
