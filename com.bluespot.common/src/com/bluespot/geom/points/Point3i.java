@@ -350,39 +350,6 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	@Override
-	public void add(Point3i point) {
-		this.addX(point.getX());
-		this.addY(point.getY());
-		this.addZ(point.getZ());
-	}
-
-	/**
-	 * Adds the specified value to all of this point's values.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 */
-	public void add(int value) {
-		this.addX(value);
-		this.addY(value);
-		this.addZ(value);
-	}
-
-	/**
-	 * Returns a mutable point that's translated by the specified amount.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 * @return a mutable point that's at this position, but translated by the
-	 *         specified amount
-	 */
-	public Point3i added(int value) {
-		Point3i result = this.toMutable();
-		result.add(value);
-		return result;
-	}
-
-	@Override
 	public void set(Axis axis, Point3i point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -477,6 +444,25 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 	}
 
 	@Override
+	public void add(Point3i point) {
+		this.addX(point.getX());
+		this.addY(point.getY());
+		this.addZ(point.getZ());
+	}
+
+	/**
+	 * Adds the specified value to all of this point's values.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void add(int value) {
+		this.addX(value);
+		this.addY(value);
+		this.addZ(value);
+	}
+
+	@Override
 	public void add(Axis axis, Point3i point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -549,6 +535,20 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	/**
+	 * Returns a mutable point that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable point that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public Point3i added(int value) {
+		Point3i result = this.toMutable();
+		result.add(value);
+		return result;
 	}
 
 	/**
