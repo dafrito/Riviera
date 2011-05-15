@@ -410,13 +410,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		this.addZ(value);
 	}
 
-	@Override
-	public Point3d added(Point3d point) {
-		Point3d result = this.toMutable();
-		result.add(point);
-		return result;
-	}
-
 	/**
 	 * Returns a mutable point that's translated by the specified amount.
 	 * 
@@ -439,13 +432,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	@Override
 	public void clear(Axis axis) {
 		this.set(axis, 0d);
-	}
-
-	@Override
-	public Point3d cleared(Axis axis) {
-		Point3d result = this.toMutable();
-		result.clear(axis);
-		return result;
 	}
 
 	@Override
@@ -650,22 +636,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		return this.getX() == point.getX() &&
 				this.getY() == point.getY() &&
 				this.getZ() == point.getZ();
-	}
-
-	@Override
-	public Point3d interpolated(Point3d dest, float offset) {
-		if (dest == null) {
-			throw new NullPointerException("dest must not be null");
-		}
-		if (offset >= 1f) {
-			return dest.toMutable();
-		}
-		if (offset <= 0f) {
-			return this.toMutable();
-		}
-		return mutable(this.x + (dest.x - this.x) * offset,
-				this.y + (dest.y - this.y) * offset,
-				this.z + (dest.z - this.z) * offset);
 	}
 
 	@Override
