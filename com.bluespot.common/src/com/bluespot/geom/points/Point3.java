@@ -26,7 +26,7 @@ import com.bluespot.geom.Axis;
  * @see Point3f
  * @see Point3i
  */
-public interface Point3<P extends Point3<?>> {
+public interface Point3<P extends Point3<P>> {
 
 	/**
 	 * Set this point's values to the specified point.
