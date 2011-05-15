@@ -59,6 +59,7 @@ import com.bluespot.geom.Axis;
  * @see Point3d
  * @see Point3f
  * @see Point3i
+ * @see Points
  */
 public interface Point3<P extends Point3<P>> {
 
