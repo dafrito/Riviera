@@ -684,6 +684,88 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 	}
 
 	@Override
+	public void multiply(Point3d point) {
+		this.multiplyX(point.getX());
+		this.multiplyY(point.getY());
+		this.multiplyZ(point.getZ());
+	}
+
+	@Override
+	public void multiply(double factor) {
+		this.multiplyX(factor);
+		this.multiplyY(factor);
+		this.multiplyZ(factor);
+	}
+
+	@Override
+	public void multiply(Axis axis, Point3d point) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (point == null) {
+			throw new NullPointerException("Point must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.multiplyX(point.getX());
+			return;
+		case Y:
+			this.multiplyY(point.getY());
+			return;
+		case Z:
+			this.multiplyZ(point.getZ());
+			return;
+		case XY:
+			this.multiplyX(point.getX());
+			this.multiplyY(point.getY());
+			return;
+		case XZ:
+			this.multiplyX(point.getX());
+			this.multiplyZ(point.getZ());
+			return;
+		case YZ:
+			this.multiplyY(point.getY());
+			this.multiplyZ(point.getZ());
+			return;
+		}
+		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	@Override
+	public void multiply(Axis axis, double factor) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("Point is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.multiplyX(factor);
+			return;
+		case Y:
+			this.multiplyY(factor);
+			return;
+		case Z:
+			this.multiplyZ(factor);
+			return;
+		case XY:
+			this.multiplyX(factor);
+			this.multiplyY(factor);
+			return;
+		case XZ:
+			this.multiplyX(factor);
+			this.multiplyZ(factor);
+			return;
+		case YZ:
+			this.multiplyY(factor);
+			this.multiplyZ(factor);
+			return;
+		}
+		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	@Override
 	public void interpolate(Point3d dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
