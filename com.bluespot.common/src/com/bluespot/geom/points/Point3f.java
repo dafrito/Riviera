@@ -612,16 +612,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		return result;
 	}
 
-	@Override
-	public void clear() {
-		this.set(0f);
-	}
-
-	@Override
-	public void clear(Axis axis) {
-		this.set(axis, 0f);
-	}
-
 	/**
 	 * Creates and returns a new {@link Point3f} that is this point translated
 	 * by the specified {@link Vector3d}.
@@ -633,6 +623,16 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	public Point3f add(final Vector3d vector) {
 		return new Point3f(false, this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
 				this.getZ() + (float) vector.getZ());
+	}
+
+	@Override
+	public void clear() {
+		this.set(0f);
+	}
+
+	@Override
+	public void clear(Axis axis) {
+		this.set(axis, 0f);
 	}
 
 	@Override
