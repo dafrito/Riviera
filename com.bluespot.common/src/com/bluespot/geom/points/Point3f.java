@@ -393,39 +393,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	}
 
 	@Override
-	public void add(Point3f point) {
-		this.addX(point.getX());
-		this.addY(point.getY());
-		this.addZ(point.getZ());
-	}
-
-	/**
-	 * Adds the specified value to all of this point's values.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 */
-	public void add(float value) {
-		this.addX(value);
-		this.addY(value);
-		this.addZ(value);
-	}
-
-	/**
-	 * Returns a mutable point that's translated by the specified amount.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 * @return a mutable point that's at this position, but translated by the
-	 *         specified amount
-	 */
-	public Point3f added(float value) {
-		Point3f result = this.toMutable();
-		result.add(value);
-		return result;
-	}
-
-	@Override
 	public void set(Axis axis, Point3f point) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
@@ -516,6 +483,39 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		}
 		Point3f result = this.toMutable();
 		result.set(axis, value);
+		return result;
+	}
+
+	@Override
+	public void add(Point3f point) {
+		this.addX(point.getX());
+		this.addY(point.getY());
+		this.addZ(point.getZ());
+	}
+
+	/**
+	 * Adds the specified value to all of this point's values.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void add(float value) {
+		this.addX(value);
+		this.addY(value);
+		this.addZ(value);
+	}
+
+	/**
+	 * Returns a mutable point that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable point that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public Point3f added(float value) {
+		Point3f result = this.toMutable();
+		result.add(value);
 		return result;
 	}
 
