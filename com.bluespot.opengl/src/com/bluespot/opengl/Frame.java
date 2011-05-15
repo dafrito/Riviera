@@ -50,17 +50,17 @@ public class Frame {
 		if (forward == null) {
 			throw new NullPointerException("forward is null");
 		}
-		this.location = location;
-		this.up = up;
-		this.forward = forward;
+		this.location = location.toMutable();
+		this.up = up.toFrozen();
+		this.forward = forward.toFrozen();
 	}
 
-	public Frame translate(final Vector3f vector) {
-		return new Frame(this.location.added(vector), this.up, this.forward);
+	public void translate(final Vector3f vector) {
+		this.location.add(vector);
 	}
 
-	public Frame moveForward() {
-		return this.translate(this.getForward());
+	public void moveForward() {
+		this.translate(this.getForward());
 	}
 
 	/**
