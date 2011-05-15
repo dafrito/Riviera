@@ -75,6 +75,18 @@ public interface Point3<P extends Point3<P>> {
 	public void set(P point);
 
 	/**
+	 * Copy another point's value at the specified axis.
+	 * 
+	 * @param axis
+	 *            the axis to copy
+	 * @param point
+	 *            the point from which to copy
+	 * @throws UnsupportedOperationException
+	 *             if this point is immutable
+	 */
+	public void set(Axis axis, P point);
+
+	/**
 	 * Add the specified point's value to this point.
 	 * 
 	 * @param point
@@ -93,18 +105,6 @@ public interface Point3<P extends Point3<P>> {
 	 *         point's values
 	 */
 	public P added(P point);
-
-	/**
-	 * Copy another point's value at the specified axis.
-	 * 
-	 * @param axis
-	 *            the axis to copy
-	 * @param point
-	 *            the point from which to copy
-	 * @throws UnsupportedOperationException
-	 *             if this point is immutable
-	 */
-	public void set(Axis axis, P point);
 
 	/**
 	 * Add another point's value at the specified axis.
