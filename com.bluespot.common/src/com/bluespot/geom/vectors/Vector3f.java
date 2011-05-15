@@ -77,17 +77,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return new Vector3f(false, (float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
 	}
 
-	private static final Vector3f ORIGIN = Vector3f.frozen(0, 0, 0);
-
-	/**
-	 * Returns a frozen vector at the origin.
-	 * 
-	 * @return a frozen vector at the origin.
-	 */
-	public static Vector3f origin() {
-		return ORIGIN;
-	}
-
 	/**
 	 * Interpolates between this vector and the destination. Offsets that are
 	 * not between zero and one are handled specially:
@@ -122,6 +111,39 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return mutable(src.x + (dest.x - src.x) * offset,
 				src.y + (dest.y - src.y) * offset,
 				src.z + (dest.z - src.z) * offset);
+	}
+
+	private static final Vector3f ORIGIN = Vector3f.frozen(0);
+
+	/**
+	 * Returns a frozen vector at the origin.
+	 * 
+	 * @return a frozen vector at the origin.
+	 */
+	public static Vector3f origin() {
+		return ORIGIN;
+	}
+
+	private static final Vector3f UP = Vector3f.frozen(0, 1, 0);
+
+	/**
+	 * Returns a frozen vector that points up the y axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 1, 0)}
+	 */
+	public static Vector3f up() {
+		return UP;
+	}
+
+	private static final Vector3f FORWARD = Vector3f.frozen(0, 0, -1);
+
+	/**
+	 * Returns a frozen vector that points down the z axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 0, -1)}
+	 */
+	public static Vector3f forward() {
+		return FORWARD;
 	}
 
 	private float z;

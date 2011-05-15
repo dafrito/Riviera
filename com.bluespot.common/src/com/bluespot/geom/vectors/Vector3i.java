@@ -15,8 +15,6 @@ import com.bluespot.geom.Axis;
  */
 public final class Vector3i extends AbstractVector3<Vector3i> {
 
-	private static final Vector3i ORIGIN = new Vector3i(false, 0, 0, 0);
-
 	/**
 	 * Create a mutable {@link Vector3i} using the specified value for all axes.
 	 * 
@@ -39,15 +37,6 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	 */
 	public static Vector3i frozen(int v) {
 		return Vector3i.mutable(v, v, v);
-	}
-
-	/**
-	 * Returns a frozen vector at the origin.
-	 * 
-	 * @return a frozen vector at the origin.
-	 */
-	public static Vector3i origin() {
-		return ORIGIN;
 	}
 
 	public static Vector3i mutable(int x, int y, int z) {
@@ -120,6 +109,39 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return mutable(src.x + (int) ((dest.x - src.x) * offset),
 				src.y + (int) ((dest.y - src.y) * offset),
 				src.z + (int) ((dest.z - src.z) * offset));
+	}
+
+	private static final Vector3i ORIGIN = Vector3i.frozen(0);
+
+	/**
+	 * Returns a frozen vector at the origin.
+	 * 
+	 * @return a frozen vector at the origin.
+	 */
+	public static Vector3i origin() {
+		return ORIGIN;
+	}
+
+	private static final Vector3i UP = Vector3i.frozen(0, 1, 0);
+
+	/**
+	 * Returns a frozen vector that points up the y axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 1, 0)}
+	 */
+	public static Vector3i up() {
+		return UP;
+	}
+
+	private static final Vector3i FORWARD = Vector3i.frozen(0, 0, -1);
+
+	/**
+	 * Returns a frozen vector that points down the z axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 0, -1)}
+	 */
+	public static Vector3i forward() {
+		return FORWARD;
 	}
 
 	private int z;

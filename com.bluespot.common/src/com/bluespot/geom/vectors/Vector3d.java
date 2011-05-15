@@ -17,17 +17,6 @@ import com.bluespot.geom.Axis;
  */
 public class Vector3d extends AbstractVector3<Vector3d> {
 
-	private static final Vector3d ORIGIN = new Vector3d(false, 0, 0, 0);
-
-	/**
-	 * Returns a frozen vector at the origin.
-	 * 
-	 * @return a frozen vector at the origin.
-	 */
-	public static Vector3d origin() {
-		return ORIGIN;
-	}
-
 	/**
 	 * Create a mutable {@link Vector3d} using the specified value for all axes.
 	 * 
@@ -183,6 +172,39 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 		return mutable(src.x + (dest.x - src.x) * offset,
 				src.y + (dest.y - src.y) * offset,
 				src.z + (dest.z - src.z) * offset);
+	}
+
+	private static final Vector3d ORIGIN = Vector3d.frozen(0);
+
+	/**
+	 * Returns a frozen vector at the origin.
+	 * 
+	 * @return a frozen vector with components {@code (0, 1, 0)}
+	 */
+	public static Vector3d origin() {
+		return ORIGIN;
+	}
+
+	private static final Vector3d UP = Vector3d.frozen(0, 1, 0);
+
+	/**
+	 * Returns a frozen vector that points up the y axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 1, 0)}
+	 */
+	public static Vector3d up() {
+		return UP;
+	}
+
+	private static final Vector3d FORWARD = Vector3d.frozen(0, 0, -1);
+
+	/**
+	 * Returns a frozen vector that points down the z axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, 0, -1)}
+	 */
+	public static Vector3d forward() {
+		return FORWARD;
 	}
 
 	/**
