@@ -108,6 +108,13 @@ public abstract class AbstractVector3<V extends Vector3<V>> implements Vector3<V
 	}
 
 	@Override
+	public V normalized() {
+		V result = this.toMutable();
+		result.normalize();
+		return result;
+	}
+
+	@Override
 	public V interpolated(V dest, float offset) {
 		V result = this.toMutable();
 		result.interpolate(dest, offset);

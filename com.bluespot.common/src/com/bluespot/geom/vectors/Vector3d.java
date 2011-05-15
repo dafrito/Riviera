@@ -920,6 +920,19 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	}
 
 	@Override
+	public double length() {
+		return Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2) + Math.pow(this.getZ(), 2));
+	}
+
+	@Override
+	public void normalize() {
+		float len = (float) this.length();
+		this.set(this.getX() / len,
+				this.getY() / len,
+				this.getZ() / len);
+	}
+
+	@Override
 	public void interpolate(Vector3d dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");

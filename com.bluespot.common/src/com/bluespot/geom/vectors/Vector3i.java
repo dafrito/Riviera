@@ -788,6 +788,19 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	}
 
 	@Override
+	public double length() {
+		return Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2) + Math.pow(this.getZ(), 2));
+	}
+
+	@Override
+	public void normalize() {
+		float len = (float) this.length();
+		this.set(Math.round(this.getX() / len),
+				Math.round(this.getY() / len),
+				Math.round(this.getZ() / len));
+	}
+
+	@Override
 	public void interpolate(Vector3i dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");

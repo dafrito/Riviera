@@ -245,6 +245,13 @@ public interface Vector3<V extends Vector3<V>> {
 	public V multiplied(Axis axis, double factor);
 
 	/**
+	 * Returns the length of this vector.
+	 * 
+	 * @return the length of this vector
+	 */
+	public double length();
+
+	/**
 	 * Invert this vector. All components are multiplied by {@code -1}.
 	 * 
 	 * @throw UnsupportedOperationException if this vector is not mutable
@@ -278,6 +285,19 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @return a new {@code Vector3} with inverted components
 	 */
 	public V inverted(Axis axis);
+
+	/**
+	 * Normalizes this vector, such that its new length will be one.
+	 */
+	public void normalize();
+
+	/**
+	 * Normalizes a copy of this vector.
+	 * 
+	 * @see #normalize()
+	 * @return a normalized copy of this vector
+	 */
+	public V normalized();
 
 	/**
 	 * Interpolates between this vector and the destination. This vector will be
