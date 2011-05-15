@@ -36,20 +36,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		return new Point3d(false, x, y, z);
 	}
 
-	public static Point3d mutable(Point3d point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3d(true, point.x, point.y, point.z);
-	}
-
-	public static Point3d frozen(Point3d point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3d(false, point.x, point.y, point.z);
-	}
-
 	public static Point3d mutable(Point3i point) {
 		if (point == null) {
 			throw new NullPointerException("point must not be null");

@@ -34,20 +34,6 @@ public final class Point3i extends AbstractPoint3<Point3i> {
 		return new Point3i(false, x, y, z);
 	}
 
-	public static Point3i mutable(Point3i point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3i(true, point.getX(), point.getY(), point.getZ());
-	}
-
-	public static Point3i frozen(Point3i point) {
-		if (point == null) {
-			throw new NullPointerException("point must not be null");
-		}
-		return new Point3i(false, point.getX(), point.getY(), point.getZ());
-	}
-
 	public static Point3i mutable(Point3f point) {
 		if (point == null) {
 			throw new NullPointerException("point must not be null");
