@@ -411,13 +411,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		this.addZ(value);
 	}
 
-	@Override
-	public Point3f added(Point3f point) {
-		Point3f result = this.toMutable();
-		result.add(point);
-		return result;
-	}
-
 	/**
 	 * Returns a mutable point that's translated by the specified amount.
 	 * 
@@ -601,19 +594,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
-	@Override
-	public Point3f added(Axis axis, Point3f point) {
-		if (axis == null) {
-			throw new NullPointerException("Axis must not be null");
-		}
-		if (point == null) {
-			throw new NullPointerException("Point must not be null");
-		}
-		Point3f result = this.toMutable();
-		result.add(axis, point);
-		return result;
-	}
-
 	/**
 	 * Returns a mutable point at this position, plus the specified translation.
 	 * 
@@ -640,13 +620,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 	@Override
 	public void clear(Axis axis) {
 		this.set(axis, 0f);
-	}
-
-	@Override
-	public Point3f cleared(Axis axis) {
-		Point3f result = this.toMutable();
-		result.clear(axis);
-		return result;
 	}
 
 	/**
@@ -683,22 +656,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		return this.getX() == point.getX() &&
 				this.getY() == point.getY() &&
 				this.getZ() == point.getZ();
-	}
-
-	@Override
-	public Point3f interpolated(Point3f dest, float offset) {
-		if (dest == null) {
-			throw new NullPointerException("dest must not be null");
-		}
-		if (offset >= 1f) {
-			return dest.toMutable();
-		}
-		if (offset <= 0f) {
-			return this.toMutable();
-		}
-		return mutable(this.x + (dest.x - this.x) * offset,
-				this.y + (dest.y - this.y) * offset,
-				this.z + (dest.z - this.z) * offset);
 	}
 
 	@Override

@@ -603,19 +603,6 @@ public final class Point3d extends AbstractPoint3<Point3d> {
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
-	@Override
-	public Point3d added(Axis axis, Point3d point) {
-		if (axis == null) {
-			throw new NullPointerException("Axis must not be null");
-		}
-		if (point == null) {
-			throw new NullPointerException("Point must not be null");
-		}
-		Point3d result = this.toMutable();
-		result.add(axis, point);
-		return result;
-	}
-
 	/**
 	 * Returns a mutable point at this position, plus the specified translation.
 	 * 
