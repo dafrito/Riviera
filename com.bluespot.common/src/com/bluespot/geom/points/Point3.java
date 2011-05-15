@@ -48,11 +48,9 @@ import com.bluespot.geom.Axis;
  * omitted if some other more common mechanism provides them. For example,
  * {@code cleared()} is already implemented through an {@code origin()} method.
  * <p>
- * Every operation should have two variants: one to work on the current point,
- * and one that creates a new point. The convention is to name the creating
- * methods with the -ed suffix (inverted, cleared, etc.), though exceptions
- * exist: setX's immutable variant is withX. Be pragmatic and use what reads
- * well.
+ * The naming convention for operations is to name the creating methods with the
+ * -ed suffix (inverted, cleared, etc.), though exceptions exist: setX's
+ * immutable variant is withX. Be pragmatic and use what reads well.
  * 
  * @author Aaron Faanes
  * @param <P>
