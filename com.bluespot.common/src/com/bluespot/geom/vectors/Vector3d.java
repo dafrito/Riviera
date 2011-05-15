@@ -80,27 +80,10 @@ public class Vector3d {
 		return this.z;
 	}
 
-	/**
-	 * Returns a new {@link Vector3d} that is the inverse of this vector. All
-	 * dimensions are multiplied by {@code -1}.
-	 * 
-	 * @return a new {@code Vector} that is the inverse of this vector
-	 */
-	public Vector3d inverse() {
+	public Vector3d inverted() {
 		return new Vector3d(-this.getX(), -this.getY(), -this.getZ());
 	}
 
-	/**
-	 * Returns a new {@link Vector3d} that is the cross product of this vector
-	 * with the specified vector.
-	 * 
-	 * @param other
-	 *            the other vector used in the calculation of the cross product
-	 * @return a new {@code Vector} that represents the cross product of these
-	 *         two vectors
-	 * @throws NullPointerException
-	 *             if {@code other} is null
-	 */
 	public Vector3d crossProduct(final Vector3d other) {
 		if (other == null) {
 			throw new NullPointerException("other is null");
