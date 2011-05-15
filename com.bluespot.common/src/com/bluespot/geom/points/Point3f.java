@@ -505,20 +505,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 		this.addZ(value);
 	}
 
-	/**
-	 * Returns a mutable point that's translated by the specified amount.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 * @return a mutable point that's at this position, but translated by the
-	 *         specified amount
-	 */
-	public Point3f added(float value) {
-		Point3f result = this.toMutable();
-		result.add(value);
-		return result;
-	}
-
 	@Override
 	public void add(Axis axis, Point3f point) {
 		if (axis == null) {
@@ -592,6 +578,20 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	/**
+	 * Returns a mutable point that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable point that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public Point3f added(float value) {
+		Point3f result = this.toMutable();
+		result.add(value);
+		return result;
 	}
 
 	/**
