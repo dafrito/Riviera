@@ -4,7 +4,6 @@
 package com.bluespot.geom.points;
 
 import com.bluespot.geom.Axis;
-import com.bluespot.geom.vectors.Vector3d;
 
 /**
  * A {@link Point3} in {@code float} precision. Be aware that while this class
@@ -796,19 +795,6 @@ public final class Point3f extends AbstractPoint3<Point3f> {
 			this.y += (dest.y - this.y) * offset;
 			this.z += (dest.z - this.z) * offset;
 		}
-	}
-
-	/**
-	 * Creates and returns a new {@link Point3f} that is this point translated
-	 * by the specified {@link Vector3d}.
-	 * 
-	 * @param vector
-	 *            the vector used to create the new point
-	 * @return a new point that is this point translated by the specified vector
-	 */
-	public Point3f add(final Vector3d vector) {
-		return new Point3f(false, this.getX() + (float) vector.getX(), this.getY() + (float) vector.getY(),
-				this.getZ() + (float) vector.getZ());
 	}
 
 	@Override
