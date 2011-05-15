@@ -65,6 +65,14 @@ import com.bluespot.geom.Axis;
 public interface Point3<P extends Point3<P>> {
 
 	/**
+	 * Return whether this point can be directly modified. This value is a
+	 * constant for a given instance.
+	 * 
+	 * @return {@code true} if this point can be directly modified
+	 */
+	public boolean isMutable();
+
+	/**
 	 * Set this point's values to the specified point.
 	 * 
 	 * @param point
@@ -164,14 +172,6 @@ public interface Point3<P extends Point3<P>> {
 	 *         specified axes
 	 */
 	public P cleared(Axis axis);
-
-	/**
-	 * Return whether this point can be directly modified. This value is a
-	 * constant for a given instance.
-	 * 
-	 * @return {@code true} if this point can be directly modified
-	 */
-	public boolean isMutable();
 
 	/**
 	 * Create and return a new, mutable instance of this point. The returned
