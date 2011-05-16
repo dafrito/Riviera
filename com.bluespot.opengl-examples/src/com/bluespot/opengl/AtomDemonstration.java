@@ -2,6 +2,7 @@ package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -32,7 +33,7 @@ public class AtomDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glClear(GL.GL_DEPTH_BUFFER_BIT);
 		gl.glEnable(GL.GL_DEPTH_TEST);
 

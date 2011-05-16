@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLJPanel;
 
 import com.bluespot.graphics.Painting;
@@ -24,6 +25,10 @@ import com.bluespot.graphics.Painting;
  * 
  */
 public abstract class AbstractGLDemonstration extends GLJPanel implements GLEventListener {
+
+	static {
+		GLProfile.initSingleton(true);
+	}
 
 	private static final long serialVersionUID = 107706882711513973L;
 
@@ -78,7 +83,7 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 		gl.glRotatef(this.xRot, 1, 0, 0);
 		gl.glRotatef(this.yRot, 0, 1, 0);
 
-		this.render(gl);
+		this.render(gl, drawable);
 
 		gl.glPopMatrix();
 	}
@@ -88,8 +93,10 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 	 * 
 	 * @param gl
 	 *            the rendering context
+	 * @param drawable
+	 *            TODO
 	 */
-	protected abstract void render(GL2 gl);
+	protected abstract void render(GL2 gl, GLAutoDrawable drawable);
 
 	@Override
 	public void init(final GLAutoDrawable drawable) {

@@ -1,6 +1,7 @@
 package com.bluespot.opengl;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
 import com.jogamp.opengl.util.gl2.GLUT;
@@ -26,7 +27,7 @@ public class TransformDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		final GLUT glut = new GLUT();
 		gl.glRotatef(45, 1, 1, 1);
 		glut.glutWireCube(30.0f);

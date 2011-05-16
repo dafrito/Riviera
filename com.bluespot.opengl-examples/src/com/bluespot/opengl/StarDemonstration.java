@@ -2,6 +2,7 @@ package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -36,7 +37,7 @@ public class StarDemonstration extends AbstractGLDemonstration {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 
 		gl.glPolygonMode(GL.GL_FRONT_AND_BACK, GL2.GL_LINE);
 		gl.glBegin(GL.GL_TRIANGLES);

@@ -2,6 +2,7 @@ package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -26,7 +27,7 @@ public class SpiralPointsDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glBegin(GL.GL_POINTS);
 		float z = -50.0f;
 		for (float angle = 0; angle <= 6 * Math.PI; angle += 0.1f) {

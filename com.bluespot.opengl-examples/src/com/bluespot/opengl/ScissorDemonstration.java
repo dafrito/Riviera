@@ -59,7 +59,7 @@ public class ScissorDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		final int width = this.getWidth();
 		final int height = this.getHeight();
 		gl.glEnable(GL.GL_SCISSOR_TEST);

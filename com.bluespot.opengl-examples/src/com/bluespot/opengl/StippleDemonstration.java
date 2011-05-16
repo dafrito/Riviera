@@ -2,6 +2,7 @@ package com.bluespot.opengl;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
 
@@ -37,7 +38,7 @@ public class StippleDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
 
 		int factor = 1;

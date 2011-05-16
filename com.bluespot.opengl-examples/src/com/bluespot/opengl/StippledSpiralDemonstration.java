@@ -1,9 +1,13 @@
 package com.bluespot.opengl;
 
+import java.awt.Font;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
+import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Demonstrates stippling used in combination with the spiral vertices earlier.
@@ -29,9 +33,9 @@ public class StippledSpiralDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
-		gl.glLineStipple(1, (short) 0x5555);
+		gl.glLineStipple(1, (short) 0xffff);
 		gl.glLineWidth(4);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		float z = -50.0f;

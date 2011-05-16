@@ -58,7 +58,7 @@ public class RandomStippleDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
 
 		final Iterator<Short> iter = this.stipples.iterator();

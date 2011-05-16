@@ -34,7 +34,7 @@ public class TriangleStripDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
-	protected void render(final GL2 gl) {
+	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glBegin(GL.GL_TRIANGLE_STRIP);
 
 		gl.glVertex2f(0, 0);
