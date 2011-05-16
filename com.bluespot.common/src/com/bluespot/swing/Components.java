@@ -77,7 +77,7 @@ public final class Components {
 		 * 
 		 * @see UIManager#getSystemLookAndFeelClassName()
 		 */
-		SYSTEM() {
+		NATIVE() {
 
 			@Override
 			public String getName() {
