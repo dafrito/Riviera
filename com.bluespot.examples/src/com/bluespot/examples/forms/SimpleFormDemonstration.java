@@ -32,7 +32,7 @@ public final class SimpleFormDemonstration extends Demonstration {
 	 *            unused
 	 */
 	public static void main(final String[] args) {
-		Components.LookAndFeel.SYSTEM.activate();
+		Components.LookAndFeel.NATIVE.activate();
 		Demonstration.launch(SimpleFormDemonstration.class);
 	}
 

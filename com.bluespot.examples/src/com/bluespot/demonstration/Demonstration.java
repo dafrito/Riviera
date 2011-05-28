@@ -128,7 +128,7 @@ public abstract class Demonstration {
 			 * Activate system look-and-feel if Nimbus is unavailable. If this
 			 * one fails, then we just give up and use the default.
 			 */
-			Components.LookAndFeel.SYSTEM.activate();
+			Components.LookAndFeel.NATIVE.activate();
 		}
 	}
 
