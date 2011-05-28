@@ -1,13 +1,10 @@
 package com.bluespot.opengl;
 
-import java.awt.Font;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
 import com.bluespot.demonstration.Demonstration;
-import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Demonstrates stippling used in combination with the spiral vertices earlier.
