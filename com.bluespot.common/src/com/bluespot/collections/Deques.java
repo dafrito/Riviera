@@ -12,9 +12,9 @@ import java.util.Iterator;
  * @author Aaron Faanes
  * 
  */
-public class DequeUtil {
+public final class Deques {
 
-	private DequeUtil() {
+	private Deques() {
 		// Suppresses default constructor, ensuring non-instantiability.
 		throw new AssertionError("Instantiation not allowed");
 	}
@@ -45,7 +45,7 @@ public class DequeUtil {
 	 */
 	public static <E> void synchronizeDeques(final Deque<? extends E> referenceCollection,
 			final Deque<E> targetCollection) {
-		DequeUtil.removeDifferingTail(referenceCollection, targetCollection);
+		Deques.removeDifferingTail(referenceCollection, targetCollection);
 		final int equalElements = targetCollection.size();
 		int i = 0;
 		for (final Iterator<? extends E> iterator = referenceCollection.iterator(); iterator.hasNext(); i++) {
@@ -103,7 +103,7 @@ public class DequeUtil {
 		 * of equal size, no elements are removed.
 		 */
 		final int removedElements = targetCollection.size() - equalElements;
-		DequeUtil.removeFromTail(targetCollection, removedElements);
+		Deques.removeFromTail(targetCollection, removedElements);
 		return removedElements;
 	}
 
