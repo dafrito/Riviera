@@ -27,7 +27,7 @@ import com.bluespot.logic.functions.Functions;
  * @param <V>
  *            the returned value from functions
  */
-public class Agent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
+public class BruteForcingAgent<I, V> implements Function<Function<? super I, ? extends V>, Function<? super I, ? extends V>> {
 
 	private static final int DESIRED_CONFIDENCE = 10;
 
@@ -37,7 +37,7 @@ public class Agent<I, V> implements Function<Function<? super I, ? extends V>, F
 
 	private final Set<? extends Object> pool;
 
-	public Agent(Class<? extends I> inputType, Collection<? extends Object> pool) {
+	public BruteForcingAgent(Class<? extends I> inputType, Collection<? extends Object> pool) {
 		if (inputType == null) {
 			throw new NullPointerException("inputType must not be null");
 		}

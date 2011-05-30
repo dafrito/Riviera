@@ -8,7 +8,7 @@ import junit.framework.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.bluespot.logic.agents.Agent;
+import com.bluespot.logic.agents.BruteForcingAgent;
 import com.bluespot.logic.agents.InputGenerator;
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.Functions;
@@ -46,14 +46,14 @@ public class AgentTests {
 	}
 
 	/**
-	 * {@link Agent} objects can construct (and thereby deduce) simple functions
-	 * using currying. I use {@link Functions#divide(Number)} and other utility
-	 * functions for most of the tests, but I've included a naive function just
-	 * to prove that it's really working.
+	 * {@link BruteForcingAgent} objects can construct (and thereby deduce)
+	 * simple functions using currying. I use {@link Functions#divide(Number)}
+	 * and other utility functions for most of the tests, but I've included a
+	 * naive function just to prove that it's really working.
 	 */
 	@Test
 	public void testAgentDeducesSimpleFunctions() {
-		Agent<Double, Number> agent = new Agent<Double, Number>(Double.class, getPool());
+		BruteForcingAgent<Double, Number> agent = new BruteForcingAgent<Double, Number>(Double.class, getPool());
 		Assert.assertNotNull(agent.apply(Functions.divide(2.0d)));
 		Assert.assertNotNull(agent.apply(Functions.multiply(100.0d)));
 		Assert.assertNotNull(agent.apply(new Function<Number, Number>() {
@@ -78,7 +78,7 @@ public class AgentTests {
 	public void testAgentDeducesComposedFunctions() {
 		Set<Object> pool = getPool();
 		pool.add(Functions.safeComposing());
-		Agent<Double, Number> agent = new Agent<Double, Number>(Double.class, pool);
+		BruteForcingAgent<Double, Number> agent = new BruteForcingAgent<Double, Number>(Double.class, pool);
 
 		Assert.assertNotNull(agent.apply(Functions.compose(Functions.add(3), Functions.multiply(2))));
 		Assert.assertNotNull(agent.apply(new Function<Double, Number>() {
