@@ -979,7 +979,7 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	@Override
 	public boolean at(Vector3d vector) {
 		if (vector == null) {
-			throw new NullPointerException("vector must not be null");
+			return false;
 		}
 		return this.getX() == vector.getX() &&
 				this.getY() == vector.getY() &&
