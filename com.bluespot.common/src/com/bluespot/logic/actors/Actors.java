@@ -140,6 +140,24 @@ public final class Actors {
 	}
 
 	/**
+	 * Returns a new {@link Actor} that will call the underlying actor, up to
+	 * {@code charges} times. After this limit is exceed, no action is taken.
+	 * 
+	 * @param <T>
+	 *            the type of received value
+	 * @param underlying
+	 *            the underlying actor that will be used
+	 * @param charges
+	 *            the maximum number of times that underlying actor will be
+	 *            called
+	 * @return a new {@link Actor}
+	 * @see LimitedActor
+	 */
+	public static <T> Actor<T> limited(Actor<? super T> underlying, int charges) {
+		return new LimitedActor<T>(underlying, charges);
+	}
+
+	/**
 	 * A {@link Actor} implementation that throws all exceptions it is given.
 	 * 
 	 * @see #throwException()
