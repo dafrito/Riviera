@@ -170,4 +170,27 @@ public final class Values {
 		return Values.adapt(new ConstantValue<S>(sourceConstant), adapter);
 	}
 
+	/**
+	 * Return a new value that will invoke an underlying {@link Function}
+	 * recursively, such that values returned will resemble the following:
+	 * 
+	 * <ul>
+	 * <li>{@code initial}
+	 * <li>{@code function.apply(initial)}
+	 * <li>{@code function.apply(function.apply(initial))}
+	 * </ul>
+	 * 
+	 * @param <T>
+	 *            the type of returned value
+	 * @param function
+	 *            the function that will be invoked
+	 * @param initial
+	 *            the initial value passed to the underlying function
+	 * @return a new {@link Value} object
+	 * @see RecursiveValue
+	 */
+	public static <T> Value<T> recurse(Function<? super T, ? extends T> function, T initial) {
+		return new RecursiveValue<T>(function, initial);
+	}
+
 }
