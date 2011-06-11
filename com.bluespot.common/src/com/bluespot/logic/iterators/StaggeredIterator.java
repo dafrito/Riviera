@@ -14,43 +14,51 @@ import java.util.NoSuchElementException;
  */
 public class StaggeredIterator<T> extends CompositeIterator<T> {
 
-	private int index = 0;
+	private Iterator<Iterator<? extends T>> iterIterator;
+
+	private T next;
 
 	public StaggeredIterator(Iterator<? extends T> iterator) {
 		super(iterator);
 	}
 
-	private void nextIterator() {
+	private void seek() {
 		this.lock();
-		while (!this.iterators.isEmpty() && !this.iterators.get(index).hasNext()) {
-			this.iterators.remove(index);
+		while (!this.iterators.isEmpty()) {
+			if (this.iterIterator == null || !this.iterIterator.hasNext()) {
+				this.iterIterator = this.iterators.iterator();
+			}
+			Iterator<? extends T> current = this.iterIterator.next();
+			if (current.hasNext()) {
+				this.next = current.next();
+				return;
+			} else {
+				this.iterIterator.remove();
+			}
 		}
 	}
 
 	@Override
 	public boolean hasNext() {
-		this.nextIterator();
-		return this.iterators.get(index).hasNext();
+		if (!this.isLocked()) {
+			this.seek();
+		}
+		return !this.iterators.isEmpty();
 	}
 
 	@Override
 	public T next() {
-		this.nextIterator();
 		if (this.iterators.isEmpty()) {
-			throw new NoSuchElementException("Iterator cannot be iterated beyond its last element");
+			throw new NoSuchElementException("No more elements in iterator");
 		}
-		Iterator<? extends T> iter = this.iterators.get(index);
-		index = (index + 1) % this.iterators.size();
-		return iter.next();
+		T rv = this.next;
+		this.seek();
+		return rv;
 	}
 
 	@Override
 	public void remove() {
-		this.nextIterator();
-		if (this.iterators.isEmpty()) {
-			throw new IllegalStateException("No iterator is available for removal");
-		}
-		this.iterators.get(index).remove();
+		throw new UnsupportedOperationException("Removal is not supported");
 	}
 
 }
