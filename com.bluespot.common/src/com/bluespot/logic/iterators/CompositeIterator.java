@@ -49,4 +49,8 @@ public abstract class CompositeIterator<T> implements Iterator<T> {
 	protected void lock() {
 		this.locked = true;
 	}
+
+	protected boolean isLocked() {
+		return this.locked;
+	}
 }
