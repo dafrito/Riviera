@@ -192,5 +192,4 @@ public final class Values {
 	public static <T> Value<T> recurse(Function<? super T, ? extends T> function, T initial) {
 		return new RecursiveValue<T>(function, initial);
 	}
-
 }
