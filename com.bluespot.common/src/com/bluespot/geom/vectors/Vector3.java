@@ -152,6 +152,58 @@ public interface Vector3<V extends Vector3<V>> {
 	public V added(Axis axis, V vector);
 
 	/**
+	 * Subtract the specified vector from this vector.
+	 * 
+	 * @param vector
+	 *            the vector that will be used in this operation. It will not be
+	 *            modified.
+	 * @throws UnsupportedOperationException
+	 *             if this vector is not mutable
+	 * @see #subtracted(Vector3)
+	 */
+	public void subtract(V vector);
+
+	/**
+	 * Subtract the specified vector from this vector at the specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified by this operation
+	 * @param vector
+	 *            the vector that will be used in this operation. It will not be
+	 *            modified.
+	 * @throws UnsupportedOperationException
+	 *             if this vector is not mutable
+	 * @see #subtracted(Axis, Vector3)
+	 */
+	public void subtract(Axis axis, V vector);
+
+	/**
+	 * Return a mutable vector with this vector's values, but subtracted using
+	 * the specified vector.
+	 * 
+	 * @param vector
+	 *            the vector that will be used in this operation. It will not be
+	 *            modified.
+	 * @return a mutable vector translated from this vector
+	 * @see #subtract(Vector3)
+	 */
+	public V subtracted(V vector);
+
+	/**
+	 * Return a mutable vector at this position, but with the specified
+	 * translation at the specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be subtracted
+	 * @param vector
+	 *            the vector that will be used in the subtraction. It will not
+	 *            be modified.
+	 * @return a mutable vector translated from this vector
+	 * @see #subtracted(Axis, Vector3)
+	 */
+	public V subtracted(Axis axis, V vector);
+
+	/**
 	 * Multiply this vector's values by the specified vector's values. This
 	 * modified vector will become {@code (x*vector.x, y*vector.y, z*vector.z)}
 	 * 

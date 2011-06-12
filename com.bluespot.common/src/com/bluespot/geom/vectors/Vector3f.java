@@ -267,6 +267,34 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
+	 * Subtract the specified value from this vector's X axis.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return the old value at the X axis
+	 * @see #subtractedX(int)
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 * @throw IllegalArgumentException if {@code offset} is NaN
+	 */
+	public float subtractX(float offset) {
+		return this.setX(this.getX() - offset);
+	}
+
+	/**
+	 * Return a mutable vector at this vector's position, but with the specified
+	 * translation.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return a mutable vector at {@code (x - offset, y, z)}
+	 * @see #subtractX(int)
+	 * @throw IllegalArgumentException if {@code offset} is NaN
+	 */
+	public Vector3f subtractedX(float offset) {
+		return this.withX(this.getX() - offset);
+	}
+
+	/**
 	 * Multiply the specified x value of this vector.
 	 * 
 	 * @param factor
@@ -362,6 +390,32 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
+	 * Subtract the specified value from this vector's Y axis.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return the old value at the Y axis
+	 * @see #subtractedY(int)
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 */
+	public float subtractY(float offset) {
+		return this.setY(this.getY() - offset);
+	}
+
+	/**
+	 * Return a mutable vector at this vector's position, but with the specified
+	 * translation.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return a mutable vector at {@code (x, y - offset, z)}
+	 * @see #subtractY(int)
+	 */
+	public Vector3f subtractedY(float offset) {
+		return this.withY(this.getY() - offset);
+	}
+
+	/**
 	 * Multiply the specified y value of this vector.
 	 * 
 	 * @param factor
@@ -454,6 +508,34 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		Vector3f vector = this.toMutable();
 		vector.addZ(offset);
 		return vector;
+	}
+
+	/**
+	 * Subtract the specified value from this vector's Z axis.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return the old value at the Z axis
+	 * @see #subtractedZ(int)
+	 * @throw UnsupportedOperationException if this vector is not mutable
+	 * @throw IllegalArgumentException if {@code offset} is NaN
+	 */
+	public float subtractZ(float offset) {
+		return this.setZ(this.getZ() - offset);
+	}
+
+	/**
+	 * Return a mutable vector at this vector's position, but with the specified
+	 * translation.
+	 * 
+	 * @param offset
+	 *            the value to subtract
+	 * @return a mutable vector at {@code (x, y, z - offset)}
+	 * @see #subtractZ(int)
+	 * @throw IllegalArgumentException if {@code offset} is NaN
+	 */
+	public Vector3f subtractedZ(float offset) {
+		return this.withZ(this.getZ() - offset);
 	}
 
 	/**
@@ -744,6 +826,133 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		}
 		Vector3f result = this.toMutable();
 		result.add(axis, value);
+		return result;
+	}
+
+	@Override
+	public void subtract(Vector3f vector) {
+		this.subtractX(vector.getX());
+		this.subtractY(vector.getY());
+		this.subtractZ(vector.getZ());
+	}
+
+	/**
+	 * Subtracts the specified value from each of this vector's values.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 */
+	public void subtract(float value) {
+		this.subtractX(value);
+		this.subtractY(value);
+		this.subtractZ(value);
+	}
+
+	@Override
+	public void subtract(Axis axis, Vector3f vector) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.subtractX(vector.getX());
+			return;
+		case Y:
+			this.subtractY(vector.getY());
+			return;
+		case Z:
+			this.subtractZ(vector.getZ());
+			return;
+		case XY:
+			this.subtractX(vector.getX());
+			this.subtractY(vector.getY());
+			return;
+		case XZ:
+			this.subtractX(vector.getX());
+			this.subtractZ(vector.getZ());
+			return;
+		case YZ:
+			this.subtractY(vector.getY());
+			this.subtractZ(vector.getZ());
+			return;
+		}
+		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	/**
+	 * Subtracts the specified value from the specified axes.
+	 * 
+	 * @param axis
+	 *            the axes that will be modified
+	 * @param value
+	 *            the subtracted value
+	 */
+	public void subtract(Axis axis, float value) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("vector is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.subtractX(value);
+			return;
+		case Y:
+			this.subtractY(value);
+			return;
+		case Z:
+			this.subtractZ(value);
+			return;
+		case XY:
+			this.subtractX(value);
+			this.subtractY(value);
+			return;
+		case XZ:
+			this.subtractX(value);
+			this.subtractZ(value);
+			return;
+		case YZ:
+			this.subtractY(value);
+			this.subtractZ(value);
+			return;
+		}
+		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	/**
+	 * Returns a mutable vector that's translated by the specified amount.
+	 * 
+	 * @param value
+	 *            the value that will be used
+	 * @return a mutable vector that's at this position, but translated by the
+	 *         specified amount
+	 */
+	public Vector3f subtracted(float value) {
+		Vector3f result = this.toMutable();
+		result.add(value);
+		return result;
+	}
+
+	/**
+	 * Returns a mutable vector at this position, minus the specified
+	 * translation.
+	 * 
+	 * @param axis
+	 *            the axes that will be translated
+	 * @param value
+	 *            the subtracted value
+	 * @return a mutable vector translated from this position
+	 */
+	public Vector3f subtracted(Axis axis, float value) {
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		Vector3f result = this.toMutable();
+		result.subtract(axis, value);
 		return result;
 	}
 

@@ -60,6 +60,26 @@ public abstract class AbstractVector3<V extends Vector3<V>> implements Vector3<V
 	}
 
 	@Override
+	public V subtracted(V vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		V result = this.toMutable();
+		result.subtract(vector);
+		return result;
+	}
+
+	@Override
+	public V subtracted(Axis axis, V vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
+		V result = this.toMutable();
+		result.subtract(axis, vector);
+		return result;
+	}
+
+	@Override
 	public V multiplied(V vector) {
 		V result = this.toMutable();
 		result.multiply(vector);
