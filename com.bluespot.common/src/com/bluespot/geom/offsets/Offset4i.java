@@ -6,7 +6,7 @@ package com.bluespot.geom.offsets;
 import com.bluespot.geom.Side;
 
 /**
- * An {@link Offset4i} in integer precision.
+ * An {@link Offset4} in {@code int} precision.
  * 
  * @author Aaron Faanes
  * 
