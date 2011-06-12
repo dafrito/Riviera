@@ -3,6 +3,7 @@
  */
 package com.bluespot.logic.iterators;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -183,5 +184,31 @@ public final class Iterators {
 
 	public static <T> Iterator<T> guard(Iterator<? extends T> underlying, Predicate<? super T> sentinel) {
 		return new GuardedIterator<T>(underlying, sentinel);
+	}
+
+	public static Iterable<String> iterable(final File file) {
+		if (file == null) {
+			throw new NullPointerException("file must not be null");
+		}
+		return new Iterable<String>() {
+
+			@Override
+			public Iterator<String> iterator() {
+				return new LineIterator(file);
+			}
+		};
+	}
+
+	public static Iterable<String> iterable(final String str) {
+		if (str == null) {
+			throw new NullPointerException("str must not be null");
+		}
+		return new Iterable<String>() {
+
+			@Override
+			public Iterator<String> iterator() {
+				return new LineIterator(str);
+			}
+		};
 	}
 }
