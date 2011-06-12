@@ -17,30 +17,84 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	private int top;
 	private int bottom;
 
+	/**
+	 * Returns a mutable {@link Offset4i} with the specified value used for all
+	 * sides.
+	 * 
+	 * @param side
+	 *            the value of each side
+	 * @return a new mutable {@link Offset4i}
+	 */
 	public static Offset4i mutable(int side) {
 		return new Offset4i(true, side, side, side, side);
 	}
 
+	/**
+	 * Returns a frozen {@link Offset4i} with the specified value used for all
+	 * sides.
+	 * 
+	 * @param side
+	 *            the value of each side
+	 * @return a frozen {@link Offset4i}
+	 */
 	public static Offset4i frozen(int side) {
 		return new Offset4i(false, side, side, side, side);
 	}
 
+	/**
+	 * Returns a mutable {@link Offset4i} with the specified values for its
+	 * sides.
+	 * 
+	 * @param left
+	 *            the magnitude of the left side
+	 * @param right
+	 *            the magnitude of the right side
+	 * @param top
+	 *            the magnitude of the top side
+	 * @param bottom
+	 *            the magnitude of the bottom side
+	 * @return a new mutable {@link Offset4i}
+	 */
 	public static Offset4i mutable(int left, int right, int top, int bottom) {
 		return new Offset4i(true, left, right, top, bottom);
 	}
 
+	/**
+	 * Returns a frozen {@link Offset4i} with the specified values for its
+	 * sides.
+	 * 
+	 * @param left
+	 *            the magnitude of the left side
+	 * @param right
+	 *            the magnitude of the right side
+	 * @param top
+	 *            the magnitude of the top side
+	 * @param bottom
+	 *            the magnitude of the bottom side
+	 * @return a frozen {@link Offset4i}
+	 */
 	public static Offset4i frozen(int left, int right, int top, int bottom) {
 		return new Offset4i(false, left, right, top, bottom);
 	}
 
 	private static final Offset4i ONE = Offset4i.frozen(1);
 
+	/**
+	 * Returns a frozen {@link Offset4i} with one used for each of its sides.
+	 * 
+	 * @return a frozen {@link Offset4i}
+	 */
 	public static Offset4i one() {
 		return ONE;
 	}
 
 	private static final Offset4i ZERO = Offset4i.frozen(0);
 
+	/**
+	 * Returns a frozen {@link Offset4i} with zero used for each of its sides.
+	 * 
+	 * @return a frozen {@link Offset4i}
+	 */
 	public static Offset4i zero() {
 		return ZERO;
 	}
