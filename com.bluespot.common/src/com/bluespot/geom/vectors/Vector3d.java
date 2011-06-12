@@ -436,7 +436,7 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	 * @param offset
 	 *            the value to add
 	 * @return a vector at {@code (x, y + offset, z)}
-	 * @throw IllegalArgumentException if {@code value} is NaN
+	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public Vector3d addedY(double offset) {
 		Vector3d vector = this.toMutable();
@@ -536,7 +536,7 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	 * @param offset
 	 *            the value to add
 	 * @return a vector at {@code (x, y, z + offset)}
-	 * @throw IllegalArgumentException if {@code value} is NaN
+	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public Vector3d addedZ(double offset) {
 		Vector3d vector = this.toMutable();
