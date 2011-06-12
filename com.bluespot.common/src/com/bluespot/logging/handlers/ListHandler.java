@@ -3,7 +3,6 @@ package com.bluespot.logging.handlers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.logging.Handler;
 import java.util.logging.LogRecord;
 
 /**
@@ -11,7 +10,7 @@ import java.util.logging.LogRecord;
  * 
  * @author Aaron Faanes
  */
-public final class ListHandler extends Handler {
+public final class ListHandler extends DefaultHandler {
 
 	private final List<LogRecord> records;
 
@@ -31,18 +30,10 @@ public final class ListHandler extends Handler {
 	 *            the list to populate
 	 */
 	public ListHandler(final List<LogRecord> records) {
+		if (records == null) {
+			throw new NullPointerException("records must not be null");
+		}
 		this.records = records;
-	}
-
-	@Override
-	public void close() throws SecurityException {
-		// Do nothing; this handler never has any assets that must be
-		// explicitly closed.
-	}
-
-	@Override
-	public void flush() {
-		// Do nothing; our collection is always synchronized.
 	}
 
 	/**
