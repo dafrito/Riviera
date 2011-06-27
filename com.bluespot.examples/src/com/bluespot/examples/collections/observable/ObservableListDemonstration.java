@@ -1,17 +1,20 @@
 package com.bluespot.examples.collections.observable;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-
-import org.jdesktop.application.Action;
-import org.jdesktop.application.SingleFrameApplication;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import com.bluespot.collections.observable.list.ObservableList;
+import com.bluespot.demonstration.BorderLayoutDemonstration;
 import com.bluespot.demonstration.Demonstration;
 
 /**
@@ -20,49 +23,68 @@ import com.bluespot.demonstration.Demonstration;
  * @author Aaron Faanes
  * 
  */
-public final class ObservableListDemonstration extends SingleFrameApplication {
-
+public final class ObservableListDemonstration extends BorderLayoutDemonstration {
 	private final ObservableList<String> strings = new ObservableList<String>();
 
 	private final JList list = new JList(this.strings);
 
-	private final JButton addButton = new JButton();
+	private final JButton addButton = new JButton(new AbstractAction() {
+		private static final long serialVersionUID = 1L;
 
-	private final JButton removeButton = new JButton();
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			strings.add("Hello, world! This is element " + strings.size());
+			removeButton.setEnabled(true);
+			if (list.getSelectedIndex() == -1) {
+				list.setSelectedIndex(0);
+			}
+		}
+	});
 
-	@Action
-	protected void addElement() {
-		this.strings.add("Hello, world! This is element " + this.strings.size());
-		this.removeButton.setEnabled(true);
-	}
+	private final JButton removeButton = new JButton(new AbstractAction() {
+		private static final long serialVersionUID = 1L;
 
-	@Action
-	protected void removeElement() {
-		assert !this.strings.isEmpty();
-		this.strings.remove(0);
-		this.removeButton.setEnabled(!this.strings.isEmpty());
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			assert !strings.isEmpty();
+			int index = list.getSelectedIndex();
+			assert index != -1;
+			list.addListSelectionListener(new ListSelectionListener() {
+				@Override
+				public void valueChanged(ListSelectionEvent e) {
+					if (list.getSelectedIndex() == -1 && !strings.isEmpty()) {
+						list.setSelectedIndex(0);
+					}
+				}
+			});
+			strings.remove(index);
+			removeButton.setEnabled(!strings.isEmpty());
+		}
+	});
+
+	@Override
+	protected void preInitialize(final JFrame frame) {
+		super.preInitialize(frame);
+		frame.setPreferredSize(new Dimension(400, 400));
 	}
 
 	@Override
-	protected void startup() {
-		final JPanel panel = new JPanel(new BorderLayout());
-		panel.setPreferredSize(new Dimension(400, 400));
+	protected JComponent newCenterPane() {
+		return new JScrollPane(this.list);
+	}
 
-		panel.add(new JScrollPane(this.list), BorderLayout.CENTER);
+	@Override
+	protected JComponent newSouthPane() {
+		JPanel buttons = new JPanel();
 
-		final JPanel buttons = new JPanel();
-		panel.add(buttons, BorderLayout.SOUTH);
-
-		this.addButton.setAction(this.getContext().getActionMap().get("addElement"));
 		this.addButton.setText("Add");
 		buttons.add(this.addButton);
 
-		this.removeButton.setAction(this.getContext().getActionMap().get("removeElement"));
 		this.removeButton.setText("Remove");
 		this.removeButton.setEnabled(false);
 		buttons.add(this.removeButton);
 
-		this.show(panel);
+		return buttons;
 	}
 
 	/**
@@ -73,7 +95,7 @@ public final class ObservableListDemonstration extends SingleFrameApplication {
 	 *            unused
 	 */
 	public static void main(final String[] args) {
-		launch(ObservableListDemonstration.class, args);
+		Demonstration.launch(ObservableListDemonstration.class);
 	}
 
 }
