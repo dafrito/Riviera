@@ -1,4 +1,4 @@
-package com.bluespot.playground;
+package com.bluespot;
 
 import java.util.HashSet;
 import java.util.Set;
