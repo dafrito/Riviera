@@ -159,25 +159,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return FORWARD;
 	}
 
-	private static final Vector3f LEFT = Vector3f.frozen(1, 0, 0);
-
-	/**
-	 * Returns a frozen vector that points down the positive x axis.
-	 * 
-	 * @return a frozen vector with components {@code (1, 0, 0)}
-	 */
-	public static Vector3f left() {
-		return LEFT;
-	}
-
-	private static final Vector3f RIGHT = LEFT.inverted().toFrozen();
+	private static final Vector3f LEFT = Vector3f.frozen(-1, 0, 0);
 
 	/**
 	 * Returns a frozen vector that points down the negative x axis.
 	 * 
 	 * @return a frozen vector with components {@code (-1, 0, 0)}
 	 */
-	public static final Vector3f right() {
+	public static final Vector3f left() {
+		return LEFT;
+	}
+
+	private static final Vector3f RIGHT = Vector3f.frozen(1, 0, 0);
+
+	/**
+	 * Returns a frozen vector that points down the positive x axis.
+	 * 
+	 * @return a frozen vector with components {@code (1, 0, 0)}
+	 */
+	public static Vector3f right() {
 		return RIGHT;
 	}
 

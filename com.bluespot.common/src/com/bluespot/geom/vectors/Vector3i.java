@@ -122,6 +122,19 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return ORIGIN;
 	}
 
+	/**
+	 * Return a frozen vector with values of 1 at the specified axes. This is
+	 * normally used to create unit vectors, but {@code axis} values of multiple
+	 * axes are allowed.
+	 * 
+	 * @param axis
+	 *            the axes with values of 1
+	 * @return a frozen unit vector
+	 */
+	public static Vector3i unit(Axis axis) {
+		return origin().with(axis, 1).toFrozen();
+	}
+
 	private static final Vector3i UP = Vector3i.frozen(0, 1, 0);
 
 	/**
@@ -144,17 +157,37 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return FORWARD;
 	}
 
+	private static final Vector3i LEFT = Vector3i.frozen(-1, 0, 0);
+
 	/**
-	 * Return a frozen vector with values of 1 at the specified axes. This is
-	 * normally used to create unit vectors, but {@code axis} values of multiple
-	 * axes are allowed.
+	 * Returns a frozen vector that points down the negative x axis.
 	 * 
-	 * @param axis
-	 *            the axes with values of 1
-	 * @return a frozen unit vector
+	 * @return a frozen vector with components {@code (-1, 0, 0)}
 	 */
-	public static Vector3i unit(Axis axis) {
-		return origin().with(axis, 1).toFrozen();
+	public static final Vector3i left() {
+		return LEFT;
+	}
+
+	private static final Vector3i RIGHT = Vector3i.frozen(1, 0, 0);
+
+	/**
+	 * Returns a frozen vector that points down the positive x axis.
+	 * 
+	 * @return a frozen vector with components {@code (1, 0, 0)}
+	 */
+	public static Vector3i right() {
+		return RIGHT;
+	}
+
+	private static final Vector3i DOWN = UP.inverted().toFrozen();
+
+	/**
+	 * Returns a frozen vector that points down the negative Y axis.
+	 * 
+	 * @return a frozen vector with components {@code (0, -1, 0)}
+	 */
+	public static final Vector3i down() {
+		return DOWN;
 	}
 
 	private int z;
