@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluespot.opengl;
+package com.bluespot.examples.opengl;
 
 import java.awt.Font;
 

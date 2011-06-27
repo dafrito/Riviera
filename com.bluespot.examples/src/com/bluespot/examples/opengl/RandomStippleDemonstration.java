@@ -1,4 +1,4 @@
-package com.bluespot.opengl;
+package com.bluespot.examples.opengl;
 
 import java.util.ArrayList;
 import java.util.Iterator;

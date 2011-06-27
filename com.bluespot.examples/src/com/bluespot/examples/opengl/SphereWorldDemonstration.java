@@ -1,4 +1,4 @@
-package com.bluespot.opengl;
+package com.bluespot.examples.opengl;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -19,6 +19,8 @@ import javax.media.opengl.glu.GLU;
 import com.bluespot.demonstration.Demonstration;
 import com.bluespot.geom.vectors.Vector3f;
 import com.bluespot.graphics.Painting;
+import com.bluespot.opengl.Frame;
+import com.bluespot.opengl.Rendering;
 import com.jogamp.opengl.util.gl2.GLUT;
 
 /**

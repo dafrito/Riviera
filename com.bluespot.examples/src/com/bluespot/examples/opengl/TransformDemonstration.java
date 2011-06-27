@@ -1,4 +1,4 @@
-package com.bluespot.opengl;
+package com.bluespot.examples.opengl;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
