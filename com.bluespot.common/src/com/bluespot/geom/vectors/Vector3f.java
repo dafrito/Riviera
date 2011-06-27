@@ -124,6 +124,19 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return ORIGIN;
 	}
 
+	/**
+	 * Return a frozen vector with values of 1 at the specified axes. This is
+	 * normally used to create unit vectors, but {@code axis} values of multiple
+	 * axes are allowed.
+	 * 
+	 * @param axis
+	 *            the axes with values of 1
+	 * @return a frozen unit vector
+	 */
+	public static Vector3f unit(Axis axis) {
+		return origin().with(axis, 1).toFrozen();
+	}
+
 	private static final Vector3f UP = Vector3f.frozen(0, 1, 0);
 
 	/**
@@ -144,19 +157,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 */
 	public static Vector3f forward() {
 		return FORWARD;
-	}
-
-	/**
-	 * Return a frozen vector with values of 1 at the specified axes. This is
-	 * normally used to create unit vectors, but {@code axis} values of multiple
-	 * axes are allowed.
-	 * 
-	 * @param axis
-	 *            the axes with values of 1
-	 * @return a frozen unit vector
-	 */
-	public static Vector3f unit(Axis axis) {
-		return origin().with(axis, 1).toFrozen();
 	}
 
 	private static final Vector3f LEFT = Vector3f.frozen(1, 0, 0);
