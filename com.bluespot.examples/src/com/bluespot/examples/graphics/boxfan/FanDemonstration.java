@@ -81,7 +81,7 @@ public class FanDemonstration extends Demonstration {
 		}
 
 		final FanPanel fan = new FanPanel(.8d, 5);
-		fan.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, Color.RED));
+		fan.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
 
 		panel.add(fan, BorderLayout.CENTER);
 
