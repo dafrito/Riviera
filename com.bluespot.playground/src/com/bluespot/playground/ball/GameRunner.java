@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluespot.playground.game;
+package com.bluespot.playground.ball;
 
 import java.awt.CardLayout;
 
