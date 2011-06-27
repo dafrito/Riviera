@@ -1,4 +1,4 @@
-package com.bluespot.physics;
+package com.bluespot.playground.physics;
 
 /**
  * Represents an attraction or connection between some objects.
