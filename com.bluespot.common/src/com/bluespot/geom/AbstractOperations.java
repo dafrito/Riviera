@@ -66,7 +66,7 @@ public abstract class AbstractOperations implements Operations {
 	@Override
 	public void multiply(final Rectangle rectangle, final double widthMultipler, final double heightMultiplier) {
 		final Dimension dimension = rectangle.getSize();
-		this.divide(dimension, widthMultipler, heightMultiplier);
+		this.multiply(dimension, widthMultipler, heightMultiplier);
 		rectangle.setSize(dimension);
 	}
 
