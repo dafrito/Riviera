@@ -37,10 +37,6 @@ public class FanPanel extends JPanel {
 
 	private final Rotation model;
 
-	public FanPanel(final double percentageFilled, final int numArcs) {
-		this(new Rotation(), percentageFilled, numArcs);
-	}
-
 	public FanPanel(final Rotation model, final double percentageFilled, final int numArcs) {
 		super();
 		this.model = model;
