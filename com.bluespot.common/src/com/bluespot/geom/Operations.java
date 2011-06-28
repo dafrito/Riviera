@@ -9,6 +9,9 @@ import java.awt.Rectangle;
  * 
  * @author Aaron Faanes
  * @see AbstractOperations
+ * @see Geometry#Round
+ * @see Geometry#Floor
+ * @see Geometry#Ceil
  */
 public interface Operations {
 
