@@ -77,8 +77,6 @@ public class FanPanel extends JPanel {
 	}
 
 	private void drawFan(final Graphics2D g) {
-
-		// Antialiasing makes our fan look alot better.
 		Components.setAntialias(g, true);
 
 		final Dimension halfBounds = this.getSize();
