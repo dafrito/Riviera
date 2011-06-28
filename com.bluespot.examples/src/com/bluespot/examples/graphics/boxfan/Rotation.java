@@ -8,8 +8,7 @@ package com.bluespot.examples.graphics.boxfan;
  */
 public final class Rotation {
 
-	@SuppressWarnings("unused")
-	private int speedDegrees;
+	private float rotation;
 
 	/**
 	 * Sets the desired speed of rotation, in degrees.
@@ -17,8 +16,8 @@ public final class Rotation {
 	 * @param speedDegrees
 	 *            the desired rotation speed, in degrees
 	 */
-	public void setSpeed(final int speedDegrees) {
-		this.speedDegrees = speedDegrees;
+	public void setSpeed(final float speedDegrees) {
+		this.rotation = (float) (Math.PI * speedDegrees / 180);
 	}
 
 	/**
@@ -27,8 +26,8 @@ public final class Rotation {
 	 * 
 	 * @return the angle of the first fan blade
 	 */
-	public int getAngle() {
-		return 0;
+	public float getAngle() {
+		return this.rotation;
 	}
 
 }

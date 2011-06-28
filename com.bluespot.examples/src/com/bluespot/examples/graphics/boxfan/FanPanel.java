@@ -8,9 +8,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -33,7 +30,6 @@ public class FanPanel extends JPanel {
 	});
 
 	private double degreeOffset = 0;
-	protected BufferedImage fanImage;
 
 	private final Rotation model;
 
@@ -42,14 +38,12 @@ public class FanPanel extends JPanel {
 		this.model = model;
 		this.percentageFilled = percentageFilled;
 		this.numArcs = numArcs;
-		this.addComponentListener(new ComponentAdapter() {
-
+		new Timer(1000 / 30, new ActionListener() {
 			@Override
-			public void componentResized(final ComponentEvent e) {
-				FanPanel.this.fanImage = null;
+			public void actionPerformed(ActionEvent e) {
+				repaint();
 			}
-
-		});
+		}).start();
 	}
 
 	public Rotation getModel() {
@@ -68,12 +62,10 @@ public class FanPanel extends JPanel {
 
 		g.setColor(Color.blue);
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		g.setColor(Color.white);
 
 		this.drawFan((Graphics2D) g.create());
 
 		this.degreeOffset += this.getModel().getAngle();
-		this.degreeOffset %= 360;
 	}
 
 	private void drawFan(final Graphics2D g) {
@@ -88,19 +80,11 @@ public class FanPanel extends JPanel {
 		Geometry.Round.multiply(box, this.percentageFilled);
 		Geometry.alignCenter(box, new Point(0, 0));
 
-		g.rotate(Math.toRadians(this.degreeOffset));
+		g.rotate(this.degreeOffset);
 		g.setPaint(Color.white);
-		g.rotate((-Math.PI / 2) + (Math.PI / this.numArcs / 2));
-
-	}
-
-	@SuppressWarnings("unused")
-	private void renderFan(final BufferedImage image, final int size) {
-		final Graphics2D g = image.createGraphics();
 		for (int i = 0; i < this.numArcs; i++) {
-			g.fillArc(0, 0, size, size, 0, 360 / (this.numArcs * 2));
+			g.fillArc(box.x, box.y, box.width, box.height, 0, 360 / (this.numArcs * 2));
 			g.rotate(2 * Math.PI / this.numArcs);
 		}
-		g.dispose();
 	}
 }
