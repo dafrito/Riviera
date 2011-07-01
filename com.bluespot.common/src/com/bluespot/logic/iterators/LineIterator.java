@@ -26,13 +26,27 @@ public class LineIterator implements Iterator<String> {
 	private String line;
 	private boolean started = false;
 
-	public LineIterator(String string) {
-		if (string == null) {
+	/**
+	 * Construct a line iterator that reads from the specified string.
+	 * 
+	 * @param content
+	 *            the underlying content of this iterator
+	 */
+	public LineIterator(String content) {
+		if (content == null) {
 			throw new NullPointerException("string must not be null");
 		}
-		this.reader = new BufferedReader(new StringReader(string));
+		this.reader = new BufferedReader(new StringReader(content));
 	}
 
+	/**
+	 * Construct a line iterator that reads from the specified file.
+	 * 
+	 * @param file
+	 *            the file that is read
+	 * @throws UnderlyingIOException
+	 *             if an {@link IOException} occurs
+	 */
 	public LineIterator(File file) {
 		if (file == null) {
 			throw new NullPointerException("file must not be null");
