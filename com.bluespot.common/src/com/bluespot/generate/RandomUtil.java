@@ -85,7 +85,7 @@ public final class RandomUtil {
 	 * 
 	 * @return a randomly generated name
 	 */
-	public static String generateName() {
+	public static String randomName() {
 		final StringBuilder builder = new StringBuilder();
 		while (builder.length() < 4) {
 			builder.delete(0, builder.length());
