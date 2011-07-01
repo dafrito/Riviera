@@ -19,6 +19,7 @@ public class TokenStream<T extends Token<V>, V extends TokenVisitor> {
 
 	private final List<T> tokens = new LinkedList<T>();
 
+	@SuppressWarnings("unused")
 	private final Reader reader;
 
 	public TokenStream(String characters) {

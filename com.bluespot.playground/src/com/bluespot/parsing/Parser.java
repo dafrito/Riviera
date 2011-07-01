@@ -32,7 +32,6 @@ public class Parser<T extends Token<?>> {
 	 * @throws IOException
 	 */
 	public Iterator<T> feed(Reader reader) throws IOException {
-		int c = reader.read();
 		return new TokenIterator();
 	}
 

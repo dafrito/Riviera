@@ -3,15 +3,11 @@
  */
 package com.bluespot.parsing;
 
-import static org.junit.Assert.*;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
 
@@ -19,6 +15,7 @@ import org.junit.Test;
  * @author Aaron Faanes
  * 
  */
+@SuppressWarnings("rawtypes")
 public class ParsingTests {
 
 	@Test
@@ -61,6 +58,7 @@ public class ParsingTests {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parserCanSplitStrings() throws IOException {
 		Parser parser = new Parser();
@@ -74,7 +72,7 @@ public class ParsingTests {
 		});
 		Iterator<? extends Token<?>> iter = parser.feed(new FileReader("notime.txt"));
 		while (iter.hasNext()) {
-			Token<?> token = iter.next();
+			iter.next();
 		}
 	}
 
@@ -98,6 +96,7 @@ public class ParsingTests {
 	 * 
 	 * @see Parser#preparseList
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public void parserIgnoresCommentsAndCapturesStrings() throws IOException {
 		Parser parser = new Parser();
@@ -107,7 +106,7 @@ public class ParsingTests {
 		rules.group('"').token(Tokens.STRING);
 		Iterator<? extends Token<?>> iter = parser.feed(new FileReader("notime.txt"));
 		while (iter.hasNext()) {
-			Token<?> token = iter.next();
+			iter.next();
 		}
 	}
 }
