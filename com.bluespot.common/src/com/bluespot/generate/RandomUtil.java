@@ -1,5 +1,7 @@
 package com.bluespot.generate;
 
+import java.util.Random;
+
 /**
  * Collection of methods dealing with producing random choices
  * 
@@ -11,6 +13,36 @@ public final class RandomUtil {
 	private RandomUtil() {
 		// Suppress default constructor to ensure non-instantiability.
 		throw new AssertionError("Instantiation not allowed");
+	}
+
+	/**
+	 * A thread-local factory of {@link Random} instances.
+	 */
+	private static final ThreadLocal<Random> THREAD_LOCAL = new ThreadLocal<Random>() {
+		@Override
+		protected Random initialValue() {
+			return new Random();
+		}
+	};
+
+	/**
+	 * Return a thread-local random instance.
+	 * 
+	 * @return a thread-local random instance
+	 */
+	public static Random threadLocal() {
+		return THREAD_LOCAL.get();
+	}
+
+	private static Random GLOBAL = new Random();
+
+	/**
+	 * Return a globally-shared random instance.
+	 * 
+	 * @return a globally-shared random instance
+	 */
+	public static Random global() {
+		return GLOBAL;
 	}
 
 	/**
