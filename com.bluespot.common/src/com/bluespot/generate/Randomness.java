@@ -8,9 +8,9 @@ import java.util.Random;
  * @author Aaron Faanes
  * 
  */
-public final class RandomUtil {
+public final class Randomness {
 
-	private RandomUtil() {
+	private Randomness() {
 		// Suppress default constructor to ensure non-instantiability.
 		throw new AssertionError("Instantiation not allowed");
 	}
@@ -89,8 +89,8 @@ public final class RandomUtil {
 		final StringBuilder builder = new StringBuilder();
 		while (builder.length() < 4) {
 			builder.delete(0, builder.length());
-			builder.append(RandomUtil.choice(RandomUtil.NAME_PREFIXES));
-			builder.append(RandomUtil.choice(RandomUtil.NAME_SUFFIXES));
+			builder.append(Randomness.choice(Randomness.NAME_PREFIXES));
+			builder.append(Randomness.choice(Randomness.NAME_SUFFIXES));
 		}
 		return builder.toString();
 	}

@@ -3,7 +3,7 @@ package com.bluespot;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.bluespot.generate.RandomUtil;
+import com.bluespot.generate.Randomness;
 
 /**
  * A monkey attempts to reproduce strings through random generation of
@@ -91,7 +91,7 @@ public class Monkey {
 		final StringBuilder builder = new StringBuilder();
 		while (true) {
 			for (int i = 0; i < this.target.length(); i++) {
-				builder.append(RandomUtil.choice(this.candidates));
+				builder.append(Randomness.choice(this.candidates));
 			}
 			if (builder.toString().equals(this.target)) {
 				break;
@@ -117,13 +117,13 @@ public class Monkey {
 		// Construct the initial working string
 		final StringBuilder builder = new StringBuilder();
 		for (int i = 0; i < this.target.length(); i++) {
-			builder.append(RandomUtil.choice(this.candidates));
+			builder.append(Randomness.choice(this.candidates));
 		}
 		// Loop until we've generated the string
 		while (!builder.toString().equals(this.target)) {
 			for (int i = 0; i < this.target.length(); i++) {
 				if (this.target.charAt(i) != builder.charAt(i)) {
-					builder.setCharAt(i, RandomUtil.choice(this.candidates));
+					builder.setCharAt(i, Randomness.choice(this.candidates));
 				}
 			}
 			this.iterations++;
