@@ -85,8 +85,8 @@ public class GameView extends JComponent {
 		g.setColor(Color.YELLOW);
 		int size = 25;
 		g.fillOval(
-				Math.round(player.getX()) - size,
-				Math.round(player.getY()) - size,
+				Math.round(player.x()) - size,
+				Math.round(player.y()) - size,
 				2 * size,
 				2 * size
 				);

@@ -82,9 +82,9 @@ public final class VectorTests {
 	@Test
 	public void testVector3d() {
 		final Vector3d point = Vector3d.mutable(2.0d, 3.0d, 4.0d);
-		assertThat(point.getX(), is(2.0d));
-		assertThat(point.getY(), is(3.0d));
-		assertThat(point.getZ(), is(4.0d));
+		assertThat(point.x(), is(2.0d));
+		assertThat(point.y(), is(3.0d));
+		assertThat(point.z(), is(4.0d));
 
 		final Vector3d other = Vector3d.mutable(2.0d, 3.0d, 4.0d);
 
@@ -101,9 +101,9 @@ public final class VectorTests {
 	@Test
 	public void testVector3f() {
 		final Vector3f point = Vector3f.mutable(2.0f, 3.0f, 4.0f);
-		assertThat(point.getX(), is(2.0f));
-		assertThat(point.getY(), is(3.0f));
-		assertThat(point.getZ(), is(4.0f));
+		assertThat(point.x(), is(2.0f));
+		assertThat(point.y(), is(3.0f));
+		assertThat(point.z(), is(4.0f));
 
 		final Vector3f other = Vector3f.mutable(2.0f, 3.0f, 4.0f);
 
@@ -120,9 +120,9 @@ public final class VectorTests {
 	@Test
 	public void testVector3i() {
 		final Vector3i point = Vector3i.mutable(2, 3, 4);
-		assertThat(point.getX(), is(2));
-		assertThat(point.getY(), is(3));
-		assertThat(point.getZ(), is(4));
+		assertThat(point.x(), is(2));
+		assertThat(point.y(), is(3));
+		assertThat(point.z(), is(4));
 
 		final Vector3i other = Vector3i.mutable(2, 3, 4);
 

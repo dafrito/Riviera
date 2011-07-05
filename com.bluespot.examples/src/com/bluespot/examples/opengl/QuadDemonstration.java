@@ -50,11 +50,11 @@ public class QuadDemonstration extends AbstractGLDemonstration {
 	protected void render(GL2 gl, GLAutoDrawable drawable) {
 		gl.glBegin(GL2.GL_QUADS);
 		for (int i = 0; i < NUM_QUADS; i++) {
-			float x = vertices[i].getX();
-			float y = vertices[i].getY();
-			float z = vertices[i].getZ();
+			float x = vertices[i].x();
+			float y = vertices[i].y();
+			float z = vertices[i].z();
 			float size = sizes[i];
-			gl.glColor3f(colors[i].getX(), colors[i].getY(), colors[i].getZ());
+			gl.glColor3f(colors[i].x(), colors[i].y(), colors[i].z());
 			gl.glVertex3f(x, y, z);
 			gl.glVertex3f(x + size, y, z);
 			gl.glVertex3f(x + size, y + size, z);

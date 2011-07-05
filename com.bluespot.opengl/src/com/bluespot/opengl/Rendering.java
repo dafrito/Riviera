@@ -143,9 +143,9 @@ public final class Rendering {
 	 *            the frame that will be used to transform the view matrix
 	 */
 	public static void applyCameraTransform(final Frame frame) {
-		Rendering.getGLU().gluLookAt(frame.getLocation().getX(), frame.getLocation().getY(),
-				frame.getLocation().getZ(), frame.getForward().getX(), frame.getForward().getY(),
-				frame.getForward().getZ(), frame.getUp().getX(), frame.getUp().getY(), frame.getUp().getZ());
+		Rendering.getGLU().gluLookAt(frame.getLocation().x(), frame.getLocation().y(),
+				frame.getLocation().z(), frame.getForward().x(), frame.getForward().y(),
+				frame.getForward().z(), frame.getUp().x(), frame.getUp().y(), frame.getUp().z());
 	}
 
 	/**

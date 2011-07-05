@@ -98,27 +98,27 @@ public class Frame {
 			final Vector3f xAxis = this.getUp().crossed(this.getForward());
 
 			// X axis
-			calculated[0] = xAxis.getX();
-			calculated[1] = xAxis.getY();
-			calculated[2] = xAxis.getZ();
+			calculated[0] = xAxis.x();
+			calculated[1] = xAxis.y();
+			calculated[2] = xAxis.z();
 			calculated[3] = 0.0f;
 
 			// Y axis
-			calculated[4] = this.getUp().getX();
-			calculated[5] = this.getUp().getY();
-			calculated[6] = this.getUp().getZ();
+			calculated[4] = this.getUp().x();
+			calculated[5] = this.getUp().y();
+			calculated[6] = this.getUp().z();
 			calculated[7] = 0.0f;
 
 			// Z axis
-			calculated[8] = this.getForward().getX();
-			calculated[9] = this.getForward().getY();
-			calculated[10] = this.getForward().getZ();
+			calculated[8] = this.getForward().x();
+			calculated[9] = this.getForward().y();
+			calculated[10] = this.getForward().z();
 			calculated[11] = 0.0f;
 
 			// Translation
-			calculated[12] = this.getLocation().getX();
-			calculated[13] = this.getLocation().getY();
-			calculated[14] = this.getLocation().getZ();
+			calculated[12] = this.getLocation().x();
+			calculated[13] = this.getLocation().y();
+			calculated[14] = this.getLocation().z();
 			calculated[15] = 1.0f;
 
 			this.matrix = calculated;

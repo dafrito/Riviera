@@ -53,28 +53,28 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
-		return new Vector3f(true, vector.getX(), vector.getY(), vector.getZ());
+		return new Vector3f(true, vector.x(), vector.y(), vector.z());
 	}
 
 	public static Vector3f frozen(Vector3i vector) {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
-		return new Vector3f(false, vector.getX(), vector.getY(), vector.getZ());
+		return new Vector3f(false, vector.x(), vector.y(), vector.z());
 	}
 
 	public static Vector3f mutable(Vector3d vector) {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
-		return new Vector3f(true, (float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+		return new Vector3f(true, (float) vector.x(), (float) vector.y(), (float) vector.z());
 	}
 
 	public static Vector3f frozen(Vector3d vector) {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
-		return new Vector3f(false, (float) vector.getX(), (float) vector.getY(), (float) vector.getZ());
+		return new Vector3f(false, (float) vector.x(), (float) vector.y(), (float) vector.z());
 	}
 
 	/**
@@ -233,7 +233,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @return the x-coordinate of this vector
 	 */
-	public float getX() {
+	public float x() {
 		return this.x;
 	}
 
@@ -282,7 +282,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old x value
 	 */
 	public float addX(float offset) {
-		return this.setX(this.getX() + offset);
+		return this.setX(this.x() + offset);
 	}
 
 	/**
@@ -310,7 +310,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public float subtractX(float offset) {
-		return this.setX(this.getX() - offset);
+		return this.setX(this.x() - offset);
 	}
 
 	/**
@@ -324,7 +324,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public Vector3f subtractedX(float offset) {
-		return this.withX(this.getX() - offset);
+		return this.withX(this.x() - offset);
 	}
 
 	/**
@@ -335,7 +335,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old x value
 	 */
 	public float multiplyX(double factor) {
-		return this.setX((float) (this.getX() * factor));
+		return this.setX((float) (this.x() * factor));
 	}
 
 	/**
@@ -356,7 +356,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @return the y-coordinate of this vector
 	 */
-	public float getY() {
+	public float y() {
 		return this.y;
 	}
 
@@ -405,7 +405,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old y value
 	 */
 	public float addY(float offset) {
-		return this.setY(this.getY() + offset);
+		return this.setY(this.y() + offset);
 	}
 
 	/**
@@ -432,7 +432,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @throw UnsupportedOperationException if this vector is not mutable
 	 */
 	public float subtractY(float offset) {
-		return this.setY(this.getY() - offset);
+		return this.setY(this.y() - offset);
 	}
 
 	/**
@@ -445,7 +445,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @see #subtractY(int)
 	 */
 	public Vector3f subtractedY(float offset) {
-		return this.withY(this.getY() - offset);
+		return this.withY(this.y() - offset);
 	}
 
 	/**
@@ -456,7 +456,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old y value
 	 */
 	public double multiplyY(double factor) {
-		return this.setY((float) (this.getY() * factor));
+		return this.setY((float) (this.y() * factor));
 	}
 
 	/**
@@ -477,7 +477,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @return the z-coordinate of this vector
 	 */
-	public float getZ() {
+	public float z() {
 		return this.z;
 	}
 
@@ -526,7 +526,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old z value
 	 */
 	public float addZ(float offset) {
-		return this.setZ(this.getZ() + offset);
+		return this.setZ(this.z() + offset);
 	}
 
 	/**
@@ -554,7 +554,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public float subtractZ(float offset) {
-		return this.setZ(this.getZ() - offset);
+		return this.setZ(this.z() - offset);
 	}
 
 	/**
@@ -568,7 +568,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @throw IllegalArgumentException if {@code offset} is NaN
 	 */
 	public Vector3f subtractedZ(float offset) {
-		return this.withZ(this.getZ() - offset);
+		return this.withZ(this.z() - offset);
 	}
 
 	/**
@@ -579,7 +579,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return the old z value
 	 */
 	public double multiplyZ(double factor) {
-		return this.setZ((float) (this.getZ() * factor));
+		return this.setZ((float) (this.z() * factor));
 	}
 
 	/**
@@ -600,9 +600,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
-		this.setX(vector.getX());
-		this.setY(vector.getY());
-		this.setZ(vector.getZ());
+		this.setX(vector.x());
+		this.setY(vector.y());
+		this.setZ(vector.z());
 	}
 
 	/**
@@ -654,25 +654,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		}
 		switch (axis) {
 		case X:
-			this.setX(vector.getX());
+			this.setX(vector.x());
 			return;
 		case Y:
-			this.setY(vector.getY());
+			this.setY(vector.y());
 			return;
 		case Z:
-			this.setZ(vector.getZ());
+			this.setZ(vector.z());
 			return;
 		case XY:
-			this.setX(vector.getX());
-			this.setY(vector.getY());
+			this.setX(vector.x());
+			this.setY(vector.y());
 			return;
 		case XZ:
-			this.setX(vector.getX());
-			this.setZ(vector.getZ());
+			this.setX(vector.x());
+			this.setZ(vector.z());
 			return;
 		case YZ:
-			this.setY(vector.getY());
-			this.setZ(vector.getZ());
+			this.setY(vector.y());
+			this.setZ(vector.z());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -740,9 +740,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public void add(Vector3f vector) {
-		this.addX(vector.getX());
-		this.addY(vector.getY());
-		this.addZ(vector.getZ());
+		this.addX(vector.x());
+		this.addY(vector.y());
+		this.addZ(vector.z());
 	}
 
 	/**
@@ -767,25 +767,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		}
 		switch (axis) {
 		case X:
-			this.addX(vector.getX());
+			this.addX(vector.x());
 			return;
 		case Y:
-			this.addY(vector.getY());
+			this.addY(vector.y());
 			return;
 		case Z:
-			this.addZ(vector.getZ());
+			this.addZ(vector.z());
 			return;
 		case XY:
-			this.addX(vector.getX());
-			this.addY(vector.getY());
+			this.addX(vector.x());
+			this.addY(vector.y());
 			return;
 		case XZ:
-			this.addX(vector.getX());
-			this.addZ(vector.getZ());
+			this.addX(vector.x());
+			this.addZ(vector.z());
 			return;
 		case YZ:
-			this.addY(vector.getY());
-			this.addZ(vector.getZ());
+			this.addY(vector.y());
+			this.addZ(vector.z());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -867,9 +867,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public void subtract(Vector3f vector) {
-		this.subtractX(vector.getX());
-		this.subtractY(vector.getY());
-		this.subtractZ(vector.getZ());
+		this.subtractX(vector.x());
+		this.subtractY(vector.y());
+		this.subtractZ(vector.z());
 	}
 
 	/**
@@ -894,25 +894,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		}
 		switch (axis) {
 		case X:
-			this.subtractX(vector.getX());
+			this.subtractX(vector.x());
 			return;
 		case Y:
-			this.subtractY(vector.getY());
+			this.subtractY(vector.y());
 			return;
 		case Z:
-			this.subtractZ(vector.getZ());
+			this.subtractZ(vector.z());
 			return;
 		case XY:
-			this.subtractX(vector.getX());
-			this.subtractY(vector.getY());
+			this.subtractX(vector.x());
+			this.subtractY(vector.y());
 			return;
 		case XZ:
-			this.subtractX(vector.getX());
-			this.subtractZ(vector.getZ());
+			this.subtractX(vector.x());
+			this.subtractZ(vector.z());
 			return;
 		case YZ:
-			this.subtractY(vector.getY());
-			this.subtractZ(vector.getZ());
+			this.subtractY(vector.y());
+			this.subtractZ(vector.z());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -994,9 +994,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public void multiply(Vector3f vector) {
-		this.multiplyX(vector.getX());
-		this.multiplyY(vector.getY());
-		this.multiplyZ(vector.getZ());
+		this.multiplyX(vector.x());
+		this.multiplyY(vector.y());
+		this.multiplyZ(vector.z());
 	}
 
 	@Override
@@ -1016,25 +1016,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		}
 		switch (axis) {
 		case X:
-			this.multiplyX(vector.getX());
+			this.multiplyX(vector.x());
 			return;
 		case Y:
-			this.multiplyY(vector.getY());
+			this.multiplyY(vector.y());
 			return;
 		case Z:
-			this.multiplyZ(vector.getZ());
+			this.multiplyZ(vector.z());
 			return;
 		case XY:
-			this.multiplyX(vector.getX());
-			this.multiplyY(vector.getY());
+			this.multiplyX(vector.x());
+			this.multiplyY(vector.y());
 			return;
 		case XZ:
-			this.multiplyX(vector.getX());
-			this.multiplyZ(vector.getZ());
+			this.multiplyX(vector.x());
+			this.multiplyZ(vector.z());
 			return;
 		case YZ:
-			this.multiplyY(vector.getY());
-			this.multiplyZ(vector.getZ());
+			this.multiplyY(vector.y());
+			this.multiplyZ(vector.z());
 			return;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
@@ -1076,15 +1076,15 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public double length() {
-		return Math.sqrt(Math.pow(this.getX(), 2) + Math.pow(this.getY(), 2) + Math.pow(this.getZ(), 2));
+		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
 	}
 
 	@Override
 	public void normalize() {
 		float len = (float) this.length();
-		this.set(this.getX() / len,
-				this.getY() / len,
-				this.getZ() / len);
+		this.set(this.x() / len,
+				this.y() / len,
+				this.z() / len);
 	}
 
 	@Override
@@ -1103,9 +1103,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public void cross(Vector3f other) {
-		this.set(this.getY() * other.getZ() - other.getY() * this.getZ(),
-				-this.getX() * other.getZ() + other.getX() * this.getZ(),
-				this.getX() * other.getY() - other.getX() * this.getY());
+		this.set(this.y() * other.z() - other.y() * this.z(),
+				-this.x() * other.z() + other.x() * this.z(),
+				this.x() * other.y() - other.x() * this.y());
 	}
 
 	@Override
@@ -1136,9 +1136,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		if (vector == null) {
 			return false;
 		}
-		return this.getX() == vector.getX() &&
-				this.getY() == vector.getY() &&
-				this.getZ() == vector.getZ();
+		return this.x() == vector.x() &&
+				this.y() == vector.y() &&
+				this.z() == vector.z();
 	}
 
 	@Override
@@ -1153,13 +1153,13 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		if (this.isMutable() != other.isMutable()) {
 			return false;
 		}
-		if (this.getX() != other.getX()) {
+		if (this.x() != other.x()) {
 			return false;
 		}
-		if (this.getY() != other.getY()) {
+		if (this.y() != other.y()) {
 			return false;
 		}
-		if (this.getZ() != other.getZ()) {
+		if (this.z() != other.z()) {
 			return false;
 		}
 		return true;
@@ -1169,15 +1169,15 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	public int hashCode() {
 		int result = 11;
 		result = 31 * result + (this.isMutable() ? 1 : 0);
-		result = 31 * result + java.lang.Float.floatToIntBits(this.getX());
-		result = 31 * result + java.lang.Float.floatToIntBits(this.getY());
-		result = 31 * result + java.lang.Float.floatToIntBits(this.getZ());
+		result = 31 * result + java.lang.Float.floatToIntBits(this.x());
+		result = 31 * result + java.lang.Float.floatToIntBits(this.y());
+		result = 31 * result + java.lang.Float.floatToIntBits(this.z());
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("Vector3f[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.getX(), this.getY(), this.getZ());
+		return String.format("Vector3f[%s (%f, %f, %f)]", this.isMutable() ? "mutable" : "frozen", this.x(), this.y(), this.z());
 	}
 
 }
