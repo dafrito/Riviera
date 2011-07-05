@@ -688,6 +688,9 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 
 	@Override
 	public void set(Vector3d vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
 		this.setX(vector.getX());
 		this.setY(vector.getY());
 		this.setZ(vector.getZ());

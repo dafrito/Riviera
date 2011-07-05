@@ -597,6 +597,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 
 	@Override
 	public void set(Vector3f vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
 		this.setX(vector.getX());
 		this.setY(vector.getY());
 		this.setZ(vector.getZ());

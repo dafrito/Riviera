@@ -562,6 +562,9 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 
 	@Override
 	public void set(Vector3i vector) {
+		if (vector == null) {
+			throw new NullPointerException("vector must not be null");
+		}
 		this.setX(vector.getX());
 		this.setY(vector.getY());
 		this.setZ(vector.getZ());
