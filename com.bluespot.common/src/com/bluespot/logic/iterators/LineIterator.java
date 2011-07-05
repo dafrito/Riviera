@@ -21,6 +21,30 @@ import java.util.NoSuchElementException;
  */
 public class LineIterator implements Iterator<String> {
 
+	/**
+	 * Returns a new {@link Iterable} that provides each line from a specified
+	 * file.
+	 * 
+	 * @param file
+	 *            the file that will be iterated
+	 * @return an {@link Iterable} that provides each line from the specified
+	 *         file
+	 * @throws com.bluespot.logic.iterators.UnderlyingIOException
+	 *             if an {@link java.io.IOException} occurs during iteration
+	 * @see com.bluespot.logic.iterators.LineIterator
+	 */
+	public static Iterable<String> iterable(final File file) {
+		if (file == null) {
+			throw new NullPointerException("file must not be null");
+		}
+		return new Iterable<String>() {
+			@Override
+			public Iterator<String> iterator() {
+				return new LineIterator(file);
+			}
+		};
+	}
+
 	private final BufferedReader reader;
 
 	private String line;
@@ -103,5 +127,4 @@ public class LineIterator implements Iterator<String> {
 	public void remove() {
 		throw new UnsupportedOperationException("Removal is not supported");
 	}
-
 }
