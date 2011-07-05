@@ -47,22 +47,22 @@ public class ColumnarTableIteration extends AbstractTableIteration {
 	 */
 	@Override
 	public void doWrap(final Table<?> table, final Point point) {
-		int excessColumns = point.y / table.getHeight();
-		point.y %= table.getHeight();
+		int excessColumns = point.y / table.height();
+		point.y %= table.height();
 		if (point.y < 0) {
 			// If the Y-value is negative, we add the height to guarantee a
 			// positive value.
 			// We also must move one column backwards since subtracting a column
 			// always means wrapping.
 			excessColumns--;
-			point.y += table.getHeight();
+			point.y += table.height();
 		}
 		point.x += excessColumns;
-		point.x %= table.getWidth();
+		point.x %= table.width();
 		if (point.x < 0) {
 			// If the X-value is negative, we add the width to guarantee a
 			// positive value.
-			point.x += table.getWidth();
+			point.x += table.width();
 		}
 	}
 

@@ -58,11 +58,11 @@ public abstract class AbstractTable<T> implements Table<T> {
 		 */
 		public SubTable(final Table<T> owningTable, final Point origin, final Dimension size, final T defaultValue) {
 			super(defaultValue);
-			AbstractTable.validateLocation(origin, owningTable.getWidth(), owningTable.getHeight());
-			if (origin.x + size.width > owningTable.getWidth()) {
+			AbstractTable.validateLocation(origin, owningTable.width(), owningTable.height());
+			if (origin.x + size.width > owningTable.width()) {
 				throw new IndexOutOfBoundsException("subTable's X-dimension cannot extend outside of this table");
 			}
-			if (origin.y + size.height > owningTable.getHeight()) {
+			if (origin.y + size.height > owningTable.height()) {
 				throw new IndexOutOfBoundsException("subTable's Y-dimension cannot extend outside of this table");
 			}
 
@@ -77,7 +77,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 		}
 
 		@Override
-		public int getHeight() {
+		public int height() {
 			return this.size.height;
 		}
 
@@ -89,7 +89,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 		}
 
 		@Override
-		public int getWidth() {
+		public int width() {
 			return this.size.width;
 		}
 
@@ -108,7 +108,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 		 *         table.
 		 */
 		protected Point translate(final Point original) {
-			AbstractTable.validateLocation(original, this.getWidth(), this.getHeight());
+			AbstractTable.validateLocation(original, this.width(), this.height());
 			final Point point = new Point(original);
 			point.translate(this.getOrigin().x, this.getOrigin().y);
 			return point;
@@ -143,7 +143,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 
 	@Override
 	public T get(final Point location) {
-		AbstractTable.validateLocation(location, this.getWidth(), this.getHeight());
+		AbstractTable.validateLocation(location, this.width(), this.height());
 		return this.getDefaultValue();
 	}
 
@@ -154,23 +154,23 @@ public abstract class AbstractTable<T> implements Table<T> {
 
 	@Override
 	public T remove(final Point location) {
-		AbstractTable.validateLocation(location, this.getWidth(), this.getHeight());
+		AbstractTable.validateLocation(location, this.width(), this.height());
 		return this.put(location, this.getDefaultValue());
 	}
 
 	@Override
 	public int size() {
-		return this.getWidth() * this.getHeight();
+		return this.width() * this.height();
 	}
 
 	@Override
 	public Table<T> subTable(final Point newOrigin) {
-		return this.subTable(newOrigin, new Dimension(this.getWidth() - newOrigin.x, this.getHeight() - newOrigin.y));
+		return this.subTable(newOrigin, new Dimension(this.width() - newOrigin.x, this.height() - newOrigin.y));
 	}
 
 	@Override
 	public Table<T> subTable(final Point newOrigin, final Dimension size) {
-		AbstractTable.validateLocation(newOrigin, this.getWidth(), this.getHeight());
+		AbstractTable.validateLocation(newOrigin, this.width(), this.height());
 
 		return new SubTable<T>(this, newOrigin, size, this.defaultValue);
 	}

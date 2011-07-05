@@ -98,9 +98,9 @@ public abstract class AbstractTableIteratorTest {
 	private void fillCount(final Table<Integer> filledTable, final int start) {
 		int number = start;
 		final Point point = new Point(0, 0);
-		for (int y = 0; y < filledTable.getHeight(); y++) {
+		for (int y = 0; y < filledTable.height(); y++) {
 			point.y = y;
-			for (int x = 0; x < filledTable.getWidth(); x++) {
+			for (int x = 0; x < filledTable.width(); x++) {
 				point.x = x;
 				filledTable.put(point, number++);
 			}

@@ -60,13 +60,13 @@ public class ChoiceTable<T> extends AbstractTable<T> {
 	}
 
 	@Override
-	public int getHeight() {
+	public int height() {
 		return this.internalTable.length;
 	}
 
 	@Override
-	public int getWidth() {
-		if (this.getHeight() == 0) {
+	public int width() {
+		if (this.height() == 0) {
 			return 0;
 		}
 		return this.internalTable[0].length;

@@ -58,7 +58,7 @@ public abstract class TileMap<T> implements Paintable {
 	 */
 	public Dimension getSize() {
 		final Dimension size = this.getTileSize();
-		Geometry.Ceil.multiply(size, this.table.getWidth() + .5, this.table.getHeight() + 2);
+		Geometry.Ceil.multiply(size, this.table.width() + .5, this.table.height() + 2);
 		return size;
 	}
 
@@ -108,8 +108,8 @@ public abstract class TileMap<T> implements Paintable {
 		tileSize.height += 2;
 
 		final Point lastTile = new Point(firstTile.x + tileSize.width, firstTile.y + tileSize.height * 2);
-		lastTile.x = Math.min(this.table.getWidth() - 1, Math.max(0, lastTile.x));
-		lastTile.y = Math.min(this.table.getHeight() - 1, Math.max(0, lastTile.y));
+		lastTile.x = Math.min(this.table.width() - 1, Math.max(0, lastTile.x));
+		lastTile.y = Math.min(this.table.height() - 1, Math.max(0, lastTile.y));
 
 		final Table<T> subtable = this.table.subTable(firstTile, new Dimension(lastTile.x - firstTile.x, lastTile.y
 				- firstTile.y));
@@ -151,8 +151,8 @@ public abstract class TileMap<T> implements Paintable {
 			g.translate(0, this.getTileHeight());
 		}
 
-		targetOrigin.x = Math.min(this.table.getWidth() - 1, Math.max(0, targetOrigin.x));
-		targetOrigin.y = Math.min(this.table.getHeight() - 1, Math.max(0, targetOrigin.y));
+		targetOrigin.x = Math.min(this.table.width() - 1, Math.max(0, targetOrigin.x));
+		targetOrigin.y = Math.min(this.table.height() - 1, Math.max(0, targetOrigin.y));
 
 		return targetOrigin;
 	}
@@ -160,14 +160,14 @@ public abstract class TileMap<T> implements Paintable {
 	private void renderTable(final Graphics2D g, final Table<T> renderedTable, final Dimension initialOffset) {
 		g.translate(initialOffset.width, initialOffset.height);
 		final Point location = new Point();
-		for (int y = 0; y < renderedTable.getHeight(); y++) {
-			for (int x = 0; x < renderedTable.getWidth(); x++) {
+		for (int y = 0; y < renderedTable.height(); y++) {
+			for (int x = 0; x < renderedTable.width(); x++) {
 				location.setLocation(x, y);
 				final T value = renderedTable.get(location);
 				this.paintTile(g, value, location, this.tileWidth, this.tileHeight);
 				g.translate(this.tileWidth, 0);
 			}
-			g.translate(-this.tileWidth * renderedTable.getWidth(), this.tileHeight);
+			g.translate(-this.tileWidth * renderedTable.width(), this.tileHeight);
 			final Dimension offset = this.newRow();
 			g.translate(offset.width, offset.height);
 		}

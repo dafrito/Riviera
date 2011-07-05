@@ -56,12 +56,12 @@ public class ArrayTable<T> extends AbstractTable<T> {
 	}
 
 	@Override
-	public int getHeight() {
+	public int height() {
 		return this.array.length;
 	}
 
 	@Override
-	public int getWidth() {
+	public int width() {
 		if (this.array.length == 0) {
 			return 0;
 		}

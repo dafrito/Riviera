@@ -137,8 +137,8 @@ public abstract class AbstractTableTest<T> {
 
 	@Test
 	public void testHeight() {
-		assertThat(this.newTable(1, 1).getHeight(), is(1));
-		assertThat(this.newTable(2, 4).getHeight(), is(4));
+		assertThat(this.newTable(1, 1).height(), is(1));
+		assertThat(this.newTable(2, 4).height(), is(4));
 	}
 
 	@Test
@@ -333,8 +333,8 @@ public abstract class AbstractTableTest<T> {
 
 	@Test
 	public void testWidth() {
-		assertThat(this.newTable(1, 1).getWidth(), is(1));
-		assertThat(this.newTable(2, 4).getWidth(), is(2));
+		assertThat(this.newTable(1, 1).width(), is(1));
+		assertThat(this.newTable(2, 4).width(), is(2));
 	}
 
 	/**

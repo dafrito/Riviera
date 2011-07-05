@@ -48,7 +48,7 @@ public interface Table<T> extends Iterable<T> {
 	 * 
 	 * @return the height of this table
 	 */
-	public int getHeight();
+	public int height();
 
 	/**
 	 * Returns the width of this table. If the width is greater than
@@ -63,7 +63,7 @@ public interface Table<T> extends Iterable<T> {
 	 * 
 	 * @return the width of this table
 	 */
-	public int getWidth();
+	public int width();
 
 	/**
 	 * Replaces the element at the specified point with the specified element.
