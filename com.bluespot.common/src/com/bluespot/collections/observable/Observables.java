@@ -1,4 +1,4 @@
-package com.bluespot.collections.observable.list;
+package com.bluespot.collections.observable;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -7,6 +7,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import com.bluespot.collections.observable.list.AdaptingListWorker;
+import com.bluespot.collections.observable.list.ListWorker;
+import com.bluespot.collections.observable.list.ListWorkerBridge;
+import com.bluespot.collections.observable.list.ObservableList;
 import com.bluespot.logic.adapters.Adapter;
 
 /**

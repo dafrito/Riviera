@@ -3,6 +3,8 @@ package com.bluespot.collections.observable.list;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
 
+import com.bluespot.collections.observable.Observables;
+
 /**
  * A listener that bridges all changes from the specified list to a specified
  * worker.

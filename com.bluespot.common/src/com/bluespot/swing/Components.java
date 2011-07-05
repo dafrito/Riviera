@@ -20,9 +20,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListDataListener;
 
+import com.bluespot.collections.observable.Observables;
 import com.bluespot.collections.observable.list.ListWorker;
 import com.bluespot.collections.observable.list.ObservableList;
-import com.bluespot.collections.observable.list.Observables;
 import com.bluespot.geom.Geometry;
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.Adapters;

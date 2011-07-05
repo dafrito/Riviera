@@ -15,6 +15,7 @@ import javax.swing.event.ListDataListener;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bluespot.collections.observable.Observables;
 import com.bluespot.logic.adapters.Adapter;
 
 /**
