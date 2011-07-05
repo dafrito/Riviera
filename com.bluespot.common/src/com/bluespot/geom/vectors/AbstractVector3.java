@@ -155,4 +155,20 @@ public abstract class AbstractVector3<V extends Vector3<V>> implements Vector3<V
 		return result;
 	}
 
+	@Override
+	public V copy() {
+		if (this.isMutable()) {
+			return this.toMutable();
+		} else {
+			return this.getThis();
+		}
+	}
+
+	/**
+	 * Return a reference to this vector.
+	 * 
+	 * @return a reference to this vector
+	 * @see #copy()
+	 */
+	protected abstract V getThis();
 }

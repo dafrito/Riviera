@@ -1132,6 +1132,11 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	@Override
+	public Vector3f getThis() {
+		return this;
+	}
+
+	@Override
 	public boolean at(Vector3f vector) {
 		if (vector == null) {
 			return false;

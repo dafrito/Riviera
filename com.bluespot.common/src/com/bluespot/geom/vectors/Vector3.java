@@ -5,6 +5,9 @@ import com.bluespot.geom.Axis;
 /**
  * Represents a three-dimensional vector, of varying precision. Vectors may or
  * may not be mutable, but mutability must never change for a given vector.
+ * Vectors may represent a position, a velocity, or even a dimension. Initially,
+ * these quantities were represented by independent classes, but they all simply
+ * referred to this hierarchy internally, so I removed the indirection.
  * <p>
  * This vector interface uses a slightly unusual recursive type definition. This
  * lets us have a common interface for vectors, while still avoiding the
@@ -91,6 +94,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector from which to copy
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #with(Axis, Vector3)
 	 */
 	public void set(Axis axis, V vector);
 
@@ -103,6 +107,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param vector
 	 *            the vector that will be added
 	 * @return a modified, mutable copy of this vector
+	 * @see #set(Axis, Vector3)
 	 */
 	public V with(Axis axis, V vector);
 
@@ -113,6 +118,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector that will be added
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #added(Vector3)
 	 */
 	public void add(V vector);
 
@@ -125,6 +131,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector from which to copy
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #added(Axis, Vector3)
 	 */
 	public void add(Axis axis, V vector);
 
@@ -136,6 +143,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector that will be added
 	 * @return a mutable vector at this position, but translated by the
 	 *         specified vector's values
+	 * @see #add(Vector3)
 	 */
 	public V added(V vector);
 
@@ -148,6 +156,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param vector
 	 *            the vector from which to copy
 	 * @return a mutable vector translated from this vector
+	 * @see #add(Axis, Vector3)
 	 */
 	public V added(Axis axis, V vector);
 
@@ -199,7 +208,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector that will be used in the subtraction. It will not
 	 *            be modified.
 	 * @return a mutable vector translated from this vector
-	 * @see #subtracted(Axis, Vector3)
+	 * @see #subtract(Axis, Vector3)
 	 */
 	public V subtracted(Axis axis, V vector);
 
@@ -211,6 +220,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector that will be added
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #multiplied(Vector3)
 	 */
 	public void multiply(V vector);
 
@@ -222,6 +232,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the factor of multiplication
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #multiplied(double)
 	 */
 	public void multiply(double factor);
 
@@ -235,6 +246,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector used in multiplication
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #multiplied(Axis, Vector3)
 	 */
 	public void multiply(Axis axis, V vector);
 
@@ -248,6 +260,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the factor of multiplication
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #multiplied(Axis, double)
 	 */
 	public void multiply(Axis axis, double factor);
 
@@ -259,6 +272,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the vector that will be added
 	 * @return a mutable vector at this position, but translated by the
 	 *         specified vector's values
+	 * @see #multiply(Vector3)
 	 */
 	public V multiplied(V vector);
 
@@ -269,6 +283,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param factor
 	 *            the factor of multiplication
 	 * @return a mutable copy of this vector, multiplied by the specified factor
+	 * @see #multiply(double)
 	 */
 	public V multiplied(double factor);
 
@@ -281,6 +296,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param vector
 	 *            the vector from which to copy
 	 * @return a mutable vector translated from this vector
+	 * @see #multiply(Axis, Vector3)
 	 */
 	public V multiplied(Axis axis, V vector);
 
@@ -293,6 +309,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param factor
 	 *            the factor of multiplication
 	 * @return a modified, mutable copy of this vector
+	 * @see #multiply(Axis, double)
 	 */
 	public V multiplied(Axis axis, double factor);
 
@@ -307,6 +324,8 @@ public interface Vector3<V extends Vector3<V>> {
 	 * Invert this vector. All components are multiplied by {@code -1}.
 	 * 
 	 * @throw UnsupportedOperationException if this vector is not mutable
+	 * 
+	 * @see #inverted()
 	 */
 	public void invert();
 
@@ -317,6 +336,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis to invert
 	 * 
 	 * @throw UnsupportedOperationException if this vector is not mutable
+	 * @see #inverted(Axis)
 	 */
 	public void invert(Axis axis);
 
@@ -325,6 +345,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * dimensions are multiplied by {@code -1}.
 	 * 
 	 * @return a new {@code Vector3} that is the inverse of this vector
+	 * @see #invert()
 	 */
 	public V inverted();
 
@@ -335,19 +356,23 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param axis
 	 *            the axis to invert
 	 * @return a new {@code Vector3} with inverted components
+	 * 
+	 * @see #invert(Axis)
 	 */
 	public V inverted(Axis axis);
 
 	/**
 	 * Normalizes this vector, such that its new length will be one.
+	 * 
+	 * @see #normalized()
 	 */
 	public void normalize();
 
 	/**
 	 * Normalizes a copy of this vector.
 	 * 
-	 * @see #normalize()
 	 * @return a normalized copy of this vector
+	 * @see #normalize()
 	 */
 	public V normalized();
 
@@ -366,9 +391,9 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the final vector
 	 * @param offset
 	 *            the percentage of distance traveled
-	 * @see #interpolated(Vector3, float)
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
+	 * @see #interpolated(Vector3, float)
 	 */
 	public void interpolate(V dest, float offset);
 
@@ -400,6 +425,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param other
 	 *            the vector used to calculate the cross product
 	 * @throw UnsupportedOperationException if this vector is not mutable
+	 * @see #crossed(Vector3)
 	 */
 	public void cross(V other);
 
@@ -413,6 +439,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *         two vectors
 	 * @throws NullPointerException
 	 *             if {@code other} is null
+	 * @see #cross(Vector3)
 	 */
 	public V crossed(V other);
 
@@ -426,6 +453,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * 
 	 * @param axis
 	 *            the axis whose values will be cleared
+	 * @see #cleared(Axis)
 	 */
 	public void clear(Axis axis);
 
@@ -436,6 +464,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis whose values will be cleared
 	 * @return a mutable vector at this vector's position, but with zeros for
 	 *         the specified axes
+	 * @see #clear(Axis)
 	 */
 	public V cleared(Axis axis);
 
@@ -445,6 +474,8 @@ public interface Vector3<V extends Vector3<V>> {
 	 * this vector is already mutable.
 	 * 
 	 * @return a new mutable instance of this vector
+	 * @see #copy()
+	 * @see #toFrozen()
 	 */
 	public V toMutable();
 
@@ -453,8 +484,21 @@ public interface Vector3<V extends Vector3<V>> {
 	 * immutable, then that vector may be returned directly.
 	 * 
 	 * @return an immutable instance of this vector
+	 * @see #copy()
+	 * @see #toMutable()
 	 */
 	public V toFrozen();
+
+	/**
+	 * Returns a copy of this vector. The returned vector will be mutable if and
+	 * only if this vector is mutable; immutable vectors may be returned without
+	 * copying.
+	 * 
+	 * @return a copy of this vector
+	 * @see #toMutable()
+	 * @see #toFrozen()
+	 */
+	public V copy();
 
 	/**
 	 * Return whether this vector is at the same location as the specified

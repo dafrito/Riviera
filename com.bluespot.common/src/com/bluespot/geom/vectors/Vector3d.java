@@ -1224,6 +1224,11 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	}
 
 	@Override
+	public Vector3d getThis() {
+		return this;
+	}
+
+	@Override
 	public boolean at(Vector3d vector) {
 		if (vector == null) {
 			return false;
