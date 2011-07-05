@@ -1,8 +1,8 @@
 package com.bluespot.collections.table;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.List;
+
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A two-dimensional collection of elements.
@@ -33,7 +33,7 @@ public interface Table<T> extends Iterable<T> {
 	 * @throws IndexOutOfBoundsException
 	 *             if the point is out of range.
 	 */
-	public T get(Point location);
+	public T get(Vector3i location);
 
 	/**
 	 * Returns the height of this table. If the height is greater than
@@ -82,7 +82,7 @@ public interface Table<T> extends Iterable<T> {
 	 * 
 	 * @see Table#tableIterator
 	 */
-	public T put(Point location, T element);
+	public T put(Vector3i location, T element);
 
 	/**
 	 * Resets the element at the specified location to an "empty" state. This
@@ -94,7 +94,7 @@ public interface Table<T> extends Iterable<T> {
 	 * @return the element that was removed, if any. If no element was removed,
 	 *         the default value will be returned.
 	 */
-	public T remove(Point location);
+	public T remove(Vector3i location);
 
 	/**
 	 * Returns the area of this table. If the area is greater than
@@ -112,7 +112,7 @@ public interface Table<T> extends Iterable<T> {
 	public int size();
 
 	/**
-	 * Calls {@link Table#subTable(Point, Dimension)}, with the size of the
+	 * Calls {@link Table#subTable(Vector3i, Vector3i)}, with the size of the
 	 * subTable being that of this table's width and height minus the specified
 	 * {@code newOrigin}.
 	 * 
@@ -121,13 +121,13 @@ public interface Table<T> extends Iterable<T> {
 	 * @return a table that represents a partial view of this table
 	 * @throws IndexOutOfBoundsException
 	 *             if the newOrigin is out of bounds
-	 * @see Table#subTable(Point, Dimension)
+	 * @see Table#subTable(Vector3i, Vector3i)
 	 */
-	public Table<T> subTable(Point newOrigin);
+	public Table<T> subTable(Vector3i newOrigin);
 
 	/**
 	 * Returns a table that is backed by this table's data.
-	 * {@link Table#get(Point)} will refer to the new origin of the created
+	 * {@link Table#get(Vector3i)} will refer to the new origin of the created
 	 * subtable. Changes made to the subtable are reflected in the original
 	 * table.
 	 * <p>
@@ -142,7 +142,7 @@ public interface Table<T> extends Iterable<T> {
 	 *             too large for the subTable
 	 * @return a table that represents a partial view of this table
 	 */
-	public Table<T> subTable(Point newOrigin, Dimension size);
+	public Table<T> subTable(Vector3i newOrigin, Vector3i size);
 
 	/**
 	 * Returns a table iterator over the elements in this table. The order is
