@@ -45,8 +45,16 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return new Vector3f(true, x, y, z);
 	}
 
+	public static Vector3f mutable(final float x, final float y) {
+		return mutable(x, y, 0);
+	}
+
 	public static Vector3f frozen(final float x, final float y, final float z) {
 		return new Vector3f(false, x, y, z);
+	}
+
+	public static Vector3f frozen(final float x, final float y) {
+		return frozen(x, y, 0);
 	}
 
 	public static Vector3f mutable(Vector3i vector) {

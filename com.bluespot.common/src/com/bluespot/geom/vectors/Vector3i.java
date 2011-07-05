@@ -43,8 +43,16 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return new Vector3i(true, x, y, z);
 	}
 
+	public static Vector3i mutable(int x, int y) {
+		return mutable(x, y, 0);
+	}
+
 	public static Vector3i frozen(int x, int y, int z) {
 		return new Vector3i(false, x, y, z);
+	}
+
+	public static Vector3i frozen(int x, int y) {
+		return frozen(x, y, 0);
 	}
 
 	public static Vector3i mutable(Vector3f vector) {

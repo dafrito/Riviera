@@ -57,6 +57,10 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 		return new Vector3d(true, x, y, z);
 	}
 
+	public static Vector3d mutable(double x, double y) {
+		return mutable(x, y, 0);
+	}
+
 	/**
 	 * Create a frozen {@link Vector3d} using the specified values.
 	 * 
@@ -71,6 +75,10 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	 */
 	public static Vector3d frozen(double x, final double y, final double z) {
 		return new Vector3d(false, x, y, z);
+	}
+
+	public static Vector3d frozen(double x, double y) {
+		return frozen(x, y, 0);
 	}
 
 	/**
