@@ -2,10 +2,17 @@ package com.bluespot.graphics;
 
 import java.awt.Graphics2D;
 
+import javax.swing.JComponent;
+
 /**
  * Represents an object that can be painted.
+ * <p>
+ * This was intended to be a super-lightweight component, but I actually prefer
+ * having a discrete {@link JComponent}, at least in the cases where we use this
+ * interface.
  * 
  * @author Aaron Faanes
+ * @see TileMap
  */
 public interface Paintable {
 
