@@ -1116,6 +1116,16 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	}
 
 	@Override
+	public Dimension toDimension() {
+		return new Dimension(x, y);
+	}
+
+	@Override
+	public Point toPoint() {
+		return new Point(x, y);
+	}
+
+	@Override
 	public Vector3i toMutable() {
 		return Vector3i.mutable(x, y, z);
 	}

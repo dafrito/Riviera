@@ -14,5 +14,4 @@ public final class Vectors {
 	private Vectors() {
 		throw new AssertionError("Instantiation is not allowed");
 	}
-
 }

@@ -1,5 +1,8 @@
 package com.bluespot.geom.vectors;
 
+import java.awt.Dimension;
+import java.awt.Point;
+
 import com.bluespot.geom.Axis;
 
 /**
@@ -467,6 +470,10 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @see #clear(Axis)
 	 */
 	public V cleared(Axis axis);
+
+	public Dimension toDimension();
+
+	public Point toPoint();
 
 	/**
 	 * Create and return a new, mutable instance of this vector. The returned

@@ -1171,6 +1171,20 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	@Override
+	public Dimension toDimension() {
+		return new Dimension((int) x, (int) y);
+	}
+
+	@Override
+	public Point toPoint() {
+		return new Point((int) x, (int) y);
+	}
+
+	public Point2D.Float toPoint2D() {
+		return new Point2D.Float(x, y);
+	}
+
+	@Override
 	public Vector3f toMutable() {
 		return Vector3f.mutable(x, y, z);
 	}

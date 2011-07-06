@@ -1272,6 +1272,20 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	}
 
 	@Override
+	public Dimension toDimension() {
+		return new Dimension((int) x, (int) y);
+	}
+
+	@Override
+	public Point toPoint() {
+		return new Point((int) x, (int) y);
+	}
+
+	public Point2D.Double toPoint2D() {
+		return new Point2D.Double(x, y);
+	}
+
+	@Override
 	public Vector3d toMutable() {
 		return Vector3d.mutable(x, y, z);
 	}
