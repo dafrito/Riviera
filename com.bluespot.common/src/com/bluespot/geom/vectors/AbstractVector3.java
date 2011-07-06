@@ -94,6 +94,13 @@ public abstract class AbstractVector3<V extends Vector3<V>> implements Vector3<V
 	}
 
 	@Override
+	public V multiplied(double x, double y, double z) {
+		V result = this.toMutable();
+		result.multiply(x, y, z);
+		return result;
+	}
+
+	@Override
 	public V multiplied(Axis axis, V vector) {
 		V result = this.toMutable();
 		result.multiply(axis, vector);

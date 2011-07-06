@@ -240,6 +240,21 @@ public interface Vector3<V extends Vector3<V>> {
 	public void multiply(double factor);
 
 	/**
+	 * Multiply this vector's values by the specified factors.
+	 * 
+	 * @param x
+	 *            the multiplying factor of the X axis
+	 * @param y
+	 *            the multiplying factor of the Y axis
+	 * @param z
+	 *            the multiplying factor of the Z axis
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
+	 * @see #multiplied(double, double)
+	 */
+	public void multiply(double x, double y, double z);
+
+	/**
 	 * Multiply this vector's values at the specified axis, using the values
 	 * from the specified vector.
 	 * 
@@ -289,6 +304,21 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @see #multiply(double)
 	 */
 	public V multiplied(double factor);
+
+	/**
+	 * Return a mutable copy of this vector, multiplied by the specified
+	 * factors.
+	 * 
+	 * @param x
+	 *            the factor of multiplication for the X axis
+	 * @param y
+	 *            the factor of multiplication for the Y axis
+	 * @param z
+	 *            the factor of multiplication for the Z axis
+	 * @return a mutable copy of this vector
+	 * @see #multiply(double, double, double)
+	 */
+	public V multiplied(double x, double y, double z);
 
 	/**
 	 * Return a mutable vector at this position, but with the specified

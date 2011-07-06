@@ -1051,6 +1051,13 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	@Override
+	public void multiply(double x, double y, double z) {
+		this.multiplyX(x);
+		this.multiplyY(y);
+		this.multiplyZ(z);
+	}
+
+	@Override
 	public void multiply(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");

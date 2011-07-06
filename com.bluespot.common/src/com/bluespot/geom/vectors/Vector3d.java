@@ -1152,6 +1152,13 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 	}
 
 	@Override
+	public void multiply(double x, double y, double z) {
+		this.multiplyX(x);
+		this.multiplyY(y);
+		this.multiplyZ(z);
+	}
+
+	@Override
 	public void multiply(Axis axis, Vector3d vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
