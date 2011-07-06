@@ -1,6 +1,6 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A {@code Table} implementation backed by a 2-dimensional array of fixed size.
@@ -47,8 +47,8 @@ public class ArrayTable<T> extends AbstractTable<T> {
 	}
 
 	@Override
-	public T get(final Point location) {
-		final T value = this.array[location.y][location.x];
+	public T get(final Vector3i location) {
+		final T value = this.array[location.y()][location.x()];
 		if (value != null) {
 			return value;
 		}
@@ -69,9 +69,9 @@ public class ArrayTable<T> extends AbstractTable<T> {
 	}
 
 	@Override
-	public T put(final Point location, final T element) {
-		final T old = this.array[location.y][location.x];
-		this.array[location.y][location.x] = element;
+	public T put(final Vector3i location, final T element) {
+		final T old = this.array[location.y()][location.x()];
+		this.array[location.y()][location.x()] = element;
 		return old != null ? old : this.getDefaultValue();
 	}
 

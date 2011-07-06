@@ -1,50 +1,49 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
-
 import com.bluespot.collections.table.iteration.ColumnarTableIteration;
 import com.bluespot.collections.table.iteration.TableIteration;
+import com.bluespot.geom.vectors.Vector3i;
 
 public class ColumnarTableIterationTest extends AbstractTableIterationTest<Integer> {
 
 	@Override
-	protected Point getExtraColumn() {
-		return new Point(0, 0);
+	protected Vector3i getExtraColumn() {
+		return Vector3i.origin();
 	}
 
 	@Override
-	protected Point getExtraRow() {
-		return new Point(1, 0);
+	protected Vector3i getExtraRow() {
+		return Vector3i.frozen(1, 0);
 	}
 
 	@Override
-	protected Point getOneColumnBeforeOrigin() {
-		return new Point(1, 0);
+	protected Vector3i getOneColumnBeforeOrigin() {
+		return Vector3i.frozen(1, 0);
 	}
 
 	@Override
-	protected Point getOneRowBeforeOrigin() {
-		return new Point(1, 1);
+	protected Vector3i getOneRowBeforeOrigin() {
+		return Vector3i.frozen(1, 1);
 	}
 
 	@Override
-	protected Point getThreeColumnsBeforeOrigin() {
-		return new Point(1, 0);
+	protected Vector3i getThreeColumnsBeforeOrigin() {
+		return Vector3i.frozen(1, 0);
 	}
 
 	@Override
-	protected Point getThreeRowsBeforeOrigin() {
-		return new Point(0, 1);
+	protected Vector3i getThreeRowsBeforeOrigin() {
+		return Vector3i.frozen(0, 1);
 	}
 
 	@Override
-	protected Point getTwoColumnsAfterEnd() {
-		return new Point(1, 0);
+	protected Vector3i getTwoColumnsAfterEnd() {
+		return Vector3i.frozen(1, 0);
 	}
 
 	@Override
-	protected Point getTwoRowsAfterEnd() {
-		return new Point(1, 1);
+	protected Vector3i getTwoRowsAfterEnd() {
+		return Vector3i.frozen(1, 1);
 	}
 
 	@Override

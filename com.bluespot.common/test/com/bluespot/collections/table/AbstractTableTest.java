@@ -6,14 +6,13 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.bluespot.collections.table.iteration.NaturalTableIteration;
+import com.bluespot.geom.vectors.Vector3i;
 
 public abstract class AbstractTableTest<T> {
 
@@ -67,10 +66,10 @@ public abstract class AbstractTableTest<T> {
 
 	public void putThrowsIAEOnUnallowedNullValue() {
 		if (this.allowNullValues()) {
-			this.table.put(new Point(0, 0), null);
+			this.table.put(Vector3i.origin(), null);
 		} else {
 			try {
-				this.table.put(new Point(0, 0), null);
+				this.table.put(Vector3i.origin(), null);
 				fail("Table#put: Table should throw IAE if it does not allow default values");
 			} catch (final IllegalArgumentException ex) {
 				// We expected this, so continue
@@ -85,18 +84,17 @@ public abstract class AbstractTableTest<T> {
 
 	@Test
 	public void testClear() {
-		final Point point = new Point(0, 0);
-		this.table.put(point, this.getValue());
-		this.table.put(new Point(1, 0), this.getOtherValue());
+		this.table.put(Vector3i.origin(), this.getValue());
+		this.table.put(Vector3i.frozen(1, 0), this.getOtherValue());
 		this.table.clear();
-		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
-		assertThat(this.table.get(new Point(1, 0)), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.origin()), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.frozen(1, 0)), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
 	public void testConvenienceSubTable() {
 		this.table = this.newTable(2, 1);
-		final Table<T> subTable = this.table.subTable(new Point(1, 0));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(1, 0));
 		assertThat(subTable.size(), is(1));
 	}
 
@@ -107,12 +105,12 @@ public abstract class AbstractTableTest<T> {
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testExcessiveHeightSubTable() {
-		this.table.subTable(new Point(0, 0), new Dimension(0, 3));
+		this.table.subTable(Vector3i.origin(), Vector3i.frozen(0, 3));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testExcessiveWidthSubTable() {
-		this.table.subTable(new Point(0, 0), new Dimension(3, 0));
+		this.table.subTable(Vector3i.origin(), Vector3i.frozen(3, 0));
 	}
 
 	@Test
@@ -126,13 +124,12 @@ public abstract class AbstractTableTest<T> {
 
 	@Test
 	public void testGetPutAndRemove() {
-		final Point point = new Point(0, 0);
-		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
-		assertThat(this.table.put(point, this.getValue()), is(this.getDefaultDefaultValue()));
-		assertThat(this.table.get(point), is(this.getValue()));
-		assertThat(this.table.put(point, this.getOtherValue()), is(this.getValue()));
-		assertThat(this.table.remove(point), is(this.getOtherValue()));
-		assertThat(this.table.get(point), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.origin()), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.put(Vector3i.origin(), this.getValue()), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.origin()), is(this.getValue()));
+		assertThat(this.table.put(Vector3i.origin(), this.getOtherValue()), is(this.getValue()));
+		assertThat(this.table.remove(Vector3i.origin()), is(this.getOtherValue()));
+		assertThat(this.table.get(Vector3i.origin()), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
@@ -165,42 +162,42 @@ public abstract class AbstractTableTest<T> {
 		final TableIterator<T> iterator = new StrategyTableIterator<T>(this.table, NaturalTableIteration.getInstance());
 
 		assertThat(iterator.next(), is(this.listOfValues().get(0)));
-		assertThat(iterator.getLocation(), is(new Point(0, 0)));
+		assertThat(iterator.getLocation(), is(Vector3i.origin()));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(1)));
-		assertThat(iterator.getLocation(), is(new Point(1, 0)));
+		assertTrue(iterator.getLocation().at(1, 0, 0));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(2)));
-		assertThat(iterator.getLocation(), is(new Point(0, 1)));
+		assertTrue(iterator.getLocation().at(0, 1, 0));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(3)));
-		assertThat(iterator.getLocation(), is(new Point(1, 1)));
+		assertTrue(iterator.getLocation().at(1, 1, 0));
 		assertThat(iterator.hasNext(), is(false));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testNegativeHeightSubTable() {
-		this.table.subTable(new Point(0, -1), new Dimension(1, 1));
+		this.table.subTable(Vector3i.frozen(0, -1, 0), Vector3i.frozen(1, 1, 0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testNegativeWidthSubTable() {
-		this.table.subTable(new Point(-1, 0), new Dimension(1, 1));
+		this.table.subTable(Vector3i.frozen(-1, 0, 0), Vector3i.frozen(1, 1, 0));
 	}
 
 	@Test
 	public void testPutReturnsDefaultValue() {
 		this.table = this.newTable(2, 2, this.getValue());
-		assertThat(this.table.put(new Point(0, 0), this.getValue()), is(this.getValue()));
+		assertThat(this.table.put(Vector3i.origin(), this.getValue()), is(this.getValue()));
 	}
 
 	@Test
 	public void testRemoveReturnsDefaultValue() {
 		this.table = this.newTable(2, 2, this.getValue());
-		assertThat(this.table.remove(new Point(0, 0)), is(this.getValue()));
+		assertThat(this.table.remove(Vector3i.origin()), is(this.getValue()));
 	}
 
 	@Test
@@ -215,7 +212,7 @@ public abstract class AbstractTableTest<T> {
 	@Test
 	public void testSubTable() {
 		this.table = this.newTable(2, 1);
-		final Table<T> subTable = this.table.subTable(new Point(1, 0), new Dimension(1, 1));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(1, 0), Vector3i.frozen(1, 1));
 		assertThat(subTable.size(), is(1));
 	}
 
@@ -223,29 +220,29 @@ public abstract class AbstractTableTest<T> {
 	public void testSubTableClear() {
 		this.table = this.newTable(4, 1);
 		Tables.fill(this.table, this.listOfValues());
-		final Table<T> subTable = this.table.subTable(new Point(2, 0));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(2, 0));
 		subTable.clear();
-		assertThat(this.table.get(new Point(0, 0)), is(this.listOfValues().get(0)));
-		assertThat(this.table.get(new Point(1, 0)), is(this.listOfValues().get(1)));
-		assertThat(this.table.get(new Point(2, 0)), is(this.getDefaultDefaultValue()));
-		assertThat(this.table.get(new Point(3, 0)), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.origin()), is(this.listOfValues().get(0)));
+		assertThat(this.table.get(Vector3i.frozen(1, 0)), is(this.listOfValues().get(1)));
+		assertThat(this.table.get(Vector3i.frozen(2, 0)), is(this.getDefaultDefaultValue()));
+		assertThat(this.table.get(Vector3i.frozen(3, 0)), is(this.getDefaultDefaultValue()));
 	}
 
 	@Test
 	public void testSubTableGet() {
 		this.table = this.newTable(4, 1);
 		Tables.fill(this.table, this.listOfValues());
-		final Table<T> subTable = this.table.subTable(new Point(2, 0));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(2, 0));
 		assertThat(subTable.size(), is(2));
-		assertThat(subTable.get(new Point(0, 0)), is(this.listOfValues().get(2)));
-		assertThat(subTable.get(new Point(1, 0)), is(this.listOfValues().get(3)));
+		assertThat(subTable.get(Vector3i.origin()), is(this.listOfValues().get(2)));
+		assertThat(subTable.get(Vector3i.frozen(1, 0)), is(this.listOfValues().get(3)));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSubTableInsidiousGet() {
 		this.table = this.newTable(4, 1);
-		final Table<T> subTable = this.table.subTable(new Point(2, 0));
-		subTable.remove(new Point(-1, 0));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(2, 0));
+		subTable.remove(Vector3i.frozen(-1, 0));
 	}
 
 	// Remove
@@ -254,72 +251,72 @@ public abstract class AbstractTableTest<T> {
 	public void testSubTablePut() {
 		this.table = this.newTable(4, 1);
 		Tables.fill(this.table, this.listOfValues());
-		final Table<T> subTable = this.table.subTable(new Point(2, 0));
+		final Table<T> subTable = this.table.subTable(Vector3i.frozen(2, 0));
 		Tables.fill(subTable, this.otherListOfValues());
-		assertThat(this.table.get(new Point(0, 0)), is(this.listOfValues().get(0)));
-		assertThat(this.table.get(new Point(1, 0)), is(this.listOfValues().get(1)));
-		assertThat(this.table.get(new Point(2, 0)), is(this.otherListOfValues().get(0)));
-		assertThat(this.table.get(new Point(3, 0)), is(this.otherListOfValues().get(1)));
+		assertThat(this.table.get(Vector3i.frozen(0, 0)), is(this.listOfValues().get(0)));
+		assertThat(this.table.get(Vector3i.frozen(1, 0)), is(this.listOfValues().get(1)));
+		assertThat(this.table.get(Vector3i.frozen(2, 0)), is(this.otherListOfValues().get(0)));
+		assertThat(this.table.get(Vector3i.frozen(3, 0)), is(this.otherListOfValues().get(1)));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnGetWithExcessiveX() {
-		this.table.get(new Point(2, 0));
+		this.table.get(Vector3i.frozen(2, 0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnGetWithExcessiveY() {
-		this.table.get(new Point(0, 2));
+		this.table.get(Vector3i.frozen(0, 2));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnGetWithNegativeX() {
-		this.table.get(new Point(-1, 0));
+		this.table.get(Vector3i.frozen(-1, 0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnGetWithNegativeY() {
-		this.table.get(new Point(0, -1));
+		this.table.get(Vector3i.frozen(0, -1));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnPutWithExcessiveX() {
-		this.table.put(new Point(2, 0), this.getValue());
+		this.table.put(Vector3i.frozen(2, 0), this.getValue());
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnPutWithExcessiveY() {
-		this.table.put(new Point(0, 2), this.getValue());
+		this.table.put(Vector3i.frozen(0, 2), this.getValue());
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnPutWithNegativeX() {
-		this.table.put(new Point(-1, 0), this.getValue());
+		this.table.put(Vector3i.frozen(-1, 0), this.getValue());
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnPutWithNegativeY() {
-		this.table.put(new Point(0, -1), this.getValue());
+		this.table.put(Vector3i.frozen(0, -1), this.getValue());
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnRemoveWithExcessiveX() {
-		this.table.remove(new Point(2, 0));
+		this.table.remove(Vector3i.frozen(2, 0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnRemoveWithExcessiveY() {
-		this.table.remove(new Point(0, 2));
+		this.table.remove(Vector3i.frozen(0, 2));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnRemoveWithNegativeX() {
-		this.table.remove(new Point(-1, 0));
+		this.table.remove(Vector3i.frozen(-1, 0));
 	}
 
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnRemoveWithNegativeY() {
-		this.table.remove(new Point(0, -1));
+		this.table.remove(Vector3i.frozen(0, -1));
 	}
 
 	@Test

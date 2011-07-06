@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.bluespot.geom.vectors.Vector3i;
+
 /**
  * An iterator over a {@link Table}.
  * 
@@ -32,12 +34,11 @@ public interface TableIterator<T> extends Iterator<T> {
 	 * This method will implicitly call {@link TableIterator#next} if the
 	 * iteration hasn't been explicitly started.
 	 * 
-	 * @return the current location. The returned point may be freely modified,
-	 *         as it will not affect the state of this iterator.
+	 * @return the current location as a frozen vector
 	 * @throws NoSuchElementException
 	 *             if iteration was implicitly started, but the table was empty
 	 */
-	public Point getLocation();
+	public Vector3i getLocation();
 
 	/**
 	 * Replaces the specified point's value with the current location of this
@@ -52,7 +53,7 @@ public interface TableIterator<T> extends Iterator<T> {
 	 * @throws NoSuchElementException
 	 *             if iteration was implicitly started, but the table was empty
 	 */
-	public void getLocation(Point targetPoint);
+	public void getLocation(Vector3i targetPoint);
 
 	/**
 	 * Returns whether the location immediately after the current location will

@@ -1,8 +1,7 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
-
 import com.bluespot.collections.table.iteration.TableIteration;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * Uses {@link TableIteration} strategies within a iterator.
@@ -38,7 +37,7 @@ public class StrategyTableIterator<T> extends AbstractTableIterator<T> {
 		if (this.currentPoint == null) {
 			return this.table.size() > 0;
 		}
-		final Point nextPoint = new Point(this.currentPoint);
+		final Vector3i nextPoint = this.currentPoint.toMutable();
 		this.strategy.next(nextPoint);
 		// If the comparison is < 0, our reference is less than our next point,
 		// which means there was no last-to-origin wrapping. Otherwise,
@@ -52,7 +51,7 @@ public class StrategyTableIterator<T> extends AbstractTableIterator<T> {
 		if (this.currentPoint == null) {
 			return false;
 		}
-		final Point previousPoint = new Point(this.currentPoint);
+		final Vector3i previousPoint = this.currentPoint.toMutable();
 		this.strategy.previous(previousPoint);
 		// If the comparison is < 0, our reference is less than our next point,
 		// which means there was no last-to-origin wrapping. Otherwise,
@@ -64,7 +63,7 @@ public class StrategyTableIterator<T> extends AbstractTableIterator<T> {
 	@Override
 	public T next() {
 		if (this.currentPoint == null) {
-			this.currentPoint = new Point(0, 0);
+			this.currentPoint = Vector3i.mutable();
 		} else {
 			this.strategy.next(this.currentPoint);
 			this.strategy.wrap(this.table, this.currentPoint, this.currentPoint);

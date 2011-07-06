@@ -112,6 +112,13 @@ public interface Table<T> extends Iterable<T> {
 	public int size();
 
 	/**
+	 * Return the dimensions of this table as a vector.
+	 * 
+	 * @return the dimensions of this table as a vector
+	 */
+	public Vector3i dimensions();
+
+	/**
 	 * Calls {@link Table#subTable(Vector3i, Vector3i)}, with the size of the
 	 * subTable being that of this table's width and height minus the specified
 	 * {@code newOrigin}.

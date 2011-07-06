@@ -4,11 +4,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-import java.awt.Point;
-
 import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
+
+import com.bluespot.geom.vectors.Vector3i;
 
 public abstract class AbstractTableIteratorTest {
 
@@ -60,7 +60,7 @@ public abstract class AbstractTableIteratorTest {
 
 	@Test
 	public void testImplicitGetLocationWithProvidedPoint() {
-		this.iter.getLocation(new Point());
+		this.iter.getLocation(Vector3i.mutable());
 	}
 
 	@Test
@@ -97,11 +97,11 @@ public abstract class AbstractTableIteratorTest {
 
 	private void fillCount(final Table<Integer> filledTable, final int start) {
 		int number = start;
-		final Point point = new Point(0, 0);
+		final Vector3i point = Vector3i.mutable();
 		for (int y = 0; y < filledTable.height(); y++) {
-			point.y = y;
+			point.setY(y);
 			for (int x = 0; x < filledTable.width(); x++) {
-				point.x = x;
+				point.setX(x);
 				filledTable.put(point, number++);
 			}
 		}

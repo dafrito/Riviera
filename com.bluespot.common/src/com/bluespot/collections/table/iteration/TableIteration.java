@@ -1,9 +1,8 @@
 package com.bluespot.collections.table.iteration;
 
-import java.awt.Point;
-
 import com.bluespot.collections.table.Table;
 import com.bluespot.collections.table.TableIterator;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A strategy for iterating over {@link Table} objects. Table iteration
@@ -49,7 +48,7 @@ public interface TableIteration {
 	 *         {@code 1} if {@code a} is larger in magnitude to {@code b}.
 	 *         </ul>
 	 */
-	public int comparePoints(Table<?> table, Point a, Point b);
+	public int comparePoints(Table<?> table, Vector3i a, Vector3i b);
 
 	/**
 	 * Performs whatever is necessary to retrieve the next location from this
@@ -59,7 +58,7 @@ public interface TableIteration {
 	 *            the reference location. This point will be modified to refer
 	 *            to the next location.
 	 */
-	public void next(Point currentLocation);
+	public void next(Vector3i currentLocation);
 
 	/**
 	 * Performs whatever is necessary to retrieve the previous location from
@@ -69,7 +68,7 @@ public interface TableIteration {
 	 *            the reference location. This point will be modified to refer
 	 *            to the previous location.
 	 */
-	public void previous(Point currentLocation);
+	public void previous(Vector3i currentLocation);
 
 	/**
 	 * Wraps the specified {@code unwrappedPoint} so that it is a location
@@ -82,7 +81,7 @@ public interface TableIteration {
 	 *            the point to wrap. This point is unaffected by this method.
 	 * @return a new, wrapped point
 	 */
-	public Point wrap(Table<?> table, Point unwrappedPoint);
+	public Vector3i wrap(Table<?> table, Vector3i unwrappedPoint);
 
 	/**
 	 * Wraps the specified {@code unwrappedPoint}, so that it is a location
@@ -97,5 +96,5 @@ public interface TableIteration {
 	 *            the point that is replaced by the wrapped point's values. The
 	 *            original values of this point are destroyed.
 	 */
-	public void wrap(Table<?> table, Point unwrappedPoint, Point targetPoint);
+	public void wrap(Table<?> table, Vector3i unwrappedPoint, Vector3i targetPoint);
 }

@@ -1,16 +1,15 @@
 package com.bluespot.collections.table;
 
-import java.awt.Dimension;
-import java.awt.Point;
 import java.util.Iterator;
 
 import com.bluespot.collections.table.iteration.NaturalTableIteration;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * Skeletal implementation of the {@link Table} interface.
  * 
- * Be sure to also implement {@link AbstractTable#get(Point)} when implementing
- * this class.
+ * Be sure to also implement {@link AbstractTable#get(Vector3i)} when
+ * implementing this class.
  * 
  * @author Aaron Faanes
  * @param <T>
@@ -35,9 +34,9 @@ public abstract class AbstractTable<T> implements Table<T> {
 	 */
 	public static class SubTable<T> extends AbstractTable<T> {
 
-		private final Point origin;
+		private final Vector3i origin;
 		private final Table<T> owningTable;
-		private final Dimension size;
+		private final Vector3i size;
 
 		/**
 		 * Constructs a view into a portion of the specified table.
@@ -56,45 +55,45 @@ public abstract class AbstractTable<T> implements Table<T> {
 		 *             if the bounds provided are not valid for the specified
 		 *             table
 		 */
-		public SubTable(final Table<T> owningTable, final Point origin, final Dimension size, final T defaultValue) {
+		public SubTable(final Table<T> owningTable, final Vector3i origin, final Vector3i size, final T defaultValue) {
 			super(defaultValue);
 			AbstractTable.validateLocation(origin, owningTable.width(), owningTable.height());
-			if (origin.x + size.width > owningTable.width()) {
+			if (origin.x() + size.x() > owningTable.width()) {
 				throw new IndexOutOfBoundsException("subTable's X-dimension cannot extend outside of this table");
 			}
-			if (origin.y + size.height > owningTable.height()) {
+			if (origin.y() + size.y() > owningTable.height()) {
 				throw new IndexOutOfBoundsException("subTable's Y-dimension cannot extend outside of this table");
 			}
 
 			this.owningTable = owningTable;
-			this.origin = new Point(origin);
-			this.size = new Dimension(size);
+			this.origin = origin.toFrozen();
+			this.size = size.toFrozen();
 		}
 
 		@Override
-		public T get(final Point location) {
+		public T get(final Vector3i location) {
 			return this.owningTable.get(this.translate(location));
 		}
 
 		@Override
 		public int height() {
-			return this.size.height;
+			return this.size.y();
 		}
 
 		/**
 		 * @return this table's origin, relative to its parent table
 		 */
-		public Point getOrigin() {
+		public Vector3i origin() {
 			return this.origin;
 		}
 
 		@Override
 		public int width() {
-			return this.size.width;
+			return this.size.x();
 		}
 
 		@Override
-		public T put(final Point location, final T element) {
+		public T put(final Vector3i location, final T element) {
 			return this.owningTable.put(this.translate(location), element);
 		}
 
@@ -107,11 +106,9 @@ public abstract class AbstractTable<T> implements Table<T> {
 		 * @return a point that is properly adjusted for use with the parent
 		 *         table.
 		 */
-		protected Point translate(final Point original) {
+		protected Vector3i translate(final Vector3i original) {
 			AbstractTable.validateLocation(original, this.width(), this.height());
-			final Point point = new Point(original);
-			point.translate(this.getOrigin().x, this.getOrigin().y);
-			return point;
+			return original.added(this.origin());
 		}
 
 	}
@@ -142,7 +139,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 	}
 
 	@Override
-	public T get(final Point location) {
+	public T get(final Vector3i location) {
 		AbstractTable.validateLocation(location, this.width(), this.height());
 		return this.getDefaultValue();
 	}
@@ -153,7 +150,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 	}
 
 	@Override
-	public T remove(final Point location) {
+	public T remove(final Vector3i location) {
 		AbstractTable.validateLocation(location, this.width(), this.height());
 		return this.put(location, this.getDefaultValue());
 	}
@@ -163,13 +160,17 @@ public abstract class AbstractTable<T> implements Table<T> {
 		return this.width() * this.height();
 	}
 
-	@Override
-	public Table<T> subTable(final Point newOrigin) {
-		return this.subTable(newOrigin, new Dimension(this.width() - newOrigin.x, this.height() - newOrigin.y));
+	public Vector3i dimensions() {
+		return Vector3i.frozen(this.width(), this.height(), 1);
 	}
 
 	@Override
-	public Table<T> subTable(final Point newOrigin, final Dimension size) {
+	public Table<T> subTable(final Vector3i newOrigin) {
+		return this.subTable(newOrigin, this.dimensions().subtracted(newOrigin));
+	}
+
+	@Override
+	public Table<T> subTable(final Vector3i newOrigin, final Vector3i size) {
 		AbstractTable.validateLocation(newOrigin, this.width(), this.height());
 
 		return new SubTable<T>(this, newOrigin, size, this.defaultValue);
@@ -187,7 +188,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 	 * 
 	 * @return the default value.
 	 * @see Table#clear()
-	 * @see Table#remove(Point)
+	 * @see Table#remove(Vector3i)
 	 */
 	protected T getDefaultValue() {
 		return this.defaultValue;
@@ -209,17 +210,17 @@ public abstract class AbstractTable<T> implements Table<T> {
 	 * @throws IndexOutOfBoundsException
 	 *             if the point is out of bounds
 	 */
-	protected static void validateLocation(final Point point, final int width, final int height) {
-		if (point.x < 0) {
+	protected static void validateLocation(final Vector3i point, final int width, final int height) {
+		if (point.x() < 0) {
 			throw new IndexOutOfBoundsException("X cannot be negative");
 		}
-		if (point.y < 0) {
+		if (point.y() < 0) {
 			throw new IndexOutOfBoundsException("Y cannot be negative");
 		}
-		if (point.x >= width) {
+		if (point.x() >= width) {
 			throw new IndexOutOfBoundsException("X exceeds the width of this table");
 		}
-		if (point.y >= height) {
+		if (point.y() >= height) {
 			throw new IndexOutOfBoundsException("Y exceeds the height of this table");
 		}
 	}

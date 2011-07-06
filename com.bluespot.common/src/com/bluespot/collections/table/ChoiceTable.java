@@ -1,9 +1,10 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A {@code Table} implementation optimized for use with tables that contain a
@@ -55,8 +56,8 @@ public class ChoiceTable<T> extends AbstractTable<T> {
 	}
 
 	@Override
-	public T get(final Point location) {
-		return this.choices[this.internalTable[location.y][location.x]];
+	public T get(final Vector3i location) {
+		return this.choices[this.internalTable[location.y()][location.x()]];
 	}
 
 	@Override
@@ -91,14 +92,14 @@ public class ChoiceTable<T> extends AbstractTable<T> {
 	 *             if the valid is not a valid choice
 	 */
 	@Override
-	public T put(final Point location, final T element) {
+	public T put(final Vector3i location, final T element) {
 		final T old = this.get(location);
 
 		final Integer value = this.choiceMap.get(element);
 		if (value == null) {
 			throw new IllegalArgumentException("Value is not a valid choice");
 		}
-		this.internalTable[location.y][location.x] = value;
+		this.internalTable[location.y()][location.x()] = value;
 
 		return old;
 	}

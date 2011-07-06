@@ -8,6 +8,7 @@ import java.awt.geom.Point2D;
 
 import com.bluespot.collections.table.Table;
 import com.bluespot.geom.Geometry;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A {@link Paintable} that will output a {@link Table} as an isometric tile
@@ -93,7 +94,7 @@ public abstract class TileMap<T> implements Paintable {
 	@Override
 	public void paint(final Graphics2D originalG, final int width, final int height) {
 		final Graphics2D g = (Graphics2D) originalG.create();
-		final Point firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
+		final Vector3i firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
 
 		final Dimension initialOffset = new Dimension(this.getTileWidth() / 2, this.getTileHeight() / 2);
 
@@ -107,19 +108,19 @@ public abstract class TileMap<T> implements Paintable {
 		tileSize.width += 3;
 		tileSize.height += 2;
 
-		final Point lastTile = new Point(firstTile.x + tileSize.width, firstTile.y + tileSize.height * 2);
-		lastTile.x = Math.min(this.table.width() - 1, Math.max(0, lastTile.x));
-		lastTile.y = Math.min(this.table.height() - 1, Math.max(0, lastTile.y));
+		final Vector3i lastTile = Vector3i.mutable(firstTile.x() + tileSize.width, firstTile.y() + tileSize.height * 2);
+		lastTile.setX(Math.min(this.table.width() - 1, Math.max(0, lastTile.x())));
+		lastTile.setY(Math.min(this.table.height() - 1, Math.max(0, lastTile.y())));
 
-		final Table<T> subtable = this.table.subTable(firstTile, new Dimension(lastTile.x - firstTile.x, lastTile.y
-				- firstTile.y));
+		final Table<T> subtable = this.table.subTable(firstTile, Vector3i.mutable(lastTile.x() - firstTile.x(), lastTile.y()
+				- firstTile.y()));
 		this.renderTable(g, subtable, initialOffset);
 
 		originalG.setColor(Color.red);
 		originalG.draw(originalG.getClip());
 	}
 
-	private Point adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
+	private Vector3i adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
 
 		// Offset the origin so that the tile is drawn in-line with the other
 		// tiles.
@@ -154,15 +155,15 @@ public abstract class TileMap<T> implements Paintable {
 		targetOrigin.x = Math.min(this.table.width() - 1, Math.max(0, targetOrigin.x));
 		targetOrigin.y = Math.min(this.table.height() - 1, Math.max(0, targetOrigin.y));
 
-		return targetOrigin;
+		return Vector3i.mutable(targetOrigin);
 	}
 
 	private void renderTable(final Graphics2D g, final Table<T> renderedTable, final Dimension initialOffset) {
 		g.translate(initialOffset.width, initialOffset.height);
-		final Point location = new Point();
+		final Vector3i location = Vector3i.mutable();
 		for (int y = 0; y < renderedTable.height(); y++) {
 			for (int x = 0; x < renderedTable.width(); x++) {
-				location.setLocation(x, y);
+				location.set(x, y, 0);
 				final T value = renderedTable.get(location);
 				this.paintTile(g, value, location, this.tileWidth, this.tileHeight);
 				g.translate(this.tileWidth, 0);
@@ -202,6 +203,6 @@ public abstract class TileMap<T> implements Paintable {
 	 *            the height of the tile. Any painting should completely fill
 	 *            this space.
 	 */
-	protected abstract void paintTile(Graphics2D g, T value, Point tableIndex, int width, int height);
+	protected abstract void paintTile(Graphics2D g, T value, Vector3i tableIndex, int width, int height);
 
 }

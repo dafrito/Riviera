@@ -1,6 +1,6 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * Skeletal implementation of the {@link TableIterator} interface.
@@ -15,7 +15,7 @@ public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 	/**
 	 * The current position of this iterator
 	 */
-	protected Point currentPoint;
+	protected Vector3i currentPoint;
 
 	/**
 	 * The table used in iteration
@@ -41,18 +41,19 @@ public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 	}
 
 	@Override
-	public Point getLocation() {
-		final Point targetPoint = new Point();
-		this.getLocation(targetPoint);
-		return targetPoint;
-	}
-
-	@Override
-	public void getLocation(final Point targetPoint) {
+	public Vector3i getLocation() {
 		if (this.currentPoint == null) {
 			this.next();
 		}
-		targetPoint.setLocation(this.currentPoint);
+		return this.currentPoint.toFrozen();
+	}
+
+	@Override
+	public void getLocation(final Vector3i targetPoint) {
+		if (this.currentPoint == null) {
+			this.next();
+		}
+		targetPoint.set(this.currentPoint);
 	}
 
 	@Override

@@ -1,11 +1,12 @@
 package com.bluespot.collections.table;
 
-import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.bluespot.geom.vectors.Vector3i;
 
 public class ChoiceTableTest extends AbstractTableTest<TestEnum> {
 
@@ -28,7 +29,7 @@ public class ChoiceTableTest extends AbstractTableTest<TestEnum> {
 	public void testInvalidChoiceForPut() {
 		final TestEnum[] choices = new TestEnum[] { TestEnum.BAR, TestEnum.BASE };
 		final ChoiceTable<TestEnum> table = new ChoiceTable<TestEnum>(choices, 10, 10, TestEnum.BAR);
-		table.put(new Point(0, 0), TestEnum.NOTTINGHAM);
+		table.put(Vector3i.origin(), TestEnum.NOTTINGHAM);
 	}
 
 	@Override

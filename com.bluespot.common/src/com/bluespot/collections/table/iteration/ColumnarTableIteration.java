@@ -3,6 +3,7 @@ package com.bluespot.collections.table.iteration;
 import java.awt.Point;
 
 import com.bluespot.collections.table.Table;
+import com.bluespot.geom.vectors.Vector3i;
 
 /**
  * A top-to-bottom, then left-to-right table ordering.
@@ -26,14 +27,14 @@ public class ColumnarTableIteration extends AbstractTableIteration {
 	 * @see TableIteration#comparePoints(Table, Point, Point)
 	 */
 	@Override
-	public int comparePoints(final Table<?> table, final Point unwrappedA, final Point unwrappedB) {
-		final Point a = this.wrap(table, unwrappedA);
-		final Point b = this.wrap(table, unwrappedB);
-		final int yDifference = a.x - b.x;
+	public int comparePoints(final Table<?> table, final Vector3i unwrappedA, final Vector3i unwrappedB) {
+		final Vector3i a = this.wrap(table, unwrappedA);
+		final Vector3i b = this.wrap(table, unwrappedB);
+		final int yDifference = a.x() - b.x();
 		if (yDifference != 0) {
 			return (int) Math.signum(yDifference);
 		}
-		return (int) Math.signum(a.y - b.y);
+		return (int) Math.signum(a.y() - b.y());
 	}
 
 	/**
@@ -43,37 +44,41 @@ public class ColumnarTableIteration extends AbstractTableIteration {
 	 * X-axis values never affect our Y-axis.
 	 * <p>
 	 * This method is essentially the reverse of
-	 * {@link NaturalTableIteration#doWrap(Table, Point)}
+	 * {@link NaturalTableIteration#doWrap(Table, Vector3i)}
 	 */
 	@Override
-	public void doWrap(final Table<?> table, final Point point) {
-		int excessColumns = point.y / table.height();
-		point.y %= table.height();
-		if (point.y < 0) {
+	public void doWrap(final Table<?> table, final Vector3i point) {
+		int excessColumns = point.y() / table.height();
+		int x = point.x();
+		int y = point.y();
+		y %= table.height();
+		if (y < 0) {
 			// If the Y-value is negative, we add the height to guarantee a
 			// positive value.
 			// We also must move one column backwards since subtracting a column
 			// always means wrapping.
 			excessColumns--;
-			point.y += table.height();
+			y += table.height();
 		}
-		point.x += excessColumns;
-		point.x %= table.width();
-		if (point.x < 0) {
+		x += excessColumns;
+		x %= table.width();
+		if (x < 0) {
 			// If the X-value is negative, we add the width to guarantee a
 			// positive value.
-			point.x += table.width();
+			x += table.width();
 		}
+		point.setX(x);
+		point.setY(y);
 	}
 
 	@Override
-	public void next(final Point targetPoint) {
-		targetPoint.y++;
+	public void next(final Vector3i targetPoint) {
+		targetPoint.addY(1);
 	}
 
 	@Override
-	public void previous(final Point targetPoint) {
-		targetPoint.y--;
+	public void previous(final Vector3i targetPoint) {
+		targetPoint.subtractY(1);
 	}
 
 	/**
