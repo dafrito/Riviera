@@ -113,13 +113,13 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		}
 		switch (side) {
 		case LEFT:
-			return this.getLeft();
+			return this.left();
 		case RIGHT:
-			return this.getRight();
+			return this.right();
 		case TOP:
-			return this.getTop();
+			return this.top();
 		case BOTTOM:
-			return this.getBottom();
+			return this.bottom();
 		case VERTICAL:
 			return this.getVertical();
 		case HORIZONTAL:
@@ -128,7 +128,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		throw new IllegalArgumentException("Unexpected side value: " + side);
 	}
 
-	public int getLeft() {
+	public int left() {
 		return this.left;
 	}
 
@@ -142,7 +142,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int addLeft(int value) {
-		return this.setLeft(this.getLeft() + value);
+		return this.setLeft(this.left() + value);
 	}
 
 	public Offset4i addedLeft(int value) {
@@ -151,7 +151,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		return offset;
 	}
 
-	public int getRight() {
+	public int right() {
 		return this.right;
 	}
 
@@ -165,7 +165,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int addRight(int value) {
-		return this.setRight(this.getRight() + value);
+		return this.setRight(this.right() + value);
 	}
 
 	public Offset4i addedRight(int value) {
@@ -174,7 +174,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		return offset;
 	}
 
-	public int getTop() {
+	public int top() {
 		return this.top;
 	}
 
@@ -188,7 +188,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int addTop(int value) {
-		return this.setTop(this.getTop() + value);
+		return this.setTop(this.top() + value);
 	}
 
 	public Offset4i addedTop(int value) {
@@ -197,7 +197,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		return offset;
 	}
 
-	public int getBottom() {
+	public int bottom() {
 		return this.bottom;
 	}
 
@@ -211,7 +211,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int addBottom(int value) {
-		return this.setBottom(this.getBottom() + value);
+		return this.setBottom(this.bottom() + value);
 	}
 
 	public Offset4i addedBottom(int value) {
@@ -221,7 +221,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int getVertical() {
-		return this.getTop() + this.getBottom();
+		return this.top() + this.bottom();
 	}
 
 	public void setVertical(int value) {
@@ -230,7 +230,7 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 	}
 
 	public int getHorizontal() {
-		return this.getLeft() + this.getRight();
+		return this.left() + this.right();
 	}
 
 	public void setHorizontal(int value) {
@@ -240,10 +240,10 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 
 	@Override
 	public void set(Offset4i offset) {
-		this.setLeft(offset.getLeft());
-		this.setRight(offset.getRight());
-		this.setTop(offset.getTop());
-		this.setBottom(offset.getBottom());
+		this.setLeft(offset.left());
+		this.setRight(offset.right());
+		this.setTop(offset.top());
+		this.setBottom(offset.bottom());
 	}
 
 	public void set(int value) {
@@ -270,24 +270,24 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		}
 		switch (side) {
 		case LEFT:
-			this.setLeft(offset.getLeft());
+			this.setLeft(offset.left());
 			return;
 		case RIGHT:
-			this.setRight(offset.getRight());
+			this.setRight(offset.right());
 			return;
 		case TOP:
-			this.setTop(offset.getTop());
+			this.setTop(offset.top());
 			return;
 		case BOTTOM:
-			this.setBottom(offset.getBottom());
+			this.setBottom(offset.bottom());
 			return;
 		case VERTICAL:
-			this.setTop(offset.getTop());
-			this.setBottom(offset.getBottom());
+			this.setTop(offset.top());
+			this.setBottom(offset.bottom());
 			return;
 		case HORIZONTAL:
-			this.setLeft(offset.getLeft());
-			this.setRight(offset.getRight());
+			this.setLeft(offset.left());
+			this.setRight(offset.right());
 			return;
 		}
 		throw new IllegalArgumentException("Side is invalid");
@@ -327,10 +327,10 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		if (offset == null) {
 			throw new NullPointerException("offset must not be null");
 		}
-		this.addLeft(offset.getLeft());
-		this.addRight(offset.getRight());
-		this.addTop(offset.getTop());
-		this.addBottom(offset.getBottom());
+		this.addLeft(offset.left());
+		this.addRight(offset.right());
+		this.addTop(offset.top());
+		this.addBottom(offset.bottom());
 	}
 
 	public void add(int value) {
@@ -350,24 +350,24 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		}
 		switch (side) {
 		case LEFT:
-			this.addLeft(offset.getLeft());
+			this.addLeft(offset.left());
 			return;
 		case RIGHT:
-			this.addRight(offset.getRight());
+			this.addRight(offset.right());
 			return;
 		case TOP:
-			this.addTop(offset.getTop());
+			this.addTop(offset.top());
 			return;
 		case BOTTOM:
-			this.addBottom(offset.getBottom());
+			this.addBottom(offset.bottom());
 			return;
 		case VERTICAL:
-			this.addTop(offset.getTop());
-			this.addBottom(offset.getBottom());
+			this.addTop(offset.top());
+			this.addBottom(offset.bottom());
 			return;
 		case HORIZONTAL:
-			this.addLeft(offset.getLeft());
-			this.addRight(offset.getRight());
+			this.addLeft(offset.left());
+			this.addRight(offset.right());
 			return;
 		}
 		throw new IllegalArgumentException("Side is invalid");
@@ -445,10 +445,10 @@ public class Offset4i extends AbstractOffset4<Offset4i> {
 		if (offset == null) {
 			return false;
 		}
-		return this.getLeft() == offset.getLeft() &&
-				this.getRight() == offset.getRight() &&
-				this.getTop() == offset.getTop() &&
-				this.getBottom() == offset.getBottom();
+		return this.left() == offset.left() &&
+				this.right() == offset.right() &&
+				this.top() == offset.top() &&
+				this.bottom() == offset.bottom();
 	}
 
 }
