@@ -3,6 +3,10 @@
  */
 package com.bluespot.geom.vectors;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.geom.Point2D;
+
 import com.bluespot.geom.Axis;
 
 /**
@@ -1117,6 +1121,10 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	@Override
 	public double length() {
 		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
+	}
+
+	public float volume() {
+		return this.x * this.y * this.z;
 	}
 
 	@Override

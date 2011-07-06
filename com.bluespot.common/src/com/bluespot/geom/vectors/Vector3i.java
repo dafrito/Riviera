@@ -3,6 +3,9 @@
  */
 package com.bluespot.geom.vectors;
 
+import java.awt.Dimension;
+import java.awt.Point;
+
 import com.bluespot.geom.Axis;
 
 /**
@@ -1065,6 +1068,10 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
 	}
 
+	public int volume() {
+		return this.x * this.y * this.z;
+	}
+
 	@Override
 	public void normalize() {
 		float len = (float) this.length();
@@ -1130,6 +1137,12 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return this.x() == vector.x() &&
 				this.y() == vector.y() &&
 				this.z() == vector.z();
+	}
+
+	public boolean at(int x, int y, int z) {
+		return this.x() == x &&
+				this.y() == y &&
+				this.z() == z;
 	}
 
 	@Override
