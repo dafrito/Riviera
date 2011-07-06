@@ -105,7 +105,6 @@ public abstract class TileMap<T> implements Paintable {
 		// Offset the origin so that the tile is drawn in-line with the other
 		// tiles.
 		final Point offset = g.getClipBounds().getLocation();
-		System.out.println(offset);
 		offset.x %= this.getTileWidth();
 		offset.y %= this.getTileHeight();
 		g.translate(-offset.x, -offset.y);
