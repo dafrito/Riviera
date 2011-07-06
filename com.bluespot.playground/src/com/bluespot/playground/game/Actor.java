@@ -14,21 +14,6 @@ package com.bluespot.playground.game;
  * @see Environment
  */
 public interface Actor {
-
-	/**
-	 * Returns the environment that contains this actor. This should never
-	 * return null.
-	 * <p>
-	 * Note that this is not actually enforced by the actor; the environment is
-	 * solely responsible for whom it contains. Methods called on the
-	 * environment using this actor are validated first by the environment, and
-	 * illegal calls will result in a {@link IllegalStateException} being
-	 * thrown.
-	 * 
-	 * @return the environment that contains this actor
-	 */
-	public Environment getEnvironment();
-
 	/**
 	 * Perform one atomic iteration for this actor. At the end of this method,
 	 * all iteration-specific state should be set. It is assumed that during

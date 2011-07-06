@@ -1,5 +1,8 @@
 package com.bluespot.playground.game;
 
+import java.util.Collections;
+import java.util.Set;
+
 import com.bluespot.playground.game.Team.Relation;
 
 /**
@@ -17,19 +20,17 @@ public class Laser extends AbstractActor {
 	private boolean shooting = true;
 
 	/**
-	 * Constructs a {@link Laser} using the specified environment and team. The
-	 * laser is initially being shot.
+	 * Constructs a {@link Laser} using the specified team. The laser is
+	 * initially being shot.
 	 * 
-	 * @param environment
-	 *            the environment that houses this laser. It must not be null.
 	 * @param team
 	 *            the team that this laser is affiliated with. It must not be
 	 *            null.
 	 * @throws NullPointerException
 	 *             if either argument is null
 	 */
-	public Laser(final Environment environment, final Team team) {
-		super(environment, team);
+	public Laser(final Team team) {
+		super(team);
 	}
 
 	/**
@@ -55,11 +56,15 @@ public class Laser extends AbstractActor {
 		this.shooting = shooting;
 	}
 
+	private Set<Actor> getNeighbors() {
+		return Collections.emptySet();
+	}
+
 	@Override
 	public void update() {
 		// By default, we shoot the laser.
 		this.setShooting(true);
-		for (final Actor neighbor : this.getEnvironment().getNeighbors(this)) {
+		for (final Actor neighbor : this.getNeighbors()) {
 			final Relation relation = this.getTeam().getRelations(neighbor.getTeam());
 			if (relation == Team.Relation.FRIENDLY) {
 				/*
