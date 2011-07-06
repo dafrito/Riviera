@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.geom.Point2D;
 
 import com.bluespot.collections.table.Table;
 import com.bluespot.geom.Geometry;
@@ -21,15 +20,13 @@ import com.bluespot.geom.vectors.Vector3i;
  */
 public abstract class TileMap<T> implements Paintable {
 
-	private final int tileHeight;
-
-	private final int tileWidth;
+	private final Vector3i tileSize;
 
 	/**
 	 * The point (in map coordinates) which should be at 0,0 in screen
 	 * coordinates
 	 */
-	protected Point2D.Double origin = new Point2D.Double();
+	protected Vector3i origin = Vector3i.mutable();
 
 	/**
 	 * The {@link Table} used as the data source for this tile map
@@ -41,15 +38,12 @@ public abstract class TileMap<T> implements Paintable {
 	 * 
 	 * @param table
 	 *            the drawn table
-	 * @param tileWidth
-	 *            the width of each tile
-	 * @param tileHeight
-	 *            the height of each tile
+	 * @param tileSize
+	 *            the dimensions of a single tile
 	 */
-	public TileMap(final Table<T> table, final int tileWidth, final int tileHeight) {
+	public TileMap(final Table<T> table, final Vector3i tileSize) {
 		this.table = table;
-		this.tileHeight = tileHeight;
-		this.tileWidth = tileWidth;
+		this.tileSize = tileSize.toFrozen();
 	}
 
 	/**
@@ -58,37 +52,26 @@ public abstract class TileMap<T> implements Paintable {
 	 * @return the size of this tile map in pixels
 	 */
 	public Dimension getSize() {
-		final Dimension size = this.getTileSize();
+		final Dimension size = this.getTileSize().toDimension();
 		Geometry.Ceil.multiply(size, this.table.width() + .5, this.table.height() + 2);
 		return size;
 	}
 
 	/**
-	 * Returns the height of a single tile in this tile map.
+	 * Returns the dimensions of a single tile.
 	 * 
-	 * @return the height of a single tile
+	 * @return the dimensions of a single tile
 	 */
-	public int getTileHeight() {
-		return this.tileHeight;
+	public Vector3i getTileSize() {
+		return this.tileSize;
 	}
 
-	/**
-	 * Returns the width of a single tile in this tile map.
-	 * 
-	 * @return the width of a single tile
-	 */
-	public int getTileWidth() {
-		return this.tileWidth;
+	protected int getTileWidth() {
+		return this.tileSize.x();
 	}
 
-	/**
-	 * Returns a new {@link Dimension} object that represents the dimensions of
-	 * a single tile. The returned object may be freely modified.
-	 * 
-	 * @return the size of a single tile
-	 */
-	public Dimension getTileSize() {
-		return new Dimension(this.getTileWidth(), this.getTileHeight());
+	protected int getTileHeight() {
+		return this.tileSize.y();
 	}
 
 	@Override
@@ -115,9 +98,6 @@ public abstract class TileMap<T> implements Paintable {
 		final Table<T> subtable = this.table.subTable(firstTile, Vector3i.mutable(lastTile.x() - firstTile.x(), lastTile.y()
 				- firstTile.y()));
 		this.renderTable(g, subtable, initialOffset);
-
-		originalG.setColor(Color.red);
-		originalG.draw(originalG.getClip());
 	}
 
 	private Vector3i adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
@@ -165,10 +145,10 @@ public abstract class TileMap<T> implements Paintable {
 			for (int x = 0; x < renderedTable.width(); x++) {
 				location.set(x, y, 0);
 				final T value = renderedTable.get(location);
-				this.paintTile(g, value, location, this.tileWidth, this.tileHeight);
-				g.translate(this.tileWidth, 0);
+				this.paintTile(g, value, location, this.tileSize);
+				g.translate(this.tileSize.x(), 0);
 			}
-			g.translate(-this.tileWidth * renderedTable.width(), this.tileHeight);
+			g.translate(-this.tileSize.x() * renderedTable.width(), this.tileSize.y());
 			final Dimension offset = this.newRow();
 			g.translate(offset.width, offset.height);
 		}
@@ -196,13 +176,9 @@ public abstract class TileMap<T> implements Paintable {
 	 * @param tableIndex
 	 *            the index of the tile in the table. Do not use this as the
 	 *            origin - it will not work.
-	 * @param width
-	 *            the width of the tile. Any painting should completely fill
-	 *            this space.
-	 * @param height
-	 *            the height of the tile. Any painting should completely fill
-	 *            this space.
+	 * @param tileSize
+	 *            the dimensions of the tile.
 	 */
-	protected abstract void paintTile(Graphics2D g, T value, Vector3i tableIndex, int width, int height);
+	protected abstract void paintTile(Graphics2D g, T value, Vector3i tableIndex, Vector3i tileSize);
 
 }
