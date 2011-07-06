@@ -15,6 +15,14 @@ import com.bluespot.geom.Axis;
  */
 public final class Vector3i extends AbstractVector3<Vector3i> {
 
+	public static Vector3i mutable() {
+		return mutable(0);
+	}
+
+	public static Vector3i frozen() {
+		return frozen(0);
+	}
+
 	/**
 	 * Create a mutable {@link Vector3i} using the specified value for all axes.
 	 * 
@@ -36,7 +44,7 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	 * @throw {@link IllegalArgumentException} if {@code v} is {@code NaN}
 	 */
 	public static Vector3i frozen(int v) {
-		return Vector3i.mutable(v, v, v);
+		return Vector3i.frozen(v, v, v);
 	}
 
 	public static Vector3i mutable(int x, int y, int z) {
@@ -81,6 +89,22 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 			throw new NullPointerException("vector must not be null");
 		}
 		return new Vector3i(false, (int) vector.x(), (int) vector.y(), (int) vector.z());
+	}
+
+	public static Vector3i mutable(Point point) {
+		return Vector3i.mutable(point.x, point.y, 0);
+	}
+
+	public static Vector3i frozen(Point point) {
+		return Vector3i.frozen(point.x, point.y, 0);
+	}
+
+	public static Vector3i mutable(Dimension dimension) {
+		return Vector3i.mutable(dimension.width, dimension.height, 0);
+	}
+
+	public static Vector3i frozen(Dimension dimension) {
+		return Vector3i.frozen(dimension.width, dimension.height, 0);
 	}
 
 	/**

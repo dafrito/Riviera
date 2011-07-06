@@ -17,6 +17,14 @@ import com.bluespot.geom.Axis;
  */
 public class Vector3d extends AbstractVector3<Vector3d> {
 
+	public static Vector3d mutable() {
+		return mutable(0);
+	}
+
+	public static Vector3d frozen() {
+		return frozen(0);
+	}
+
 	/**
 	 * Create a mutable {@link Vector3d} using the specified value for all axes.
 	 * 
@@ -139,6 +147,38 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 			throw new NullPointerException("vector must not be null");
 		}
 		return new Vector3d(false, vector.x(), vector.y(), vector.z());
+	}
+
+	public static Vector3d mutable(Point point) {
+		return Vector3d.mutable(point.x, point.y, 0);
+	}
+
+	public static Vector3d frozen(Point point) {
+		return Vector3d.frozen(point.x, point.y, 0);
+	}
+
+	public static Vector3d mutable(Dimension dimension) {
+		return Vector3d.mutable(dimension.width, dimension.height, 0);
+	}
+
+	public static Vector3d frozen(Dimension dimension) {
+		return Vector3d.frozen(dimension.width, dimension.height, 0);
+	}
+
+	public static Vector3d mutable(Dimension2D dimension) {
+		return Vector3d.mutable(dimension.getWidth(), dimension.getHeight(), 0);
+	}
+
+	public static Vector3d frozen(Dimension2D dimension) {
+		return Vector3d.frozen(dimension.getWidth(), dimension.getHeight(), 0);
+	}
+
+	public static Vector3d mutable(Point2D.Double point) {
+		return Vector3d.mutable(point.x, point.y, 0);
+	}
+
+	public static Vector3d frozen(Point2D.Double point) {
+		return Vector3d.frozen(point.x, point.y, 0);
 	}
 
 	/**

@@ -17,6 +17,14 @@ import com.bluespot.geom.Axis;
  */
 public final class Vector3f extends AbstractVector3<Vector3f> {
 
+	public static Vector3f mutable() {
+		return mutable(0);
+	}
+
+	public static Vector3f frozen() {
+		return frozen(0);
+	}
+
 	/**
 	 * Create a mutable {@link Vector3f} using the specified value for all axes.
 	 * 
@@ -83,6 +91,30 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 			throw new NullPointerException("vector must not be null");
 		}
 		return new Vector3f(false, (float) vector.x(), (float) vector.y(), (float) vector.z());
+	}
+
+	public static Vector3f mutable(Point point) {
+		return Vector3f.mutable(point.x, point.y, 0);
+	}
+
+	public static Vector3f frozen(Point point) {
+		return Vector3f.frozen(point.x, point.y, 0);
+	}
+
+	public static Vector3f mutable(Dimension dimension) {
+		return Vector3f.mutable(dimension.width, dimension.height, 0);
+	}
+
+	public static Vector3f frozen(Dimension dimension) {
+		return Vector3f.frozen(dimension.width, dimension.height, 0);
+	}
+
+	public static Vector3d mutable(Point2D.Float point) {
+		return Vector3d.mutable(point.x, point.y, 0);
+	}
+
+	public static Vector3d frozen(Point2D.Float point) {
+		return Vector3d.frozen(point.x, point.y, 0);
 	}
 
 	/**
