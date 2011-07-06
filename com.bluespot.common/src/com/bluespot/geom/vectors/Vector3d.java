@@ -1224,6 +1224,10 @@ public class Vector3d extends AbstractVector3<Vector3d> {
 		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
 	}
 
+	public double area() {
+		return this.x * this.y;
+	}
+
 	public double volume() {
 		return this.x * this.y * this.z;
 	}

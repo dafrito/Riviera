@@ -1123,6 +1123,10 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
 	}
 
+	public float area() {
+		return this.x * this.y;
+	}
+
 	public float volume() {
 		return this.x * this.y * this.z;
 	}

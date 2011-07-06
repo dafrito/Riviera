@@ -1068,6 +1068,10 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return Math.sqrt(Math.pow(this.x(), 2) + Math.pow(this.y(), 2) + Math.pow(this.z(), 2));
 	}
 
+	public int area() {
+		return this.x * this.y;
+	}
+
 	public int volume() {
 		return this.x * this.y * this.z;
 	}
