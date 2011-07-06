@@ -1,5 +1,6 @@
 package com.bluespot.generate;
 
+import java.awt.Color;
 import java.util.Random;
 
 /**
@@ -112,4 +113,27 @@ public final class Randomness {
 			"mery", "nem", "nia", "nia", "nia", "nis", "num", "ra", "rac", "re", "rec", "ren", "rian", "rion", "ris",
 			"ron", "ros", "sa", "san", "sen", "sor", "sse", "tan", "ten", "tenia", "tania", "tia", "tra", "tera",
 			"tassus", "tria", "tum", "us", "via", "va" };
+
+	private static final Color[] SWATCHES = new Color[] { Color.green, Color.red, Color.black, Color.white, Color.yellow, Color.blue, Color.cyan, Color.gray, Color.magenta,
+			Color.orange, Color.pink, Color.lightGray };
+
+	/**
+	 * Return a random swatch from the preset collection of colors, such as
+	 * {@link Color#WHITE}, {@link Color#BLACK}, et al.
+	 * 
+	 * @return a random color swatch
+	 */
+	public static Color swatch() {
+		return Randomness.choice(SWATCHES);
+	}
+
+	/**
+	 * Return a random color.
+	 * 
+	 * @return a random color
+	 */
+	public static Color color() {
+		return new Color(global().nextFloat(), global().nextFloat(), global().nextFloat());
+	}
+
 }
