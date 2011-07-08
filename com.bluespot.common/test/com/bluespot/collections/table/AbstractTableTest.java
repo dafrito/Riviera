@@ -11,7 +11,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.bluespot.collections.table.iteration.NaturalTableIteration;
+import com.bluespot.collections.table.iteration.NaturalTableIterator;
+import com.bluespot.collections.table.iteration.TableIterator;
 import com.bluespot.geom.vectors.Vector3i;
 
 public abstract class AbstractTableTest<T> {
@@ -159,22 +160,22 @@ public abstract class AbstractTableTest<T> {
 	public void testNaturalTableIteration() {
 		this.table = this.newTable(2, 2);
 		Tables.fill(this.table, this.listOfValues());
-		final TableIterator<T> iterator = new StrategyTableIterator<T>(this.table, NaturalTableIteration.getInstance());
+		final TableIterator<T> iterator = new NaturalTableIterator<T>(table);
 
 		assertThat(iterator.next(), is(this.listOfValues().get(0)));
-		assertThat(iterator.getLocation(), is(Vector3i.origin()));
+		assertThat(iterator.location(), is(Vector3i.origin()));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(1)));
-		assertTrue(iterator.getLocation().at(1, 0, 0));
+		assertTrue(iterator.location().at(1, 0, 0));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(2)));
-		assertTrue(iterator.getLocation().at(0, 1, 0));
+		assertTrue(iterator.location().at(0, 1, 0));
 		assertThat(iterator.hasNext(), is(true));
 
 		assertThat(iterator.next(), is(this.listOfValues().get(3)));
-		assertTrue(iterator.getLocation().at(1, 1, 0));
+		assertTrue(iterator.location().at(1, 1, 0));
 		assertThat(iterator.hasNext(), is(false));
 	}
 

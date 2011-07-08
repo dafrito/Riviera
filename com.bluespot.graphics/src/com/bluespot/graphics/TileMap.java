@@ -5,6 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import com.bluespot.collections.table.Table;
+import com.bluespot.collections.table.iteration.NaturalTableIterator;
+import com.bluespot.collections.table.iteration.TableIterator;
 import com.bluespot.geom.Geometry;
 import com.bluespot.geom.vectors.Vector3i;
 
@@ -83,19 +85,12 @@ public abstract class TileMap<T> implements Paintable {
 		final Dimension tileSize = g.getClipBounds().getSize();
 		tileSize.width /= this.getTileWidth();
 		tileSize.height /= this.getTileHeight();
-		tileSize.height *= 2;
-
-		// God knows how many tiles we'll need to render, so just render a lot
-		// more than we need.
-		tileSize.width += 3;
-		tileSize.height += 2;
 
 		final Vector3i lastTile = Vector3i.mutable(firstTile.x() + tileSize.width, firstTile.y() + tileSize.height * 2);
 		lastTile.setX(Math.min(this.table.width() - 1, Math.max(0, lastTile.x())));
 		lastTile.setY(Math.min(this.table.height() - 1, Math.max(0, lastTile.y())));
 
-		final Table<T> subtable = this.table.subTable(firstTile, Vector3i.mutable(lastTile.x() - firstTile.x(), lastTile.y()
-				- firstTile.y()));
+		final Table<T> subtable = this.table.subTable(firstTile, lastTile.subtracted(firstTile));
 		this.renderTable(g, subtable, initialOffset);
 	}
 
@@ -138,28 +133,13 @@ public abstract class TileMap<T> implements Paintable {
 
 	private void renderTable(final Graphics2D g, final Table<T> renderedTable, final Dimension initialOffset) {
 		g.translate(initialOffset.width, initialOffset.height);
-		final Vector3i location = Vector3i.mutable();
-		for (int y = 0; y < renderedTable.height(); y++) {
-			for (int x = 0; x < renderedTable.width(); x++) {
-				location.set(x, y, 0);
-				final T value = renderedTable.get(location);
-				this.paintTile(g, value, location, this.tileSize);
-				g.translate(this.tileSize.x(), 0);
-			}
-			g.translate(-this.tileSize.x() * renderedTable.width(), this.tileSize.y());
-			final Dimension offset = this.newRow();
-			g.translate(offset.width, offset.height);
+		TableIterator<T> iter = new NaturalTableIterator<T>(renderedTable);
+		while (iter.hasNext()) {
+			T value = iter.next();
+			Vector3i offset = iter.offset();
+			g.translate(this.tileSize.x() * offset.x(), this.tileSize.y() * offset.y());
+			this.paintTile(g, value, iter.location(), this.tileSize);
 		}
-	}
-
-	/**
-	 * A (poorly-named) method that is called whenever a new row is entered. The
-	 * dimension returned will be used to adjust the graphics context.
-	 * 
-	 * @return the offset of the graphics context for the specified row
-	 */
-	protected Dimension newRow() {
-		return new Dimension(0, 0);
 	}
 
 	/**

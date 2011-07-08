@@ -2,6 +2,7 @@ package com.bluespot.collections.table;
 
 import java.util.List;
 
+import com.bluespot.collections.table.iteration.TableIterator;
 import com.bluespot.geom.vectors.Vector3i;
 
 /**

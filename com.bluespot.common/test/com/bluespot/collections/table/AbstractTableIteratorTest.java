@@ -8,6 +8,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.bluespot.collections.table.iteration.TableIterator;
 import com.bluespot.geom.vectors.Vector3i;
 
 public abstract class AbstractTableIteratorTest {
@@ -55,12 +56,7 @@ public abstract class AbstractTableIteratorTest {
 
 	@Test
 	public void testImplicitGetLocation() {
-		assertNotNull(this.iter.getLocation());
-	}
-
-	@Test
-	public void testImplicitGetLocationWithProvidedPoint() {
-		this.iter.getLocation(Vector3i.mutable());
+		assertNotNull(this.iter.location());
 	}
 
 	@Test

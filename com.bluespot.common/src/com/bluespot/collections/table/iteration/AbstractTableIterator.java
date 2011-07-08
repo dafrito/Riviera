@@ -1,5 +1,6 @@
-package com.bluespot.collections.table;
+package com.bluespot.collections.table.iteration;
 
+import com.bluespot.collections.table.Table;
 import com.bluespot.geom.vectors.Vector3i;
 
 /**
@@ -15,7 +16,7 @@ public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 	/**
 	 * The current position of this iterator
 	 */
-	protected Vector3i currentPoint;
+	protected final Vector3i position = Vector3i.mutable();
 
 	/**
 	 * The table used in iteration
@@ -34,41 +35,33 @@ public abstract class AbstractTableIterator<T> implements TableIterator<T> {
 
 	@Override
 	public T get() {
-		if (this.currentPoint == null) {
+		if (this.position == null) {
 			this.next();
 		}
-		return this.table.get(this.currentPoint);
+		return this.table.get(this.position);
 	}
 
 	@Override
-	public Vector3i getLocation() {
-		if (this.currentPoint == null) {
+	public Vector3i location() {
+		if (this.position == null) {
 			this.next();
 		}
-		return this.currentPoint.toFrozen();
-	}
-
-	@Override
-	public void getLocation(final Vector3i targetPoint) {
-		if (this.currentPoint == null) {
-			this.next();
-		}
-		targetPoint.set(this.currentPoint);
+		return this.position.toFrozen();
 	}
 
 	@Override
 	public T put(final T value) {
-		if (this.currentPoint == null) {
+		if (this.position == null) {
 			this.next();
 		}
-		return this.table.put(this.currentPoint, value);
+		return this.table.put(this.position, value);
 	}
 
 	@Override
 	public void remove() {
-		if (this.currentPoint == null) {
+		if (this.position == null) {
 			this.next();
 		}
-		this.table.remove(this.currentPoint);
+		this.table.remove(this.position);
 	}
 }

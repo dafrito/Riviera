@@ -1,9 +1,10 @@
-package com.bluespot.collections.table;
+package com.bluespot.collections.table.iteration;
 
 import java.awt.Point;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+import com.bluespot.collections.table.Table;
 import com.bluespot.geom.vectors.Vector3i;
 
 /**
@@ -38,22 +39,16 @@ public interface TableIterator<T> extends Iterator<T> {
 	 * @throws NoSuchElementException
 	 *             if iteration was implicitly started, but the table was empty
 	 */
-	public Vector3i getLocation();
+	public Vector3i location();
 
 	/**
-	 * Replaces the specified point's value with the current location of this
-	 * iterator.
+	 * Returns the magnitude of movement from the previous position to the
+	 * current position.
 	 * <p>
-	 * This method will implicitly call {@link TableIterator#next} if the
-	 * iteration hasn't been explicitly started.
 	 * 
-	 * @param targetPoint
-	 *            the point that the current location is copied to. This point's
-	 *            original values will be lost.
-	 * @throws NoSuchElementException
-	 *             if iteration was implicitly started, but the table was empty
+	 * @return the magnitude of movement during this iteration
 	 */
-	public void getLocation(Vector3i targetPoint);
+	public Vector3i offset();
 
 	/**
 	 * Returns whether the location immediately after the current location will

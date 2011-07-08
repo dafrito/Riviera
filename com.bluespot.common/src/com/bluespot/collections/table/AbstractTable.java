@@ -2,7 +2,8 @@ package com.bluespot.collections.table;
 
 import java.util.Iterator;
 
-import com.bluespot.collections.table.iteration.NaturalTableIteration;
+import com.bluespot.collections.table.iteration.NaturalTableIterator;
+import com.bluespot.collections.table.iteration.TableIterator;
 import com.bluespot.geom.vectors.Vector3i;
 
 /**
@@ -178,7 +179,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 
 	@Override
 	public TableIterator<T> tableIterator() {
-		return new StrategyTableIterator<T>(this, NaturalTableIteration.getInstance());
+		return new NaturalTableIterator<T>(this);
 	}
 
 	/**

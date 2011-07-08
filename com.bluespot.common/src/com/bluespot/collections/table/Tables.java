@@ -3,6 +3,9 @@ package com.bluespot.collections.table;
 import java.util.Arrays;
 import java.util.List;
 
+import com.bluespot.collections.table.iteration.NaturalTableIterator;
+import com.bluespot.collections.table.iteration.TableIterator;
+
 /**
  * Collection of static methods that work on {@link Table} objects.
  * 
@@ -81,6 +84,10 @@ public final class Tables {
 	 */
 	public static <T> void fill(final Table<T> table, final T... values) {
 		Tables.fill(table, Arrays.asList(values));
+	}
+
+	public static <T> TableIterator<T> natural(Table<T> table) {
+		return new NaturalTableIterator<T>(table);
 	}
 
 }
