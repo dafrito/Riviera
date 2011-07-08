@@ -22,6 +22,18 @@ public interface Table<T> extends Iterable<T> {
 	public void clear();
 
 	/**
+	 * Returns the element at the specified position.
+	 * 
+	 * @param x
+	 *            the x value of the requested element
+	 * @param y
+	 *            the y value of the requested element
+	 * @return the requested element
+	 * @throw IndexOutOfBoundsException if the position is out of bounds
+	 */
+	public T get(int x, int y);
+
+	/**
 	 * Returns the element at the specified point.
 	 * <p>
 	 * This method will never wrap. If you're interested in wrapping

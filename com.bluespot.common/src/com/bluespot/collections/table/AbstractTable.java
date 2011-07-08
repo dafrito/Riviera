@@ -146,6 +146,11 @@ public abstract class AbstractTable<T> implements Table<T> {
 	}
 
 	@Override
+	public T get(int x, int y) {
+		return this.get(Vector3i.frozen(x, y));
+	}
+
+	@Override
 	public Iterator<T> iterator() {
 		return this.tableIterator();
 	}
