@@ -260,6 +260,17 @@ public abstract class AbstractTableTest<T> {
 		assertThat(this.table.get(Vector3i.frozen(3, 0)), is(this.otherListOfValues().get(1)));
 	}
 
+	@Test
+	public void subTablesCanBeDegenerateTables() throws Exception {
+		this.table = this.newTable(4, 4);
+		Table<T> subtable = table.subTable(Vector3i.frozen(3, 0));
+		assertThat(subtable.size(), is(4));
+		subtable = table.subTable(Vector3i.frozen(0, 3));
+		assertThat(subtable.size(), is(4));
+		subtable = table.subTable(Vector3i.frozen(3, 3));
+		assertThat(subtable.size(), is(1));
+	}
+
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testThrowOnGetWithExcessiveX() {
 		this.table.get(Vector3i.frozen(2, 0));
