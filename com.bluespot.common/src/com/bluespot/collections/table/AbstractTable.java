@@ -166,6 +166,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 		return this.width() * this.height();
 	}
 
+	@Override
 	public Vector3i dimensions() {
 		return Vector3i.frozen(this.width(), this.height(), 1);
 	}
