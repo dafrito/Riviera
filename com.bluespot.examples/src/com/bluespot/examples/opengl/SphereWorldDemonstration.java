@@ -101,6 +101,10 @@ public class SphereWorldDemonstration extends GLJPanel implements GLEventListene
 			this.frames.add(new Frame(Vector3f.frozen(x, 0.0f, z)));
 		}
 
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+
 	}
 
 	private float zRot = 0;
