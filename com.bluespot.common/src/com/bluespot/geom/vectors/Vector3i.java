@@ -495,6 +495,21 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 	}
 
 	/**
+	 * Sets the x and y components to the specified values.
+	 * 
+	 * @param x
+	 *            the new x value
+	 * @param y
+	 *            the new y value
+	 * @return {@code this}
+	 */
+	public Vector3i set(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+		return this;
+	}
+
+	/**
 	 * Sets all of this vector's values to the specified values.
 	 * 
 	 * @param x
