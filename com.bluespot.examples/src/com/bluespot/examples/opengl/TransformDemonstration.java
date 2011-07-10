@@ -1,5 +1,6 @@
 package com.bluespot.examples.opengl;
 
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 
@@ -24,6 +25,16 @@ public class TransformDemonstration extends AbstractGLDemonstration {
 	 */
 	public static void main(final String[] args) {
 		Demonstration.launchWrapped(TransformDemonstration.class);
+	}
+
+	@Override
+	public void init(GLAutoDrawable drawable) {
+		super.init(drawable);
+
+		final GL2 gl = drawable.getGL().getGL2();
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 	}
 
 	@Override

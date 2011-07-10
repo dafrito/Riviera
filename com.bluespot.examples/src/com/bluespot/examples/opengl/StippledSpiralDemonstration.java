@@ -30,6 +30,16 @@ public class StippledSpiralDemonstration extends AbstractGLDemonstration {
 	}
 
 	@Override
+	public void init(GLAutoDrawable drawable) {
+		super.init(drawable);
+
+		final GL2 gl = drawable.getGL().getGL2();
+		gl.glEnable(GL.GL_LINE_SMOOTH);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	@Override
 	protected void render(final GL2 gl, GLAutoDrawable drawable) {
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
 		gl.glLineStipple(1, (short) 0xffff);
