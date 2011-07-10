@@ -2,7 +2,6 @@ package com.bluespot.graphics;
 
 import java.awt.Dimension;
 import java.awt.Graphics2D;
-import java.awt.Point;
 
 import com.bluespot.collections.table.Table;
 import com.bluespot.collections.table.iteration.NaturalTableIterator;
@@ -18,7 +17,7 @@ import com.bluespot.geom.vectors.Vector3i;
  * @param <T>
  *            the type of element in the table
  */
-public abstract class TileMap<T> implements Paintable {
+public abstract class TileMap<T> {
 
 	private final Vector3i tileSize;
 
@@ -58,52 +57,48 @@ public abstract class TileMap<T> implements Paintable {
 		return this.tileSize;
 	}
 
-	protected int getTileWidth() {
-		return this.tileSize.x();
-	}
+	public void paint(final Graphics2D originalG, Vector3i origin) {
+		Graphics2D g = (Graphics2D) originalG.create();
+		try {
+			Vector3i firstTile = Vector3i.mutable(g.getClipBounds().getLocation()).subtract(origin);
+			firstTile.floorDivide(this.getTileSize());
 
-	protected int getTileHeight() {
-		return this.tileSize.y();
-	}
+			if (firstTile.x() > table.width() - 1 || firstTile.y() > table.height() - 1) {
+				return;
+			}
 
-	@Override
-	public void paint(final Graphics2D originalG, final int width, final int height) {
-		final Graphics2D g = (Graphics2D) originalG.create();
+			Vector3i lastTile = Vector3i.mutable(g.getClipBounds().getSize());
+			lastTile.ceilDivide(tileSize);
+			lastTile.add(firstTile);
 
-		Point targetOrigin = g.getClipBounds().getLocation();
+			if (lastTile.x() < 0 || lastTile.y() < 0) {
+				return;
+			}
 
-		// Get the position of the first origin tile
-		final Vector3i firstTile = Vector3i.mutable(targetOrigin);
-		firstTile.divide(this.getTileSize());
+			if (origin.x() < 0) {
+				g.translate(origin.x() % tileSize.x(), 0);
+			} else {
+				g.translate(origin.x(), 0);
+			}
+			if (origin.y() < 0) {
+				g.translate(0, origin.y() % tileSize.y());
+			} else {
+				g.translate(0, origin.y());
+			}
 
-		if (firstTile.x() > table.width() - 1 || firstTile.y() > table.height() - 1) {
+			lastTile.setX(Math.min(this.table.width() - 1, Math.max(0, lastTile.x())));
+			lastTile.setY(Math.min(this.table.height() - 1, Math.max(0, lastTile.y())));
+			firstTile.setX(Math.min(this.table.width() - 1, Math.max(0, firstTile.x())));
+			firstTile.setY(Math.min(this.table.height() - 1, Math.max(0, firstTile.y())));
+
+			Table<T> subtable = this.table.subTable(firstTile, lastTile.toMutable().subtract(firstTile).add(1));
+			this.renderTable(g, subtable);
+		} finally {
 			g.dispose();
-			return;
 		}
-
-		final Dimension tileSize = g.getClipBounds().getSize();
-		tileSize.width /= this.getTileWidth();
-		tileSize.height /= this.getTileHeight();
-
-		final Vector3i lastTile = Vector3i.mutable(firstTile.x() + tileSize.width, firstTile.y() + tileSize.height);
-		if (lastTile.x() < 0 || lastTile.y() < 0) {
-			g.dispose();
-			return;
-		}
-		lastTile.setX(Math.min(this.table.width() - 1, Math.max(0, lastTile.x())));
-		lastTile.setY(Math.min(this.table.height() - 1, Math.max(0, lastTile.y())));
-		firstTile.setX(Math.min(this.table.width() - 1, Math.max(0, firstTile.x())));
-		firstTile.setY(Math.min(this.table.height() - 1, Math.max(0, firstTile.y())));
-
-		Vector3i size = lastTile.toMutable().subtract(firstTile);
-		size.add(1);
-		final Table<T> subtable = this.table.subTable(firstTile, size);
-
-		this.renderTable(g, subtable);
 	}
 
 	private void renderTable(final Graphics2D g, final Table<T> renderedTable) {
-		System.out.println(renderedTable.dimensions());
 		TableIterator<T> iter = new NaturalTableIterator<T>(renderedTable);
 		while (iter.hasNext()) {
 			T value = iter.next();
