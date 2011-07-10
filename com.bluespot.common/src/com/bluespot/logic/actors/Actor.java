@@ -2,6 +2,7 @@ package com.bluespot.logic.actors;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.procedures.Closure;
 
 /**
  * Represents an action that depends on received values. Actors are unrestricted
@@ -15,6 +16,8 @@ import com.bluespot.logic.predicates.Predicate;
  * @param <T>
  *            the type of element this actor expects.
  * @see Actors
+ * @see Producer
+ * @see Closure
  */
 public interface Actor<T> {
 
