@@ -1,5 +1,6 @@
 package com.bluespot.logic.functions;
 
+import com.bluespot.geom.algebra.NumericOperations;
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.predicates.Predicate;

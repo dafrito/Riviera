@@ -1,4 +1,7 @@
-package com.bluespot.logic.functions;
+package com.bluespot.geom.algebra;
+
+import com.bluespot.logic.functions.Function;
+import com.bluespot.logic.functions.NumericFunction;
 
 public enum NumericOperations implements NumericOperation {
 	ADD {

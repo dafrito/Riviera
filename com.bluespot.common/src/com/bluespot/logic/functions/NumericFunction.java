@@ -1,5 +1,7 @@
 package com.bluespot.logic.functions;
 
+import com.bluespot.geom.algebra.NumericOperations;
+
 public class NumericFunction implements Function<Number, Number>, Curryable<Number, Function<? super Number, ? extends Number>> {
 
 	private final NumericOperations operation;
