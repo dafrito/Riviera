@@ -7,7 +7,6 @@ import java.awt.Point;
 import com.bluespot.collections.table.Table;
 import com.bluespot.collections.table.iteration.NaturalTableIterator;
 import com.bluespot.collections.table.iteration.TableIterator;
-import com.bluespot.geom.Geometry;
 import com.bluespot.geom.vectors.Vector3i;
 
 /**
@@ -22,12 +21,6 @@ import com.bluespot.geom.vectors.Vector3i;
 public abstract class TileMap<T> implements Paintable {
 
 	private final Vector3i tileSize;
-
-	/**
-	 * The point (in map coordinates) which should be at 0,0 in screen
-	 * coordinates
-	 */
-	protected Vector3i origin = Vector3i.mutable();
 
 	/**
 	 * The {@link Table} used as the data source for this tile map
@@ -53,9 +46,7 @@ public abstract class TileMap<T> implements Paintable {
 	 * @return the size of this tile map in pixels
 	 */
 	public Dimension getSize() {
-		final Dimension size = this.getTileSize().toDimension();
-		Geometry.Ceil.multiply(size, this.table.width() + .5, this.table.height() + 2);
-		return size;
+		return this.getTileSize().toMutable().multiply(table.dimensions()).toDimension();
 	}
 
 	/**
@@ -78,61 +69,41 @@ public abstract class TileMap<T> implements Paintable {
 	@Override
 	public void paint(final Graphics2D originalG, final int width, final int height) {
 		final Graphics2D g = (Graphics2D) originalG.create();
-		final Vector3i firstTile = this.adjustForOrigin(g, g.getClipBounds().getLocation());
 
-		final Dimension initialOffset = new Dimension(this.getTileWidth() / 2, this.getTileHeight() / 2);
+		Point targetOrigin = g.getClipBounds().getLocation();
+
+		// Get the position of the first origin tile
+		final Vector3i firstTile = Vector3i.mutable(targetOrigin);
+		firstTile.divide(this.getTileSize());
+
+		if (firstTile.x() > table.width() - 1 || firstTile.y() > table.height() - 1) {
+			g.dispose();
+			return;
+		}
 
 		final Dimension tileSize = g.getClipBounds().getSize();
 		tileSize.width /= this.getTileWidth();
 		tileSize.height /= this.getTileHeight();
 
-		final Vector3i lastTile = Vector3i.mutable(firstTile.x() + tileSize.width, firstTile.y() + tileSize.height * 2);
+		final Vector3i lastTile = Vector3i.mutable(firstTile.x() + tileSize.width, firstTile.y() + tileSize.height);
+		if (lastTile.x() < 0 || lastTile.y() < 0) {
+			g.dispose();
+			return;
+		}
 		lastTile.setX(Math.min(this.table.width() - 1, Math.max(0, lastTile.x())));
 		lastTile.setY(Math.min(this.table.height() - 1, Math.max(0, lastTile.y())));
+		firstTile.setX(Math.min(this.table.width() - 1, Math.max(0, firstTile.x())));
+		firstTile.setY(Math.min(this.table.height() - 1, Math.max(0, firstTile.y())));
 
-		final Table<T> subtable = this.table.subTable(firstTile, lastTile.subtracted(firstTile));
-		this.renderTable(g, subtable, initialOffset);
+		Vector3i size = lastTile.toMutable().subtract(firstTile);
+		size.add(1);
+		final Table<T> subtable = this.table.subTable(firstTile, size);
+
+		this.renderTable(g, subtable);
 	}
 
-	private Vector3i adjustForOrigin(final Graphics2D g, final Point targetOrigin) {
-
-		// Offset the origin so that the tile is drawn in-line with the other
-		// tiles.
-		final Point offset = g.getClipBounds().getLocation();
-		offset.x %= this.getTileWidth();
-		offset.y %= this.getTileHeight();
-		g.translate(-offset.x, -offset.y);
-
-		g.translate(targetOrigin.x, targetOrigin.y);
-
-		// Get the position of the "major" tile
-		targetOrigin.x /= this.getTileWidth();
-		targetOrigin.y /= this.getTileHeight();
-
-		// Multiply by two since our rows are overlapping
-		targetOrigin.y *= 2;
-
-		// Move up one row and column; it's the easiest way to ensure we're
-		// rendering everything
-		targetOrigin.x--;
-		targetOrigin.y -= 2;
-
-		g.translate(-this.getTileWidth(), -this.getTileHeight());
-		if (targetOrigin.x < 0) {
-			g.translate(this.getTileWidth(), 0);
-		}
-		if (targetOrigin.y < 0) {
-			g.translate(0, this.getTileHeight());
-		}
-
-		targetOrigin.x = Math.min(this.table.width() - 1, Math.max(0, targetOrigin.x));
-		targetOrigin.y = Math.min(this.table.height() - 1, Math.max(0, targetOrigin.y));
-
-		return Vector3i.mutable(targetOrigin);
-	}
-
-	private void renderTable(final Graphics2D g, final Table<T> renderedTable, final Dimension initialOffset) {
-		g.translate(initialOffset.width, initialOffset.height);
+	private void renderTable(final Graphics2D g, final Table<T> renderedTable) {
+		System.out.println(renderedTable.dimensions());
 		TableIterator<T> iter = new NaturalTableIterator<T>(renderedTable);
 		while (iter.hasNext()) {
 			T value = iter.next();

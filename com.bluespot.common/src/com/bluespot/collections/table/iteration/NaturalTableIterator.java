@@ -36,7 +36,7 @@ public class NaturalTableIterator<T> extends AbstractTableIterator<T> {
 
 	@Override
 	public Vector3i offset() {
-		return position.subtracted(previous);
+		return position.toMutable().subtract(previous);
 	}
 
 	@Override

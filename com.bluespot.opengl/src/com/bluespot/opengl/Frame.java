@@ -95,7 +95,7 @@ public class Frame {
 	private double[] getMatrix() {
 		if (this.matrix == null) {
 			final double[] calculated = new double[16];
-			final Vector3f xAxis = this.getUp().crossed(this.getForward());
+			final Vector3f xAxis = this.getUp().toMutable().cross(this.getForward());
 
 			// X axis
 			calculated[0] = xAxis.x();

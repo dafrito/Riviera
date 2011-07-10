@@ -178,7 +178,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * @return a frozen unit vector
 	 */
 	public static Vector3f unit(Axis axis) {
-		return origin().with(axis, 1).toFrozen();
+		return origin().copy().set(axis, 1).toFrozen();
 	}
 
 	private static final Vector3f UP = Vector3f.frozen(0, 1, 0);
@@ -225,7 +225,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return RIGHT;
 	}
 
-	private static final Vector3f DOWN = UP.inverted().toFrozen();
+	private static final Vector3f DOWN = UP.copy().negate().toFrozen();
 
 	/**
 	 * Returns a frozen vector that points down the negative Y axis.
@@ -301,24 +301,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Returns a translated mutable vector. The returned vector will be at the
-	 * same position as this one, but with the x value set to the specified
-	 * value.
-	 * 
-	 * @param value
-	 *            the new x value
-	 * @return a mutable vector that uses the specified value for its x axis
-	 */
-	public Vector3f withX(float value) {
-		if (Float.isNaN(value)) {
-			throw new IllegalArgumentException("value must not be NaN");
-		}
-		Vector3f result = this.toMutable();
-		result.setX(value);
-		return result;
-	}
-
-	/**
 	 * Add the specified x value to this vector.
 	 * 
 	 * @param offset
@@ -327,20 +309,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 */
 	public float addX(float offset) {
 		return this.setX(this.x() + offset);
-	}
-
-	/**
-	 * Return a mutable vector that has the same position as this one, except
-	 * for the specified translation.
-	 * 
-	 * @param offset
-	 *            the value to add
-	 * @return a vector at {@code (x + offset, y, z)}
-	 */
-	public Vector3f addedX(float offset) {
-		Vector3f vector = this.toMutable();
-		vector.addX(offset);
-		return vector;
 	}
 
 	/**
@@ -358,20 +326,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Return a mutable vector at this vector's position, but with the specified
-	 * translation.
-	 * 
-	 * @param offset
-	 *            the value to subtract
-	 * @return a mutable vector at {@code (x - offset, y, z)}
-	 * @see #subtractX(int)
-	 * @throw IllegalArgumentException if {@code offset} is NaN
-	 */
-	public Vector3f subtractedX(float offset) {
-		return this.withX(this.x() - offset);
-	}
-
-	/**
 	 * Multiply the specified x value of this vector.
 	 * 
 	 * @param factor
@@ -382,17 +336,18 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return this.setX((float) (this.x() * factor));
 	}
 
-	/**
-	 * Return a mutable copy of this vector, with a multiplied x value.
-	 * 
-	 * @param factor
-	 *            the factor of multiplication
-	 * @return a mutable vector at {@code (x * offset, y, z)}
-	 */
-	public Vector3f mulipliedX(double factor) {
-		Vector3f vector = this.toMutable();
-		vector.multiplyX(factor);
-		return vector;
+	public float divideX(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setX((float) (this.x() / denominator));
+	}
+
+	public float moduloX(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setX((float) (this.x() % denominator));
 	}
 
 	/**
@@ -424,24 +379,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Returns a translated mutable vector. The returned vector will be at the
-	 * same position as this one, but with the y value set to the specified
-	 * value.
-	 * 
-	 * @param value
-	 *            the new y value
-	 * @return a mutable vector that uses the specified value for its y axis
-	 */
-	public Vector3f withY(float value) {
-		if (Float.isNaN(value)) {
-			throw new IllegalArgumentException("value must not be NaN");
-		}
-		Vector3f result = this.toMutable();
-		result.setY(value);
-		return result;
-	}
-
-	/**
 	 * Add the specified y value to this vector.
 	 * 
 	 * @param offset
@@ -450,20 +387,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 */
 	public float addY(float offset) {
 		return this.setY(this.y() + offset);
-	}
-
-	/**
-	 * Return a mutable vector that has the same position as this one, except
-	 * for the specified translation.
-	 * 
-	 * @param offset
-	 *            the value to add
-	 * @return a vector at {@code (x, y + offset, z)}
-	 */
-	public Vector3f addedY(float offset) {
-		Vector3f vector = this.toMutable();
-		vector.addY(offset);
-		return vector;
 	}
 
 	/**
@@ -480,40 +403,28 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Return a mutable vector at this vector's position, but with the specified
-	 * translation.
-	 * 
-	 * @param offset
-	 *            the value to subtract
-	 * @return a mutable vector at {@code (x, y - offset, z)}
-	 * @see #subtractY(int)
-	 */
-	public Vector3f subtractedY(float offset) {
-		return this.withY(this.y() - offset);
-	}
-
-	/**
 	 * Multiply the specified y value of this vector.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
 	 * @return the old y value
 	 */
-	public double multiplyY(double factor) {
+	public float multiplyY(double factor) {
 		return this.setY((float) (this.y() * factor));
 	}
 
-	/**
-	 * Return a mutable copy of this vector, with a multiplied y value.
-	 * 
-	 * @param factor
-	 *            the factor of multiplication
-	 * @return a mutable vector at {@code (x, y * offset, z)}
-	 */
-	public Vector3f mulipliedY(double factor) {
-		Vector3f vector = this.toMutable();
-		vector.multiplyY(factor);
-		return vector;
+	public float divideY(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setY((float) (this.y() / denominator));
+	}
+
+	public float moduloY(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setY((float) (this.y() % denominator));
 	}
 
 	/**
@@ -545,24 +456,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Returns a translated mutable vector. The returned vector will be at the
-	 * same position as this one, but with the z value set to the specified
-	 * value.
-	 * 
-	 * @param value
-	 *            the new z value
-	 * @return a mutable vector that uses the specified value for its z axis
-	 */
-	public Vector3f withZ(float value) {
-		if (Float.isNaN(value)) {
-			throw new IllegalArgumentException("value must not be NaN");
-		}
-		Vector3f result = this.toMutable();
-		result.setZ(value);
-		return result;
-	}
-
-	/**
 	 * Add the specified z value to this vector.
 	 * 
 	 * @param offset
@@ -571,20 +464,6 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 */
 	public float addZ(float offset) {
 		return this.setZ(this.z() + offset);
-	}
-
-	/**
-	 * Return a mutable vector that has the same position as this one, except
-	 * for the specified translation.
-	 * 
-	 * @param offset
-	 *            the value to add
-	 * @return a vector at {@code (x, y, z + offset)}
-	 */
-	public Vector3f addedZ(float offset) {
-		Vector3f vector = this.toMutable();
-		vector.addZ(offset);
-		return vector;
 	}
 
 	/**
@@ -602,51 +481,39 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	/**
-	 * Return a mutable vector at this vector's position, but with the specified
-	 * translation.
-	 * 
-	 * @param offset
-	 *            the value to subtract
-	 * @return a mutable vector at {@code (x, y, z - offset)}
-	 * @see #subtractZ(int)
-	 * @throw IllegalArgumentException if {@code offset} is NaN
-	 */
-	public Vector3f subtractedZ(float offset) {
-		return this.withZ(this.z() - offset);
-	}
-
-	/**
 	 * Multiply the specified z value of this vector.
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
 	 * @return the old z value
 	 */
-	public double multiplyZ(double factor) {
+	public float multiplyZ(double factor) {
 		return this.setZ((float) (this.z() * factor));
 	}
 
-	/**
-	 * Return a mutable copy of this vector, with a multiplied z value.
-	 * 
-	 * @param factor
-	 *            the factor of multiplication
-	 * @return a mutable vector at {@code (x, y, z * offset)}
-	 */
-	public Vector3f mulipliedZ(double factor) {
-		Vector3f vector = this.toMutable();
-		vector.multiplyZ(factor);
-		return vector;
+	public float divideZ(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setZ((float) (this.z() / denominator));
+	}
+
+	public float moduloZ(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setZ((float) (this.z() % denominator));
 	}
 
 	@Override
-	public void set(Vector3f vector) {
+	public Vector3f set(Vector3f vector) {
 		if (vector == null) {
 			throw new NullPointerException("vector must not be null");
 		}
 		this.setX(vector.x());
 		this.setY(vector.y());
 		this.setZ(vector.z());
+		return this;
 	}
 
 	/**
@@ -654,11 +521,13 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @param value
 	 *            the value that will be used
+	 * @return {@code this}
 	 */
-	public void set(float value) {
+	public Vector3f set(float value) {
 		this.setX(value);
 		this.setY(value);
 		this.setZ(value);
+		return this;
 	}
 
 	/**
@@ -670,10 +539,11 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 *            the new y value
 	 * @param z
 	 *            the new z value
+	 * @return {@code this}
 	 * @throw IllegalArgumentException if any value is NaN. All values are
 	 *        checked before any are used.
 	 */
-	public void set(float x, float y, float z) {
+	public Vector3f set(float x, float y, float z) {
 		if (Float.isNaN(x)) {
 			throw new IllegalArgumentException("x must not be NaN");
 		}
@@ -686,10 +556,11 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		this.setX(x);
 		this.setY(y);
 		this.setZ(z);
+		return this;
 	}
 
 	@Override
-	public void set(Axis axis, Vector3f vector) {
+	public Vector3f set(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -699,25 +570,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.setX(vector.x());
-			return;
+			return this;
 		case Y:
 			this.setY(vector.y());
-			return;
+			return this;
 		case Z:
 			this.setZ(vector.z());
-			return;
+			return this;
 		case XY:
 			this.setX(vector.x());
 			this.setY(vector.y());
-			return;
+			return this;
 		case XZ:
 			this.setX(vector.x());
 			this.setZ(vector.z());
-			return;
+			return this;
 		case YZ:
 			this.setY(vector.y());
 			this.setZ(vector.z());
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
@@ -729,8 +600,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 *            the axes that will be modified
 	 * @param value
 	 *            the added value
+	 * @return {@code this}
 	 */
-	public void set(Axis axis, float value) {
+	public Vector3f set(Axis axis, float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("vector is not mutable");
 		}
@@ -740,53 +612,35 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.setX(value);
-			return;
+			return this;
 		case Y:
 			this.setY(value);
-			return;
+			return this;
 		case Z:
 			this.setZ(value);
-			return;
+			return this;
 		case XY:
 			this.setX(value);
 			this.setY(value);
-			return;
+			return this;
 		case XZ:
 			this.setX(value);
 			this.setZ(value);
-			return;
+			return this;
 		case YZ:
 			this.setY(value);
 			this.setZ(value);
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
-	/**
-	 * Return a mutable copy of this vector, with the copy's axis values set to
-	 * the specified value.
-	 * 
-	 * @param axis
-	 *            the axes that are modified
-	 * @param value
-	 *            the new axis value
-	 * @return a modified, mutable copy of this vector
-	 */
-	public Vector3f with(Axis axis, float value) {
-		if (axis == null) {
-			throw new NullPointerException("Axis must not be null");
-		}
-		Vector3f result = this.toMutable();
-		result.set(axis, value);
-		return result;
-	}
-
 	@Override
-	public void add(Vector3f vector) {
+	public Vector3f add(Vector3f vector) {
 		this.addX(vector.x());
 		this.addY(vector.y());
 		this.addZ(vector.z());
+		return this;
 	}
 
 	/**
@@ -794,15 +648,17 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @param value
 	 *            the value that will be used
+	 * @return {@code this}
 	 */
-	public void add(float value) {
+	public Vector3f add(float value) {
 		this.addX(value);
 		this.addY(value);
 		this.addZ(value);
+		return this;
 	}
 
 	@Override
-	public void add(Axis axis, Vector3f vector) {
+	public Vector3f add(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -812,25 +668,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.addX(vector.x());
-			return;
+			return this;
 		case Y:
 			this.addY(vector.y());
-			return;
+			return this;
 		case Z:
 			this.addZ(vector.z());
-			return;
+			return this;
 		case XY:
 			this.addX(vector.x());
 			this.addY(vector.y());
-			return;
+			return this;
 		case XZ:
 			this.addX(vector.x());
 			this.addZ(vector.z());
-			return;
+			return this;
 		case YZ:
 			this.addY(vector.y());
 			this.addZ(vector.z());
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
@@ -842,8 +698,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 *            the axes that will be modified
 	 * @param value
 	 *            the added value
+	 * @return {@code this}
 	 */
-	public void add(Axis axis, float value) {
+	public Vector3f add(Axis axis, float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("vector is not mutable");
 		}
@@ -853,67 +710,35 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.addX(value);
-			return;
+			return this;
 		case Y:
 			this.addY(value);
-			return;
+			return this;
 		case Z:
 			this.addZ(value);
-			return;
+			return this;
 		case XY:
 			this.addX(value);
 			this.addY(value);
-			return;
+			return this;
 		case XZ:
 			this.addX(value);
 			this.addZ(value);
-			return;
+			return this;
 		case YZ:
 			this.addY(value);
 			this.addZ(value);
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
-	/**
-	 * Returns a mutable vector that's translated by the specified amount.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 * @return a mutable vector that's at this position, but translated by the
-	 *         specified amount
-	 */
-	public Vector3f added(float value) {
-		Vector3f result = this.toMutable();
-		result.add(value);
-		return result;
-	}
-
-	/**
-	 * Returns a mutable vector at this position, plus the specified
-	 * translation.
-	 * 
-	 * @param axis
-	 *            the axes that will be translated
-	 * @param value
-	 *            the added value
-	 * @return a mutable vector translated from this position
-	 */
-	public Vector3f added(Axis axis, float value) {
-		if (axis == null) {
-			throw new NullPointerException("Axis must not be null");
-		}
-		Vector3f result = this.toMutable();
-		result.add(axis, value);
-		return result;
-	}
-
 	@Override
-	public void subtract(Vector3f vector) {
+	public Vector3f subtract(Vector3f vector) {
 		this.subtractX(vector.x());
 		this.subtractY(vector.y());
 		this.subtractZ(vector.z());
+		return this;
 	}
 
 	/**
@@ -921,15 +746,17 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 * 
 	 * @param value
 	 *            the value that will be used
+	 * @return {@code this}
 	 */
-	public void subtract(float value) {
+	public Vector3f subtract(float value) {
 		this.subtractX(value);
 		this.subtractY(value);
 		this.subtractZ(value);
+		return this;
 	}
 
 	@Override
-	public void subtract(Axis axis, Vector3f vector) {
+	public Vector3f subtract(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -939,25 +766,25 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.subtractX(vector.x());
-			return;
+			return this;
 		case Y:
 			this.subtractY(vector.y());
-			return;
+			return this;
 		case Z:
 			this.subtractZ(vector.z());
-			return;
+			return this;
 		case XY:
 			this.subtractX(vector.x());
 			this.subtractY(vector.y());
-			return;
+			return this;
 		case XZ:
 			this.subtractX(vector.x());
 			this.subtractZ(vector.z());
-			return;
+			return this;
 		case YZ:
 			this.subtractY(vector.y());
 			this.subtractZ(vector.z());
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
@@ -969,8 +796,9 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	 *            the axes that will be modified
 	 * @param value
 	 *            the subtracted value
+	 * @return {@code this}
 	 */
-	public void subtract(Axis axis, float value) {
+	public Vector3f subtract(Axis axis, float value) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("vector is not mutable");
 		}
@@ -980,85 +808,55 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.subtractX(value);
-			return;
+			return this;
 		case Y:
 			this.subtractY(value);
-			return;
+			return this;
 		case Z:
 			this.subtractZ(value);
-			return;
+			return this;
 		case XY:
 			this.subtractX(value);
 			this.subtractY(value);
-			return;
+			return this;
 		case XZ:
 			this.subtractX(value);
 			this.subtractZ(value);
-			return;
+			return this;
 		case YZ:
 			this.subtractY(value);
 			this.subtractZ(value);
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
-	/**
-	 * Returns a mutable vector that's translated by the specified amount.
-	 * 
-	 * @param value
-	 *            the value that will be used
-	 * @return a mutable vector that's at this position, but translated by the
-	 *         specified amount
-	 */
-	public Vector3f subtracted(float value) {
-		Vector3f result = this.toMutable();
-		result.add(value);
-		return result;
-	}
-
-	/**
-	 * Returns a mutable vector at this position, minus the specified
-	 * translation.
-	 * 
-	 * @param axis
-	 *            the axes that will be translated
-	 * @param value
-	 *            the subtracted value
-	 * @return a mutable vector translated from this position
-	 */
-	public Vector3f subtracted(Axis axis, float value) {
-		if (axis == null) {
-			throw new NullPointerException("Axis must not be null");
-		}
-		Vector3f result = this.toMutable();
-		result.subtract(axis, value);
-		return result;
-	}
-
 	@Override
-	public void multiply(Vector3f vector) {
+	public Vector3f multiply(Vector3f vector) {
 		this.multiplyX(vector.x());
 		this.multiplyY(vector.y());
 		this.multiplyZ(vector.z());
+		return this;
 	}
 
 	@Override
-	public void multiply(double factor) {
+	public Vector3f multiply(double factor) {
 		this.multiplyX(factor);
 		this.multiplyY(factor);
 		this.multiplyZ(factor);
+		return this;
 	}
 
 	@Override
-	public void multiply(double x, double y, double z) {
+	public Vector3f multiply(double x, double y, double z) {
 		this.multiplyX(x);
 		this.multiplyY(y);
 		this.multiplyZ(z);
+		return this;
 	}
 
 	@Override
-	public void multiply(Axis axis, Vector3f vector) {
+	public Vector3f multiply(Axis axis, Vector3f vector) {
 		if (axis == null) {
 			throw new NullPointerException("Axis must not be null");
 		}
@@ -1068,31 +866,31 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.multiplyX(vector.x());
-			return;
+			return this;
 		case Y:
 			this.multiplyY(vector.y());
-			return;
+			return this;
 		case Z:
 			this.multiplyZ(vector.z());
-			return;
+			return this;
 		case XY:
 			this.multiplyX(vector.x());
 			this.multiplyY(vector.y());
-			return;
+			return this;
 		case XZ:
 			this.multiplyX(vector.x());
 			this.multiplyZ(vector.z());
-			return;
+			return this;
 		case YZ:
 			this.multiplyY(vector.y());
 			this.multiplyZ(vector.z());
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
 	}
 
 	@Override
-	public void multiply(Axis axis, double factor) {
+	public Vector3f multiply(Axis axis, double factor) {
 		if (!this.isMutable()) {
 			throw new UnsupportedOperationException("vector is not mutable");
 		}
@@ -1102,27 +900,40 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		switch (axis) {
 		case X:
 			this.multiplyX(factor);
-			return;
+			return this;
 		case Y:
 			this.multiplyY(factor);
-			return;
+			return this;
 		case Z:
 			this.multiplyZ(factor);
-			return;
+			return this;
 		case XY:
 			this.multiplyX(factor);
 			this.multiplyY(factor);
-			return;
+			return this;
 		case XZ:
 			this.multiplyX(factor);
 			this.multiplyZ(factor);
-			return;
+			return this;
 		case YZ:
 			this.multiplyY(factor);
 			this.multiplyZ(factor);
-			return;
+			return this;
 		}
 		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	@Override
+	public Vector3f divide(Vector3f vector) {
+		return this.divide(vector.x(), vector.y(), vector.z());
+	}
+
+	@Override
+	public Vector3f divide(double x, double y, double z) {
+		this.divideX(x);
+		this.divideY(y);
+		this.divideZ(z);
+		return this;
 	}
 
 	@Override
@@ -1139,15 +950,57 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 	}
 
 	@Override
-	public void normalize() {
+	public Vector3f normalize() {
 		float len = (float) this.length();
-		this.set(this.x() / len,
+		return this.set(this.x() / len,
 				this.y() / len,
 				this.z() / len);
 	}
 
 	@Override
-	public void interpolate(Vector3f dest, float offset) {
+	public Vector3f reciprocal() {
+		this.setX(1 / this.x());
+		this.setY(1 / this.y());
+		this.setZ(1 / this.z());
+		return this;
+	}
+
+	@Override
+	public Vector3f reciprocal(Axis axis) {
+		if (!this.isMutable()) {
+			throw new UnsupportedOperationException("vector is not mutable");
+		}
+		if (axis == null) {
+			throw new NullPointerException("Axis must not be null");
+		}
+		switch (axis) {
+		case X:
+			this.setX(1 / this.x());
+			return this;
+		case Y:
+			this.setY(1 / this.y());
+			return this;
+		case Z:
+			this.setZ(1 / this.z());
+			return this;
+		case XY:
+			this.setX(1 / this.x());
+			this.setY(1 / this.y());
+			return this;
+		case XZ:
+			this.setX(1 / this.x());
+			this.setZ(1 / this.z());
+			return this;
+		case YZ:
+			this.setY(1 / this.y());
+			this.setZ(1 / this.z());
+			return this;
+		}
+		throw new IllegalArgumentException("Axis is invalid");
+	}
+
+	@Override
+	public Vector3f interpolate(Vector3f dest, float offset) {
 		if (dest == null) {
 			throw new NullPointerException("dest must not be null");
 		}
@@ -1158,23 +1011,24 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 			this.y += (dest.y - this.y) * offset;
 			this.z += (dest.z - this.z) * offset;
 		}
+		return this;
 	}
 
 	@Override
-	public void cross(Vector3f other) {
-		this.set(this.y() * other.z() - other.y() * this.z(),
+	public Vector3f cross(Vector3f other) {
+		return this.set(this.y() * other.z() - other.y() * this.z(),
 				-this.x() * other.z() + other.x() * this.z(),
 				this.x() * other.y() - other.x() * this.y());
 	}
 
 	@Override
-	public void clear() {
-		this.set(0f);
+	public Vector3f clear() {
+		return this.set(0f);
 	}
 
 	@Override
-	public void clear(Axis axis) {
-		this.set(axis, 0f);
+	public Vector3f clear(Axis axis) {
+		return this.set(axis, 0f);
 	}
 
 	@Override

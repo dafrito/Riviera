@@ -35,29 +35,7 @@ import com.bluespot.geom.Axis;
  * // Operate on this object, using the primitive value to modify this
  * // vector's values at the specified axes. 
  * void add(Axis axis, primitive value);
- * 
- * // Operate on a copy, using all values from the specified vector. 
- * V added(V value)
- *  
- * // Operate on a copy, using the specified value for all axes.
- * V added(primitive value);
- * 
- * // Operate on a copy, using the values from the specified vector
- * // to modify the copy's values at the specified axes. 
- * V added(Axis axis, V value);
- * 
- * // Operate on a copy, using the primitive value to modify the
- * // copy's values at the specified axes. 
- * V added(Axis axis, primitive value);
  * </pre>
- * 
- * Some operations may be omitted if they don't make sense. They should also be
- * omitted if some other more common mechanism provides them. For example,
- * {@code cleared()} is already implemented through an {@code origin()} method.
- * <p>
- * The naming convention for operations is to name the creating methods with the
- * -ed suffix (inverted, cleared, etc.), though exceptions exist: setX's
- * immutable variant is withX. Be pragmatic and use what reads well.
  * 
  * @author Aaron Faanes
  * @param <V>
@@ -83,10 +61,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 * 
 	 * @param vector
 	 *            the vector that will be copied
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
 	 */
-	public void set(V vector);
+	public V set(V vector);
 
 	/**
 	 * Copy another vector's value at the specified axis.
@@ -95,35 +74,22 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis to copy
 	 * @param vector
 	 *            the vector from which to copy
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #with(Axis, Vector3)
 	 */
-	public void set(Axis axis, V vector);
-
-	/**
-	 * Return a mutable vector that uses the specified vector's values for the
-	 * specified axes.
-	 * 
-	 * @param axis
-	 *            the axes that will be modified
-	 * @param vector
-	 *            the vector that will be added
-	 * @return a modified, mutable copy of this vector
-	 * @see #set(Axis, Vector3)
-	 */
-	public V with(Axis axis, V vector);
+	public V set(Axis axis, V vector);
 
 	/**
 	 * Add the specified vector's value to this vector.
 	 * 
 	 * @param vector
 	 *            the vector that will be added
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #added(Vector3)
 	 */
-	public void add(V vector);
+	public V add(V vector);
 
 	/**
 	 * Add another vector's value at the specified axis.
@@ -132,36 +98,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis to copy
 	 * @param vector
 	 *            the vector from which to copy
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #added(Axis, Vector3)
 	 */
-	public void add(Axis axis, V vector);
-
-	/**
-	 * Return a mutable vector that has the specified vector's values added to
-	 * it.
-	 * 
-	 * @param vector
-	 *            the vector that will be added
-	 * @return a mutable vector at this position, but translated by the
-	 *         specified vector's values
-	 * @see #add(Vector3)
-	 */
-	public V added(V vector);
-
-	/**
-	 * Return a mutable vector at this position, but with the specified
-	 * translation.
-	 * 
-	 * @param axis
-	 *            the axis to copy
-	 * @param vector
-	 *            the vector from which to copy
-	 * @return a mutable vector translated from this vector
-	 * @see #add(Axis, Vector3)
-	 */
-	public V added(Axis axis, V vector);
+	public V add(Axis axis, V vector);
 
 	/**
 	 * Subtract the specified vector from this vector.
@@ -169,11 +110,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param vector
 	 *            the vector that will be used in this operation. It will not be
 	 *            modified.
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is not mutable
-	 * @see #subtracted(Vector3)
 	 */
-	public void subtract(V vector);
+	public V subtract(V vector);
 
 	/**
 	 * Subtract the specified vector from this vector at the specified axes.
@@ -183,37 +124,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @param vector
 	 *            the vector that will be used in this operation. It will not be
 	 *            modified.
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is not mutable
-	 * @see #subtracted(Axis, Vector3)
 	 */
-	public void subtract(Axis axis, V vector);
-
-	/**
-	 * Return a mutable vector with this vector's values, but subtracted using
-	 * the specified vector.
-	 * 
-	 * @param vector
-	 *            the vector that will be used in this operation. It will not be
-	 *            modified.
-	 * @return a mutable vector translated from this vector
-	 * @see #subtract(Vector3)
-	 */
-	public V subtracted(V vector);
-
-	/**
-	 * Return a mutable vector at this position, but with the specified
-	 * translation at the specified axes.
-	 * 
-	 * @param axis
-	 *            the axes that will be subtracted
-	 * @param vector
-	 *            the vector that will be used in the subtraction. It will not
-	 *            be modified.
-	 * @return a mutable vector translated from this vector
-	 * @see #subtract(Axis, Vector3)
-	 */
-	public V subtracted(Axis axis, V vector);
+	public V subtract(Axis axis, V vector);
 
 	/**
 	 * Multiply this vector's values by the specified vector's values. This
@@ -221,11 +136,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 * 
 	 * @param vector
 	 *            the vector that will be added
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #multiplied(Vector3)
 	 */
-	public void multiply(V vector);
+	public V multiply(V vector);
 
 	/**
 	 * Multiply this vector's values by the specified factor. This modified
@@ -233,11 +148,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 * 
 	 * @param factor
 	 *            the factor of multiplication
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #multiplied(double)
 	 */
-	public void multiply(double factor);
+	public V multiply(double factor);
 
 	/**
 	 * Multiply this vector's values by the specified factors.
@@ -248,11 +163,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the multiplying factor of the Y axis
 	 * @param z
 	 *            the multiplying factor of the Z axis
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #multiplied(double, double)
 	 */
-	public void multiply(double x, double y, double z);
+	public V multiply(double x, double y, double z);
 
 	/**
 	 * Multiply this vector's values at the specified axis, using the values
@@ -262,11 +177,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis to multiply
 	 * @param vector
 	 *            the vector used in multiplication
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #multiplied(Axis, Vector3)
 	 */
-	public void multiply(Axis axis, V vector);
+	public V multiply(Axis axis, V vector);
 
 	/**
 	 * Multiply this vector's values at the specified axis by the specified
@@ -276,75 +191,78 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the axis to multiply
 	 * @param factor
 	 *            the factor of multiplication
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #multiplied(Axis, double)
 	 */
-	public void multiply(Axis axis, double factor);
+	public V multiply(Axis axis, double factor);
 
 	/**
-	 * Return a mutable copy of this vector, multiplied by the specified vectors
-	 * values.
+	 * Divide this vector's values by the specified vector's values. This
+	 * modified vector will become {@code (x/vector.x, y/vector.y, z/vector.z)}
 	 * 
 	 * @param vector
-	 *            the vector that will be added
-	 * @return a mutable vector at this position, but translated by the
-	 *         specified vector's values
-	 * @see #multiply(Vector3)
+	 *            the vector that will be divided
+	 * @return {@code this}
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
 	 */
-	public V multiplied(V vector);
+	public V divide(V vector);
 
 	/**
-	 * Return a mutable copy of this vector, multiplied by the specified factor
-	 * for all axes.
+	 * Divide this vector's values by the specified denominator. This modified
+	 * vector will become {@code (x/denominator, y/denominator, z/denominator)}
 	 * 
-	 * @param factor
-	 *            the factor of multiplication
-	 * @return a mutable copy of this vector, multiplied by the specified factor
-	 * @see #multiply(double)
+	 * @param denominator
+	 *            the denominator for all values
+	 * @return {@code this}
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
 	 */
-	public V multiplied(double factor);
+	public V divide(double denominator);
 
 	/**
-	 * Return a mutable copy of this vector, multiplied by the specified
-	 * factors.
+	 * Divide this vector's values by the specified denominator.
 	 * 
 	 * @param x
-	 *            the factor of multiplication for the X axis
+	 *            the denominator of the X axis
 	 * @param y
-	 *            the factor of multiplication for the Y axis
+	 *            the denominator of the Y axis
 	 * @param z
-	 *            the factor of multiplication for the Z axis
-	 * @return a mutable copy of this vector
-	 * @see #multiply(double, double, double)
+	 *            the denominator of the Z axis
+	 * @return {@code this}
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
 	 */
-	public V multiplied(double x, double y, double z);
+	public V divide(double x, double y, double z);
 
 	/**
-	 * Return a mutable vector at this position, but with the specified
-	 * translation.
+	 * Divide this vector's values at the specified axis, using the values from
+	 * the specified vector.
 	 * 
 	 * @param axis
-	 *            the axis to copy
+	 *            the axis to divide
 	 * @param vector
-	 *            the vector from which to copy
-	 * @return a mutable vector translated from this vector
-	 * @see #multiply(Axis, Vector3)
+	 *            the vector used in this operation. It is not modified.
+	 * @return {@code this}
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
 	 */
-	public V multiplied(Axis axis, V vector);
+	public V divide(Axis axis, V vector);
 
 	/**
-	 * * Return a mutable copy of this vector, multiplied by the specified
-	 * factor for the specified axes.
+	 * Divide this vector's values at the specified axis by the specified
+	 * factor.
 	 * 
 	 * @param axis
-	 *            the axis that will be multiplied
-	 * @param factor
-	 *            the factor of multiplication
-	 * @return a modified, mutable copy of this vector
-	 * @see #multiply(Axis, double)
+	 *            the axis to divide
+	 * @param denominator
+	 *            the denominator for the specified axis
+	 * @return {@code this}
+	 * @throws UnsupportedOperationException
+	 *             if this vector is immutable
 	 */
-	public V multiplied(Axis axis, double factor);
+	public V divide(Axis axis, double denominator);
 
 	/**
 	 * Returns the length of this vector.
@@ -356,58 +274,45 @@ public interface Vector3<V extends Vector3<V>> {
 	/**
 	 * Invert this vector. All components are multiplied by {@code -1}.
 	 * 
+	 * @return {@code this}
 	 * @throw UnsupportedOperationException if this vector is not mutable
-	 * 
-	 * @see #inverted()
 	 */
-	public void invert();
+	public V negate();
 
 	/**
 	 * Invert the specified components of this vector.
 	 * 
 	 * @param axis
 	 *            the axis to invert
-	 * 
+	 * @return {@code this}
 	 * @throw UnsupportedOperationException if this vector is not mutable
-	 * @see #inverted(Axis)
 	 */
-	public void invert(Axis axis);
+	public V negate(Axis axis);
 
 	/**
-	 * Returns a new {@link Vector3} that is the inverse of this vector. All
-	 * dimensions are multiplied by {@code -1}.
+	 * Convert this vector to its multiplicative inverse, such that it will now
+	 * be <code>(1/x, 1/y, 1/z)</code>.
 	 * 
-	 * @return a new {@code Vector3} that is the inverse of this vector
-	 * @see #invert()
+	 * @return {@code this}
 	 */
-	public V inverted();
+	public V reciprocal();
 
 	/**
-	 * Returns a new {@link Vector3} with inverted values for the specified
-	 * axes.
+	 * Convert the specified fields to their multiplicative inverses.
 	 * 
 	 * @param axis
-	 *            the axis to invert
-	 * @return a new {@code Vector3} with inverted components
-	 * 
-	 * @see #invert(Axis)
+	 *            the axis to convert
+	 * @return {@code this}
+	 * @throw UnsupportedOperationException if this vector is not mutable
 	 */
-	public V inverted(Axis axis);
+	public V reciprocal(Axis axis);
 
 	/**
 	 * Normalizes this vector, such that its new length will be one.
 	 * 
-	 * @see #normalized()
+	 * @return {@code this}
 	 */
-	public void normalize();
-
-	/**
-	 * Normalizes a copy of this vector.
-	 * 
-	 * @return a normalized copy of this vector
-	 * @see #normalize()
-	 */
-	public V normalized();
+	public V normalize();
 
 	/**
 	 * Interpolates between this vector and the destination. This vector will be
@@ -424,32 +329,11 @@ public interface Vector3<V extends Vector3<V>> {
 	 *            the final vector
 	 * @param offset
 	 *            the percentage of distance traveled
+	 * @return {@code this}
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
-	 * @see #interpolated(Vector3, float)
 	 */
-	public void interpolate(V dest, float offset);
-
-	/**
-	 * Return a mutable vector that lies between this vector and the specified
-	 * destination. The offset may be any value, but interpolation always occurs
-	 * between this vector and the specified one: large or negative offset are
-	 * handled specially:
-	 * <ul>
-	 * <li>If {@code offset <= 0}, this vector should be returned
-	 * <li>If {@code offset >= 1}, {@code destination} should be returned
-	 * </ul>
-	 * Returning copies instead of always interpolating allows clients to
-	 * reliably detect when interpolation is complete.
-	 * 
-	 * @param dest
-	 *            the final vector
-	 * @param offset
-	 *            the percentage of distance traveled.
-	 * @return a vector that lies between this vector and the destination
-	 * @see #interpolate(Vector3, float)
-	 */
-	public V interpolated(V dest, float offset);
+	public V interpolate(V dest, float offset);
 
 	/**
 	 * Modify this vector by calculating a cross product with the specified
@@ -457,52 +341,39 @@ public interface Vector3<V extends Vector3<V>> {
 	 * 
 	 * @param other
 	 *            the vector used to calculate the cross product
+	 * @return {@code this}
 	 * @throw UnsupportedOperationException if this vector is not mutable
-	 * @see #crossed(Vector3)
 	 */
-	public void cross(V other);
-
-	/**
-	 * Returns a new {@link Vector3d} that is the cross product of this vector
-	 * with the specified vector.
-	 * 
-	 * @param other
-	 *            the other vector used in the calculation of the cross product
-	 * @return a new {@code Vector3} that represents the cross product of these
-	 *         two vectors
-	 * @throws NullPointerException
-	 *             if {@code other} is null
-	 * @see #cross(Vector3)
-	 */
-	public V crossed(V other);
+	public V cross(V other);
 
 	/**
 	 * Clear all values on this vector.
+	 * 
+	 * @return {@code this}
 	 */
-	public void clear();
+	public V clear();
 
 	/**
 	 * Clear values for the specified axis.
 	 * 
 	 * @param axis
 	 *            the axis whose values will be cleared
-	 * @see #cleared(Axis)
+	 * @return {@code this}
 	 */
-	public void clear(Axis axis);
+	public V clear(Axis axis);
 
 	/**
-	 * Returns a mutable vector that has zeros for the specified axis.
+	 * Return a new {@link Dimension} initialized with this vector's values.
 	 * 
-	 * @param axis
-	 *            the axis whose values will be cleared
-	 * @return a mutable vector at this vector's position, but with zeros for
-	 *         the specified axes
-	 * @see #clear(Axis)
+	 * @return a new {@link Dimension}
 	 */
-	public V cleared(Axis axis);
-
 	public Dimension toDimension();
 
+	/**
+	 * Return a new {@link Point} initialized with this vector's values.
+	 * 
+	 * @return a new {@link Point}
+	 */
 	public Point toPoint();
 
 	/**

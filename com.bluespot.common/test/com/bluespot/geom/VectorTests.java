@@ -20,63 +20,33 @@ public final class VectorTests {
 	}
 
 	@Test
-	public void pointsSupportSetAndWith() throws Exception {
-		assertTrue(Vector3d.mutable(1d).withX(4d).at(Vector3d.frozen(4d, 1d, 1d)));
-		assertTrue(Vector3d.mutable(1d).withY(4d).at(Vector3d.frozen(1d, 4d, 1d)));
-		assertTrue(Vector3d.mutable(1d).withZ(4d).at(Vector3d.frozen(1d, 1d, 4d)));
-
-		assertTrue(Vector3f.mutable(1f).withX(4).at(Vector3f.frozen(4f, 1f, 1f)));
-		assertTrue(Vector3f.mutable(1f).withY(4).at(Vector3f.frozen(1f, 4f, 1f)));
-		assertTrue(Vector3f.mutable(1f).withZ(4).at(Vector3f.frozen(1f, 1f, 4f)));
-
-		assertTrue(Vector3i.mutable(1).withX(4).at(Vector3i.frozen(4, 1, 1)));
-		assertTrue(Vector3i.mutable(1).withY(4).at(Vector3i.frozen(1, 4, 1)));
-		assertTrue(Vector3i.mutable(1).withZ(4).at(Vector3i.frozen(1, 1, 4)));
-	}
-
-	@Test
 	public void pointsSupportSettingAxisValuesUsingWith() throws Exception {
-		assertTrue(Vector3d.mutable(1d).with(Axis.XY, 4d).at(Vector3d.frozen(4d, 4d, 1d)));
-		assertTrue(Vector3d.mutable(1d).with(Axis.XZ, 4d).at(Vector3d.frozen(4d, 1d, 4d)));
-		assertTrue(Vector3d.mutable(1d).with(Axis.YZ, 4d).at(Vector3d.frozen(1d, 4d, 4d)));
+		assertTrue(Vector3d.mutable(1d).set(Axis.XY, 4d).at(Vector3d.frozen(4d, 4d, 1d)));
+		assertTrue(Vector3d.mutable(1d).set(Axis.XZ, 4d).at(Vector3d.frozen(4d, 1d, 4d)));
+		assertTrue(Vector3d.mutable(1d).set(Axis.YZ, 4d).at(Vector3d.frozen(1d, 4d, 4d)));
 
-		assertTrue(Vector3f.mutable(1f).with(Axis.XY, 4f).at(Vector3f.frozen(4f, 4f, 1f)));
-		assertTrue(Vector3f.mutable(1f).with(Axis.XZ, 4f).at(Vector3f.frozen(4f, 1f, 4f)));
-		assertTrue(Vector3f.mutable(1f).with(Axis.YZ, 4f).at(Vector3f.frozen(1f, 4f, 4f)));
+		assertTrue(Vector3f.mutable(1f).set(Axis.XY, 4f).at(Vector3f.frozen(4f, 4f, 1f)));
+		assertTrue(Vector3f.mutable(1f).set(Axis.XZ, 4f).at(Vector3f.frozen(4f, 1f, 4f)));
+		assertTrue(Vector3f.mutable(1f).set(Axis.YZ, 4f).at(Vector3f.frozen(1f, 4f, 4f)));
 
-		assertTrue(Vector3i.mutable(1).with(Axis.XY, 4).at(Vector3i.frozen(4, 4, 1)));
-		assertTrue(Vector3i.mutable(1).with(Axis.XZ, 4).at(Vector3i.frozen(4, 1, 4)));
-		assertTrue(Vector3i.mutable(1).with(Axis.YZ, 4).at(Vector3i.frozen(1, 4, 4)));
-	}
-
-	@Test
-	public void pointsSupportCreatingAddedValues() throws Exception {
-		assertTrue(Vector3d.mutable(0d).addedX(4d).at(Vector3d.frozen(4d, 0d, 0d)));
-		assertTrue(Vector3d.mutable(0d).addedY(4d).at(Vector3d.frozen(0d, 4d, 0d)));
-		assertTrue(Vector3d.mutable(0d).addedZ(4d).at(Vector3d.frozen(0d, 0d, 4d)));
-
-		assertTrue(Vector3f.mutable(0f).addedX(4f).at(Vector3f.frozen(4f, 0f, 0f)));
-		assertTrue(Vector3f.mutable(0f).addedY(4f).at(Vector3f.frozen(0f, 4f, 0f)));
-		assertTrue(Vector3f.mutable(0f).addedZ(4f).at(Vector3f.frozen(0f, 0f, 4f)));
-
-		assertTrue(Vector3i.mutable(0).addedX(4).at(Vector3i.frozen(4, 0, 0)));
-		assertTrue(Vector3i.mutable(0).addedY(4).at(Vector3i.frozen(0, 4, 0)));
-		assertTrue(Vector3i.mutable(0).addedZ(4).at(Vector3i.frozen(0, 0, 4)));
+		assertTrue(Vector3i.mutable(1).set(Axis.XY, 4).at(Vector3i.frozen(4, 4, 1)));
+		assertTrue(Vector3i.mutable(1).set(Axis.XZ, 4).at(Vector3i.frozen(4, 1, 4)));
+		assertTrue(Vector3i.mutable(1).set(Axis.YZ, 4).at(Vector3i.frozen(1, 4, 4)));
 	}
 
 	@Test
 	public void pointsSupportAddingByAxis() throws Exception {
-		assertTrue(Vector3d.mutable(0d).added(Axis.XZ, 4d).at(Vector3d.frozen(4d, 0d, 4d)));
-		assertTrue(Vector3d.mutable(0d).added(Axis.XY, 4d).at(Vector3d.frozen(4d, 4d, 0d)));
-		assertTrue(Vector3d.mutable(0d).added(Axis.YZ, 4d).at(Vector3d.frozen(0d, 4d, 4d)));
+		assertTrue(Vector3d.mutable(0d).add(Axis.XZ, 4d).at(Vector3d.frozen(4d, 0d, 4d)));
+		assertTrue(Vector3d.mutable(0d).add(Axis.XY, 4d).at(Vector3d.frozen(4d, 4d, 0d)));
+		assertTrue(Vector3d.mutable(0d).add(Axis.YZ, 4d).at(Vector3d.frozen(0d, 4d, 4d)));
 
-		assertTrue(Vector3f.mutable(0f).added(Axis.XZ, 4f).at(Vector3f.frozen(4f, 0f, 4f)));
-		assertTrue(Vector3f.mutable(0f).added(Axis.XY, 4f).at(Vector3f.frozen(4f, 4f, 0f)));
-		assertTrue(Vector3f.mutable(0f).added(Axis.YZ, 4f).at(Vector3f.frozen(0f, 4f, 4f)));
+		assertTrue(Vector3f.mutable(0f).add(Axis.XZ, 4f).at(Vector3f.frozen(4f, 0f, 4f)));
+		assertTrue(Vector3f.mutable(0f).add(Axis.XY, 4f).at(Vector3f.frozen(4f, 4f, 0f)));
+		assertTrue(Vector3f.mutable(0f).add(Axis.YZ, 4f).at(Vector3f.frozen(0f, 4f, 4f)));
 
-		assertTrue(Vector3i.mutable(0).added(Axis.XZ, 4).at(Vector3i.frozen(4, 0, 4)));
-		assertTrue(Vector3i.mutable(0).added(Axis.XY, 4).at(Vector3i.frozen(4, 4, 0)));
-		assertTrue(Vector3i.mutable(0).added(Axis.YZ, 4).at(Vector3i.frozen(0, 4, 4)));
+		assertTrue(Vector3i.mutable(0).add(Axis.XZ, 4).at(Vector3i.frozen(4, 0, 4)));
+		assertTrue(Vector3i.mutable(0).add(Axis.XY, 4).at(Vector3i.frozen(4, 4, 0)));
+		assertTrue(Vector3i.mutable(0).add(Axis.YZ, 4).at(Vector3i.frozen(0, 4, 4)));
 	}
 
 	@Test

@@ -109,7 +109,7 @@ public abstract class AbstractTable<T> implements Table<T> {
 		 */
 		protected Vector3i translate(final Vector3i original) {
 			AbstractTable.validateLocation(original, this.width(), this.height());
-			return original.added(this.origin());
+			return original.toMutable().add(this.origin());
 		}
 
 	}
@@ -173,13 +173,12 @@ public abstract class AbstractTable<T> implements Table<T> {
 
 	@Override
 	public Table<T> subTable(final Vector3i newOrigin) {
-		return this.subTable(newOrigin, this.dimensions().subtracted(newOrigin));
+		return this.subTable(newOrigin, this.dimensions().toMutable().subtract(newOrigin));
 	}
 
 	@Override
 	public Table<T> subTable(final Vector3i newOrigin, final Vector3i size) {
 		AbstractTable.validateLocation(newOrigin, this.width(), this.height());
-
 		return new SubTable<T>(this, newOrigin, size, this.defaultValue);
 	}
 
