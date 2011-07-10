@@ -219,17 +219,16 @@ public abstract class AbstractTable<T> implements Table<T> {
 	 */
 	protected static void validateLocation(final Vector3i point, final int width, final int height) {
 		if (point.x() < 0) {
-			throw new IndexOutOfBoundsException("X cannot be negative");
+			throw new IndexOutOfBoundsException(String.format("X cannot be negative. X: %d", point.x()));
 		}
 		if (point.y() < 0) {
-			throw new IndexOutOfBoundsException("Y cannot be negative");
+			throw new IndexOutOfBoundsException(String.format("Y cannot be negative. Y: %d", point.y()));
 		}
 		if (point.x() >= width) {
-			throw new IndexOutOfBoundsException("X exceeds the width of this table");
+			throw new IndexOutOfBoundsException(String.format("X exceeds the width of this table. X: %d, width: %d", point.x(), width));
 		}
 		if (point.y() >= height) {
-			throw new IndexOutOfBoundsException("Y exceeds the height of this table");
+			throw new IndexOutOfBoundsException(String.format("Y exceeds the height of this table. Y: %d, height: %d", point.y(), height));
 		}
 	}
-
 }
