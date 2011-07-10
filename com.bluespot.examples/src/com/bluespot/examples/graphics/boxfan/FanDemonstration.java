@@ -1,7 +1,6 @@
 package com.bluespot.examples.graphics.boxfan;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -81,7 +80,7 @@ public class FanDemonstration extends Demonstration {
 		}
 
 		final FanPanel fan = new FanPanel(this.model, .8d, 5);
-		fan.setBorder(BorderFactory.createLineBorder(Color.RED, 10));
+		fan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		panel.add(fan, BorderLayout.CENTER);
 
