@@ -1,4 +1,4 @@
-package com.bluespot.playground.physics;
+package com.bluespot.physics;
 
 /**
  * Represents a physical object.

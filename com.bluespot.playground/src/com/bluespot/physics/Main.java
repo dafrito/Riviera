@@ -1,4 +1,4 @@
-package com.bluespot.playground.physics;
+package com.bluespot.physics;
 
 public class Main {
 	public static void main(final String[] args) {
