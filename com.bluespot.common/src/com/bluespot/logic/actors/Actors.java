@@ -1,5 +1,6 @@
 package com.bluespot.logic.actors;
 
+import java.awt.Component;
 import java.util.Collection;
 
 import com.bluespot.logic.adapters.Adapter;
@@ -184,5 +185,18 @@ public final class Actors {
 	 */
 	public static Actor<RuntimeException> throwException() {
 		return ACTOR_THROWER;
+	}
+
+	private static final Actor<Component> REPAINTING_ACTOR = new Actor<Component>() {
+		@Override
+		public void receive(final Component component) {
+			if (component != null) {
+				component.repaint();
+			}
+		}
+	};
+
+	public static Actor<Component> repaint() {
+		return REPAINTING_ACTOR;
 	}
 }
