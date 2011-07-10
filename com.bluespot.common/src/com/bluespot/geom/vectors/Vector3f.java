@@ -225,7 +225,7 @@ public final class Vector3f extends AbstractVector3<Vector3f> {
 		return RIGHT;
 	}
 
-	private static final Vector3f DOWN = UP.copy().negate().toFrozen();
+	private static final Vector3f DOWN = UP.toMutable().negate().toFrozen();
 
 	/**
 	 * Returns a frozen vector that points down the negative Y axis.
