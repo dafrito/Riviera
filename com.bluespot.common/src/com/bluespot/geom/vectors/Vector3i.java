@@ -317,11 +317,33 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return this.setX((int) Math.round(this.x() / denominator));
 	}
 
+	public int floorDivideX(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setX((int) Math.floor(this.x() / denominator));
+	}
+
+	public int ceilDivideX(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setX((int) Math.ceil(this.x() / denominator));
+	}
+
 	public int moduloX(double denominator) {
 		if (Double.isNaN(denominator)) {
 			throw new IllegalArgumentException("denominator must not be NaN");
 		}
 		return this.setX((int) Math.round(this.x() % denominator));
+	}
+
+	public int maxX(int max) {
+		return this.setX(Math.max(max, this.x()));
+	}
+
+	public int minX(int min) {
+		return this.setX(Math.min(min, this.x()));
 	}
 
 	/**
@@ -391,11 +413,33 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return this.setY((int) Math.round(this.y() / denominator));
 	}
 
+	public int floorDivideY(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setY((int) Math.floor(this.y() / denominator));
+	}
+
+	public int ceilDivideY(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setY((int) Math.ceil(this.y() / denominator));
+	}
+
 	public int moduloY(double denominator) {
 		if (Double.isNaN(denominator)) {
 			throw new IllegalArgumentException("denominator must not be NaN");
 		}
 		return this.setY((int) Math.round(this.y() % denominator));
+	}
+
+	public int maxY(int max) {
+		return this.setY(Math.max(max, this.y()));
+	}
+
+	public int minY(int min) {
+		return this.setY(Math.min(min, this.y()));
 	}
 
 	/**
@@ -465,8 +509,30 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		return this.setZ((int) Math.round(this.z() / denominator));
 	}
 
+	public int floorDivideZ(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setZ((int) Math.floor(this.z() / denominator));
+	}
+
+	public int ceilDivideZ(double denominator) {
+		if (Double.isNaN(denominator)) {
+			throw new IllegalArgumentException("denominator must not be NaN");
+		}
+		return this.setZ((int) Math.ceil(this.z() / denominator));
+	}
+
 	public int moduloZ(double denominator) {
 		return this.setZ((int) Math.round(this.z() % denominator));
+	}
+
+	public int maxZ(int max) {
+		return this.setZ(Math.max(max, this.z()));
+	}
+
+	public int minZ(int min) {
+		return this.setZ(Math.min(min, this.z()));
 	}
 
 	@Override
@@ -901,6 +967,79 @@ public final class Vector3i extends AbstractVector3<Vector3i> {
 		this.divideX(x);
 		this.divideY(y);
 		this.divideZ(z);
+		return this;
+	}
+
+	public Vector3i floorDivide(Vector3i vector) {
+		return this.floorDivide(vector.x(), vector.y(), vector.z());
+	}
+
+	public Vector3i floorDivide(double denominator) {
+		this.floorDivide(denominator, denominator, denominator);
+		return this;
+	}
+
+	public Vector3i floorDivide(double x, double y, double z) {
+		this.floorDivideX(x);
+		this.floorDivideY(y);
+		this.floorDivideZ(z);
+		return this;
+	}
+
+	public Vector3i ceilDivide(Vector3i vector) {
+		return this.ceilDivide(vector.x(), vector.y(), vector.z());
+	}
+
+	public Vector3i ceilDivide(double denominator) {
+		this.ceilDivide(denominator, denominator, denominator);
+		return this;
+	}
+
+	public Vector3i ceilDivide(double x, double y, double z) {
+		this.ceilDivideX(x);
+		this.ceilDivideY(y);
+		this.ceilDivideZ(z);
+		return this;
+	}
+
+	public Vector3i modulo(Vector3i vector) {
+		return this.modulo(vector.x(), vector.y(), vector.z());
+	}
+
+	public Vector3i modulo(double x, double y, double z) {
+		this.moduloX(x);
+		this.moduloY(y);
+		this.moduloZ(z);
+		return this;
+	}
+
+	public Vector3i min(int min) {
+		return this.min(min, min, min);
+	}
+
+	public Vector3i min(Vector3i min) {
+		return this.min(min.x(), min.y(), min.z());
+	}
+
+	public Vector3i min(int x, int y, int z) {
+		this.minX(x);
+		this.minY(y);
+		this.minZ(z);
+		return this;
+	}
+
+	public Vector3i max(int max) {
+		return this.max(max, max, max);
+	}
+
+	public Vector3i max(Vector3i max) {
+		return this.max(max.x(), max.y(), max.z());
+	}
+
+	public Vector3i max(int x, int y, int z) {
+		this.maxX(x);
+		this.maxY(y);
+		this.maxZ(z);
 		return this;
 	}
 
