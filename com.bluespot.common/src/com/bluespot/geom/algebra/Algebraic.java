@@ -54,6 +54,16 @@ public interface Algebraic<V extends Algebraic<V>> {
 	public V divide(V denominator);
 
 	/**
+	 * Replace this instance with the values from the specified value.
+	 * 
+	 * @param value
+	 *            the value that will be copied. It must not be modified by this
+	 *            operation.
+	 * @return {@code this}
+	 */
+	public V set(V value);
+
+	/**
 	 * Return a copy of this value.
 	 * 
 	 * @return a copy of this value

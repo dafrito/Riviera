@@ -85,4 +85,23 @@ public final class AlgebraicOperations {
 	public static <V extends Algebraic<V>> AlgebraicOperation<V> division() {
 		return DIVISION;
 	}
+
+	@SuppressWarnings("rawtypes")
+	private static final AlgebraicOperation SETTER = new AlgebraicOperation() {
+		@SuppressWarnings("unchecked")
+		@Override
+		public void operate(Algebraic a, Algebraic b) {
+			a.set(b);
+		}
+
+		@Override
+		public String toString() {
+			return "Set";
+		}
+	};
+
+	@SuppressWarnings("unchecked")
+	public static <V extends Algebraic<V>> AlgebraicOperation<V> setter() {
+		return SETTER;
+	}
 }
