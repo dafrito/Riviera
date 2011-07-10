@@ -157,6 +157,10 @@ public final class Actors {
 		return new LimitedActor<T>(underlying, charges);
 	}
 
+	public static <T> HoldingActor<T> hold(T initial) {
+		return new HoldingActor<T>(initial);
+	}
+
 	/**
 	 * A {@link Actor} implementation that throws all exceptions it is given.
 	 * 
