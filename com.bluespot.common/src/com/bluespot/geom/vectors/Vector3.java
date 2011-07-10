@@ -3,6 +3,7 @@ package com.bluespot.geom.vectors;
 import java.awt.Dimension;
 import java.awt.Point;
 
+import com.bluespot.geom.Algebraic;
 import com.bluespot.geom.Axis;
 
 /**
@@ -46,7 +47,7 @@ import com.bluespot.geom.Axis;
  * @see Vector3i
  * @see Vectors
  */
-public interface Vector3<V extends Vector3<V>> {
+public interface Vector3<V extends Vector3<V>> extends Algebraic<V> {
 
 	/**
 	 * Return whether this vector can be directly modified. This value is a
@@ -89,6 +90,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
 	 */
+	@Override
 	public V add(V vector);
 
 	/**
@@ -114,6 +116,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @throws UnsupportedOperationException
 	 *             if this vector is not mutable
 	 */
+	@Override
 	public V subtract(V vector);
 
 	/**
@@ -140,6 +143,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
 	 */
+	@Override
 	public V multiply(V vector);
 
 	/**
@@ -207,6 +211,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @throws UnsupportedOperationException
 	 *             if this vector is immutable
 	 */
+	@Override
 	public V divide(V vector);
 
 	/**
@@ -406,6 +411,7 @@ public interface Vector3<V extends Vector3<V>> {
 	 * @see #toMutable()
 	 * @see #toFrozen()
 	 */
+	@Override
 	public V copy();
 
 	/**
