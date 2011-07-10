@@ -169,7 +169,9 @@ public final class Actors {
 	private static final Actor<RuntimeException> ACTOR_THROWER = new Actor<RuntimeException>() {
 		@Override
 		public void receive(final RuntimeException value) {
-			throw value;
+			if (value != null) {
+				throw value;
+			}
 		}
 	};
 
