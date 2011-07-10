@@ -3,8 +3,8 @@ package com.bluespot.geom.vectors;
 import java.awt.Dimension;
 import java.awt.Point;
 
-import com.bluespot.geom.Algebraic;
 import com.bluespot.geom.Axis;
+import com.bluespot.geom.algebra.Algebraic;
 
 /**
  * Represents a three-dimensional vector, of varying precision. Vectors may or

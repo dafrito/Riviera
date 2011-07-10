@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluespot.geom;
+package com.bluespot.geom.algebra;
 
 /**
  * An object that supports basic algebraic operations.
@@ -9,6 +9,7 @@ package com.bluespot.geom;
  * @author Aaron Faanes
  * @param <V>
  *            the type of this value. It must be recursive.
+ * @see Vector3
  */
 public interface Algebraic<V extends Algebraic<V>> {
 
