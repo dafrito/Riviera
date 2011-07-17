@@ -258,6 +258,26 @@ public final class Adapters {
 		return new CastingAdapter<D>(destinationType);
 	}
 
+	/**
+	 * Return an {@link Adapter} that extracts the type from specified values.
+	 * 
+	 * @param <S>
+	 *            the type of specified value
+	 * @return a new {@link Adapter} instance
+	 */
+	public static <S> Adapter<? super S, Class<? extends S>> type() {
+		return new Adapter<S, Class<? extends S>>() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public Class<? extends S> adapt(S source) {
+				if (source == null) {
+					return null;
+				}
+				return (Class<? extends S>) source.getClass();
+			}
+		};
+	}
+
 	public static <I, R> Adapter<? super Function<? super I, ? extends R>, SafeFunction<? extends R>> protectFunctions(Class<? extends I> functionInputType) {
 		return protectFunctions(Adapters.cast(functionInputType));
 	}

@@ -179,6 +179,10 @@ public final class Predicates {
 		return PREDICATE_IS_FILE;
 	}
 
+	public static <T> Predicate<? super T> isNumber() {
+		return new ClassPredicate(Number.class);
+	}
+
 	/**
 	 * A predicate that tests for null values.
 	 * 
