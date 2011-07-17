@@ -1,6 +1,8 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.functions.AdaptingFunction;
+import com.bluespot.logic.functions.Function;
 
 /**
  * A {@link Curryable} that adapts {@link Function} objects produced by an

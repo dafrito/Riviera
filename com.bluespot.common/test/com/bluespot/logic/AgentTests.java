@@ -14,7 +14,7 @@ import com.bluespot.logic.agents.BruteForcingAgent;
 import com.bluespot.logic.agents.InputGenerator;
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.Functions;
-import com.bluespot.logic.functions.SafeMetaCurryable;
+import com.bluespot.logic.functions.curryable.SafeMetaCurryable;
 
 public class AgentTests {
 

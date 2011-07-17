@@ -1,6 +1,8 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
 
 import com.bluespot.logic.adapters.Adapters;
+import com.bluespot.logic.functions.Functions;
+import com.bluespot.logic.functions.SafeFunction;
 
 /**
  * A {@link Curryable} that curries values. This class constructs

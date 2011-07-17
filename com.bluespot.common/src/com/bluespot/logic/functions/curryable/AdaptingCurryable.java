@@ -1,6 +1,8 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.functions.AdaptingFunction;
+import com.bluespot.logic.functions.Function;
 
 public class AdaptingCurryable<I, A, V extends Function<?, ?>> implements Curryable<I, V> {
 

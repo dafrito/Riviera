@@ -1,6 +1,8 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
 
 import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.functions.Function;
+import com.bluespot.logic.functions.SafeFunction;
 
 /**
  * Protect a {@link Curryable} via adapters.

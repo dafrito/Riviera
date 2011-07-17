@@ -1,4 +1,7 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
+
+import com.bluespot.logic.functions.Function;
+import com.bluespot.logic.functions.Functions;
 
 /**
  * Compose provided functions using a specified inner-function. This object is

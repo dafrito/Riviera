@@ -7,11 +7,11 @@ import com.bluespot.geom.algebra.NumericOperations;
 import com.bluespot.logic.adapters.Adapters;
 import com.bluespot.logic.adapters.SafeFunctionAdapter;
 import com.bluespot.logic.functions.AdapterFunction;
-import com.bluespot.logic.functions.Curryable;
 import com.bluespot.logic.functions.Function;
 import com.bluespot.logic.functions.Functions;
 import com.bluespot.logic.functions.NumericFunction;
-import com.bluespot.logic.functions.SafeMetaCurryable;
+import com.bluespot.logic.functions.curryable.Curryable;
+import com.bluespot.logic.functions.curryable.SafeMetaCurryable;
 
 public class FunctionTests {
 

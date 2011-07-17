@@ -1,4 +1,7 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
+
+import com.bluespot.logic.functions.Functions;
+import com.bluespot.logic.functions.SafeFunction;
 
 /**
  * A {@link Curryable} interface that accepts any object. This is a marker

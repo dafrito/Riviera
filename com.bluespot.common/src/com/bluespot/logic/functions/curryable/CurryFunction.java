@@ -1,4 +1,6 @@
-package com.bluespot.logic.functions;
+package com.bluespot.logic.functions.curryable;
+
+import com.bluespot.logic.functions.Function;
 
 /**
  * A {@link Function} that curries a specified value to provided
