@@ -311,6 +311,7 @@ public final class Predicates {
 	 *            the constant used in evaluation. The predicate will evaluate
 	 *            to {@code true} for values that refer to this constant.
 	 * @return a new predicate that evaluates against the specified constant
+	 * @see IdentityPredicate
 	 */
 	public static <T> Predicate<T> exact(final T constant) {
 		return new IdentityPredicate<T>(constant);
@@ -330,6 +331,7 @@ public final class Predicates {
 	 * @return a predicate that uses the specified pattern
 	 * @see Pattern#matcher(CharSequence)
 	 * @see Matcher#matches()
+	 * @see RegexPredicate
 	 */
 	public static Predicate<String> matches(final String regexPattern) {
 		return Predicates.matches(Pattern.compile(regexPattern));
@@ -345,6 +347,7 @@ public final class Predicates {
 	 * @return a predicate that uses the specified pattern
 	 * @see Pattern#matcher(CharSequence)
 	 * @see Matcher#matches()
+	 * @see RegexPredicate
 	 */
 	public static Predicate<String> matches(final Pattern regexPattern) {
 		return new RegexPredicate(regexPattern);
@@ -363,6 +366,7 @@ public final class Predicates {
 	 *            predicate evaluates to {@code true} for all values that are
 	 *            "equal" to this constant.
 	 * @return a predicate that uses the specified constant during evaluation
+	 * @see EqualityPredicate
 	 */
 	public static <T> EqualityPredicate<T> is(final T constant) {
 		return new EqualityPredicate<T>(constant);
@@ -397,6 +401,7 @@ public final class Predicates {
 	 *            evaluate to {@code true} for all values that evaluate to
 	 *            {@code false} according to this specified predicate.
 	 * @return a predicate that is the inverse of the specified predicate
+	 * @see InversePredicate
 	 */
 	public static <T> Predicate<T> not(final Predicate<T> predicate) {
 		return new InversePredicate<T>(predicate);
@@ -433,6 +438,7 @@ public final class Predicates {
 	 *            order of predicates is preserved.
 	 * @return a predicate that evaluates to {@code true} only if its child
 	 *         predicates evaluate to {@code true}.
+	 * @see UnanimousPredicate
 	 */
 	public static <T> Predicate<T> all(final Predicate<? super T>[] predicates) {
 		return new UnanimousPredicate<T>(Arrays.asList(predicates));
@@ -448,6 +454,7 @@ public final class Predicates {
 	 *            strings that start with this value.
 	 * @return a predicate that tests for the specified string
 	 * @see #endsWith(String)
+	 * @see StartsWithPredicate
 	 */
 	public static Predicate<String> startsWith(final String startingValue) {
 		return new StartsWithPredicate(startingValue);
@@ -463,6 +470,7 @@ public final class Predicates {
 	 *            strings that end with this value.
 	 * @return a regex predicate that tests for the specified string
 	 * @see #startsWith(String)
+	 * @see EndsWithPredicate
 	 */
 	public static Predicate<String> endsWith(final String endingValue) {
 		return new EndsWithPredicate(endingValue);
