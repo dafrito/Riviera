@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.bluespot.logic.adapters.Adapter;
+import com.bluespot.logic.adapters.Adapters;
+
 /**
  * A set of factory methods for constructing {@link Predicate} objects. Many
  * methods in this library are named so as to encourage chaining.
@@ -573,6 +576,38 @@ public final class Predicates {
 	 */
 	public static Predicate<File> fileExists() {
 		return PREDICATE_FILE_EXISTS;
+	}
+
+	/**
+	 * Return whether objects are assignable to the specified type.
+	 * 
+	 * @param type
+	 *            the specified type
+	 * @return a new {@link Predicate} that tests provided objects
+	 * @see Adapters#type()
+	 */
+	public static Predicate<? super Object> ofType(Class<?> type) {
+		return adapt(Adapters.<Object> type(), Predicates.<Class<? extends Object>> is(type));
+	}
+
+	/**
+	 * Adapt objects using the specified adapter before passing them to the
+	 * specified predicate.
+	 * 
+	 * @param <S>
+	 *            the type of values given to the adapter
+	 * @param <D>
+	 *            the type of value produced by the adapter and accepted by the
+	 *            specified predicate
+	 * @param adapter
+	 *            the adapter that will perform conversion
+	 * @param predicate
+	 *            the predicate that receives adapted values
+	 * @return a new {@link AdaptingPredicate} object
+	 * @see AdaptingPredicate
+	 */
+	public static <S, D> Predicate<? super S> adapt(Adapter<? super S, D> adapter, Predicate<? super D> predicate) {
+		return new AdaptingPredicate<S, D>(adapter, predicate);
 	}
 
 }
