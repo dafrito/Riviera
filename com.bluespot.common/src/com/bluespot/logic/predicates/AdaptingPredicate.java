@@ -17,7 +17,7 @@ import com.bluespot.logic.adapters.Adapter;
  */
 public final class AdaptingPredicate<S, D> implements Predicate<S> {
 
-	private final Adapter<? super S, D> adapter;
+	private final Adapter<? super S, ? extends D> adapter;
 
 	private final Predicate<? super D> predicate;
 
@@ -32,7 +32,7 @@ public final class AdaptingPredicate<S, D> implements Predicate<S> {
 	 * @throws NullPointerException
 	 *             if either argument is null
 	 */
-	public AdaptingPredicate(final Adapter<? super S, D> adapter, final Predicate<? super D> predicate) {
+	public AdaptingPredicate(final Adapter<? super S, ? extends D> adapter, final Predicate<? super D> predicate) {
 		if (adapter == null) {
 			throw new NullPointerException("adapter is null");
 		}
@@ -48,7 +48,7 @@ public final class AdaptingPredicate<S, D> implements Predicate<S> {
 	 * 
 	 * @return the adapter that performs the conversion for this predicate
 	 */
-	public Adapter<? super S, D> getAdapter() {
+	public Adapter<? super S, ? extends D> getAdapter() {
 		return this.adapter;
 	}
 
