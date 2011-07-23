@@ -266,6 +266,7 @@ public final class Predicates {
 	 * Returns a predicate that always evaluates to {@code true}.
 	 * 
 	 * @return a predicate that evaluates to {@code true} for all values
+	 * @see #never()
 	 */
 	public static Predicate<Object> truth() {
 		return Predicates.PREDICATE_TRUTH;
@@ -293,6 +294,7 @@ public final class Predicates {
 	 * Returns a predicate that always evaluates to {@code false}.
 	 * 
 	 * @return a predicate that evaluates to {@code false} for all values
+	 * @see #truth()
 	 */
 	public static Predicate<Object> never() {
 		return Predicates.PREDICATE_NEVER;
