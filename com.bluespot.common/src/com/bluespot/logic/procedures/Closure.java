@@ -61,4 +61,9 @@ public class Closure<T> implements Procedure {
 		result = 31 * result + this.getValue().hashCode();
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return String.format("Closure[%s on %s]", this.getValue(), this.getActor());
+	}
 }
