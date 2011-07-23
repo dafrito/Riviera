@@ -88,7 +88,7 @@ public class AgentTests {
 				if (input == null) {
 					return null;
 				}
-				return 2 * (input + 3);
+				return 2 * input + 6;
 			}
 		}));
 	}
