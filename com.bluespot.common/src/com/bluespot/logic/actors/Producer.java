@@ -4,7 +4,12 @@
 package com.bluespot.logic.actors;
 
 /**
- * A producer of values that are passed to an underlying {@link Actor}.
+ * A producer of values that are passed to an underlying {@link Actor}. This is
+ * useful if you have a recurring source of values that you'd like to pass to
+ * some actor.
+ * <p>
+ * When implementing this class, you'll need to explicitly call
+ * {@link #produce(Object)} in order to pass values to the underlying actor.
  * 
  * @author Aaron Faanes
  * @param <T>
