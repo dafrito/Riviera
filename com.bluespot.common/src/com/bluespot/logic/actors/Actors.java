@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.Predicate;
+import com.bluespot.logic.values.MutableValue;
 
 /**
  * A collection of factory methods for common {@link Actor} idioms. The names of
@@ -198,5 +199,28 @@ public final class Actors {
 
 	public static Actor<Component> repaint() {
 		return REPAINTING_ACTOR;
+	}
+
+	/**
+	 * Update the specified {@link MutableValue} with values sent to the
+	 * returned {@link Actor}.
+	 * 
+	 * @param mutableValue
+	 *            the value that is modified
+	 * @param <T>
+	 *            the type of underlying value
+	 * @return an {@link Actor} that updates an underlying {@link MutableValue}.
+	 * @see #hold(Object)
+	 */
+	public static <T> Actor<T> set(final MutableValue<T> mutableValue) {
+		if (mutableValue == null) {
+			throw new NullPointerException("mutableValue must not be null");
+		}
+		return new Actor<T>() {
+			@Override
+			public void receive(T value) {
+				mutableValue.set(value);
+			}
+		};
 	}
 }
