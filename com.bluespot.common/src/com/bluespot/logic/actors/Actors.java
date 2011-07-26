@@ -223,4 +223,25 @@ public final class Actors {
 			}
 		};
 	}
+
+	/**
+	 * Return a {@link LongActor} that forwards values to the underlying
+	 * {@code Actor<Long>}.
+	 * 
+	 * @param actor
+	 *            the underlying actor that will receive long values
+	 * @return a new {@link LongActor}
+	 * @see LongActor
+	 */
+	public static LongActor wrapLong(final Actor<? super Long> actor) {
+		if (actor == null) {
+			throw new NullPointerException("actor must not be null");
+		}
+		return new LongActor() {
+			@Override
+			public void receive(long value) {
+				actor.receive(value);
+			}
+		};
+	}
 }
