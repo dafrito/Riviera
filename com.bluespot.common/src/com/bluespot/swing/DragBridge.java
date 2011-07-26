@@ -16,8 +16,13 @@ import com.bluespot.logic.actors.Actor;
 import com.bluespot.logic.actors.Producer;
 
 /**
- * @author Aaron Faanes
+ * Produces offsets in {@link Vector3i} form, passing them to an underlying
+ * {@link Actor}.
  * 
+ * @author Aaron Faanes
+ * @see Producer
+ * @see Vector3i
+ * @see Actor
  */
 public class DragBridge extends Producer<Vector3i> {
 
