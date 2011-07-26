@@ -2,7 +2,7 @@ package com.bluespot.logic.actors;
 
 import com.bluespot.logic.adapters.Adapter;
 import com.bluespot.logic.predicates.Predicate;
-import com.bluespot.logic.procedures.Closure;
+import com.bluespot.logic.runnables.Closure;
 
 /**
  * Represents an action that depends on received values. Actors are unrestricted

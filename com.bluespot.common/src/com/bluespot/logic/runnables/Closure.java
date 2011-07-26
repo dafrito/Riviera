@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.bluespot.logic.procedures;
+package com.bluespot.logic.runnables;
 
 import com.bluespot.logic.actors.Actor;
 
@@ -12,7 +12,7 @@ import com.bluespot.logic.actors.Actor;
  * @param <T>
  *            the type of closed value
  */
-public class Closure<T> implements Procedure {
+public class Closure<T> implements Runnable {
 
 	private final Actor<? super T> receiver;
 	private final T value;
@@ -29,7 +29,7 @@ public class Closure<T> implements Procedure {
 	}
 
 	@Override
-	public void invoke() {
+	public void run() {
 		this.receiver.receive(value);
 	}
 
