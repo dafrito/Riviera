@@ -34,6 +34,12 @@ public class AbstractClock implements Clock {
 
 	private final List<LongActor> listeners = new CopyOnWriteArrayList<LongActor>();
 
+	private long elapsed;
+
+	public long getElapsed() {
+		return elapsed;
+	}
+
 	@Override
 	public void listen(LongActor actor) {
 		if (actor == null) {
@@ -51,6 +57,7 @@ public class AbstractClock implements Clock {
 	}
 
 	protected void elapse(long ticks) {
+		elapsed += ticks;
 		for (LongActor actor : listeners) {
 			actor.receive(ticks);
 		}

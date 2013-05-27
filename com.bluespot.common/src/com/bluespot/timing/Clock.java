@@ -30,6 +30,11 @@ import com.bluespot.logic.actors.LongActor;
 public interface Clock {
 
 	/**
+	 * @return the number of ticks that have elapsed, according to this clock.
+	 */
+	public long getElapsed();
+
+	/**
 	 * Register the specified actor to receive updates regarding this clock's
 	 * time. The listener will be called every time the clock updates.
 	 * 
