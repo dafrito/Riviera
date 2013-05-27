@@ -27,7 +27,7 @@ import com.bluespot.graphics.Painting;
 public abstract class AbstractGLDemonstration extends GLJPanel implements GLEventListener {
 
 	static {
-		GLProfile.initSingleton(true);
+		GLProfile.initSingleton();
 	}
 
 	private static final long serialVersionUID = 107706882711513973L;
