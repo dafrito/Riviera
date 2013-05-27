@@ -72,6 +72,22 @@ public final class Components {
 
 		},
 
+		GTK() {
+			private volatile String name;
+
+			@Override
+			public String getName() {
+				if (this.name == null) {
+					for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+						if (info.getName().contains("GTK")) {
+							this.name = info.getClassName();
+						}
+					}
+				}
+				return this.name;
+			}
+		},
+
 		/**
 		 * Represents the look-and-feel that emulates the system
 		 * 
