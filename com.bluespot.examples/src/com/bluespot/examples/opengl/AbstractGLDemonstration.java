@@ -100,8 +100,10 @@ public abstract class AbstractGLDemonstration extends GLJPanel implements GLEven
 
 	@Override
 	public void init(final GLAutoDrawable drawable) {
-		final GL gl = drawable.getGL();
+		final GL2 gl = drawable.getGL().getGL2();
 		gl.glClearColor(0, 0, 0, .5f);
+		gl.glShadeModel(GL2.GL_SMOOTH);
+		gl.glEnable(GL.GL_MULTISAMPLE);
 	}
 
 	@Override
