@@ -26,6 +26,7 @@ public final class CompositeActor<T> implements Actor<T> {
 	 * @throws NullPointerException
 	 *             if any of the actors are null
 	 */
+	@SafeVarargs
 	public CompositeActor(final Actor<? super T>... actors) {
 		this(Arrays.asList(actors));
 	}

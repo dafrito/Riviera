@@ -82,6 +82,7 @@ public final class Tables {
 	 * 
 	 * @see #fill(Table, List)
 	 */
+	@SafeVarargs
 	public static <T> void fill(final Table<T> table, final T... values) {
 		Tables.fill(table, Arrays.asList(values));
 	}
