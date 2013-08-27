@@ -20,7 +20,7 @@ import com.bluespot.collections.proxies.ListProxy;
  * @param <E>
  *            the type of elements in this list model
  */
-public final class ObservableList<E> extends ListProxy<E> implements ListModel {
+public final class ObservableList<E> extends ListProxy<E> implements ListModel<E> {
 
 	private final List<ListDataListener> listeners = new CopyOnWriteArrayList<ListDataListener>();
 
