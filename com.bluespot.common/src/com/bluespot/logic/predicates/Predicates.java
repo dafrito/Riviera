@@ -272,6 +272,18 @@ public final class Predicates {
 		return Predicates.PREDICATE_TRUTH;
 	}
 
+	public static Predicate<Object> always() {
+		return Predicates.truth();
+	}
+
+	public static Predicate<Object> yes() {
+		return Predicates.truth();
+	}
+
+	public static Predicate<Object> no() {
+		return Predicates.never();
+	}
+
 	/**
 	 * A predicate that always returns {@code false}.
 	 * 
