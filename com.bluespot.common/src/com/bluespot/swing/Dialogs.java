@@ -73,6 +73,14 @@ public final class Dialogs {
 	}
 
 	/**
+	 * @see #getString(String, String)
+	 */
+	@SuppressWarnings("javadoc")
+	public static String getString(final String message) throws CancelledException {
+		return Dialogs.getString(message, null);
+	}
+
+	/**
 	 * Displays a dialog that requests a {@code String} from the user using the
 	 * specified message. The entered string must contain at least one
 	 * non-whitespace character. The dialog will display an error if the input
@@ -85,14 +93,16 @@ public final class Dialogs {
 	 * 
 	 * @param message
 	 *            the message to display to the user
+	 * @param defaultValue
+	 *            the default value shown
 	 * @return a {@code String} value that was parsed from the user's input. The
 	 *         returned value will be trimmed
 	 * @throws CancelledException
 	 *             if the user explicitly closed the dialog
 	 */
-	public static String getString(final String message) throws CancelledException {
+	public static String getString(final String message, final String defaultValue) throws CancelledException {
 		while (true) {
-			final String input = JOptionPane.showInputDialog(message);
+			final String input = JOptionPane.showInputDialog(message, defaultValue);
 			if (input == null) {
 				throw new CancelledException();
 			}
