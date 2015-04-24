@@ -18,8 +18,6 @@ import com.bluespot.demonstration.Demonstration;
 /**
  * Demonstrates a simple animation integrated with toggle buttons that affect
  * the animation. Specifically, a fan is drawn, with three available speeds.
- * <p>
- * Currently, this demonstration does not work.
  * 
  * @author Aaron Faanes
  * 
