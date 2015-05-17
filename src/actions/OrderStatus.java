@@ -1,0 +1,5 @@
+package actions;
+
+public enum OrderStatus {
+	COMPLETE, GENERALFAILURE, MISSINGRESOURCE, INCOMPLETE, READY
+}
