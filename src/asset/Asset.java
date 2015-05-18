@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package asset;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,6 +8,7 @@ import java.util.Map;
 
 import geom.points.Point;
 import inspect.Inspectable;
+import asset.Ace;
 
 @Inspectable
 public class Asset {

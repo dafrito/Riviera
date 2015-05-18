@@ -82,6 +82,7 @@ public class TreeLogServer implements Runnable {
 	}
 
 	private static final String space = "\\s*";
+    // >>> timestamp (category) [sender]@0x123abc message
 	private static final Pattern PATTERN = Pattern.compile(
 			"^"
 					+ space + "(<+|>+|!+)?" // scope

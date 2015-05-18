@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import Terrestrial;
+import asset.Terrestrial;
 import logging.Logs;
 
 public class SplitterThread extends Thread {

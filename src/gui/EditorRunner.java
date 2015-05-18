@@ -74,6 +74,6 @@ public class EditorRunner implements Runnable {
 		LogViewer<Object> viewer = createLogViewer();
 		createLogServer(viewer);
 
-		createScriptEditor();
+		//createScriptEditor();
 	}
 }

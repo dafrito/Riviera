@@ -3,7 +3,6 @@ package script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ArchetypeMapNode;
 import geom.DiscreteRegion;
 import inspect.Nodeable;
 import logging.Logs;
@@ -19,6 +18,9 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Archetype;
+import asset.ArchetypeMapNode;
+import asset.Asset;
 
 public class FauxTemplate_DiscreteRegion extends FauxTemplate_GraphicalElement implements ScriptConvertible<DiscreteRegion>, Nodeable {
 	public static final String DISCRETEREGIONSTRING = "DiscreteRegion";

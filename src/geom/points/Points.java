@@ -2,7 +2,7 @@ package geom.points;
 
 import java.util.Random;
 
-import Terrestrial;
+import asset.Terrestrial;
 
 /**
  * A collection of math utilities.

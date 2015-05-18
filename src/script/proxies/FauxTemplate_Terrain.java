@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import Terrain;
 import inspect.Nodeable;
 import logging.Logs;
 import script.Conversions;
@@ -19,6 +18,7 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Terrain;
 
 public class FauxTemplate_Terrain extends FauxTemplate implements Nodeable, ScriptConvertible<Terrain> {
 	public static final String TERRAINSTRING = "Terrain";

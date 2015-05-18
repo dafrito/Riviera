@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import Scenario;
-import Terrestrial;
+import asset.Scenario;
+import asset.Terrestrial;
 import inspect.Inspectable;
 import logging.Logs;
 import script.Conversions;

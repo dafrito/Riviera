@@ -7,12 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ArchetypeMapNode;
-import Asset;
 import geom.points.Point;
 import geom.points.Points;
 import inspect.Nodeable;
 import logging.Logs;
+import asset.Archetype;
+import asset.ArchetypeMapNode;
+import asset.Asset;
 
 public class DiscreteRegionBSPNode implements Nodeable {
 	private final Point pointA;

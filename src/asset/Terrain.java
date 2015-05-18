@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package asset;
 
 import geom.GradientValue;
 import inspect.Inspectable;

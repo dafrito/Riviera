@@ -14,6 +14,7 @@ import geom.points.PolarPoint;
 import geom.points.Points;
 import logging.Logs;
 import script.ScriptEnvironment;
+import asset.Archetype;
 
 public class Polygons {
 	public static boolean areSlopesEqual(Point pointA, Point pointB, Point testPointA, Point testPointB) {

@@ -3,7 +3,7 @@
  */
 package actions;
 
-import Asset;
+import asset.Asset;
 import inspect.Inspectable;
 import script.values.ScriptTemplate_Abstract;
 

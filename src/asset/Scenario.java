@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package asset;
 
 import actions.Scheduler;
 import script.ScriptEnvironment;

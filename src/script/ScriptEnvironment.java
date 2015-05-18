@@ -48,6 +48,8 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Variable;
+import asset.Ace;
+import asset.Asset;
 
 @Inspectable
 public class ScriptEnvironment {

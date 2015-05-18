@@ -1,9 +1,11 @@
-package com.dafrito.rfe;
+package asset;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import asset.Ace;
+import asset.Asset;
 
 /**
  * The archetype map node is intended for location and categorization of assets

@@ -11,7 +11,7 @@ import java.util.TreeSet;
 
 import javax.swing.Timer;
 
-import Asset;
+import asset.Asset;
 import inspect.Inspectable;
 import logging.Logs;
 import script.Conversions;

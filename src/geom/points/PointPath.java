@@ -3,7 +3,7 @@ package geom.points;
 import java.util.LinkedList;
 import java.util.List;
 
-import Scenario;
+import asset.Scenario;
 import inspect.Nodeable;
 import logging.Logs;
 

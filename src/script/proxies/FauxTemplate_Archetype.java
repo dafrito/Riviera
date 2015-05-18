@@ -3,8 +3,6 @@ package script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import Ace;
-import Archetype;
 import inspect.Nodeable;
 import logging.Logs;
 import script.Conversions;
@@ -19,6 +17,8 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Ace;
+import asset.Archetype;
 
 public class FauxTemplate_Archetype extends FauxTemplate implements ScriptConvertible<Archetype>, Nodeable {
 	public static final String ARCHETYPESTRING = "Archetype";

@@ -18,6 +18,7 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Asset;
 
 public class FauxTemplate_Scheduler extends FauxTemplate implements Nodeable, ScriptConvertible<Scheduler> {
 	public static final String SCHEDULERSTRING = "Scheduler";

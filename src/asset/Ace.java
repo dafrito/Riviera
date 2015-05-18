@@ -1,6 +1,8 @@
-package com.dafrito.rfe;
+package asset;
 
 import inspect.Inspectable;
+import asset.Ace;
+import asset.Asset;
 
 /**
  * Relate the efficiency of some {@link Asset} to represent some

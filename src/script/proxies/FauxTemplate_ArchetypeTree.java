@@ -3,8 +3,6 @@ package script.proxies;
 import java.util.LinkedList;
 import java.util.List;
 
-import ArchetypeMapNode;
-import Asset;
 import inspect.Nodeable;
 import logging.Logs;
 import script.Conversions;
@@ -19,6 +17,9 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Archetype;
+import asset.ArchetypeMapNode;
+import asset.Asset;
 
 public class FauxTemplate_ArchetypeTree extends FauxTemplate implements ScriptConvertible<ArchetypeMapNode>, Nodeable {
 	public static final String ARCHETYPETREESTRING = "ArchetypeTree";

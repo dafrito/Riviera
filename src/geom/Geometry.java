@@ -13,10 +13,9 @@ import java.util.List;
 
 import javax.swing.JPanel;
 
-import Terrain;
-import geom.points.Point;
 import geom.points.EuclideanPoint;
 import script.ScriptEnvironment;
+import asset.Terrain;
 
 /**
  * Collection of useful methods relating to geometry.

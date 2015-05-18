@@ -7,9 +7,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ArchetypeMapNode;
-import Asset;
-import Terrestrial;
 import geom.DiscreteRegion;
 import geom.points.Point;
 import geom.points.EuclideanPoint;
@@ -30,6 +27,10 @@ import script.proxies.FauxTemplate_RiffDali;
 import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
+import asset.Archetype;
+import asset.ArchetypeMapNode;
+import asset.Asset;
+import asset.Terrestrial;
 
 /**
  * A scriptable panel that draws {@link DiscreteRegion} and {@link Asset}

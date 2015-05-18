@@ -1,4 +1,4 @@
-package com.dafrito.rfe;
+package asset;
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -23,6 +23,7 @@ import script.exceptions.ScriptException;
 import script.operations.ScriptExecutable_CallFunction;
 import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
+import asset.Asset;
 
 public class Terrestrial implements Serializable {
 	/**

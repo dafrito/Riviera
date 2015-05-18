@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import Terrestrial;
+import asset.Terrestrial;
 import geom.DiscreteRegion;
 import inspect.Nodeable;
 import logging.Logs;
@@ -20,6 +20,7 @@ import script.values.ScriptTemplate_Abstract;
 import script.values.ScriptValue;
 import script.values.ScriptValueType;
 import script.values.ScriptValue_Faux;
+import asset.Asset;
 
 public class FauxTemplate_Terrestrial extends FauxTemplate implements ScriptConvertible<Terrestrial>, Nodeable {
 	public static final String TERRESTRIALSTRING = "Terrestrial";

@@ -2,7 +2,7 @@ package geom;
 
 import java.util.List;
 
-import Terrestrial;
+import asset.Terrestrial;
 import logging.Logs;
 
 public class PolygonPipeline extends Thread {

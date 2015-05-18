@@ -3,12 +3,6 @@ package script;
 import java.awt.Color;
 import java.util.List;
 
-import Ace;
-import Archetype;
-import Asset;
-import Scenario;
-import Terrain;
-import Terrestrial;
 import actions.Scheduler;
 import geom.DiscreteRegion;
 import geom.points.Point;
@@ -37,6 +31,12 @@ import script.values.ScriptValueType;
 import script.values.ScriptValue_Boolean;
 import script.values.ScriptValue_Numeric;
 import script.values.ScriptValue_String;
+import asset.Ace;
+import asset.Asset;
+import asset.Scenario;
+import asset.Terrestrial;
+import asset.Archetype;
+import asset.Terrain;
 
 /**
  * A collection of methods that convert between script values and raw objects.

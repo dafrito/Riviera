@@ -1,8 +1,3 @@
-/**
- * 
- */
-package com.dafrito.rfe;
-
 public class Incrementor {
 	private int value;
 
