@@ -471,7 +471,7 @@ public final class Geometry {
 	}
 
 	// Converts a Java-point to a RiffPoint
-	public static Point convertPointToEuclidean(ScriptEnvironment env, java.awt.Point point) {
+	public static geom.points.Point convertPointToEuclidean(ScriptEnvironment env, java.awt.Point point) {
 		return new EuclideanPoint(point.getX(), point.getY(), 0);
 	}
 
@@ -494,8 +494,8 @@ public final class Geometry {
 	public static List<java.awt.geom.Line2D.Double> getLineListFromDiscreteRegion(DiscreteRegion region) {
 		List<java.awt.geom.Line2D.Double> list = new LinkedList<java.awt.geom.Line2D.Double>();
 		for (int i = 0; i < region.getPoints().size(); i++) {
-			Point pointA = region.getPoints().get(i);
-			Point pointB = region.getPoints().get((i + 1) % region.getPoints().size());
+			geom.points.Point pointA = region.getPoints().get(i);
+			geom.points.Point pointB = region.getPoints().get((i + 1) % region.getPoints().size());
 			list.add(new java.awt.geom.Line2D.Double(pointA.getX(), pointA.getY(), pointB.getX(), pointB.getY()));
 		}
 		return list;
@@ -504,7 +504,7 @@ public final class Geometry {
 	// Creates a Java-displayable polygon from the discreteRegion
 	public static Polygon getPolygonFromDiscreteRegion(JPanel panel, DiscreteRegion region) {
 		Polygon poly = new Polygon();
-		List<Point> pointList = region.getPoints();
+		List<geom.points.Point> pointList = region.getPoints();
 		for (int i = 0; i < pointList.size(); i++) {
 			poly.addPoint((int) (pointList.get(i)).getX(), panel.getHeight() - (int) (pointList.get(i)).getY());
 		}
