@@ -52,9 +52,9 @@ public class EditorRunner implements Runnable {
 		return scriptFrame;
 	}
 
-	private void createLogServer(LogViewer<Object> viewer) {
+	private void createLogServer(LogViewer<Object> viewer, int port) {
 		try {
-			TreeLogServer server = new TreeLogServer(28122);
+			TreeLogServer server = new TreeLogServer(port);
 			server.setSink(viewer);
 
 			new Thread(server).start();
@@ -72,7 +72,9 @@ public class EditorRunner implements Runnable {
 		Components.LookAndFeel.GTK.activate();
 
 		LogViewer<Object> viewer = createLogViewer();
-		createLogServer(viewer);
+
+		int port = 28122;
+		createLogServer(viewer, port);
 
 		//createScriptEditor();
 	}
