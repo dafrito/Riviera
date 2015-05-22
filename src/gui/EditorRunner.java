@@ -22,7 +22,19 @@ import logging.TreeLogServer;
 public class EditorRunner implements Runnable {
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(new EditorRunner());
+        EditorRunner runner = new EditorRunner();
+
+        if(args.length > 0) {
+            try {
+                // Try to parse the port number.
+                runner.setLoggingPort(Integer.parseInt(args[0]));
+            } catch(NumberFormatException ex) {
+                System.err.println(ex.toString());
+            }
+        }
+
+        // Invoke the runner.
+		SwingUtilities.invokeLater(runner);
 	}
 
 	private LogViewer<Object> createLogViewer() {
@@ -52,9 +64,9 @@ public class EditorRunner implements Runnable {
 		return scriptFrame;
 	}
 
-	private void createLogServer(LogViewer<Object> viewer, int port) {
+	private void createLogServer(LogViewer<Object> viewer) {
 		try {
-			TreeLogServer server = new TreeLogServer(port);
+			TreeLogServer server = new TreeLogServer(loggingPort());
 			server.setSink(viewer);
 
 			new Thread(server).start();
@@ -73,10 +85,19 @@ public class EditorRunner implements Runnable {
 
 		LogViewer<Object> viewer = createLogViewer();
 
-		int port = 28122;
-		createLogServer(viewer, port);
-		viewer.setTitle("Riviera Log Viewer - Port " + port);
+		createLogServer(viewer);
+		viewer.setTitle("Log Viewer on Port " + loggingPort());
 
 		//createScriptEditor();
 	}
+
+    private int _loggingPort = 28122;
+    public void setLoggingPort(int loggingPort)
+    {
+        _loggingPort = loggingPort;
+    }
+    public int loggingPort()
+    {
+        return _loggingPort;
+    }
 }

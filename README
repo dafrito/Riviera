@@ -1,2 +1,4 @@
 For the most part, this project features a log viewer. It also
 has the trappings of a game.
+
+make jar - creates build/riviera.jar, the log viewer.
