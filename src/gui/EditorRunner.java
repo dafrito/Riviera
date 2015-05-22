@@ -75,6 +75,7 @@ public class EditorRunner implements Runnable {
 
 		int port = 28122;
 		createLogServer(viewer, port);
+		viewer.setTitle("Riviera Log Viewer - Port " + port);
 
 		//createScriptEditor();
 	}

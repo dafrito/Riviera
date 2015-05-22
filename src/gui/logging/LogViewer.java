@@ -57,7 +57,7 @@ public class LogViewer<Message> extends JFrame {
 	final Map<String, List<LogPanel<Message>>> filteredOutputMap = new HashMap<String, List<LogPanel<Message>>>();
 
 	public LogViewer() {
-		super("RFE Log Viewer");
+		super();
 
 		this.getContentPane().setLayout(new BorderLayout());
 		this.getContentPane().add(this.logPanelTabs);
