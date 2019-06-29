@@ -67,20 +67,7 @@ class SenderReference {
 	}
 }
 
-/**
- * @author Aaron Faanes
- * 
- */
-public class TreeLogServer implements Runnable {
-
-	private ServerSocket serverSocket;
-	private BufferedTreeLog<String> log;
-	private LogViewer<? super String> sink;
-
-	public TreeLogServer(int port) throws IOException {
-		serverSocket = new ServerSocket(port);
-	}
-
+class ClientLoggingThread extends Thread {
 	private static final String space = "\\s*";
     // >>> timestamp (category) [sender]@0x123abc message
 	private static final Pattern PATTERN = Pattern.compile(
@@ -107,6 +94,37 @@ public class TreeLogServer implements Runnable {
 		LEAVE,
 		RESET
 	};
+
+    private BufferedTreeLog<String> log;
+    private Socket connection;
+    public ClientLoggingThread(BufferedTreeLog<String> log, Socket connection) {
+        this.log = log;
+        this.connection = connection;
+    }
+
+    public void run() {
+        log.enter(new LogMessage<String>("Connection received from " + connection));
+        try {
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            while (true) {
+                String line = in.readLine();
+                if (line == null) {
+                    log.log(new LogMessage<String>("Connection was abruptly closed by peer."));
+                    break;
+                }
+                if (line.equals("CLOSE")) {
+                    connection.close();
+                    log.log(new LogMessage<String>("Connection closed on client request."));
+                    break;
+                }
+                readLine(line);
+            }
+        }
+        catch(IOException e) {
+            log.log(new LogMessage<String>("Server IOException: " + e.toString()));
+        }
+        log.leave();
+    }
 
 	private void readLine(String line) {
 		Matcher matcher = PATTERN.matcher(line);
@@ -169,30 +187,27 @@ public class TreeLogServer implements Runnable {
 			break;
 		}
 	}
+}
 
+/**
+ * @author Aaron Faanes
+ * 
+ */
+public class TreeLogServer implements Runnable {
+
+	private ServerSocket serverSocket;
+	private LogViewer<? super String> sink;
+
+	public TreeLogServer(int port) throws IOException {
+		serverSocket = new ServerSocket(port);
+	}
 	private void serve(Socket connection) throws IOException {
 		if (this.sink == null) {
 			return;
 		}
-		log = new BufferedTreeLog<>();
+		BufferedTreeLog<String> log = new BufferedTreeLog<>();
 		sink.addLogPanel(log, String.format("%s:%d", connection.getInetAddress().getHostAddress(), connection.getPort()));
-
-		log.enter(new LogMessage<String>("Connection received from " + connection));
-		BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-		while (true) {
-			String line = in.readLine();
-			if (line == null) {
-				log.log(new LogMessage<String>("Connection was abruptly closed by peer."));
-				break;
-			}
-			if (line.equals("CLOSE")) {
-				connection.close();
-				log.log(new LogMessage<String>("Closing connection on request."));
-				break;
-			}
-			readLine(line);
-		}
-		log.leave();
+        new ClientLoggingThread(log, connection).start();
 	}
 
 	@Override
