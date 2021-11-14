@@ -185,7 +185,7 @@ public class LogPanel<Message> extends JPanel {
 		}
 		logTree.scrollPathToVisible(new TreePath(node.getPath()));
 		if (depth > 0) {
-			for (Object child : Collections.<Object> list(node.children())) {
+			for (Object child : Collections.list(node.children())) {
 				expandTree((DefaultMutableTreeNode) child, depth - 1);
 			}
 		}
