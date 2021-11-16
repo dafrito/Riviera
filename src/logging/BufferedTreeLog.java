@@ -131,4 +131,7 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
         }
 	}
 
+    public String toString() {
+        return "BufferedTreeLog[buffer=" + buffer + "]";
+    }
 }

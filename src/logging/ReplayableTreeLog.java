@@ -107,6 +107,10 @@ public class ReplayableTreeLog<Message> implements TreeLog<Message> {
 	public void reset() {
 		actions.add(new ResetLogAction<Message>());
 	}
+
+    public String toString() {
+        return "ReplayableTreeLog[queue has " + actions.size() + "]";
+    }
 }
 
 class EnterLogAction<Message> implements Actor<TreeLog<? super Message>> {
