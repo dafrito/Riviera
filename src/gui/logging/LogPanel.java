@@ -32,6 +32,46 @@ import logging.ReplayableTreeLog;
 import logging.ScopeGuardedTreeLog;
 import logging.TreeBuildingTreeLog;
 import logging.TreeLog;
+import logging.LogName;
+
+class LogPanelName implements LogName {
+    private LogPanel panel;
+    private String initialName;
+
+    public LogPanelName(LogPanel panel, String name) {
+        this.panel = panel;
+        this.initialName = name;
+        this.setName(name);
+    }
+
+    public String getName() {
+        var idx = this.tabIndex();
+        if (idx >= 0) {
+            var tabs = this.panel.getViewer().tabs();
+            return tabs.getTitleAt(idx);
+        }
+        return this.panel.getName();
+    }
+
+    public int tabIndex() {
+        var tabs = this.panel.getViewer().tabs();
+        return tabs.indexOfComponent(this.panel);
+    }
+
+    public void setName(String name) {
+        if (name == null) {
+            name = initialName;
+        }
+        System.out.println("Setting name!!" + name);
+        var idx = this.tabIndex();
+        if (idx >= 0) {
+            var tabs = this.panel.getViewer().tabs();
+            tabs.setTitleAt(idx, name);
+        } else {
+            this.panel.setName(name);
+        }
+    }
+}
 
 /**
  * A panel for a {@link TreeLog}.
@@ -54,6 +94,7 @@ public class LogPanel<Message> extends JPanel {
 	private final JTree logTree = new JTree();
 
 	private TreeBuildingTreeLog<Message> treeBuilder;
+	private LogPanelName name;
 
 	private LogPanel<Message> parent;
 	private List<LogPanel<Message>> children = new ArrayList<>();
@@ -76,9 +117,13 @@ public class LogPanel<Message> extends JPanel {
 		this(viewer, source, name, null);
 	}
 
+    public LogViewer getViewer() {
+        return this.viewer;
+    }
+
 	public LogPanel(LogViewer<Message> viewer, BufferedTreeLog<? extends Message> source, String name, LogPanel<Message> parent) {
 		this.viewer = viewer;
-		setName(name);
+        this.name = new LogPanelName(this, name);
 
 		setLayout(new BorderLayout());
 
@@ -120,7 +165,7 @@ public class LogPanel<Message> extends JPanel {
 			logTree.setModel(null);
 		}
 
-		treeBuilder = new TreeBuildingTreeLog<Message>(getName());
+		treeBuilder = new TreeBuildingTreeLog<Message>(name);
 		logTree.setModel(treeBuilder.getModel());
 
 		// Clean up the display of the root node.
