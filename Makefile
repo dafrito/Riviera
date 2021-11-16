@@ -1,21 +1,29 @@
-LOGVIEWER_CLASSES = \
-	build/gui/EditorRunner.class \
-	build/strings/Strings.class \
-	build/logging/TreeLog.class
 
-build/%.class: src/%.java
-	javac -sourcepath src -d build $<
+LOGVIEWER_CLASSES = \
+	dist/gui/EditorRunner.class \
+	dist/strings/Strings.class \
+	dist/logging/TreeLog.class
 
 MAIN_CLASS = gui.EditorRunner
-LOGVIEWER=build/logviewer.jar
+LOGVIEWER=dist/logviewer.jar
 LOGPORT=28122
 
-$(LOGVIEWER): build $(LOGVIEWER_CLASSES)
+build: $(LOGVIEWER)
+.PHONY: build
+
+dist/%.class: src/%.java
+	javac -sourcepath src -d dist $<
+
+$(LOGVIEWER): dist $(LOGVIEWER_CLASSES)
 	cd `dirname $@` && find . -name '*.class' | xargs jar cfe `basename $@` $(MAIN_CLASS)
 
-build:
-	mkdir -p build
-	echo "*" >build/.gitignore
+dist:
+	mkdir -p dist
+	echo "*" >dist/.gitignore
+
+doc:
+	cd src && javadoc -link 'https://fritocomp.aaronfaanes/riviera/' --source-path src -d ../dist/doc `find . -name '*.java' | grep -v examples/opengl | grep -v '^./tests' | grep -v '^./opengl'`
+.PHONY: doc
 
 jar: $(LOGVIEWER)
 .PHONY: jar
@@ -24,5 +32,5 @@ run: $(LOGVIEWER)
 	java -jar $< $(LOGPORT)
 
 clean:
-	rm -rf build
+	rm -rf dist
 .PHONY: clean
