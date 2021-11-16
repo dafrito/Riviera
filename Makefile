@@ -19,9 +19,8 @@ $(LOGVIEWER): dist $(LOGVIEWER_CLASSES)
 
 dist:
 	mkdir -p dist
-	echo "*" >dist/.gitignore
 
-doc:
+doc: dist
 	cd src && javadoc -link 'https://fritocomp.aaronfaanes/riviera/' --source-path src -d ../dist/doc `find . -name '*.java' | grep -v examples/opengl | grep -v '^./tests' | grep -v '^./opengl'`
 .PHONY: doc
 
