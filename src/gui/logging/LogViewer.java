@@ -25,10 +25,16 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -38,6 +44,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
 import logging.BufferedTreeLog;
+import logging.LogParser;
+import logging.StreamLog;
 
 import logic.adapters.Adapter;
 
@@ -69,6 +77,27 @@ public class LogViewer<Message> extends JFrame {
 		JMenu listenerMenu = new JMenu("Listener");
 		this.menuBar.add(listenerMenu);
 		listenerMenu.setMnemonic('L');
+
+		JMenuItem openFile = new JMenuItem("Open log...", 'O');
+		openFile.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                int result = fileChooser.showOpenDialog(LogViewer.this);
+                if (result == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        File selectedFile = fileChooser.getSelectedFile();
+                        var log = new BufferedTreeLog<Message>();
+                        var name = selectedFile.getName();
+                        new Thread(new StreamLog(log, new FileInputStream(selectedFile), name, v->v)).start();
+                        addLogPanel(log, name);
+                    } catch (FileNotFoundException ex) {
+                        JOptionPane.showMessageDialog(LogViewer.this, ex.toString());
+                    }
+                }
+			}
+		});
+		listenerMenu.add(openFile);
 
 		JMenuItem renameTab = new JMenuItem("Rename Tab...", 'N');
 		renameTab.addActionListener(new ActionListener() {
