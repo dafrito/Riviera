@@ -52,12 +52,16 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 		int actuallyRemoved = buffer.remove(buffer.play(getSink(), maxFlushed));
 
 		hasNotified = false;
-		if (!buffer.isEmpty()) {
+		if (!isEmpty()) {
 			dispatch();
 		}
 
 		return actuallyRemoved;
 	}
+
+    public boolean isEmpty() {
+		return buffer.isEmpty();
+    }
 
 	@Override
 	public void log(LogMessage<? extends Message> message) {
@@ -115,6 +119,10 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 
 	public void setNotifier(Runnable notifier) {
 		this.notifier = notifier;
+        if (!isEmpty()) {
+            hasNotified = false;
+            dispatch();
+        }
 	}
 
 }
