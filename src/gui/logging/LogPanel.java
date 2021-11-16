@@ -268,7 +268,7 @@ public class LogPanel<Message> extends JPanel {
 							return true;
 						}
 
-						if (!selectedMessage.getCategory().equals("") && selectedMessage.getCategory().equals(candidate.getCategory())) {
+						if (selectedMessage.getCategory() != null && selectedMessage.getCategory().equals(candidate.getCategory())) {
 							return true;
 						}
 
