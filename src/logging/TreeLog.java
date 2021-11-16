@@ -54,6 +54,15 @@ public interface TreeLog<T> {
 	 */
 	void enter(LogMessage<? extends T> scope);
 
+    /**
+     * Logs metadata about the logging session, or the subject of the session.
+     * Metadata is assumed to be in a key-value format, where they message's
+     * category is the key, and its message is the value.
+     *
+     * @param metadata The message that contains metadata
+     */
+	void metadata(LogMessage<? extends T> metadata);
+
 	/**
 	 * Leave the current scope.
 	 */

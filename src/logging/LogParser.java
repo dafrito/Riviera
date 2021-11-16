@@ -65,6 +65,7 @@ public class LogParser {
 		ENTER,
 		LEAVE,
 		RESET,
+        METADATA
 	};
 
 	public boolean readLine(TreeLog log, String line) {
@@ -104,6 +105,9 @@ public class LogParser {
 			case '!':
 				action = ScopeAction.RESET;
 				break;
+			case '@':
+				action = ScopeAction.METADATA;
+				break;
 			default:
 				throw new AssertionError("Impossible (I probably botched the regex)");
 			}
@@ -114,6 +118,9 @@ public class LogParser {
 		switch (action) {
 		case ENTER:
 			log.enter(logMessage);
+			break;
+		case METADATA:
+			log.metadata(logMessage);
 			break;
 		case NONE:
 			log.log(logMessage);

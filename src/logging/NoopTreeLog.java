@@ -35,6 +35,11 @@ public class NoopTreeLog implements TreeLog<Object> {
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends Object> message) {
+		// Intentionally do nothing.
+	}
+
+	@Override
 	public void enter(LogMessage<? extends Object> scope) {
 		// Intentionally do nothing.
 	}

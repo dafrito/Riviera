@@ -53,26 +53,28 @@ public class TreeBuildingTreeLog<Message> implements TreeLog<Message> {
 
 	private Map<LogMessage<? extends Message>, DefaultMutableTreeNode> nodeMapping = new HashMap<>();
 
-	public TreeBuildingTreeLog(String name, Inserter<? super Message> rootInserter) {
-		root.setUserObject(name);
+    private LogName name;
 
+	public TreeBuildingTreeLog(LogName name, Inserter<? super Message> rootInserter) {
 		cursor = root;
+        this.name = name;
 
 		this.rootInserter = rootInserter;
 	}
 
-	public TreeBuildingTreeLog(String name) {
+	public TreeBuildingTreeLog(LogName name) {
 		this(name, new MergingInserter<Message>());
 	}
+
+    public void setName(String name) {
+        root.setUserObject(name);
+        this.name.setName(name);
+    }
 
 	private DefaultMutableTreeNode newNode(LogMessage<? extends Message> message) {
 		DefaultMutableTreeNode node = new DefaultMutableTreeNode(message);
 		nodeMapping.put(message, node);
 		return node;
-	}
-
-	public String getName() {
-		return (String) root.getUserObject();
 	}
 
 	public DefaultTreeModel getModel() {
@@ -87,6 +89,16 @@ public class TreeBuildingTreeLog<Message> implements TreeLog<Message> {
 	public void log(LogMessage<? extends Message> message) {
 		enter(message);
 		leave();
+	}
+
+	@Override
+	public void metadata(LogMessage<? extends Message> message) {
+        if (message.getCategory() == null) {
+            return;
+        }
+        if (message.getCategory().equals("title")) {
+            setName(message.getMessage() != null ? message.getMessage().toString() : null);
+        }
 	}
 
 	@Override

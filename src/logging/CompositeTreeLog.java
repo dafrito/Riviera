@@ -52,6 +52,13 @@ public class CompositeTreeLog<T> implements TreeLog<T> {
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends T> message) {
+		for (TreeLog<? super T> log : listeners) {
+			log.metadata(message);
+		}
+	}
+
+	@Override
 	public void enter(LogMessage<? extends T> scope) {
 		for (TreeLog<? super T> log : listeners) {
 			log.enter(scope);

@@ -70,6 +70,12 @@ public class BufferedTreeLog<Message> extends ProxyTreeLog<Message> implements R
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends Message> message) {
+		buffer.metadata(message);
+		dispatch();
+	}
+
+	@Override
 	public void enter(LogMessage<? extends Message> scope) {
 		buffer.enter(scope);
 		dispatch();

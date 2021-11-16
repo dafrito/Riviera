@@ -48,6 +48,11 @@ public class ProxyTreeLog<Message> implements TreeLog<Message> {
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends Message> message) {
+		sink.metadata(message);
+	}
+
+	@Override
 	public void enter(LogMessage<? extends Message> scope) {
 		sink.enter(scope);
 	}

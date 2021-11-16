@@ -107,6 +107,11 @@ public abstract class ThreadLocalTreeLog<T, Log extends TreeLog<? super T>> impl
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends T> message) {
+		get().metadata(message);
+	}
+
+	@Override
 	public void enter(LogMessage<? extends T> scope) {
 		get().enter(scope);
 	}

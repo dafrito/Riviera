@@ -89,6 +89,11 @@ public class ReplayableTreeLog<Message> implements TreeLog<Message> {
 	}
 
 	@Override
+	public void metadata(LogMessage<? extends Message> message) {
+		actions.add(new MetadataLogAction<Message>(message));
+	}
+
+	@Override
 	public void enter(LogMessage<? extends Message> scope) {
 		actions.add(new EnterLogAction<Message>(scope));
 	}
@@ -160,5 +165,21 @@ class MessageLogAction<Message> implements Actor<TreeLog<? super Message>> {
 			return;
 		}
 		log.log(message);
+	}
+}
+
+class MetadataLogAction<Message> implements Actor<TreeLog<? super Message>> {
+	private final LogMessage<? extends Message> message;
+
+	public MetadataLogAction(LogMessage<? extends Message> message) {
+		this.message = message;
+	}
+
+	@Override
+	public void receive(TreeLog<? super Message> log) {
+		if (log == null) {
+			return;
+		}
+		log.metadata(message);
 	}
 }
