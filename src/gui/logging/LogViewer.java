@@ -129,6 +129,16 @@ public class LogViewer<Message> extends JFrame {
 			}
 		});
 		listenerMenu.add(removeTab);
+
+		JMenuItem quit = new JMenuItem("Quit", 'Q');
+		quit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+		quit.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                dispatchEvent(new WindowEvent(LogViewer.this, WindowEvent.WINDOW_CLOSING));
+			}
+		});
+		listenerMenu.add(quit);
 	}
 
 	@SuppressWarnings("unchecked")
