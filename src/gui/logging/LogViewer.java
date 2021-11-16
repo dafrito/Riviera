@@ -39,6 +39,8 @@ import javax.swing.KeyStroke;
 
 import logging.BufferedTreeLog;
 
+import logic.adapters.Adapter;
+
 /**
  * @author Aaron Faanes
  * @param <Message>
@@ -56,7 +58,7 @@ public class LogViewer<Message> extends JFrame {
 
 	final Map<String, List<LogPanel<Message>>> filteredOutputMap = new HashMap<String, List<LogPanel<Message>>>();
 
-	public LogViewer() {
+	public LogViewer(Adapter<String, Message> messageParser) {
 		super();
 
 		this.getContentPane().setLayout(new BorderLayout());

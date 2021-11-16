@@ -13,6 +13,8 @@ import logging.BufferedTreeLog;
 import logging.Logs;
 import logging.TreeLogServer;
 
+import logic.adapters.Adapters;
+
 /**
  * Create a new editing environment.
  * 
@@ -38,7 +40,7 @@ public class EditorRunner implements Runnable {
 	}
 
 	private LogViewer<Object> createLogViewer() {
-		final LogViewer<Object> logFrame = new LogViewer<Object>();
+		final LogViewer<Object> logFrame = new LogViewer<Object>(v->v);
 		logFrame.setSize(1024, 768);
 		logFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Components.center(logFrame);
