@@ -79,6 +79,7 @@ public class LogViewer<Message> extends JFrame {
 		listenerMenu.setMnemonic('L');
 
 		JMenuItem openFile = new JMenuItem("Open log...", 'O');
+		openFile.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.CTRL_MASK));
 		openFile.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
