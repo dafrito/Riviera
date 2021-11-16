@@ -109,6 +109,10 @@ public class LogViewer<Message> extends JFrame {
 		logPanelTabs.setSelectedComponent(panel);
 	}
 
+	public JTabbedPane tabs() {
+		return logPanelTabs;
+	}
+
 	public void addLogPanel(BufferedTreeLog<? extends Message> log, String name) {
 		addLogPanel(new LogPanel<Message>(this, log, name));
 	}
